@@ -183,6 +183,109 @@ public class ProcessEntity {
     }
 
     /**
+     * process an Enum declaration node
+     * @param node
+     * @param parentId
+     * @param cu
+     * @return
+     */
+    public int processEnum(EnumDeclaration node, int parentId, CompilationUnit cu){
+        int enumId = singleCollect.getCurrentIndex();
+        String enumName = node.getName().getIdentifier();
+        String qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName() +"."+ enumName;
+
+//        EnumEntity enumEntity = new EnumEntity(enumId, enumName, node.resolveBinding().getQualifiedName(), parentId);
+        EnumEntity enumEntity = new EnumEntity(enumId, enumName, qualifiedName, parentId);
+
+        enumEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
+
+        //interface, default id is -1
+        if(!node.superInterfaceTypes().isEmpty()){
+            for(Object type: node.superInterfaceTypes()){
+                enumEntity.addInterface(type.toString(), -1);
+            }
+        }
+
+        singleCollect.addEntity(enumEntity);
+        //add parent's children Id
+        singleCollect.getEntityById(parentId).addChildId(enumId);
+
+        return enumId;
+    }
+
+    /**
+     * process an enum constant
+     * @param node
+     * @param parentId
+     * @return
+     */
+    public int processEnumConstant(EnumConstantDeclaration node, int parentId){
+        int constantId = singleCollect.getCurrentIndex();
+        String constantName = node.getName().getIdentifier();
+//        String qualifiedName = node.resolveVariable().getType().getQualifiedName()+"."+constantName;
+        String qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName() +"."+ constantName;
+
+
+        EnumConstantEntity<String> enumConstantEntity = new EnumConstantEntity<String>(constantId, constantName, qualifiedName, parentId);
+
+        singleCollect.addEntity(enumConstantEntity);
+        singleCollect.getEntityById(parentId).addChildId(constantId);
+
+        if(singleCollect.getEntityById(parentId) instanceof EnumEntity){
+            ((EnumEntity) singleCollect.getEntityById(parentId)).addConstant(qualifiedName, constantId);
+        }
+
+        return constantId;
+    }
+
+    /**
+     * process an Annotation declaration node
+     * @param node
+     * @param parentId
+     * @param cu
+     * @return
+     */
+    public int processAnnotation(AnnotationTypeDeclaration node, int parentId, CompilationUnit cu){
+        int annotationId = singleCollect.getCurrentIndex();
+        String annotationName = node.getName().getIdentifier();
+        String qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName() +"."+ annotationName;
+
+        AnnotationEntity annotationEntity = new AnnotationEntity(annotationId, annotationName, qualifiedName, parentId);
+//        AnnotationEntity annotationEntity = new AnnotationEntity(annotationId, annotationName, node.resolveBinding().getQualifiedName(), parentId);
+        annotationEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
+
+        singleCollect.addEntity(annotationEntity);
+        //add parent's children Id
+        singleCollect.getEntityById(parentId).addChildId(annotationId);
+
+        singleCollect.addCreatedAnt(annotationId, annotationName);
+
+        return annotationId;
+    }
+
+    public int processAnnotationMember(AnnotationTypeMemberDeclaration node, int parentId){
+        int memberId = singleCollect.getCurrentIndex();
+        String memberName = node.getName().getIdentifier();
+//        String qualifiedName = node.resolveBinding().getDeclaringClass().getQualifiedName()+"."+memberName;
+        String qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName() +"."+ memberName;
+
+        AnnotationTypeMember annotationTypeMember = new AnnotationTypeMember(memberId, node.getType().toString(), memberName, qualifiedName, parentId);
+
+        if(node.getDefault() != null){
+            annotationTypeMember.setDefault_value(node.getDefault().toString());
+        }
+
+        singleCollect.addEntity(annotationTypeMember);
+        singleCollect.getEntityById(parentId).addChildId(memberId);
+
+        if(singleCollect.getEntityById(parentId) instanceof AnnotationEntity){
+            ((AnnotationEntity) singleCollect.getEntityById(parentId)).addMember(qualifiedName, memberId);
+        }
+
+        return memberId;
+    }
+
+    /**
      * process the method and save it into methodEntity
      * its parent is a type(class or interface)
      * save into singlecollect.entities
@@ -195,9 +298,10 @@ public class ProcessEntity {
 
         int methodId = singleCollect.getCurrentIndex();
         String methodName = node.getName().getIdentifier();
+        String methodQualifiedName = singleCollect.getEntityById(parentTypeId).getQualifiedName()+"."+methodName;
 
         MethodEntity methodEntity = new MethodEntity(methodId,methodName);
-        methodEntity.setQualifiedName(singleCollect.getEntityById(parentTypeId).getQualifiedName()+"."+methodName);
+        methodEntity.setQualifiedName(methodQualifiedName);
         methodEntity.setParentId(parentTypeId);
         methodEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
         //methodEntity.setCodeSnippet(node.toString());
@@ -205,12 +309,34 @@ public class ProcessEntity {
         if(node.isConstructor()){
             methodEntity.setConstructor(true);
         }else{
-            methodEntity.setReturnType(node.getReturnType2().toString());
+            if(node.getReturnType2() != null){
+                methodEntity.setReturnType(node.getReturnType2().toString());
+            }
         }
         singleCollect.addEntity(methodEntity);
 
         //add type's children id
         singleCollect.getEntityById(parentTypeId).addChildId(methodId);
+
+        //supplement static method
+        for(Object o : node.modifiers()){
+            if(o.toString().equals("static") ){
+                methodEntity.setStatic(true);
+                if(singleCollect.getEntityById(parentTypeId) instanceof ClassEntity)
+                    ((ClassEntity) singleCollect.getEntityById(parentTypeId)).addStaticMap(methodQualifiedName, methodId);
+            }
+            switch (o.toString()) {
+                case "public":
+                    methodEntity.setAccessibility("Public");
+                    break;
+                case "protected":
+                    methodEntity.setAccessibility("Protected");
+                    break;
+                case "private":
+                    methodEntity.setAccessibility("Private");
+                    break;
+            }
+        }
 
         return methodId;
     }
@@ -224,7 +350,7 @@ public class ProcessEntity {
      * @param varType the type of all of these var
      * @return ArrayList of vars' ids
      */
-    public ArrayList<Integer> processVarDeclFragment(List<VariableDeclarationFragment> fragment, int parentId, String varType, int blockId){
+    public ArrayList<Integer> processVarDeclFragment(List<VariableDeclarationFragment> fragment, int parentId, String varType, int blockId, int staticFlag, boolean globalFlag){
 
         ArrayList<Integer> variableIds = new ArrayList<Integer>();
 
@@ -234,6 +360,7 @@ public class ProcessEntity {
         //iterate the fragment
         for(VariableDeclarationFragment frag : fragment){
             varName = frag.getName().getIdentifier();
+//            if(varName.equals())
             varId = singleCollect.getCurrentIndex();
             VariableEntity varEntity = new VariableEntity(varId,varName,varType);
             varEntity.setParentId(parentId);
@@ -252,6 +379,18 @@ public class ProcessEntity {
             //supplement parent method
             if(singleCollect.isMethod(parentId)){
                 ((MethodEntity)singleCollect.getEntityById(parentId)).addLocalVar(varEntity);
+            }
+
+            //supplement static
+            if (staticFlag == 1){
+                ((ClassEntity) singleCollect.getEntityById(parentId)).addStaticMap(singleCollect.getEntityById(parentId).getQualifiedName()+"."+varName, varId);
+            }
+
+            //supplement global or local
+            if (globalFlag){
+                varEntity.setAccessibility("Global");
+            }else {
+                varEntity.setAccessibility("Local");
             }
         }
         return variableIds;

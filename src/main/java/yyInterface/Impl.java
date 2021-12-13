@@ -84,7 +84,7 @@ public class Impl {
                         struct.put(entity.getQualifiedName(), temp);
                     }
                 }
-                //inherit : class --> interface
+                //implement : class --> interface
                 for(Tuple<String, Integer> tuple: entity.getRelation()){
                     if(tuple.getRelation().equals("Implement")){
                         String interfaceName = singleCollect.getEntityById(tuple.getId()).getQualifiedName();

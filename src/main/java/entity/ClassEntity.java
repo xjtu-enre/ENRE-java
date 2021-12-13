@@ -7,6 +7,7 @@ public class ClassEntity extends TypeEntity{
     protected HashMap<String, Integer> interfaces = new HashMap<String, Integer>();
     protected String superClassName;
     protected int superClassId = -1;
+    protected HashMap<String, Integer> staticMap = new HashMap<>();
 
     public ClassEntity(int id, String name){
         this.id = id;
@@ -43,6 +44,15 @@ public class ClassEntity extends TypeEntity{
     public void addInterfaces(String name, int id){
         this.interfaces.put(name, id);
     }
+
+    public HashMap<String, Integer> getStaticMap(){
+        return this.staticMap;
+    }
+
+    public void addStaticMap(String name, int id){
+        this.staticMap.put(name, id);
+    }
+
 
     @Override
     public String toString() {

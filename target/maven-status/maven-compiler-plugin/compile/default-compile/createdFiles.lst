@@ -20,7 +20,6 @@ client\TemplateWork.class
 entity\properties\Block.class
 entity\ScopeEntity.class
 visitor\deper\ImportBf.class
-yyInterface\Main.class
 formator\fxml\XCells.class
 visitor\deper\DepBackfill.class
 entity\PackageEntity.class

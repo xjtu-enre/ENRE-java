@@ -65,8 +65,11 @@ public class IdentifyEntities {
         System.out.println("Parsing...");
 
         for(CompilationUnitPair pair : pairs){
+//            if(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name).equals("src/main/java/run/halo/app/service/impl/OptionServiceImpl.java")){
+//                pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
+//            }
             pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
-            //System.out.println(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name));
+            System.out.println(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name));
         }
 
         System.out.println("Entities identified successfully...");

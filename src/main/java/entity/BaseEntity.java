@@ -14,6 +14,8 @@ public class BaseEntity {
     //String is the relation type , and Integer is corresponding entity's id
     protected ArrayList<Tuple<String, Integer>> relation = new ArrayList<Tuple<String, Integer>>();
 
+    protected ArrayList<String> annotations = new ArrayList<>();
+
     public String getQualifiedName() {
         return qualifiedName;
     }
@@ -70,10 +72,16 @@ public class BaseEntity {
         this.relation.add(new Tuple<String, Integer>(relation, relatedId));
     }
 
-
-
     public ArrayList<Tuple<String, Integer>> getRelation(){
         return this.relation;
+    }
+
+    public void addAnnotation(String annotation){
+        this.annotations.add(annotation);
+    }
+
+    public ArrayList<String> getAnnotations(){
+        return this.annotations;
     }
 
     @Override

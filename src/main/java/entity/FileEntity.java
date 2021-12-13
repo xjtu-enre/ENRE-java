@@ -10,6 +10,9 @@ public class FileEntity extends BaseEntity{
     //the first is name, the second is package
     protected HashMap<String, Integer> importClass = new HashMap<String, Integer>();
 
+    protected HashMap<String, Integer> importStatic = new HashMap<>();
+
+
     protected String fullPath;
 
     public FileEntity (int fileId, String fullPath){
@@ -40,6 +43,14 @@ public class FileEntity extends BaseEntity{
 
     public HashMap<String, Integer> getImportClass(){
         return this.importClass;
+    }
+
+    public void addImportStatic(String constant){
+        this.importStatic.put(constant, -1);
+    }
+
+    public HashMap<String, Integer> getImportStatic(){
+        return this.importStatic;
     }
 
     @Override

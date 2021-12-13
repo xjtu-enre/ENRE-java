@@ -1,5 +1,7 @@
 package visitor.deper;
 
+import entity.BaseEntity;
+import entity.FileEntity;
 import util.PathUtil;
 import util.SingleCollect;
 
@@ -36,7 +38,7 @@ public abstract class DepBackfill{
             for (int id : singleCollect.getEntityById(pkgId).getChildrenIds()) {
                 if(singleCollect.isFile(id)){
                     for(int childId : singleCollect.getEntityById(id).getChildrenIds()){
-                        if(singleCollect.getEntityById(childId).getName().equals(PathUtil.getLastStrByDot(fileFullName))){
+                        if(singleCollect.getEntityById(childId).getQualifiedName().equals(fileFullName)){
                             typeId = childId;
                             break;
                         }
@@ -91,6 +93,60 @@ public abstract class DepBackfill{
             }
         }
         return typeId;
+    }
+
+    /**
+     * find type in the same package which means it does not need import statement
+     * @param pkgId
+     * @param typeName
+     * @return
+     */
+    public int findTypeInPackage (int pkgId, String typeName){
+        int typeId = -1;
+        if(pkgId != -1){
+            for(int id : singleCollect.getEntityById(pkgId).getChildrenIds()){
+                if(singleCollect.isFile(id)){
+                    for (int childId : singleCollect.getEntityById(id).getChildrenIds()) {
+                        if (singleCollect.getEntityById(childId).getName().equals(typeName)) {
+                            typeId = childId;
+                            break;
+                        }
+                    }
+                }
+                if(typeId != -1)
+                    break;
+            }
+        } else {
+            for(BaseEntity baseEntity :singleCollect.getEntities()){
+                if(baseEntity instanceof FileEntity && baseEntity.getParentId() == -1){
+                    for(int childId : baseEntity.getChildrenIds()){
+                        if(singleCollect.getEntityById(childId).getName().equals(typeName)){
+                            typeId = childId;
+                        }
+                    }
+                }
+                if (typeId != -1)
+                    break;
+            }
+        }
+        return typeId;
+    }
+
+    /**
+     * get current entity's file id
+     * @param id
+     * @return
+     */
+    public int getCurrentFileId(int id){
+        if(singleCollect.getEntityById(id) instanceof FileEntity){
+            return id;
+        }
+        else if (singleCollect.getEntityById(singleCollect.getEntityById(id).getParentId()) instanceof FileEntity){
+            return singleCollect.getEntityById(id).getParentId();
+        }
+        else {
+            return getCurrentFileId(singleCollect.getEntityById(id).getParentId());
+        }
     }
 
     public abstract void setDep();

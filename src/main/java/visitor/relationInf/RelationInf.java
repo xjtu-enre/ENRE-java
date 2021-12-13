@@ -1,5 +1,6 @@
 package visitor.relationInf;
 
+import com.sun.xml.bind.v2.schemagen.xmlschema.Annotation;
 import util.Configure;
 import util.Tuple;
 import entity.*;
@@ -9,12 +10,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RelationInf extends RelationInterface {
+
+
     @Override
     public String entityStatis() {
         int packageCount = 0;
         int fileCount = 0;
         int classCount = 0;
         int interfaceCount = 0;
+        int enumCount = 0;
+        int annotationCount = 0;
+        int annotationMemberCount = 0;
         int methodCount = 0;
         int varCount = 0;
 
@@ -35,6 +41,15 @@ public class RelationInf extends RelationInterface {
             else if(entity instanceof InterfaceEntity){
                 interfaceCount ++;
             }
+            else if(entity instanceof EnumEntity){
+                enumCount ++;
+            }
+            else if(entity instanceof AnnotationEntity){
+                annotationCount ++;
+            }
+            else if(entity instanceof AnnotationTypeMember){
+                annotationMemberCount ++;
+            }
             else if(entity instanceof VariableEntity){
                 varCount ++;
             }
@@ -45,6 +60,9 @@ public class RelationInf extends RelationInterface {
         str += ("File: " + fileCount + "\n");
         str += ("Class: " + classCount + "\n");
         str += ("Interface: " + interfaceCount + "\n");
+        str += ("Enum: " + enumCount + "\n");
+        str += ("Annotation: " + annotationCount + "\n");
+        str += ("Annotation Member: " + annotationMemberCount + "\n");
         str += ("Method: " + methodCount + "\n");
         str += ("variable: " + varCount + "\n");
         return str;
@@ -62,6 +80,8 @@ public class RelationInf extends RelationInterface {
         depMap.put(Configure.RELATION_PARAMETER, 0);
         depMap.put(Configure.RELATION_MODIFY, 0);
         depMap.put(Configure.RELATION_CALL_NON_DYNAMIC, 0);
+        depMap.put(Configure.RELATION_CAST, 0);
+        depMap.put(Configure.RELATION_ANNOTATE, 0);
         for (BaseEntity entity :singleCollect.getEntities()) {
             for (Tuple<String, Integer> re : entity.getRelation()) {
                 if(re.getRelation().equals(Configure.RELATION_IMPORT) ||
@@ -72,7 +92,9 @@ public class RelationInf extends RelationInterface {
                         re.getRelation().equals(Configure.RELATION_CALL) ||
                         re.getRelation().equals(Configure.RELATION_PARAMETER) ||
                         re.getRelation().equals(Configure.RELATION_MODIFY) ||
-                        re.getRelation().equals(Configure.RELATION_CALL_NON_DYNAMIC)
+                        re.getRelation().equals(Configure.RELATION_CALL_NON_DYNAMIC) ||
+                        re.getRelation().equals(Configure.RELATION_CAST) ||
+                        re.getRelation().equals(Configure.RELATION_ANNOTATE)
                 ) {
                     int old = depMap.get(re.getRelation());
                     depMap.put(re.getRelation(), old + 1);
@@ -82,7 +104,7 @@ public class RelationInf extends RelationInterface {
         String str = Configure.NULL_STRING;
         for(Map.Entry<String, Integer> entry : depMap.entrySet()) {
             str += entry.getKey();
-            str += ":    ";
+            str += ": ";
             str += Integer.toString(entry.getValue());
             str += "\n";
         }

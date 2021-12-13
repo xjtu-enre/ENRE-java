@@ -65,8 +65,8 @@ public class TemplateWork {
         Verification verify = new Verification();
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-node", Django.nodeWriter());
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-edge", Django.edgeWriter(jsonMap.getFinalRes()));
-        //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-out", JsonString.JSONWriteRelation(jsonMap.getFinalRes()));
-        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-imports", Verification.JSONWriteRela(verify.getRela()));
+        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-out", JsonString.JSONWriteRelation(jsonMap.getFinalRes()));
+        //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-imports", Verification.JSONWriteRela(verify.getRela()));
 
         //output the summary of the acquired results.
         summary();

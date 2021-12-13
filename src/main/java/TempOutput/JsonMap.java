@@ -45,12 +45,15 @@ public class JsonMap {
                     case Configure.RELATION_MODIFY:
                         finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_MODIFY));
                         break;
-//                    case Configure.RELATION_CONTAIN:
-//                        finalRes.put(entity.getId(),supplementRes(relation,Configure.RELATION_CONTAIN));
-//                        break;
-//                    case Configure.RELATION_DEFINE:
-//                        finalRes.put(entity.getId(),supplementRes(relation,Configure.RELATION_DEFINE));
-//                        break;
+                    case Configure.RELATION_CAST:
+                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CAST));
+                        break;
+                    case Configure.RELATION_ANNOTATE:
+                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_ANNOTATE));
+                        break;
+                    case Configure.RELATION_CONTAIN:
+                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CONTAIN));
+                        break;
                 }
             }
         }

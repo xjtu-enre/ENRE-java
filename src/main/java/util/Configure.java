@@ -82,13 +82,17 @@ public class Configure {
     public static final String RELATION_IMPLEMENT = "Implement";
     public static final String RELATION_IMPLEMENTED_BY = "Implemented by";
 
-    //class->interface
     public static final String RELATION_CONTAIN = "Contain";
     public static final String RELATION_CONTAINED_BY = "Contained by";
 
-    //class->interface
     public static final String RELATION_DEFINE = "Define";
     public static final String RELATION_DEFINED_BY = "Defined by";
+
+    public static final String RELATION_CAST = "Cast";
+    public static final String RELATION_CAST_BY = "Cast by";
+
+    public static final String RELATION_ANNOTATE = "Annotate";
+    public static final String RELATION_ANNOTATED_BY = "Annotated by";
 
     public static final String RELATION_EXTEND = "Extend";
 
@@ -105,6 +109,22 @@ public class Configure {
     public static final String LOCAL_BLOCK_SWITCH = "SwitchBlock";
     public static final String LOCAL_BLOCK_SWITCH_CASE_CLAUSE = "SwitchCaseClauseBlock"; //include default
 
+    //kinds of annotation target type
+    public static final String ANNOTATION_TYPE = "Another annotation";
+    public static final String CONSTRUCTOR = "Constructor";
+    public static final String FIELD = "Field";
+    public static final String LOCAL_VARIABLE = "Local variable";
+    public static final String METHOD = "Method";
+    public static final String PACKAGE = "Package";
+    public static final String PARAMETER = "Parameter";
+    public static final String CLASS_TYPE = "Class";
+    public static final String INTERFACE_TYPE = "Interface";
+    public static final String ENUMERATION_TYPE = "Enumeration";
+
+    //kinds of annotation retention
+    public static final String SOURCE = "Source";
+    public static final String CLASS = "Class";
+    public static final String RUNTIME = "Runtime";
 
     private static Configure configure = new Configure();
     public static Configure getConfigureInstance() {

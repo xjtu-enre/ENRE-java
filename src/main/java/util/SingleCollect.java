@@ -18,11 +18,15 @@ public class SingleCollect {
     //entities' id = index
     private ArrayList<BaseEntity> entities = new ArrayList<BaseEntity>();
 
+    private ArrayList<ExternalEntity> externalEntities = new ArrayList<>();
+
     //packages' qualified name and id that already be created
     private HashMap<String,Integer> createdPackage = new HashMap<String,Integer>();
 
     //classes's qualified name and id that already be created
     private HashMap<String,Integer> createdType = new HashMap<>();
+
+    private HashMap<String,Integer> createdAnt = new HashMap<>();
 
     private static SingleCollect singleCollectInstance = new SingleCollect();
 
@@ -32,6 +36,14 @@ public class SingleCollect {
 
     public void addEntity(BaseEntity entity) {
         this.entities.add(entity);
+    }
+
+    public ArrayList<ExternalEntity> getExternalEntities() {
+        return this.externalEntities;
+    }
+
+    public void addEntity(ExternalEntity entity) {
+        this.externalEntities.add(entity);
     }
 
     public static SingleCollect getSingleCollectInstance() {
@@ -58,6 +70,14 @@ public class SingleCollect {
         this.createdType.put(typeName,typeId);
     }
 
+    public HashMap<String,Integer> getCreatedAnt(){
+        return this.createdAnt;
+    }
+
+    public void addCreatedAnt (int antId, String antName){
+        this.createdAnt.put(antName,antId);
+    }
+
     public BaseEntity getEntityById(int id) {
         return entities.get(id);
     }
@@ -66,35 +86,35 @@ public class SingleCollect {
         if(id == -1) {
             return false;
         }
-        return singleCollectInstance.getEntities().get(id) instanceof PackageEntity;
+        return singleCollectInstance.getEntityById(id) instanceof PackageEntity;
     }
 
     public boolean isFile (int id){
         if(id == -1) {
             return false;
         }
-        return singleCollectInstance.getEntities().get(id) instanceof FileEntity;
+        return singleCollectInstance.getEntityById(id) instanceof FileEntity;
     }
 
     public boolean isClass (int id){
         if(id == -1) {
             return false;
         }
-        return singleCollectInstance.getEntities().get(id) instanceof ClassEntity;
+        return singleCollectInstance.getEntityById(id) instanceof ClassEntity;
     }
 
     public boolean isInterface (int id){
         if(id == -1) {
             return false;
         }
-        return singleCollectInstance.getEntities().get(id) instanceof InterfaceEntity;
+        return singleCollectInstance.getEntityById(id) instanceof InterfaceEntity;
     }
 
     public boolean isMethod (int id){
         if(id == -1) {
             return false;
         }
-        return singleCollectInstance.getEntities().get(id) instanceof MethodEntity;
+        return singleCollectInstance.getEntityById(id) instanceof MethodEntity;
     }
 
     public boolean isConstructor (int id){
@@ -102,7 +122,7 @@ public class SingleCollect {
             return false;
         }
         if(singleCollectInstance.getEntities().get(id) instanceof MethodEntity){
-            return ((MethodEntity) singleCollectInstance.getEntities().get(id)).isConstructor();
+            return ((MethodEntity) singleCollectInstance.getEntityById(id)).isConstructor();
         }
         return false;
     }
@@ -111,7 +131,62 @@ public class SingleCollect {
         if(id == -1) {
             return false;
         }
-        return singleCollectInstance.getEntities().get(id) instanceof VariableEntity;
+        return singleCollectInstance.getEntityById(id) instanceof VariableEntity;
+    }
+
+    public boolean isEnum (int id){
+        if(id == -1){
+            return false;
+        }
+        return singleCollectInstance.getEntityById(id) instanceof EnumEntity;
+    }
+
+    public boolean isEnumCont(int id){
+        if(id == -1){
+            return false;
+        }
+        return singleCollectInstance.getEntityById(id) instanceof EnumConstantEntity;
+    }
+
+    public boolean isAnnotation (int id){
+        if(id == -1){
+            return false;
+        }
+        return singleCollectInstance.getEntityById(id) instanceof AnnotationEntity;
+    }
+
+    public boolean isAnnotationMem (int id){
+        if(id == -1){
+            return false;
+        }
+        return singleCollectInstance.getEntityById(id) instanceof AnnotationTypeMember;
+    }
+
+    public String getEntityType(int id){
+        String type = "Unknown";
+        if(isPackage(id))
+            type = "Package";
+        else if (isClass(id))
+            type = "Class";
+        else if (isMethod(id))
+            type = "Method";
+        else if (isFile(id))
+            type = "File";
+        else if (isConstructor(id))
+            type = "Constructor";
+        else if (isInterface(id))
+            type = "Interface";
+        else if (isAnnotation(id))
+            type = "Annotation";
+        else if (isEnum(id))
+            type = "Enum";
+        else if (isEnumCont(id))
+            type = "Enum Constant";
+        else if (isAnnotationMem(id))
+            type = "Annotation Member";
+        else if (isVariable(id))
+            type = "Variable";
+        return type;
     }
 
 }

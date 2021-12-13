@@ -9,6 +9,7 @@ public class VariableEntity extends BaseEntity{
     private int setBy;
     private int useBy;
     private int modifyBy;
+    protected String accessibility;
 
     public VariableEntity(int id, String name, String type){
         this.id = id;
@@ -48,7 +49,13 @@ public class VariableEntity extends BaseEntity{
         return this.setBy;
     }
 
+    public void setAccessibility (String accessibility){
+        this.accessibility = accessibility;
+    }
 
+    public String getAccessibility(){
+        return this.accessibility;
+    }
 
     @Override
     public String toString() {
