@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="dependency_analysis_java" />
         <module name="Jdeper" />
+        <module name="JavaExtractor" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11" />

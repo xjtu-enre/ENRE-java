@@ -94,6 +94,9 @@ public class Configure {
     public static final String RELATION_ANNOTATE = "Annotate";
     public static final String RELATION_ANNOTATED_BY = "Annotated by";
 
+    public static final String RELATION_OVERRIDE = "Override";
+    public static final String RELATION_OVERRIDE_BY = "Override by";
+
     public static final String RELATION_EXTEND = "Extend";
 
     //public static final String RELATION_LEVEL_FILE = "File";

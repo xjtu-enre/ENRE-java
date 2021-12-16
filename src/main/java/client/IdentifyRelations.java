@@ -42,5 +42,9 @@ public class IdentifyRelations {
         depBackfill = new AnnotationBf();
         depBackfill.setDep();
         System.out.println("Annotate dependency identified successfully...");
+
+        depBackfill = new OverrideBf();
+        depBackfill.setDep();
+        System.out.println("Override dependency identified successfully...");
     }
 }

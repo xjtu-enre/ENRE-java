@@ -35,7 +35,7 @@ public class IdentifyEntities {
 
         FileUtil current = new FileUtil(this.getProject_path());
         //set the version of java
-        ASTParser parser = ASTParser.newParser(AST.JLS_Latest);
+        ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
 
         Map<String, String> options = JavaCore.getOptions();
@@ -53,14 +53,24 @@ public class IdentifyEntities {
 
         parser.setUnitName(current.getCurrentProjectName());
         final ArrayList<CompilationUnitPair> pairs = new ArrayList<CompilationUnitPair>(current.getFileNameList().size());
-        FileASTRequestor requester = new FileASTRequestor() {
-            @Override
-            public void acceptAST(String source, CompilationUnit ast) {
-                pairs.add(new CompilationUnitPair(source, ast));
-            }
-        };
 
-        parser.createASTs(current.getFileNameList().toArray(new String[0]), null, new String[0], requester, null);
+
+        try{
+            FileASTRequestor requester = new FileASTRequestor() {
+                @Override
+                public void acceptAST(String source, CompilationUnit ast) {
+                    pairs.add(new CompilationUnitPair(source, ast));
+                }
+            };
+            parser.createASTs(current.getFileNameList().toArray(new String[0]), null, new String[0], requester, null);
+        }
+        catch (NullPointerException e){
+            for(String filePath: current.getFileNameList().toArray(new String[0])){
+                parser.setSource(filePath.toCharArray());
+                pairs.add(new CompilationUnitPair(filePath, (CompilationUnit)parser.createAST(null)));
+            }
+        }
+
 
         System.out.println("Parsing...");
 

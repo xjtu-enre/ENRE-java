@@ -54,6 +54,9 @@ public class JsonMap {
                     case Configure.RELATION_CONTAIN:
                         finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CONTAIN));
                         break;
+                    case Configure.RELATION_OVERRIDE:
+                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_OVERRIDE));
+                        break;
                 }
             }
         }
