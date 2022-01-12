@@ -83,6 +83,7 @@ public class RelationInf extends RelationInterface {
         depMap.put(Configure.RELATION_CAST, 0);
         depMap.put(Configure.RELATION_ANNOTATE, 0);
         depMap.put(Configure.RELATION_OVERRIDE, 0);
+        depMap.put(Configure.RELATION_REFLECT, 0);
         for (BaseEntity entity :singleCollect.getEntities()) {
             for (Tuple<String, Integer> re : entity.getRelation()) {
                 if(re.getRelation().equals(Configure.RELATION_IMPORT) ||
@@ -96,7 +97,8 @@ public class RelationInf extends RelationInterface {
                         re.getRelation().equals(Configure.RELATION_CALL_NON_DYNAMIC) ||
                         re.getRelation().equals(Configure.RELATION_CAST) ||
                         re.getRelation().equals(Configure.RELATION_ANNOTATE) ||
-                        re.getRelation().equals(Configure.RELATION_OVERRIDE)
+                        re.getRelation().equals(Configure.RELATION_OVERRIDE) ||
+                        re.getRelation().equals(Configure.RELATION_REFLECT)
                 ) {
                     int old = depMap.get(re.getRelation());
                     depMap.put(re.getRelation(), old + 1);

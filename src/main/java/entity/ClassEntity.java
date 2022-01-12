@@ -7,6 +7,7 @@ public class ClassEntity extends TypeEntity{
     protected HashMap<String, Integer> interfaces = new HashMap<String, Integer>();
     protected String superClassName;
     protected int superClassId = -1;
+
     protected HashMap<String, Integer> staticMap = new HashMap<>();
 
     public ClassEntity(int id, String name){

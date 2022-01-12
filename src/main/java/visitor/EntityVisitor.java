@@ -88,8 +88,7 @@ public class EntityVisitor extends ASTVisitor {
         //add package id into the top level of stack
         entityStack.push(packageId);
 
-        int fileId = createAFile();
-        entityStack.push(fileId);
+        createAFile();
 
         return super.visit(node);
     }
@@ -135,7 +134,19 @@ public class EntityVisitor extends ASTVisitor {
         if(node.resolveBinding() == null){
             return super.visit(node);
         }
-        int  typeId = processEntity.processType(node, fileId, this.cu);
+
+        int parentId;
+        if(fileId == -1){
+            //inner class or interface
+            parentId = entityStack.peek();
+        }else {
+            parentId = fileId;
+        }
+        int  typeId = processEntity.processType(node, parentId, this.cu);
+
+        if(singleCollect.getEntityById(parentId) instanceof TypeEntity){
+            ((TypeEntity) singleCollect.getEntityById(parentId)).addInnerType(typeId);
+        }
 
         //supplement the entity's code snippet
         //singleCollect.getEntities().get(typeId).setCodeSnippet(node.toString());
@@ -163,9 +174,14 @@ public class EntityVisitor extends ASTVisitor {
     @Override
     public boolean visit(EnumDeclaration node){
 
-        createAFile();
+        int fileId = createAFile();
 
         int enumId = processEntity.processEnum(node, entityStack.peek(), cu);
+
+        if(fileId == -1 && singleCollect.getEntityById(entityStack.peek()) instanceof TypeEntity){
+            ((TypeEntity) singleCollect.getEntityById(entityStack.peek())).addInnerType(enumId);
+        }
+
         entityStack.push(enumId);
 
         return super.visit(node);
@@ -274,6 +290,9 @@ public class EntityVisitor extends ASTVisitor {
     public boolean visit(MethodDeclaration node){
 
         //current method entity's id
+        if (entityStack.isEmpty()){
+            createAFile();
+        }
         int methodId = processEntity.processMethod(node, entityStack.peek(), cu);
         entityStack.push(methodId);
 
@@ -320,7 +339,21 @@ public class EntityVisitor extends ASTVisitor {
 //                System.out.println(node.toString());
 //                System.out.println(blockStackForMethod.peek());
 //            }
-            methodVarId.addAll(processEntity.processVarDeclFragment(node.fragments(),entityStack.peek(),varType, blockStack.peek(), -1, false));
+            String accessibility = null;
+            for(Object o : node.modifiers()){
+                switch (o.toString()) {
+                    case "public":
+                        accessibility = "Public";
+                        break;
+                    case "protected":
+                        accessibility = "Protected";
+                        break;
+                    case "private":
+                        accessibility = "Private";
+                        break;
+                }
+            }
+            methodVarId.addAll(processEntity.processVarDeclFragment(node.fragments(),entityStack.peek(),varType, blockStack.peek(), -1, false, accessibility));
         }
 
         //supplement method children's id
@@ -367,10 +400,25 @@ public class EntityVisitor extends ASTVisitor {
             }
         }
 
+        String accessibility = null;
+        for(Object o : node.modifiers()){
+            switch (o.toString()) {
+                case "public":
+                    accessibility = "Public";
+                    break;
+                case "protected":
+                    accessibility = "Protected";
+                    break;
+                case "private":
+                    accessibility = "Private";
+                    break;
+            }
+        }
+
         /**
          * change block id from type id to -1
          */
-        classVarId.addAll(processEntity.processVarDeclFragment(node.fragments(),typeId,varType, -1,staticFlag, true));
+        classVarId.addAll(processEntity.processVarDeclFragment(node.fragments(),typeId,varType, -1,staticFlag, true, accessibility));
 
         //supplement method children's id
         singleCollect.getEntityById(typeId).addChildrenIds(classVarId);
@@ -459,6 +507,13 @@ public class EntityVisitor extends ASTVisitor {
 
             if(singleCollect.getEntityById(entityStack.peek()) instanceof MethodEntity){
                 ((MethodEntity) singleCollect.getEntityById(entityStack.peek())).addCall(declaringClassQualifiedName+"-"+methodName);
+            }
+
+            //check reflection
+            if(declaringClassQualifiedName.equals("java.lang.Class") && methodName.equals("forName")){
+                if(node.arguments().size() == 1){
+                    singleCollect.getEntityById(entityStack.peek()).addReflect(node.arguments().get(0).toString().replace("/\"", ""));
+                }
             }
 
         }
@@ -610,13 +665,16 @@ public class EntityVisitor extends ASTVisitor {
             fileId = processEntity.processFile(fileFullPath,-1);
             //add file id into the top of stack
             entityStack.push(fileId);
-        }else if(entityStack.size()==1 && singleCollect.isPackage(entityStack.peek())){
+        }else if(singleCollect.isPackage(entityStack.peek())){
             //if current file is not created and has pkg declaration
             fileId = processEntity.processFile(fileFullPath,entityStack.peek());
             //add file id into the top of stack
             entityStack.push(fileId);
-        }else {
+        }else if(singleCollect.isFile(entityStack.peek())){
             fileId = entityStack.peek();
+        }else {
+            //inner class or enum
+            fileId = -1;
         }
 
         return fileId;

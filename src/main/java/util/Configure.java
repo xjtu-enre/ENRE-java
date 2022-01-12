@@ -97,6 +97,9 @@ public class Configure {
     public static final String RELATION_OVERRIDE = "Override";
     public static final String RELATION_OVERRIDE_BY = "Override by";
 
+    public static final String RELATION_REFLECT = "Reflect";
+    public static final String RELATION_REFLECTED_BY = "Reflected by";
+
     public static final String RELATION_EXTEND = "Extend";
 
     //public static final String RELATION_LEVEL_FILE = "File";

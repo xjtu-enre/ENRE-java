@@ -51,6 +51,7 @@ E:\JavaExtractor\src\main\java\entity\ClassEntity.java
 E:\JavaExtractor\src\main\java\entity\InterfaceEntity.java
 E:\JavaExtractor\src\main\java\entity\VariableEntity.java
 E:\JavaExtractor\src\main\java\formator\fxml\XDepObject.java
+E:\JavaExtractor\src\main\java\visitor\deper\ReflectBf.java
 E:\JavaExtractor\src\main\java\formator\MapObject.java
 E:\JavaExtractor\src\main\java\writer\XmlWriter.java
 E:\JavaExtractor\src\main\java\entity\properties\Block.java

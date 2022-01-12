@@ -192,10 +192,17 @@ public class ProcessEntity {
     public int processEnum(EnumDeclaration node, int parentId, CompilationUnit cu){
         int enumId = singleCollect.getCurrentIndex();
         String enumName = node.getName().getIdentifier();
-        String qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName() +"."+ enumName;
+//        if(singleCollect.isFile(parentId)){
+            String qualifiedName = singleCollect.getEntityById(singleCollect.getEntityById(parentId).getParentId()).getQualifiedName() +"."+ enumName;
+//        }
+        EnumEntity enumEntity;
+        try {
+            enumEntity = new EnumEntity(enumId, enumName, node.resolveBinding().getQualifiedName(), parentId);
+        }
+        catch (NullPointerException e){
+            enumEntity = new EnumEntity(enumId, enumName, qualifiedName, parentId);
+        }
 
-//        EnumEntity enumEntity = new EnumEntity(enumId, enumName, node.resolveBinding().getQualifiedName(), parentId);
-        EnumEntity enumEntity = new EnumEntity(enumId, enumName, qualifiedName, parentId);
 
         enumEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
 
@@ -222,9 +229,13 @@ public class ProcessEntity {
     public int processEnumConstant(EnumConstantDeclaration node, int parentId){
         int constantId = singleCollect.getCurrentIndex();
         String constantName = node.getName().getIdentifier();
-//        String qualifiedName = node.resolveVariable().getType().getQualifiedName()+"."+constantName;
-        String qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName() +"."+ constantName;
-
+        String qualifiedName;
+        try {
+            qualifiedName = node.resolveVariable().getType().getQualifiedName()+"."+constantName;
+        }
+        catch (NullPointerException e){
+            qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName() +"."+ constantName;
+        }
 
         EnumConstantEntity<String> enumConstantEntity = new EnumConstantEntity<String>(constantId, constantName, qualifiedName, parentId);
 
@@ -248,10 +259,16 @@ public class ProcessEntity {
     public int processAnnotation(AnnotationTypeDeclaration node, int parentId, CompilationUnit cu){
         int annotationId = singleCollect.getCurrentIndex();
         String annotationName = node.getName().getIdentifier();
-        String qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName() +"."+ annotationName;
+        // if parent is file
+        String qualifiedName = singleCollect.getEntityById(singleCollect.getEntityById(parentId).getParentId()).getQualifiedName() +"."+ annotationName;
+        AnnotationEntity annotationEntity;
+        try {
+            annotationEntity = new AnnotationEntity(annotationId, annotationName, node.resolveBinding().getQualifiedName(), parentId);
+        }
+        catch (NullPointerException e){
+            annotationEntity = new AnnotationEntity(annotationId, annotationName, qualifiedName, parentId);
+        }
 
-        AnnotationEntity annotationEntity = new AnnotationEntity(annotationId, annotationName, qualifiedName, parentId);
-//        AnnotationEntity annotationEntity = new AnnotationEntity(annotationId, annotationName, node.resolveBinding().getQualifiedName(), parentId);
         annotationEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
 
         singleCollect.addEntity(annotationEntity);
@@ -266,8 +283,13 @@ public class ProcessEntity {
     public int processAnnotationMember(AnnotationTypeMemberDeclaration node, int parentId){
         int memberId = singleCollect.getCurrentIndex();
         String memberName = node.getName().getIdentifier();
-//        String qualifiedName = node.resolveBinding().getDeclaringClass().getQualifiedName()+"."+memberName;
-        String qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName() +"."+ memberName;
+        String qualifiedName;
+        try {
+            qualifiedName = node.resolveBinding().getDeclaringClass().getQualifiedName()+"."+memberName;
+        }
+        catch (NullPointerException e){
+            qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName() +"."+ memberName;
+        }
 
         AnnotationTypeMember annotationTypeMember = new AnnotationTypeMember(memberId, node.getType().toString(), memberName, qualifiedName, parentId);
 
@@ -298,7 +320,8 @@ public class ProcessEntity {
 
         int methodId = singleCollect.getCurrentIndex();
         String methodName = node.getName().getIdentifier();
-        String methodQualifiedName = singleCollect.getEntityById(parentTypeId).getQualifiedName()+"."+methodName;
+        String methodQualifiedName = singleCollect.getEntityById(parentTypeId).getQualifiedName() + "." + methodName;
+
 
         MethodEntity methodEntity = new MethodEntity(methodId,methodName);
         methodEntity.setQualifiedName(methodQualifiedName);
@@ -317,6 +340,7 @@ public class ProcessEntity {
 
         //add type's children id
         singleCollect.getEntityById(parentTypeId).addChildId(methodId);
+
 
         //supplement static method
         for(Object o : node.modifiers()){
@@ -350,7 +374,7 @@ public class ProcessEntity {
      * @param varType the type of all of these var
      * @return ArrayList of vars' ids
      */
-    public ArrayList<Integer> processVarDeclFragment(List<VariableDeclarationFragment> fragment, int parentId, String varType, int blockId, int staticFlag, boolean globalFlag){
+    public ArrayList<Integer> processVarDeclFragment(List<VariableDeclarationFragment> fragment, int parentId, String varType, int blockId, int staticFlag, boolean globalFlag, String accessibility){
 
         ArrayList<Integer> variableIds = new ArrayList<Integer>();
 
@@ -366,6 +390,8 @@ public class ProcessEntity {
             varEntity.setParentId(parentId);
             varEntity.setQualifiedName(singleCollect.getEntityById(parentId).getQualifiedName()+"."+varName);
             varEntity.setBlockId(blockId);
+            varEntity.setAccessibility(accessibility);
+            varEntity.setGlobal(globalFlag);
             //set init
             if(frag.getInitializer() != null){
                 varEntity.setSetBy(parentId);
@@ -386,12 +412,13 @@ public class ProcessEntity {
                 ((ClassEntity) singleCollect.getEntityById(parentId)).addStaticMap(singleCollect.getEntityById(parentId).getQualifiedName()+"."+varName, varId);
             }
 
-            //supplement global or local
-            if (globalFlag){
-                varEntity.setAccessibility("Global");
-            }else {
-                varEntity.setAccessibility("Local");
-            }
+//            //supplement global or local
+//            if (globalFlag){
+//                varEntity.setAccessibility("Global");
+//            }else {
+//                varEntity.setAccessibility("Local");
+//            }
+
         }
         return variableIds;
     }

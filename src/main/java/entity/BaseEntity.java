@@ -16,6 +16,8 @@ public class BaseEntity {
 
     protected ArrayList<String> annotations = new ArrayList<>();
 
+    protected ArrayList<String> reflects = new ArrayList<>();
+
     public String getQualifiedName() {
         return qualifiedName;
     }
@@ -82,6 +84,14 @@ public class BaseEntity {
 
     public ArrayList<String> getAnnotations(){
         return this.annotations;
+    }
+
+    public void addReflect(String reflect){
+        this.reflects.add(reflect);
+    }
+
+    public ArrayList<String> getReflects(){
+        return this.reflects;
     }
 
     @Override

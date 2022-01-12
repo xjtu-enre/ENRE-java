@@ -68,6 +68,10 @@ public class JsonString {
             }
             if(entity instanceof VariableEntity){
                 entityObj.put("accessibility", ((VariableEntity) entity).getAccessibility());
+                entityObj.put("global", ((VariableEntity) entity).getGlobal());
+            }
+            if(entity instanceof TypeEntity && !((TypeEntity) entity).getInnerType().isEmpty()){
+                entityObj.put("innerType", ((TypeEntity) entity).getInnerType());
             }
 //            entityObj.put("childrenIds", entity.getChildrenIds());
 

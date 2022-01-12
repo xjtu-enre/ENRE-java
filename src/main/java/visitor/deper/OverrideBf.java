@@ -6,10 +6,7 @@ import entity.MethodEntity;
 import entity.VariableEntity;
 import util.Configure;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class OverrideBf extends DepBackfill{
 
@@ -61,7 +58,10 @@ public class OverrideBf extends DepBackfill{
         }
 
         boolean comparePara(List<String> para){
-            if (para.size() == this.para.size()){
+            if (para.size() == 0 && this.para.size() == 0){
+                return true;
+            }
+            else if (para.size() == this.para.size()){
                 this.para.sort(Comparator.comparing(String::hashCode));
                 para.sort(Comparator.comparing(String::hashCode));
                 return this.para.toString().equals(para.toString());
@@ -94,10 +94,16 @@ public class OverrideBf extends DepBackfill{
                 currentParas.add(((VariableEntity) singleCollect.getEntityById(paraId)).getType());
             }
             for (innerMeth superMeth : superMeths.keySet()){
-                if (currentMeth.getName().equals(superMeth.getName())
-                        && currentMeth.getReturnType().equals(superMeth.getReturnType())
-                        && superMeth.comparePara(currentParas)){
-                    return superMeths.get(superMeth);
+                if (currentMeth.getName().equals(superMeth.getName())){
+                    if(currentMeth.getReturnType()==null && superMeth.getReturnType()==null){
+                        if(superMeth.comparePara(currentParas)){
+                            return superMeths.get(superMeth);
+                        }
+                    }else if(currentMeth.getReturnType().equals(superMeth.getReturnType())){
+                        if(superMeth.comparePara(currentParas)){
+                            return superMeths.get(superMeth);
+                        }
+                    }
                 }
             }
         }

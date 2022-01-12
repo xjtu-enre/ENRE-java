@@ -18,14 +18,19 @@ public class CastBf extends DepBackfill {
                         typeId = findTypeWithFullname(castype);
                     }
                     else {
-                        BaseEntity tmp = singleCollect.getEntityById(getCurrentFileId(entity.getId()));
-                        if(tmp instanceof FileEntity){
-                            typeId = findTypeInImport(castype, ((FileEntity) tmp).getImportClass(), ((FileEntity) tmp).getImportOnDemand());
-                        }
+                        try{
+                            BaseEntity tmp = singleCollect.getEntityById(getCurrentFileId(entity.getId()));
+                            if(tmp instanceof FileEntity){
+                                typeId = findTypeInImport(castype, ((FileEntity) tmp).getImportClass(), ((FileEntity) tmp).getImportOnDemand());
+                            }
 
-                        if(typeId == -1){
-                            //this situation means the interface and class are in the same package
-                            typeId = findTypeInPackage(tmp.getParentId(), castype);
+                            if(typeId == -1){
+                                //this situation means the interface and class are in the same package
+                                typeId = findTypeInPackage(tmp.getParentId(), castype);
+                            }
+                        }
+                        catch (IndexOutOfBoundsException e){
+                            e.fillInStackTrace();
                         }
                     }
                     if(typeId != -1){
