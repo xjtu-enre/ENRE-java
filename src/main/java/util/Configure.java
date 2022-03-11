@@ -132,6 +132,42 @@ public class Configure {
     public static final String CLASS = "Class";
     public static final String RUNTIME = "Runtime";
 
+    //Android MaxTargetSdk value
+    public static final int MAX_TARGETSDK_ABSENT = 0;
+    public static final int MAX_TARGETSDK_BASE = 1;
+    public static final int MAX_TARGETSDK_BASE_1_1 = 2;
+    public static final int MAX_TARGETSDK_CUPCAKE = 3;
+    public static final int MAX_TARGETSDK_CUR_DEVELOPMENT = 10000;
+    public static final int MAX_TARGETSDK_DONUT = 4;
+    public static final int MAX_TARGETSDK_ECLAIR = 5;
+    public static final int MAX_TARGETSDK_ECLAIR_0_1 = 6;
+    public static final int MAX_TARGETSDK_ECLAIR_MR1 = 7;
+    public static final int MAX_TARGETSDK_FROYO = 8;
+    public static final int MAX_TARGETSDK_GINGERBREAD = 9;
+    public static final int MAX_TARGETSDK_GINGERBREAD_MR1 = 10;
+    public static final int MAX_TARGETSDK_HONEYCOMB = 11;
+    public static final int MAX_TARGETSDK_HONEYCOMB_MR1 = 12;
+    public static final int MAX_TARGETSDK_HONEYCOMB_MR2 = 13;
+    public static final int MAX_TARGETSDK_ICE_CREAM_SANDWICH = 14;
+    public static final int MAX_TARGETSDK_ICE_CREAM_SANDWICH_MR1 = 15;
+    public static final int MAX_TARGETSDK_JELLY_BEAN = 16;
+    public static final int MAX_TARGETSDK_JELLY_BEAN_MR1 = 17;
+    public static final int MAX_TARGETSDK_JELLY_BEAN_MR2 = 18;
+    public static final int MAX_TARGETSDK_KITKAT = 19;
+    public static final int MAX_TARGETSDK_KITKAT_WATCH = 20;
+    public static final int MAX_TARGETSDK_LOLLIPOP = 21;
+    public static final int MAX_TARGETSDK_LOLLIPOP_MR1 = 22;
+    public static final int MAX_TARGETSDK_M = 23;
+    public static final int MAX_TARGETSDK_N = 24;
+    public static final int MAX_TARGETSDK_N_MR1 = 25;
+    public static final int MAX_TARGETSDK_O = 26;
+    public static final int MAX_TARGETSDK_O_MR1 = 27;
+    public static final int MAX_TARGETSDK_P = 28;
+    public static final int MAX_TARGETSDK_Q = 29;
+    public static final int MAX_TARGETSDK_R = 30;
+    public static final int MAX_TARGETSDK_S = 31;
+    public static final int MAX_TARGETSDK_S_V2 = 32;
+
     private static Configure configure = new Configure();
     public static Configure getConfigureInstance() {
         return configure;

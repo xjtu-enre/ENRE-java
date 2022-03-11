@@ -46,5 +46,9 @@ public class IdentifyRelations {
         depBackfill = new OverrideBf();
         depBackfill.setDep();
         System.out.println("Override dependency identified successfully...");
+
+        depBackfill = new ReflectBf();
+        depBackfill.setDep();
+        System.out.println("Reflection identified successfully...");
     }
 }

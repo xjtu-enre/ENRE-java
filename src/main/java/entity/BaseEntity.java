@@ -18,6 +18,17 @@ public class BaseEntity {
 
     protected ArrayList<String> reflects = new ArrayList<>();
 
+    /**
+     * check whether the entities are hidden
+     * 3 situations
+     * package " com.android.internal"
+     * last line of a comment "@hide"
+     * annotate "UnsupportedAppUsage(maxTargetSdk=)"
+     */
+    protected boolean hidden = false;
+
+    protected int maxTargetSdk = 0;
+
     public String getQualifiedName() {
         return qualifiedName;
     }
@@ -92,6 +103,22 @@ public class BaseEntity {
 
     public ArrayList<String> getReflects(){
         return this.reflects;
+    }
+
+    public boolean getHidden(){
+        return this.hidden;
+    }
+
+    public void setHidden(boolean hidden){
+        this.hidden = hidden;
+    }
+
+    public int getMaxTargetSdk(){
+        return this.maxTargetSdk;
+    }
+
+    public void setMaxTargetSdk(int maxTargetSdk) {
+        this.maxTargetSdk = maxTargetSdk;
     }
 
     @Override

@@ -11,7 +11,18 @@ import java.util.List;
 
 public class ProcessEntity {
 
+    //hidden flag
+    private boolean hidden = false;
+
     SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
+
+    public void setHidden(boolean hidden){
+        this.hidden = hidden;
+    }
+
+    public boolean getHidden(){
+        return this.hidden;
+    }
 
     /**
      * supplement the entities' position
@@ -47,9 +58,18 @@ public class ProcessEntity {
         //new package entity and get the package Id
         int packageId = singleCollect.getCurrentIndex();
 
+        if (packageName.contains("com.android.internal")){
+            setHidden(true);
+        }
+
         PackageEntity currentPackageEntity = new PackageEntity(packageId, packageName, packagePath);
         currentPackageEntity.setSimpleName();
         currentPackageEntity.setParentId(-1);
+
+        if (getHidden()){
+            currentPackageEntity.setHidden(true);
+        }
+
         singleCollect.addEntity(currentPackageEntity);
         return packageId;
     }
@@ -114,6 +134,11 @@ public class ProcessEntity {
         } else {
             fileEntity.setQualifiedName(fileEntity.getName());
         }
+
+        if (getHidden()){
+            fileEntity.setHidden(true);
+        }
+
         singleCollect.addEntity(fileEntity);
 
         //add package's children id if package exists
@@ -129,19 +154,19 @@ public class ProcessEntity {
      * its parent is a file
      * save into singlecollect.entities
      * @param node the declaration node
-     * @param parentFileId the file id
+     * @param parentId the file id
      * @param cu compilation unit
      * @return class id
      */
-    public int processType(TypeDeclaration node, int parentFileId, CompilationUnit cu){
+    public int processType(TypeDeclaration node, int parentId, CompilationUnit cu){
 
         int typeId = singleCollect.getCurrentIndex();
         String typeName = node.getName().getIdentifier();
         ITypeBinding iTypeBinding = node.resolveBinding();
-        //String qualifiedName = singleCollect.getEntityById(singleCollect.getEntityById(parentFileId).getParentId()).getQualifiedName() + typeName;
+        //String qualifiedName = singleCollect.getEntityById(singleCollect.getEntityById(parentId).getParentId()).getQualifiedName() + typeName;
 
         if(node.isInterface()){
-            InterfaceEntity interfaceEntity = new InterfaceEntity(typeId, typeName, iTypeBinding.getQualifiedName(), parentFileId);
+            InterfaceEntity interfaceEntity = new InterfaceEntity(typeId, typeName, iTypeBinding.getQualifiedName(), parentId);
             interfaceEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
             //supplement the super interface name
             if(node.superInterfaceTypes() != null){
@@ -151,9 +176,12 @@ public class ProcessEntity {
                     interfaceEntity.addExtendsName(superInter.resolveBinding().getQualifiedName());
                 }
             }
+            if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+                interfaceEntity.setHidden(true);
+            }
             singleCollect.addEntity(interfaceEntity);
         }else{
-            ClassEntity classEntity = new ClassEntity(typeId, typeName, iTypeBinding.getQualifiedName(), parentFileId);
+            ClassEntity classEntity = new ClassEntity(typeId, typeName, iTypeBinding.getQualifiedName(), parentId);
             classEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
             //superclass
             Type superType = node.getSuperclassType();
@@ -171,10 +199,13 @@ public class ProcessEntity {
                     }
                 }
             }
+            if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+                classEntity.setHidden(true);
+            }
             singleCollect.addEntity(classEntity);
         }
         //add file's children id
-        singleCollect.getEntityById(parentFileId).addChildId(typeId);
+        singleCollect.getEntityById(parentId).addChildId(typeId);
 
         //add created type
         singleCollect.addCreatedType(typeId, iTypeBinding.getQualifiedName());
@@ -213,6 +244,10 @@ public class ProcessEntity {
             }
         }
 
+        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+            enumEntity.setHidden(true);
+        }
+
         singleCollect.addEntity(enumEntity);
         //add parent's children Id
         singleCollect.getEntityById(parentId).addChildId(enumId);
@@ -239,6 +274,10 @@ public class ProcessEntity {
 
         EnumConstantEntity<String> enumConstantEntity = new EnumConstantEntity<String>(constantId, constantName, qualifiedName, parentId);
 
+        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+            enumConstantEntity.setHidden(true);
+        }
+
         singleCollect.addEntity(enumConstantEntity);
         singleCollect.getEntityById(parentId).addChildId(constantId);
 
@@ -260,7 +299,13 @@ public class ProcessEntity {
         int annotationId = singleCollect.getCurrentIndex();
         String annotationName = node.getName().getIdentifier();
         // if parent is file
-        String qualifiedName = singleCollect.getEntityById(singleCollect.getEntityById(parentId).getParentId()).getQualifiedName() +"."+ annotationName;
+        String qualifiedName = null;
+        if(singleCollect.getEntityById(parentId).getParentId() != -1){
+            qualifiedName = singleCollect.getEntityById(singleCollect.getEntityById(parentId).getParentId()).getQualifiedName() +"."+ annotationName;
+        } else {
+            qualifiedName = annotationName;
+        }
+
         AnnotationEntity annotationEntity;
         try {
             annotationEntity = new AnnotationEntity(annotationId, annotationName, node.resolveBinding().getQualifiedName(), parentId);
@@ -270,6 +315,10 @@ public class ProcessEntity {
         }
 
         annotationEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
+
+        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+            annotationEntity.setHidden(true);
+        }
 
         singleCollect.addEntity(annotationEntity);
         //add parent's children Id
@@ -295,6 +344,10 @@ public class ProcessEntity {
 
         if(node.getDefault() != null){
             annotationTypeMember.setDefault_value(node.getDefault().toString());
+        }
+
+        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+            annotationTypeMember.setHidden(true);
         }
 
         singleCollect.addEntity(annotationTypeMember);
@@ -335,6 +388,10 @@ public class ProcessEntity {
             if(node.getReturnType2() != null){
                 methodEntity.setReturnType(node.getReturnType2().toString());
             }
+        }
+
+        if (getHidden() || singleCollect.getEntityById(parentTypeId).getHidden()){
+            methodEntity.setHidden(true);
         }
         singleCollect.addEntity(methodEntity);
 
@@ -400,6 +457,11 @@ public class ProcessEntity {
 
             //variableEntity.setCodeSnippet(frag.toString());
             variableIds.add(varId);
+
+            if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+                varEntity.setHidden(true);
+            }
+
             singleCollect.addEntity(varEntity);
 
             //supplement parent method
@@ -437,8 +499,13 @@ public class ProcessEntity {
         int parId = singleCollect.getCurrentIndex();
 
         VariableEntity parameterEntity = new VariableEntity(parId,name,parType);
-        parameterEntity.setQualifiedName(name);
+        parameterEntity.setQualifiedName(singleCollect.getEntityById(parentMethodId).getQualifiedName()+"."+name);
         parameterEntity.setParentId(parentMethodId);
+
+        if (getHidden() || singleCollect.getEntityById(parentMethodId).getHidden()){
+            parameterEntity.setHidden(true);
+        }
+
         singleCollect.addEntity(parameterEntity);
 
         return parId;

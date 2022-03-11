@@ -14,7 +14,7 @@ public class CallBf extends DepBackfill{
                 //call
                 if(!((MethodEntity) entity).getCall().isEmpty()){
                     for(String className2method : ((MethodEntity) entity).getCall()){
-                        int id = findMethodByClass(className2method);
+                        int id = findMethodByType(className2method);
                         if(id != -1){
                             saveRelation(entity.getId(), id, Configure.RELATION_CALL, Configure.RELATION_CALLED_BY);
                         }
@@ -52,7 +52,7 @@ public class CallBf extends DepBackfill{
         return methodId;
     }
 
-    public int findMethodByClass(String classQualifiedName2method){
+    public int findMethodByType(String classQualifiedName2method){
         int declaredClassId = -1;
         String classQualifiedName = classQualifiedName2method.split("-")[0];
         String methodName = classQualifiedName2method.split("-")[1];

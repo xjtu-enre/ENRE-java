@@ -62,18 +62,33 @@ public class JsonString {
             entityObj.put("qualifiedName", entity.getQualifiedName());
             entityObj.put("parentId", entity.getParentId());
             entityObj.put("external", false);
+            JSONObject hiddenObj = new JSONObject();
+            hiddenObj.put("hidden", entity.getHidden());
+            hiddenObj.put("maxTargetSdk", entity.getMaxTargetSdk());
+            entityObj.accumulate("aosp_hidden", hiddenObj);
             if(entity instanceof MethodEntity){
                 entityObj.put("accessibility", ((MethodEntity) entity).getAccessibility());
                 entityObj.put("static", ((MethodEntity) entity).isStatic());
+//                List<String> parTYpe = new ArrayList<>();
+//                for(int parId : ((MethodEntity) entity).getParameters()){
+//                    parTYpe.add(((VariableEntity) singleCollect.getEntityById(parId)).getType());
+//                }
+//                entityObj.put("ParameterType", parTYpe.toArray());
             }
             if(entity instanceof VariableEntity){
                 entityObj.put("accessibility", ((VariableEntity) entity).getAccessibility());
                 entityObj.put("global", ((VariableEntity) entity).getGlobal());
+                entityObj.put("type", ((VariableEntity) entity).getType());
             }
             if(entity instanceof TypeEntity && !((TypeEntity) entity).getInnerType().isEmpty()){
                 entityObj.put("innerType", ((TypeEntity) entity).getInnerType());
             }
-//            entityObj.put("childrenIds", entity.getChildrenIds());
+            if(entity instanceof ScopeEntity){
+                entityObj.put("startLine", ((ScopeEntity) entity).getLocation().getStartLine());
+                entityObj.put("endLine", ((ScopeEntity) entity).getLocation().getEndLine());
+                entityObj.put("startColumn", ((ScopeEntity) entity).getLocation().getStartColumn());
+                entityObj.put("endColumn", ((ScopeEntity) entity).getLocation().getEndColumn());
+            }
 
 //            subObjVariable.add(entity.getQualifiedName());
             subObjVariable.add(entityObj);

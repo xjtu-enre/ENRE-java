@@ -1,10 +1,10 @@
 package visitor.deper;
 
-import entity.BaseEntity;
-import entity.FileEntity;
+import entity.*;
 import util.PathUtil;
 import util.SingleCollect;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class DepBackfill{
@@ -148,6 +148,28 @@ public abstract class DepBackfill{
             return getCurrentFileId(singleCollect.getEntityById(id).getParentId());
         }
     }
+
+    /**
+     * Get class method
+     * @param classEntity super class entity
+     * @return HashMap<innerMeth, Integer>
+     */
+    protected HashMap<OverrideBf.innerMeth, Integer> getInnerMeth(ClassEntity classEntity){
+        HashMap<OverrideBf.innerMeth, Integer> iMeths = new HashMap<>();
+        for(int childId : classEntity.getChildrenIds()){
+            if(singleCollect.getEntityById(childId) instanceof MethodEntity){
+                MethodEntity methodEntity = (MethodEntity) singleCollect.getEntityById(childId);
+                OverrideBf.innerMeth iMeth = new OverrideBf.innerMeth(methodEntity.getName(), methodEntity.getReturnType());
+                for(int paraId : methodEntity.getParameters()){
+                    iMeth.addPara(((VariableEntity) singleCollect.getEntityById(paraId)).getType());
+                }
+                iMeths.put(iMeth, methodEntity.getId());
+            }
+        }
+        return iMeths;
+    }
+
+
 
     public abstract void setDep();
 }

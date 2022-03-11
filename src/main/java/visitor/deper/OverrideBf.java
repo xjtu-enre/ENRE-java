@@ -62,38 +62,38 @@ public class OverrideBf extends DepBackfill{
                 return true;
             }
             else if (para.size() == this.para.size()){
-                this.para.sort(Comparator.comparing(String::hashCode));
-                para.sort(Comparator.comparing(String::hashCode));
-                return this.para.toString().equals(para.toString());
+                boolean flag = false;
+                for (String s : this.para) {
+                    for (String value : para) {
+                        if (s.equals(value)) {
+                            flag = true;
+                            break;
+                        } else {
+                            flag = false;
+                        }
+                    }
+                }
+                return flag;
             }else {
                 return false;
             }
         }
     }
 
-    protected HashMap<innerMeth, Integer> getInnerMeth(ClassEntity classEntity){
-        HashMap<innerMeth, Integer> iMeths = new HashMap<>();
-        for(int childId : classEntity.getChildrenIds()){
-            if(singleCollect.getEntityById(childId) instanceof MethodEntity){
-                MethodEntity methodEntity = (MethodEntity) singleCollect.getEntityById(childId);
-                innerMeth iMeth = new innerMeth(methodEntity.getName(), methodEntity.getReturnType());
-                for(int paraId : methodEntity.getParameters()){
-                    iMeth.addPara(((VariableEntity) singleCollect.getEntityById(paraId)).getType());
-                }
-                iMeths.put(iMeth, methodEntity.getId());
-            }
-        }
-        return iMeths;
-    }
-
-    protected int checkOverride(int MethId, HashMap<innerMeth, Integer> superMeths){
+    /**
+     * check whether current method overrides super
+     * @param MethId current method id
+     * @param superMeths super class's method
+     * @return if override, return super method id, else -1
+     */
+    protected int checkOverride(int MethId, HashMap<OverrideBf.innerMeth, Integer> superMeths){
         if(singleCollect.getEntityById(MethId) instanceof MethodEntity){
             MethodEntity currentMeth = (MethodEntity) singleCollect.getEntityById(MethId);
             ArrayList<String> currentParas = new ArrayList<>();
             for (int paraId : currentMeth.getParameters()){
                 currentParas.add(((VariableEntity) singleCollect.getEntityById(paraId)).getType());
             }
-            for (innerMeth superMeth : superMeths.keySet()){
+            for (OverrideBf.innerMeth superMeth : superMeths.keySet()){
                 if (currentMeth.getName().equals(superMeth.getName())){
                     if(currentMeth.getReturnType()==null && superMeth.getReturnType()==null){
                         if(superMeth.comparePara(currentParas)){
@@ -109,4 +109,6 @@ public class OverrideBf extends DepBackfill{
         }
         return -1;
     }
+
+
 }

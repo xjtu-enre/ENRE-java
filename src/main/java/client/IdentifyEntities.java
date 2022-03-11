@@ -11,16 +11,24 @@ import util.PathUtil;
 import visitor.EntityVisitor;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Map;
 
 public class IdentifyEntities {
 
     private String project_path;
     private String project_name;
+    private String aidl_path = null;
 
     public IdentifyEntities(String project_path, String project_name){
         this.project_path = PathUtil.unifyPath(project_path);
         this.project_name = project_name;
+    }
+
+    public IdentifyEntities(String project_path, String project_name, String aidl_path){
+        this.project_path = PathUtil.unifyPath(project_path);
+        this.project_name = project_name;
+        this.aidl_path = PathUtil.unifyPath(aidl_path);
     }
 
     public String getProject_path() {
@@ -31,9 +39,18 @@ public class IdentifyEntities {
         this.project_path = PathUtil.unifyPath(project_path);
     }
 
+    public String getAidl_path(){
+        return aidl_path;
+    }
+
     public void run(){
 
-        FileUtil current = new FileUtil(this.getProject_path());
+        FileUtil current;
+        if(this.getAidl_path() != null){
+            current = new FileUtil(this.getProject_path(), this.getAidl_path());
+        } else {
+            current = new FileUtil(this.getProject_path());
+        }
         //set the version of java
         ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -75,11 +92,20 @@ public class IdentifyEntities {
         System.out.println("Parsing...");
 
         for(CompilationUnitPair pair : pairs){
-//            if(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name).equals("src/main/java/run/halo/app/service/impl/OptionServiceImpl.java")){
-//                pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
+
+            try{
+                System.out.println(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name));
+//                if("AccessibilityService.java".equals(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name))){
+//                    pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
+//                }
+                pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
+            }
+            catch (EmptyStackException e){
+                System.out.println("Empty Stack: "+ pair.source);
+            }
+//            catch (ClassCastException e){
+//                System.out.println("Class Cast: "+ pair.source);
 //            }
-            pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
-            System.out.println(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name));
         }
 
         System.out.println("Entities identified successfully...");

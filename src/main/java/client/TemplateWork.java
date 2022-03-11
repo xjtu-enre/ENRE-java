@@ -23,8 +23,12 @@ public class TemplateWork {
         String inputDir = args[1];
         String projectName = args[2];
         String depMask = "111111111";
+        String aidlDir = null;
         if (args.length > 3) {
             projectName = args[3];
+        }
+        if (args.length > 4) {
+            aidlDir = args[4];
         }
 
         config(lang, inputDir, projectName);
@@ -33,7 +37,12 @@ public class TemplateWork {
         long startTime = System.currentTimeMillis();
 
         //identify Entities
-        IdentifyEntities entityTreeBuilder = new IdentifyEntities(inputDir,projectName);
+        IdentifyEntities entityTreeBuilder;
+        if(aidlDir != null){
+            entityTreeBuilder = new IdentifyEntities(inputDir, projectName, aidlDir);
+        }else {
+            entityTreeBuilder = new IdentifyEntities(inputDir, projectName);
+        }
         entityTreeBuilder.run();
 
         //extract Deps
