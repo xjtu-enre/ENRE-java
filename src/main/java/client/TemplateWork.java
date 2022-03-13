@@ -14,6 +14,8 @@ import writer.WriterIntf;
 
 import java.util.ArrayList;
 
+import com.alibaba.fastjson.JSON;
+
 public class TemplateWork {
 
     protected static Configure configure = Configure.getConfigureInstance();
@@ -72,10 +74,13 @@ public class TemplateWork {
 
         JsonMap jsonMap = new JsonMap();
         Verification verify = new Verification();
+        DependsString depends = new DependsString();
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-node", Django.nodeWriter());
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-edge", Django.edgeWriter(jsonMap.getFinalRes()));
-        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-out", JsonString.JSONWriteRelation(jsonMap.getFinalRes()));
+        //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-out", JsonString.JSONWriteRelation(jsonMap.getFinalRes()));
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-imports", Verification.JSONWriteRela(verify.getRela()));
+        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-out",configure.getAnalyzedProjectName()+ "-out",
+                JSON.toJSONString(depends.getDependsString(projectName, lang, inputDir)));
 
         //output the summary of the acquired results.
         summary();

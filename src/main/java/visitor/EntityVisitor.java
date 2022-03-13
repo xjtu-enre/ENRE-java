@@ -381,7 +381,7 @@ public class EntityVisitor extends ASTVisitor {
                         break;
                 }
             }
-            methodVarId.addAll(processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(),varType, blockStack.peek(), -1, false, accessibility));
+            methodVarId.addAll(processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(),varType, blockStack.peek(), -1, false, accessibility, cu));
         }
 
         //supplement method children's id
@@ -446,7 +446,7 @@ public class EntityVisitor extends ASTVisitor {
         /**
          * change block id from type id to -1
          */
-        classVarId.addAll(processEntity.processVarDeclFragment(node.fragments(),typeId,varType, -1,staticFlag, true, accessibility));
+        classVarId.addAll(processEntity.processVarDeclFragment(node.fragments(),typeId,varType, -1,staticFlag, true, accessibility, cu));
 
         //supplement method children's id
         singleCollect.getEntityById(typeId).addChildrenIds(classVarId);

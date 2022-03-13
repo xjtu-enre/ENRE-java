@@ -28,6 +28,8 @@ public class SingleCollect {
 
     private HashMap<String,Integer> createdAnt = new HashMap<>();
 
+    private ArrayList<Integer> fileIds = new ArrayList<>();
+
     private static SingleCollect singleCollectInstance = new SingleCollect();
 
     public ArrayList<BaseEntity> getEntities() {
@@ -76,6 +78,18 @@ public class SingleCollect {
 
     public void addCreatedAnt (int antId, String antName){
         this.createdAnt.put(antName,antId);
+    }
+
+    public void addFileId (int fileId){
+        this.fileIds.add(fileId);
+    }
+
+    public int getFileIndex (int fileId){
+        return this.fileIds.indexOf(fileId);
+    }
+
+    public ArrayList<Integer> getFileIds(){
+        return this.fileIds;
     }
 
     public BaseEntity getEntityById(int id) {

@@ -1,6 +1,8 @@
 package entity;
 
 import java.util.ArrayList;
+
+import entity.properties.Location;
 import util.Tuple;
 
 public class BaseEntity {
@@ -13,6 +15,7 @@ public class BaseEntity {
     //protected String codeSnippet;
     //String is the relation type , and Integer is corresponding entity's id
     protected ArrayList<Tuple<String, Integer>> relation = new ArrayList<Tuple<String, Integer>>();
+    protected Location location = new Location();
 
     protected ArrayList<String> annotations = new ArrayList<>();
 
@@ -87,6 +90,14 @@ public class BaseEntity {
 
     public ArrayList<Tuple<String, Integer>> getRelation(){
         return this.relation;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public void addAnnotation(String annotation){

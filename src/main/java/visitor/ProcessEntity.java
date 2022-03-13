@@ -140,6 +140,7 @@ public class ProcessEntity {
         }
 
         singleCollect.addEntity(fileEntity);
+        singleCollect.addFileId(fileId);
 
         //add package's children id if package exists
         if(packageIndex != -1){
@@ -431,7 +432,7 @@ public class ProcessEntity {
      * @param varType the type of all of these var
      * @return ArrayList of vars' ids
      */
-    public ArrayList<Integer> processVarDeclFragment(List<VariableDeclarationFragment> fragment, int parentId, String varType, int blockId, int staticFlag, boolean globalFlag, String accessibility){
+    public ArrayList<Integer> processVarDeclFragment(List<VariableDeclarationFragment> fragment, int parentId, String varType, int blockId, int staticFlag, boolean globalFlag, String accessibility, CompilationUnit cu){
 
         ArrayList<Integer> variableIds = new ArrayList<Integer>();
 
@@ -461,6 +462,8 @@ public class ProcessEntity {
             if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
                 varEntity.setHidden(true);
             }
+
+            varEntity.setLocation(supplement_location(cu, frag.getStartPosition(), frag.getLength()));
 
             singleCollect.addEntity(varEntity);
 
