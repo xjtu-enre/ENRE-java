@@ -20,6 +20,15 @@ public class DependsString {
             this.line = line;
             this.row = row;
         }
+
+        public int getLine() {
+            return line;
+        }
+
+        public int getRow() {
+            return row;
+        }
+
     }
 
     public static class DetailDTO {
@@ -34,6 +43,23 @@ public class DependsString {
             this.relationType = relationType;
             this.location = new LocationDTO(line, row);
         }
+
+        public int getFromEntity() {
+            return fromEntity;
+        }
+
+        public int getToEntity() {
+            return toEntity;
+        }
+
+        public String getRelationType() {
+            return relationType;
+        }
+
+        public LocationDTO getLocation() {
+            return location;
+        }
+
     }
 
     public static class CellsDTO {
@@ -55,6 +81,23 @@ public class DependsString {
                 this.values.put(relationType, 1);
             }
         }
+
+        public int getSrcFile() {
+            return srcFile;
+        }
+
+        public int getDestFile() {
+            return destFile;
+        }
+
+        public HashMap<String, Integer> getValues() {
+            return values;
+        }
+
+        public ArrayList<DetailDTO> getDetails() {
+            return details;
+        }
+
     }
 
     public static class IndicesDTO {
@@ -71,6 +114,26 @@ public class DependsString {
             this.location = new LocationDTO(line, row);
             this.type = type;
             this.rawType = rawType;
+        }
+
+        public String getObject() {
+            return object;
+        }
+
+        public String getFile() {
+            return file;
+        }
+
+        public LocationDTO getLocation() {
+            return location;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public String getRawType() {
+            return rawType;
         }
     }
 
@@ -108,6 +171,42 @@ public class DependsString {
         this.indices.add(indice);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public String getRootDir() {
+        return rootDir;
+    }
+
+    public Integer getNodeNum() {
+        return nodeNum;
+    }
+
+    public Integer getEdgeNum() {
+        return edgeNum;
+    }
+
+    public ArrayList<CellsDTO> getCells() {
+        return cells;
+    }
+
+    public ArrayList<String> getVariables() {
+        return variables;
+    }
+
+    public ArrayList<IndicesDTO> getIndices() {
+        return indices;
+    }
+
+    public Integer getIndexNum() {
+        return indexNum;
+    }
+
     /**
      * get current entity's file id
      * @param id
@@ -143,12 +242,19 @@ public class DependsString {
         for (Integer fileId : singleCollect.getFileIds()){
             dependsString.addVariables(((FileEntity)singleCollect.getEntityById(fileId)).getFullPath());
         }
+        dependsString.nodeNum = dependsString.variables.size();
 
         JsonMap jsonMap = new JsonMap();
         Map<Integer, Map<Integer, Map<String, Integer>>> relationMap = jsonMap.getFinalRes();
         for(int fromEntity:relationMap.keySet()) {
+            if (singleCollect.getEntityById(fromEntity) instanceof PackageEntity){
+                continue;
+            }
             int src = singleCollect.getFileIndex(getCurrentFileId(fromEntity));
             for (int toEntity : relationMap.get(fromEntity).keySet()) {
+                if (singleCollect.getEntityById(toEntity) instanceof PackageEntity){
+                    continue;
+                }
                 int dest = singleCollect.getFileIndex(getCurrentFileId(toEntity));
                 //get current cell
                 CellsDTO currentCell = null;
@@ -167,11 +273,11 @@ public class DependsString {
                     DetailDTO detail = new DetailDTO(fromEntity, toEntity, type, 0, 0);
                     currentCell.addValue(type);
                     currentCell.details.add(detail);
-                    edgeNum++;
                 }
                 dependsString.addCell(currentCell);
             }
         }
+        dependsString.edgeNum = dependsString.cells.size();
 
         return dependsString;
     }

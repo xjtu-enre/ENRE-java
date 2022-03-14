@@ -6,12 +6,14 @@ formator\fxml\XDepend.class
 visitor\deper\ImplementBf.class
 visitor\deper\ContainDefineBf.class
 visitor\relationInf\RelationInterface.class
+TempOutput\DependsString$LocationDTO.class
 visitor\deper\OverrideBf$innerMeth.class
 client\IdentifyEntities.class
 formator\fxml\XDepObject.class
 writer\CsvWriter.class
 visitor\deper\AnnotationBf.class
 visitor\deper\CallBf.class
+TempOutput\DependsString$DetailDTO.class
 writer\UndWriter.class
 TempOutput\JsonMap.class
 writer\XmlWriter.class
@@ -20,6 +22,7 @@ TempOutput\Django.class
 util\PathUtil.class
 visitor\deper\ParametersBf.class
 formator\fxml\XBuildObject.class
+TempOutput\DependsString$IndicesDTO.class
 visitor\deper\ReflectBf.class
 client\TemplateWork.class
 entity\properties\Block.class
@@ -51,10 +54,12 @@ entity\FileEntity.class
 visitor\deper\InheritBf.class
 entity\ModuleEntity.class
 formator\fjson\JCellObject.class
+TempOutput\DependsString$CellsDTO.class
 entity\AnnotationTypeMember.class
 util\Configure.class
 visitor\deper\CastBf.class
 TempOutput\JsonFormatTool.class
+TempOutput\DependsString.class
 writer\JsonWriter.class
 entity\properties\Location.class
 entity\VariableEntity.class

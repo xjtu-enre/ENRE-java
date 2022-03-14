@@ -40,7 +40,8 @@ public class JsonMap {
                         finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_SET));
                         break;
                     case Configure.RELATION_USE:
-                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_USE));
+//                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_USE));
+                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,"UseVar"));
                         break;
                     case Configure.RELATION_MODIFY:
                         finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_MODIFY));
