@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import entity.properties.Location;
 import util.Tuple;
@@ -20,6 +21,8 @@ public class BaseEntity {
     protected ArrayList<String> annotations = new ArrayList<>();
 
     protected ArrayList<String> reflects = new ArrayList<>();
+
+    protected ArrayList<String> modifiers = new ArrayList<>();
 
     /**
      * check whether the entities are hidden
@@ -130,6 +133,18 @@ public class BaseEntity {
 
     public void setMaxTargetSdk(int maxTargetSdk) {
         this.maxTargetSdk = maxTargetSdk;
+    }
+
+    public void addModifier (String modifier){
+        this.modifiers.add(modifier);
+    }
+
+    public void addModifiers (ArrayList<String> modifiers){
+        this.modifiers.addAll(modifiers);
+    }
+
+    public ArrayList<String> getModifiers(){
+        return this.modifiers;
     }
 
     @Override

@@ -164,10 +164,20 @@ public class ProcessEntity {
         int typeId = singleCollect.getCurrentIndex();
         String typeName = node.getName().getIdentifier();
         ITypeBinding iTypeBinding = node.resolveBinding();
-        //String qualifiedName = singleCollect.getEntityById(singleCollect.getEntityById(parentId).getParentId()).getQualifiedName() + typeName;
+        String qualifiedName;
+        try{
+            qualifiedName = iTypeBinding.getQualifiedName();
+        } catch (NullPointerException e){
+            if (singleCollect.isFile(parentId)){
+                qualifiedName = singleCollect.getEntityById(singleCollect.getEntityById(parentId).getParentId()).getQualifiedName()+"."+typeName;
+            } else {
+                qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName()+"."+typeName;
+            }
+
+        }
 
         if(node.isInterface()){
-            InterfaceEntity interfaceEntity = new InterfaceEntity(typeId, typeName, iTypeBinding.getQualifiedName(), parentId);
+            InterfaceEntity interfaceEntity = new InterfaceEntity(typeId, typeName, qualifiedName, parentId);
             interfaceEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
             //supplement the super interface name
             if(node.superInterfaceTypes() != null){
@@ -177,18 +187,27 @@ public class ProcessEntity {
                     interfaceEntity.addExtendsName(superInter.resolveBinding().getQualifiedName());
                 }
             }
+            for(Object o : node.modifiers()) {
+                interfaceEntity.addModifier(o.toString());
+            }
+
             if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
                 interfaceEntity.setHidden(true);
             }
             singleCollect.addEntity(interfaceEntity);
         }else{
-            ClassEntity classEntity = new ClassEntity(typeId, typeName, iTypeBinding.getQualifiedName(), parentId);
+            ClassEntity classEntity = new ClassEntity(typeId, typeName, qualifiedName, parentId);
             classEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
             //superclass
-            Type superType = node.getSuperclassType();
-            if(superType != null){
-                classEntity.setSuperClassName(superType.resolveBinding().getQualifiedName());
+            try {
+                Type superType = node.getSuperclassType();
+                if(superType != null){
+                    classEntity.setSuperClassName(superType.resolveBinding().getQualifiedName());
+                }
+            } catch (NullPointerException e){
+//                e.printStackTrace();
             }
+
             //interface, default id is -1
             if(iTypeBinding != null){
                 ITypeBinding[] interfaces = iTypeBinding.getInterfaces();
@@ -200,6 +219,11 @@ public class ProcessEntity {
                     }
                 }
             }
+
+            for(Object o : node.modifiers()) {
+                classEntity.addModifier(o.toString());
+            }
+
             if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
                 classEntity.setHidden(true);
             }
@@ -209,7 +233,7 @@ public class ProcessEntity {
         singleCollect.getEntityById(parentId).addChildId(typeId);
 
         //add created type
-        singleCollect.addCreatedType(typeId, iTypeBinding.getQualifiedName());
+        singleCollect.addCreatedType(typeId, qualifiedName);
 
         return typeId;
     }
@@ -245,6 +269,10 @@ public class ProcessEntity {
             }
         }
 
+        for(Object o : node.modifiers()) {
+            enumEntity.addModifier(o.toString());
+        }
+
         if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
             enumEntity.setHidden(true);
         }
@@ -274,6 +302,10 @@ public class ProcessEntity {
         }
 
         EnumConstantEntity<String> enumConstantEntity = new EnumConstantEntity<String>(constantId, constantName, qualifiedName, parentId);
+
+        for(Object o : node.modifiers()) {
+            enumConstantEntity.addModifier(o.toString());
+        }
 
         if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
             enumConstantEntity.setHidden(true);
@@ -321,6 +353,10 @@ public class ProcessEntity {
             annotationEntity.setHidden(true);
         }
 
+        for(Object o : node.modifiers()) {
+            annotationEntity.addModifier(o.toString());
+        }
+
         singleCollect.addEntity(annotationEntity);
         //add parent's children Id
         singleCollect.getEntityById(parentId).addChildId(annotationId);
@@ -342,6 +378,10 @@ public class ProcessEntity {
         }
 
         AnnotationTypeMember annotationTypeMember = new AnnotationTypeMember(memberId, node.getType().toString(), memberName, qualifiedName, parentId);
+
+        for(Object o : node.modifiers()) {
+            annotationTypeMember.addModifier(o.toString());
+        }
 
         if(node.getDefault() != null){
             annotationTypeMember.setDefault_value(node.getDefault().toString());
@@ -402,21 +442,10 @@ public class ProcessEntity {
 
         //supplement static method
         for(Object o : node.modifiers()){
+            methodEntity.addModifier(o.toString());
             if(o.toString().equals("static") ){
-                methodEntity.setStatic(true);
                 if(singleCollect.getEntityById(parentTypeId) instanceof ClassEntity)
                     ((ClassEntity) singleCollect.getEntityById(parentTypeId)).addStaticMap(methodQualifiedName, methodId);
-            }
-            switch (o.toString()) {
-                case "public":
-                    methodEntity.setAccessibility("Public");
-                    break;
-                case "protected":
-                    methodEntity.setAccessibility("Protected");
-                    break;
-                case "private":
-                    methodEntity.setAccessibility("Private");
-                    break;
             }
         }
 
@@ -432,7 +461,7 @@ public class ProcessEntity {
      * @param varType the type of all of these var
      * @return ArrayList of vars' ids
      */
-    public ArrayList<Integer> processVarDeclFragment(List<VariableDeclarationFragment> fragment, int parentId, String varType, int blockId, int staticFlag, boolean globalFlag, String accessibility, CompilationUnit cu){
+    public ArrayList<Integer> processVarDeclFragment(List<VariableDeclarationFragment> fragment, int parentId, String varType, int blockId, int staticFlag, boolean globalFlag, ArrayList<String> modifiers, CompilationUnit cu){
 
         ArrayList<Integer> variableIds = new ArrayList<Integer>();
 
@@ -448,7 +477,7 @@ public class ProcessEntity {
             varEntity.setParentId(parentId);
             varEntity.setQualifiedName(singleCollect.getEntityById(parentId).getQualifiedName()+"."+varName);
             varEntity.setBlockId(blockId);
-            varEntity.setAccessibility(accessibility);
+            varEntity.addModifiers(modifiers);
             varEntity.setGlobal(globalFlag);
             //set init
             if(frag.getInitializer() != null){

@@ -50,6 +50,12 @@ public class JsonString {
         }
         obj.put("relationNum", subRelations);
 
+        JSONObject subCKIndices = new JSONObject();
+        for (String index : singleCollect.getCkIndices().keySet()){
+            subCKIndices.put(index, singleCollect.getCk(index));
+        }
+        obj.put("CKIndices", subCKIndices);
+
         List<JSONObject> subObjVariable=new ArrayList<JSONObject>();//创建对象数组里的子对象
 //        List<String> subObjVariable=new ArrayList<String>();
 
@@ -66,28 +72,33 @@ public class JsonString {
             hiddenObj.put("hidden", entity.getHidden());
             hiddenObj.put("maxTargetSdk", entity.getMaxTargetSdk());
             entityObj.accumulate("aosp_hidden", hiddenObj);
-            if(entity instanceof MethodEntity){
-                entityObj.put("accessibility", ((MethodEntity) entity).getAccessibility());
-                entityObj.put("static", ((MethodEntity) entity).isStatic());
+            if (!entity.getModifiers().isEmpty()){
+                String m = "";
+                for (String modifier : entity.getModifiers()){
+                    m = m.concat(modifier + " ");
+                }
+                entityObj.put("modifiers", m.substring(0, m.length()-1));
+            }
+
+//            if(entity instanceof MethodEntity){
 //                List<String> parTYpe = new ArrayList<>();
 //                for(int parId : ((MethodEntity) entity).getParameters()){
 //                    parTYpe.add(((VariableEntity) singleCollect.getEntityById(parId)).getType());
 //                }
 //                entityObj.put("ParameterType", parTYpe.toArray());
-            }
+//            }
             if(entity instanceof VariableEntity){
-                entityObj.put("accessibility", ((VariableEntity) entity).getAccessibility());
                 entityObj.put("global", ((VariableEntity) entity).getGlobal());
-                entityObj.put("type", ((VariableEntity) entity).getType());
+//                entityObj.put("type", ((VariableEntity) entity).getType());
             }
             if(entity instanceof TypeEntity && !((TypeEntity) entity).getInnerType().isEmpty()){
                 entityObj.put("innerType", ((TypeEntity) entity).getInnerType());
             }
             if(entity instanceof ScopeEntity){
-                entityObj.put("startLine", ((ScopeEntity) entity).getLocation().getStartLine());
-                entityObj.put("endLine", ((ScopeEntity) entity).getLocation().getEndLine());
-                entityObj.put("startColumn", ((ScopeEntity) entity).getLocation().getStartColumn());
-                entityObj.put("endColumn", ((ScopeEntity) entity).getLocation().getEndColumn());
+                entityObj.put("startLine", entity.getLocation().getStartLine());
+                entityObj.put("endLine", entity.getLocation().getEndLine());
+                entityObj.put("startColumn", entity.getLocation().getStartColumn());
+                entityObj.put("endColumn", entity.getLocation().getEndColumn());
             }
 
 //            subObjVariable.add(entity.getQualifiedName());

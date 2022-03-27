@@ -30,6 +30,8 @@ public class SingleCollect {
 
     private ArrayList<Integer> fileIds = new ArrayList<>();
 
+    private HashMap<String, Integer> ckIndices = new HashMap<>();
+
     private static SingleCollect singleCollectInstance = new SingleCollect();
 
     public ArrayList<BaseEntity> getEntities() {
@@ -94,6 +96,23 @@ public class SingleCollect {
 
     public BaseEntity getEntityById(int id) {
         return entities.get(id);
+    }
+
+    public void addCk(String index, int count){
+        if (this.ckIndices.containsKey(index)){
+            int current = getCk(index);
+            this.ckIndices.replace(index, current+count);
+        } else {
+            this.ckIndices.put(index, count);
+        }
+    }
+
+    public int getCk(String index){
+        return this.ckIndices.get(index);
+    }
+
+    public HashMap<String, Integer> getCkIndices(){
+        return this.ckIndices;
     }
 
     public boolean isPackage (int id){

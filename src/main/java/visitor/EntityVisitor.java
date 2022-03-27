@@ -133,9 +133,9 @@ public class EntityVisitor extends ASTVisitor {
         int fileId = createAFile();
 
         //current type entity's id
-        if(node.resolveBinding() == null){
-            return super.visit(node);
-        }
+//        if(node.resolveBinding() == null){
+//            return super.visit(node);
+//        }
 
         int parentId;
         if(fileId == -1){
@@ -206,7 +206,9 @@ public class EntityVisitor extends ASTVisitor {
     @Override
     public boolean visit(AnnotationTypeDeclaration node) {
 
-        createAFile();
+        if(scopeStack.isEmpty()){
+            createAFile();
+        }
 
         int annotationId = processEntity.processAnnotation(node, scopeStack.peek(), cu);
         scopeStack.push(annotationId);
@@ -367,21 +369,11 @@ public class EntityVisitor extends ASTVisitor {
 //                System.out.println(node.toString());
 //                System.out.println(blockStackForMethod.peek());
 //            }
-            String accessibility = null;
+            ArrayList<String> modifiers = new ArrayList<>();
             for(Object o : node.modifiers()){
-                switch (o.toString()) {
-                    case "public":
-                        accessibility = "Public";
-                        break;
-                    case "protected":
-                        accessibility = "Protected";
-                        break;
-                    case "private":
-                        accessibility = "Private";
-                        break;
-                }
+                modifiers.add(o.toString());
             }
-            methodVarId.addAll(processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(),varType, blockStack.peek(), -1, false, accessibility, cu));
+            methodVarId.addAll(processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(),varType, blockStack.peek(), -1, false, modifiers, cu));
         }
 
         //supplement method children's id
@@ -428,25 +420,15 @@ public class EntityVisitor extends ASTVisitor {
             }
         }
 
-        String accessibility = null;
+        ArrayList<String> modifiers = new ArrayList<>();
         for(Object o : node.modifiers()){
-            switch (o.toString()) {
-                case "public":
-                    accessibility = "Public";
-                    break;
-                case "protected":
-                    accessibility = "Protected";
-                    break;
-                case "private":
-                    accessibility = "Private";
-                    break;
-            }
+            modifiers.add(o.toString());
         }
 
         /**
          * change block id from type id to -1
          */
-        classVarId.addAll(processEntity.processVarDeclFragment(node.fragments(),typeId,varType, -1,staticFlag, true, accessibility, cu));
+        classVarId.addAll(processEntity.processVarDeclFragment(node.fragments(),typeId,varType, -1,staticFlag, true, modifiers, cu));
 
         //supplement method children's id
         singleCollect.getEntityById(typeId).addChildrenIds(classVarId);
@@ -515,6 +497,9 @@ public class EntityVisitor extends ASTVisitor {
         if(singleCollect.isMethod(scopeStack.peek()) && !singleCollect.isConstructor(scopeStack.peek()) && node.getExpression() != null){
             ((MethodEntity) singleCollect.getEntityById(scopeStack.peek())).setReturnExpression(node.getExpression().toString());
         }
+
+        //CK
+        singleCollect.addCk(Configure.RETURNS, 1);
 
         return super.visit(node);
     }
@@ -607,6 +592,9 @@ public class EntityVisitor extends ASTVisitor {
                 }
             }
         }
+
+        //ck
+        singleCollect.addCk(Configure.ASSIGNMENTS, 1);
         return super.visit(node);
     }
 
@@ -619,6 +607,10 @@ public class EntityVisitor extends ASTVisitor {
                 blockStack.push(localBlockId);
             }
         }
+
+        //CK
+        singleCollect.addCk(Configure.LOOPS, 1);
+
         return super.visit(node);
     }
 
@@ -640,6 +632,10 @@ public class EntityVisitor extends ASTVisitor {
                 blockStack.push(localBlockId);
             }
         }
+
+        //CK
+        singleCollect.addCk(Configure.LOOPS, 1);
+
         return super.visit(node);
     }
 
@@ -695,6 +691,46 @@ public class EntityVisitor extends ASTVisitor {
                 }
             }
         }
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(TryStatement node) {
+        //ck
+        singleCollect.addCk(Configure.TRY_CATCHES, 1);
+
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(NumberLiteral node){
+        //ck
+        singleCollect.addCk(Configure.NUMBER, 1);
+
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(InfixExpression node){
+        //ck
+        singleCollect.addCk(Configure.MATH_OPERATIONS, 1);
+
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(PrefixExpression node){
+        //ck
+        singleCollect.addCk(Configure.MATH_OPERATIONS, 1);
+
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(PostfixExpression node){
+        //ck
+        singleCollect.addCk(Configure.MATH_OPERATIONS, 1);
+
         return super.visit(node);
     }
 

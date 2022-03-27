@@ -9,7 +9,7 @@ public class VariableEntity extends BaseEntity{
     private int setBy;
     private int useBy;
     private int modifyBy;
-    protected String accessibility;
+
     private boolean global;
 
     public VariableEntity(int id, String name, String type){
@@ -48,14 +48,6 @@ public class VariableEntity extends BaseEntity{
 
     public int getSetBy(){
         return this.setBy;
-    }
-
-    public void setAccessibility (String accessibility){
-        this.accessibility = accessibility;
-    }
-
-    public String getAccessibility(){
-        return this.accessibility;
     }
 
     public void setGlobal (boolean global){

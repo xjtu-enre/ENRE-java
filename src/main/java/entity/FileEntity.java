@@ -18,7 +18,8 @@ public class FileEntity extends BaseEntity{
     public FileEntity (int fileId, String fullPath){
         this.id = fileId;
         this.setFullPath(fullPath);
-        this.setName(PathUtil.getLastStrByPathDelimiter(fullPath).split("\\.")[0]);
+//        this.setName(PathUtil.getLastStrByPathDelimiter(fullPath).split("\\.")[0]);
+        this.setName(PathUtil.getLastStrByPathDelimiter(fullPath));
     }
 
     public String getFullPath() {

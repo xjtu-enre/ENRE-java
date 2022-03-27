@@ -168,6 +168,17 @@ public class Configure {
     public static final int MAX_TARGETSDK_S = 31;
     public static final int MAX_TARGETSDK_S_V2 = 32;
 
+    //CK indices
+    public static final String RETURNS = "returns";
+    public static final String LOOPS = "loops";
+    public static final String COMPARISONS = "comparisons";
+    public static final String TRY_CATCHES = "try/catches";
+    public static final String PARENTHESIZED_EXPS = "parenthesized_exps";
+//    public static final String STRING_LITERALS = "string_literals";
+    public static final String NUMBER = "number";
+    public static final String MATH_OPERATIONS = "math_operations";
+    public static final String ASSIGNMENTS = "assignments";
+
     private static Configure configure = new Configure();
     public static Configure getConfigureInstance() {
         return configure;

@@ -228,14 +228,21 @@ public class DependsString {
         DependsString dependsString = new DependsString(projectName, lang, projectPath);
 
         for (BaseEntity entity : singleCollect.getEntities()){
-            if (entity instanceof PackageEntity){
-                continue;
-            } else {
-                String entityFile = ((FileEntity)singleCollect.getEntityById(getCurrentFileId(entity.getId()))).getFullPath();
-                IndicesDTO indice = new IndicesDTO(entity.getQualifiedName(), entityFile, entity.getLocation().getStartLine(),
-                        entity.getLocation().getStartColumn(), singleCollect.getEntityType(entity.getId()), null);
-                dependsString.addIndice(indice);
+            String entityFile;
+            try {
+                if (entity instanceof PackageEntity){
+                    entityFile = null;
+                } else {
+                    entityFile = ((FileEntity)singleCollect.getEntityById(getCurrentFileId(entity.getId()))).getFullPath();
+                }
             }
+            catch (IndexOutOfBoundsException e){
+                System.out.println(entity.getQualifiedName());
+                entityFile = null;
+            }
+            IndicesDTO indice = new IndicesDTO(entity.getQualifiedName(), entityFile, entity.getLocation().getStartLine(),
+                    entity.getLocation().getStartColumn(), singleCollect.getEntityType(entity.getId()), null);
+            dependsString.addIndice(indice);
         }
         dependsString.indexNum = singleCollect.getEntities().size();
 
@@ -250,12 +257,23 @@ public class DependsString {
             if (singleCollect.getEntityById(fromEntity) instanceof PackageEntity){
                 continue;
             }
-            int src = singleCollect.getFileIndex(getCurrentFileId(fromEntity));
+            int src = -1;
+            try{
+                src = singleCollect.getFileIndex(getCurrentFileId(fromEntity));
+            }
+            catch (IndexOutOfBoundsException e){
+                continue;
+            }
             for (int toEntity : relationMap.get(fromEntity).keySet()) {
                 if (singleCollect.getEntityById(toEntity) instanceof PackageEntity){
                     continue;
                 }
-                int dest = singleCollect.getFileIndex(getCurrentFileId(toEntity));
+                int dest = -1;
+                try {
+                    dest = singleCollect.getFileIndex(getCurrentFileId(toEntity));
+                }catch (IndexOutOfBoundsException e){
+                    continue;
+                }
                 //get current cell
                 CellsDTO currentCell = null;
                 for (CellsDTO cell : dependsString.cells){
@@ -265,16 +283,18 @@ public class DependsString {
                         break;
                     }
                 }
-                if (currentCell == null){
+                if (currentCell == null && src != -1 && dest != -1){
                     currentCell = new CellsDTO(src, dest);
                 }
 
-                for (String type : relationMap.get(fromEntity).get(toEntity).keySet()) {
-                    DetailDTO detail = new DetailDTO(fromEntity, toEntity, type, 0, 0);
-                    currentCell.addValue(type);
-                    currentCell.details.add(detail);
+                if (currentCell != null){
+                    for (String type : relationMap.get(fromEntity).get(toEntity).keySet()) {
+                        DetailDTO detail = new DetailDTO(fromEntity, toEntity, type, 0, 0);
+                        currentCell.addValue(type);
+                        currentCell.details.add(detail);
+                    }
+                    dependsString.addCell(currentCell);
                 }
-                dependsString.addCell(currentCell);
             }
         }
         dependsString.edgeNum = dependsString.cells.size();

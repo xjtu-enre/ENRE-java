@@ -12,9 +12,6 @@ public class MethodEntity extends ScopeEntity{
     protected String returnExpression = null;
     protected boolean isConstructor = false;
 
-    protected String accessibility;
-    protected boolean isStatic = false;
-
     //record the declared class's qualified name of called method and its name
     //like declared class-called method
     protected ArrayList<String> call = new ArrayList<>();
@@ -160,22 +157,6 @@ public class MethodEntity extends ScopeEntity{
         if(!name2Usage.get(name).contains(usage)) {
             name2Usage.get(name).add(usage);
         }
-    }
-
-    public String getAccessibility() {
-        return accessibility;
-    }
-
-    public void setAccessibility(String accessibility) {
-        this.accessibility = accessibility;
-    }
-
-    public boolean isStatic() {
-        return isStatic;
-    }
-
-    public void setStatic(boolean isStatic) {
-        isStatic = isStatic;
     }
 
 
