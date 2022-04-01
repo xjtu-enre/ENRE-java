@@ -1,6 +1,7 @@
 package formator.spreadsheet;
 
 import entity.*;
+import entity.properties.Relation;
 import util.Configure;
 import util.Tuple;
 import util.SingleCollect;
@@ -46,9 +47,9 @@ public class Csvgrapher {
         Map<Integer, Map<Integer, Map<String, Map<String, Integer>>>> deps = new HashMap<Integer, Map<Integer, Map<String, Map<String, Integer>>>>();
         for (BaseEntity entity : singleCollect.getEntities()) {
             int id1 = entity.getId();
-            for (Tuple<String, Integer> re : entity.getRelation()) {
-                int id2 = re.getId();
-                String pritiveType = re.getRelation();
+            for (Relation re : entity.getRelation()) {
+                int id2 = re.getToEntity();
+                String pritiveType = re.getKind();
                 if(!(pritiveType.equals(Configure.RELATION_IMPORT)
                         || pritiveType.equals(Configure.RELATION_INHERIT)
                         || pritiveType.equals(Configure.RELATION_IMPLEMENT)

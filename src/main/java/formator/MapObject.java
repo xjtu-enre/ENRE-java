@@ -93,8 +93,8 @@ public class MapObject {
      */
     private void addDepsInMap(ArrayList<Tuple<String, String>> deps, String depType, Map<String, Integer> fileName2Id) {
         for(Tuple<String, String> dep : deps) {
-            String name1 = dep.getRelation();
-            String name2 = dep.getId();
+            String name1 = dep.getL();
+            String name2 = dep.getR();
             int index1 = -1;
             int index2 = -1;
             if(fileName2Id.containsKey(name1)) {

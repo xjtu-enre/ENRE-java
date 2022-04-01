@@ -2,6 +2,7 @@ package TempOutput;
 
 import entity.BaseEntity;
 import entity.FileEntity;
+import entity.properties.Relation;
 import org.json.JSONObject;
 import util.Configure;
 import util.SingleCollect;
@@ -22,9 +23,9 @@ public class Verification {
         for(BaseEntity entity : singleCollect.getEntities()){
             HashSet<String> imports = new HashSet<>();
             if(entity instanceof FileEntity){
-                for(Tuple<String, Integer> relation : entity.getRelation()) {
-                    if (relation.getRelation().equals(Configure.RELATION_IMPORT)){
-                        imports.add(singleCollect.getEntityById((Integer) relation.getId()).getQualifiedName());
+                for(Relation relation : entity.getRelation()) {
+                    if (relation.getKind().equals(Configure.RELATION_IMPORT)){
+                        imports.add(singleCollect.getEntityById(relation.getToEntity()).getQualifiedName());
                     }
                 }
                 if(!imports.isEmpty()){

@@ -1,16 +1,18 @@
 package entity;
 
+import entity.properties.Location;
 import util.PathUtil;
+import util.Tuple;
 
 import java.util.HashMap;
 
 public class FileEntity extends BaseEntity{
 
-    protected HashMap<String, Integer> importOnDemand = new HashMap<String, Integer>();
+    protected HashMap<Tuple<String, Location>, Integer> importOnDemand = new HashMap<Tuple<String, Location>, Integer>();
     //the first is name, the second is package
-    protected HashMap<String, Integer> importClass = new HashMap<String, Integer>();
+    protected HashMap<Tuple<String, Location>, Integer> importClass = new HashMap<Tuple<String, Location>, Integer>();
 
-    protected HashMap<String, Integer> importStatic = new HashMap<>();
+    protected HashMap<Tuple<String, Location>, Integer> importStatic = new HashMap<>();
 
 
     protected String fullPath;
@@ -30,27 +32,27 @@ public class FileEntity extends BaseEntity{
         this.fullPath = fullPath;
     }
 
-    public void addImportOnDemand(String pkg){
-        this.importOnDemand.put(pkg, -1);
+    public void addImportOnDemand(String pkg, Location loc){
+        this.importOnDemand.put(new Tuple<>(pkg, loc), -1);
     }
 
-    public void addImportClass(String file){
-        this.importClass.put(file, -1);
+    public void addImportClass(String file, Location loc){
+        this.importClass.put(new Tuple<>(file, loc), -1);
     }
 
-    public HashMap<String, Integer> getImportOnDemand(){
+    public HashMap<Tuple<String, Location>, Integer> getImportOnDemand(){
         return this.importOnDemand;
     }
 
-    public HashMap<String, Integer> getImportClass(){
+    public HashMap<Tuple<String, Location>, Integer> getImportClass(){
         return this.importClass;
     }
 
-    public void addImportStatic(String constant){
-        this.importStatic.put(constant, -1);
+    public void addImportStatic(String constant, Location loc){
+        this.importStatic.put(new Tuple<>(constant, loc), -1);
     }
 
-    public HashMap<String, Integer> getImportStatic(){
+    public HashMap<Tuple<String, Location>, Integer> getImportStatic(){
         return this.importStatic;
     }
 

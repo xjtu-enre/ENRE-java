@@ -6,6 +6,8 @@ import entity.BaseEntity;
 import entity.ClassEntity;
 import entity.FileEntity;
 import entity.MethodEntity;
+import entity.properties.Location;
+import entity.properties.Relation;
 import util.SingleCollect;
 import util.Tuple;
 
@@ -49,9 +51,9 @@ public class Impl {
             if(entity instanceof FileEntity && !entity.getChildrenIds().isEmpty()) {
                 Map<String, Integer> temp = new HashMap<>();
                 //file --> class
-                for (String imported : ((FileEntity) entity).getImportClass().keySet()) {
+                for (Tuple<String, Location> imported: ((FileEntity) entity).getImportClass().keySet()) {
                     if (!((FileEntity) entity).getImportClass().get(imported).equals(1)) {
-                        temp.put(imported, 1);
+                        temp.put(imported.getL(), 1);
                     }
                 }
                 //file --> package
@@ -85,9 +87,9 @@ public class Impl {
                     }
                 }
                 //implement : class --> interface
-                for(Tuple<String, Integer> tuple: entity.getRelation()){
-                    if(tuple.getRelation().equals("Implement")){
-                        String interfaceName = singleCollect.getEntityById(tuple.getId()).getQualifiedName();
+                for(Relation relation: entity.getRelation()){
+                    if(relation.getKind().equals("Implement")){
+                        String interfaceName = singleCollect.getEntityById(relation.getToEntity()).getQualifiedName();
                         if(struct.containsKey(entity.getQualifiedName())){
                             if(struct.get(entity.getQualifiedName()).containsKey(interfaceName)){
                                 int count = struct.get(entity.getQualifiedName()).get(interfaceName);
@@ -107,8 +109,8 @@ public class Impl {
             //call method --> method
             if(entity instanceof MethodEntity){
                 String currentClass = singleCollect.getEntityById(entity.getParentId()).getQualifiedName();
-                for(String class_method : ((MethodEntity) entity).getCall()){
-                    String calledClass = class_method.split("-")[0];
+                for(Tuple<String, Location> class_method : ((MethodEntity) entity).getCall()){
+                    String calledClass = class_method.getL().split("-")[0];
                     //different class
                     if(!currentClass.equals(calledClass)){
                         if(struct.containsKey(currentClass)){

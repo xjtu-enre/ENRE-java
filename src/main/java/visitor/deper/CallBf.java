@@ -3,35 +3,38 @@ package visitor.deper;
 import entity.BaseEntity;
 import entity.ClassEntity;
 import entity.MethodEntity;
+import entity.ScopeEntity;
+import entity.properties.Location;
 import util.Configure;
+import util.Tuple;
 
 public class CallBf extends DepBackfill{
 
     @Override
     public void setDep() {
         for(BaseEntity entity : singleCollect.getEntities()){
-            if(entity instanceof MethodEntity){
+            if(entity instanceof ScopeEntity){
                 //call
-                if(!((MethodEntity) entity).getCall().isEmpty()){
-                    for(String className2method : ((MethodEntity) entity).getCall()){
-                        int id = findMethodByType(className2method);
+                if(!((ScopeEntity) entity).getCall().isEmpty()){
+                    for(Tuple<String, Location> className2method : ((ScopeEntity) entity).getCall()){
+                        int id = findMethodByType(className2method.getL());
                         if(id != -1){
-                            saveRelation(entity.getId(), id, Configure.RELATION_CALL, Configure.RELATION_CALLED_BY);
+                            saveRelation(entity.getId(), id, Configure.RELATION_CALL, Configure.RELATION_CALLED_BY, className2method.getR());
                         }
                     }
                 }
                 //call non-dynamic
-                if(!((MethodEntity) entity).getCallNondynamic().isEmpty()){
+                if(!((ScopeEntity) entity).getCallNondynamic().isEmpty()){
                     int superClassId = -1;
                     int superMethodId;
                     if(singleCollect.getEntityById(entity.getParentId()) instanceof ClassEntity){
                         superClassId = ((ClassEntity) singleCollect.getEntityById(entity.getParentId())).getSuperClassId();
                     }
                     if(superClassId != -1){
-                        for(String name :((MethodEntity) entity).getCallNondynamic()){
-                            superMethodId = findMethodInSuper(superClassId, name);
+                        for(Tuple<String, Location> superMethodName :((MethodEntity) entity).getCallNondynamic()){
+                            superMethodId = findMethodInSuper(superClassId, superMethodName.getL());
                             if(superMethodId != -1){
-                                saveRelation(entity.getId(), superMethodId, Configure.RELATION_CALL_NON_DYNAMIC, Configure.RELATION_CALLBY_NON_DYNAMIC);
+                                saveRelation(entity.getId(), superMethodId, Configure.RELATION_CALL_NON_DYNAMIC, Configure.RELATION_CALLBY_NON_DYNAMIC, superMethodName.getR());
                             }
                         }
                     }

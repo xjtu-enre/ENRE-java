@@ -1,6 +1,7 @@
 package writer;
 
 import entity.*;
+import entity.properties.Relation;
 import util.Configure;
 import util.*;
 
@@ -60,10 +61,10 @@ public class DotWriter {
             if(!isCaredEntity(id1, filter)) {
                 continue;
             }
-            for (Tuple<String, Integer> relation: entity.getRelation()) {
-                if(isCaredEntity(relation.getId(), filter)
-                        && isCaredRelation(relation.getRelation(), filter)) {
-                    int id2 = relation.getId();
+            for (Relation relation: entity.getRelation()) {
+                if(isCaredEntity(relation.getToEntity(), filter)
+                        && isCaredRelation(relation.getKind(), filter)) {
+                    int id2 = relation.getToEntity();
                     String id2Str = genNodeIdInEdge(id2);
                     finalStr += (id1Str + DotUtil.ARROW + id2Str + DotUtil.SEMI_COLON + DotUtil.NEWLINE);
                 }

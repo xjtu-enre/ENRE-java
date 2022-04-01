@@ -106,14 +106,24 @@ public class DependsString {
         String file;
         LocationDTO location;
         String type;
+        String modifier;
         String rawType;
 
-        public IndicesDTO(String object, String file, int line, int row, String type, String rawType){
+        public IndicesDTO(String object, String file, int line, int row, String type, String rawType, String modifier){
             this.object = object;
             this.file = file;
             this.location = new LocationDTO(line, row);
             this.type = type;
             this.rawType = rawType;
+            this.modifier = modifier;
+        }
+
+        public void setModifier(String modifier) {
+            this.modifier = modifier;
+        }
+
+        public String getModifier(){
+            return modifier;
         }
 
         public String getObject() {
@@ -240,8 +250,15 @@ public class DependsString {
                 System.out.println(entity.getQualifiedName());
                 entityFile = null;
             }
+            String m = "";
+            if (!entity.getModifiers().isEmpty()) {
+                for (String modifier : entity.getModifiers()) {
+                    m = m.concat(modifier + " ");
+                }
+                m = m.substring(0, m.length()-1);
+            }
             IndicesDTO indice = new IndicesDTO(entity.getQualifiedName(), entityFile, entity.getLocation().getStartLine(),
-                    entity.getLocation().getStartColumn(), singleCollect.getEntityType(entity.getId()), null);
+                    entity.getLocation().getStartColumn(), singleCollect.getEntityType(entity.getId()), null, m);
             dependsString.addIndice(indice);
         }
         dependsString.indexNum = singleCollect.getEntities().size();

@@ -1,6 +1,7 @@
 package visitor.relationInf;
 
 import com.sun.xml.bind.v2.schemagen.xmlschema.Annotation;
+import entity.properties.Relation;
 import util.Configure;
 import util.Tuple;
 import entity.*;
@@ -85,23 +86,23 @@ public class RelationInf extends RelationInterface {
         depMap.put(Configure.RELATION_OVERRIDE, 0);
         depMap.put(Configure.RELATION_REFLECT, 0);
         for (BaseEntity entity :singleCollect.getEntities()) {
-            for (Tuple<String, Integer> re : entity.getRelation()) {
-                if(re.getRelation().equals(Configure.RELATION_IMPORT) ||
-                        re.getRelation().equals(Configure.RELATION_INHERIT) ||
-                        re.getRelation().equals(Configure.RELATION_IMPLEMENT) ||
-                        re.getRelation().equals(Configure.RELATION_SET) ||
-                        re.getRelation().equals(Configure.RELATION_USE) ||
-                        re.getRelation().equals(Configure.RELATION_CALL) ||
-                        re.getRelation().equals(Configure.RELATION_PARAMETER) ||
-                        re.getRelation().equals(Configure.RELATION_MODIFY) ||
-                        re.getRelation().equals(Configure.RELATION_CALL_NON_DYNAMIC) ||
-                        re.getRelation().equals(Configure.RELATION_CAST) ||
-                        re.getRelation().equals(Configure.RELATION_ANNOTATE) ||
-                        re.getRelation().equals(Configure.RELATION_OVERRIDE) ||
-                        re.getRelation().equals(Configure.RELATION_REFLECT)
+            for (Relation re : entity.getRelation()) {
+                if(re.getKind().equals(Configure.RELATION_IMPORT) ||
+                        re.getKind().equals(Configure.RELATION_INHERIT) ||
+                        re.getKind().equals(Configure.RELATION_IMPLEMENT) ||
+                        re.getKind().equals(Configure.RELATION_SET) ||
+                        re.getKind().equals(Configure.RELATION_USE) ||
+                        re.getKind().equals(Configure.RELATION_CALL) ||
+                        re.getKind().equals(Configure.RELATION_PARAMETER) ||
+                        re.getKind().equals(Configure.RELATION_MODIFY) ||
+                        re.getKind().equals(Configure.RELATION_CALL_NON_DYNAMIC) ||
+                        re.getKind().equals(Configure.RELATION_CAST) ||
+                        re.getKind().equals(Configure.RELATION_ANNOTATE) ||
+                        re.getKind().equals(Configure.RELATION_OVERRIDE) ||
+                        re.getKind().equals(Configure.RELATION_REFLECT)
                 ) {
-                    int old = depMap.get(re.getRelation());
-                    depMap.put(re.getRelation(), old + 1);
+                    int old = depMap.get(re.getKind());
+                    depMap.put(re.getKind(), old + 1);
                 }
             }
         }
@@ -120,9 +121,9 @@ public class RelationInf extends RelationInterface {
         ArrayList<Tuple<String, String>> deps = new ArrayList<>();
         for(BaseEntity entity : singleCollect.getEntities()) {
             if(entity instanceof FileEntity){
-                for(Tuple<String, Integer> relation : entity.getRelation()){
-                    if(relation.getRelation().equals(Configure.RELATION_IMPORT)){
-                        int imported = relation.getId();
+                for(Relation relation : entity.getRelation()){
+                    if(relation.getKind().equals(Configure.RELATION_IMPORT)){
+                        int imported = relation.getToEntity();
                         String classOrPackageName = singleCollect.getEntityById(imported).getQualifiedName();
                         Tuple<String,String> dep = new Tuple<>(entity.getQualifiedName(),classOrPackageName);
                         deps.add(dep);
@@ -138,9 +139,9 @@ public class RelationInf extends RelationInterface {
         ArrayList<Tuple<String, String>> deps = new ArrayList<>();
         for(BaseEntity entity : singleCollect.getEntities()) {
             if(entity instanceof ClassEntity){
-                for(Tuple<String, Integer> relation : entity.getRelation()){
-                    if(relation.getRelation().equals(Configure.RELATION_IMPLEMENT)){
-                        int imported = relation.getId();
+                for(Relation relation : entity.getRelation()){
+                    if(relation.getKind().equals(Configure.RELATION_IMPLEMENT)){
+                        int imported = relation.getToEntity();
                         String classOrPackageName = singleCollect.getEntityById(imported).getQualifiedName();
                         Tuple<String,String> dep = new Tuple<>(entity.getQualifiedName(),classOrPackageName);
                         deps.add(dep);
@@ -156,9 +157,9 @@ public class RelationInf extends RelationInterface {
         ArrayList<Tuple<String, String>> deps = new ArrayList<>();
         for(BaseEntity entity : singleCollect.getEntities()) {
             if(entity instanceof ClassEntity || entity instanceof InterfaceEntity){
-                for(Tuple<String, Integer> relation : entity.getRelation()){
-                    if(relation.getRelation().equals(Configure.RELATION_INHERIT)){
-                        int imported = relation.getId();
+                for(Relation relation : entity.getRelation()){
+                    if(relation.getKind().equals(Configure.RELATION_INHERIT)){
+                        int imported = relation.getToEntity();
                         String classOrPackageName = singleCollect.getEntityById(imported).getQualifiedName();
                         Tuple<String,String> dep = new Tuple<>(entity.getQualifiedName(),classOrPackageName);
                         deps.add(dep);
@@ -189,9 +190,9 @@ public class RelationInf extends RelationInterface {
         ArrayList<Tuple<String, String>> deps = new ArrayList<>();
         for(BaseEntity entity : singleCollect.getEntities()) {
             if(entity instanceof MethodEntity){
-                for(Tuple<String, Integer> relation : entity.getRelation()){
-                    if(relation.getRelation().equals(Configure.RELATION_PARAMETER)){
-                        int imported = relation.getId();
+                for(Relation relation : entity.getRelation()){
+                    if(relation.getKind().equals(Configure.RELATION_PARAMETER)){
+                        int imported = relation.getToEntity();
                         String classOrPackageName = singleCollect.getEntityById(imported).getQualifiedName();
                         Tuple<String,String> dep = new Tuple<>(entity.getQualifiedName(),classOrPackageName);
                         deps.add(dep);

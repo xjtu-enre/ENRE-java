@@ -5,17 +5,17 @@ public class Tuple<L,R>  {
     private L l;
     private R r;
 
-    public Tuple(L relation, R id){
+    public Tuple(L l, R r){
         super();
-        this.l = relation;
-        this.r = id;
+        this.l = l;
+        this.r = r;
     }
 
-    public L getRelation() {
+    public L getL() {
         return this.l;
     }
 
-    public R getId() {
+    public R getR() {
         return this.r;
     }
 

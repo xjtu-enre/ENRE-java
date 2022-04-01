@@ -1,6 +1,7 @@
 package hianalyzer;
 
 import entity.*;
+import entity.properties.Relation;
 import util.Configure;
 import util.Tuple;
 import util.SingleCollect;
@@ -54,9 +55,9 @@ public class HiDeper {
      * folder->folder
      */
     private void buildDep(BaseEntity entity) {
-        for (Tuple<String, Integer> relation : entity.getRelation()) {
-            String primitiveType = relation.getRelation();
-            int id2 = relation.getId();
+        for (Relation relation : entity.getRelation()) {
+            String primitiveType = relation.getKind();
+            int id2 = relation.getToEntity();
 
             if (primitiveType.equals(Configure.RELATION_IMPLEMENT)
                     || primitiveType.equals(Configure.RELATION_INHERIT)) {

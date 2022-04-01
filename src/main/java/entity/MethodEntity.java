@@ -1,6 +1,8 @@
 package entity;
 
 import entity.properties.Block;
+import entity.properties.Location;
+import util.Tuple;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,12 +13,6 @@ public class MethodEntity extends ScopeEntity{
     protected String returnType = null;
     protected String returnExpression = null;
     protected boolean isConstructor = false;
-
-    //record the declared class's qualified name of called method and its name
-    //like declared class-called method
-    protected ArrayList<String> call = new ArrayList<>();
-    //record the called super method name
-    protected ArrayList<String> callNondynamic = new ArrayList<>();
 
     //record the id of blocks in method
     protected ArrayList<Block> blocks = new ArrayList<>();
@@ -94,22 +90,6 @@ public class MethodEntity extends ScopeEntity{
 
     public boolean isConstructor() {
         return isConstructor;
-    }
-
-    public void addCall(String className){
-        this.call.add(className);
-    }
-
-    public  ArrayList<String> getCall() {
-        return this.call;
-    }
-
-    public void addCallNondynamic(String name){
-        this.callNondynamic.add(name);
-    }
-
-    public  ArrayList<String> getCallNondynamic() {
-        return this.callNondynamic;
     }
 
     public void addBlock (Block block){

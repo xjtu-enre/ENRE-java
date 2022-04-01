@@ -72,6 +72,7 @@ entity\MethodEntity.class
 entity\EnumConstantEntity.class
 entity\BaseEntity.class
 entity\EnumEntity.class
+entity\properties\Relation.class
 entity\AnnotationEntity.class
 client\IdentifyRelations.class
 formator\MapObject.class

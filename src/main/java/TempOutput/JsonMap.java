@@ -1,6 +1,7 @@
 package TempOutput;
 
 import entity.BaseEntity;
+import entity.properties.Relation;
 import formator.MapObject;
 import util.Configure;
 import util.SingleCollect;
@@ -16,8 +17,8 @@ public class JsonMap {
 
     public Map<Integer, Map<Integer, Map<String, Integer>>> getFinalRes (){
         for(BaseEntity entity :singleCollect.getEntities()){
-            for(Tuple relation : entity.getRelation()){
-                switch ((String)relation.getRelation()){
+            for(Relation relation : entity.getRelation()){
+                switch (relation.getKind()){
                     case Configure.RELATION_IMPORT:
                         finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_IMPORT));
                         break;
@@ -31,7 +32,8 @@ public class JsonMap {
                         finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CALL));
                         break;
                     case Configure.RELATION_CALL_NON_DYNAMIC:
-                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CALL_NON_DYNAMIC));
+//                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CALL_NON_DYNAMIC));
+                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CALL));
                         break;
                     case Configure.RELATION_IMPLEMENT:
                         finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_IMPLEMENT));
@@ -55,6 +57,9 @@ public class JsonMap {
                     case Configure.RELATION_CONTAIN:
                         finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CONTAIN));
                         break;
+                    case Configure.RELATION_DEFINE:
+                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_DEFINE));
+                        break;
                     case Configure.RELATION_OVERRIDE:
                         finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_OVERRIDE));
                         break;
@@ -67,7 +72,7 @@ public class JsonMap {
         return finalRes;
     }
 
-    private Map<Integer, Map<String, Integer>> supplementRes(int entityId, Tuple relation, String type){
+    private Map<Integer, Map<String, Integer>> supplementRes(int entityId, Relation relation, String type){
         Map<String, Integer> relationType = new HashMap<String, Integer>();
         relationType.put(type, 1);
 
@@ -75,7 +80,7 @@ public class JsonMap {
         if(finalRes.containsKey(entityId)){
             dest = finalRes.get(entityId);
         }
-        dest.put((Integer) relation.getId(),relationType);
+        dest.put(relation.getToEntity(),relationType);
 
         return dest;
     }

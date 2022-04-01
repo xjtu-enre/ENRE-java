@@ -31,7 +31,7 @@ public class ProcessEntity {
      * @param length the char length of node
      * @return location
      */
-    public Location supplement_location (CompilationUnit cu, int start_position, int length){
+    public static Location supplement_location (CompilationUnit cu, int start_position, int length){
         Location location = new Location();
 
         location.setStartLine(cu.getLineNumber(start_position));
@@ -465,56 +465,48 @@ public class ProcessEntity {
 
         ArrayList<Integer> variableIds = new ArrayList<Integer>();
 
-        String varName;
-        int varId;
-
         //iterate the fragment
         for(VariableDeclarationFragment frag : fragment){
-            varName = frag.getName().getIdentifier();
-//            if(varName.equals())
-            varId = singleCollect.getCurrentIndex();
-            VariableEntity varEntity = new VariableEntity(varId,varName,varType);
-            varEntity.setParentId(parentId);
-            varEntity.setQualifiedName(singleCollect.getEntityById(parentId).getQualifiedName()+"."+varName);
-            varEntity.setBlockId(blockId);
-            varEntity.addModifiers(modifiers);
-            varEntity.setGlobal(globalFlag);
-            //set init
-            if(frag.getInitializer() != null){
-                varEntity.setSetBy(parentId);
-                varEntity.setValue(frag.getInitializer().toString());
-            }
-
-            //variableEntity.setCodeSnippet(frag.toString());
-            variableIds.add(varId);
-
-            if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
-                varEntity.setHidden(true);
-            }
-
-            varEntity.setLocation(supplement_location(cu, frag.getStartPosition(), frag.getLength()));
-
-            singleCollect.addEntity(varEntity);
-
-            //supplement parent method
-            if(singleCollect.isMethod(parentId)){
-                ((MethodEntity)singleCollect.getEntityById(parentId)).addLocalVar(varEntity);
-            }
-
-            //supplement static
-            if (staticFlag == 1){
-                ((ClassEntity) singleCollect.getEntityById(parentId)).addStaticMap(singleCollect.getEntityById(parentId).getQualifiedName()+"."+varName, varId);
-            }
-
-//            //supplement global or local
-//            if (globalFlag){
-//                varEntity.setAccessibility("Global");
-//            }else {
-//                varEntity.setAccessibility("Local");
-//            }
-
+            variableIds.add(processVarDeclFragment(frag, parentId, varType, blockId, staticFlag, globalFlag, modifiers, cu));
         }
         return variableIds;
+    }
+
+    public int processVarDeclFragment(VariableDeclarationFragment frag, int parentId, String varType, int blockId,
+                                      int staticFlag, boolean globalFlag, ArrayList<String> modifiers, CompilationUnit cu){
+        String varName = frag.getName().getIdentifier();
+        int varId = singleCollect.getCurrentIndex();
+        VariableEntity varEntity = new VariableEntity(varId,varName,varType);
+        varEntity.setParentId(parentId);
+        varEntity.setQualifiedName(singleCollect.getEntityById(parentId).getQualifiedName()+"."+varName);
+        varEntity.setBlockId(blockId);
+        varEntity.addModifiers(modifiers);
+        varEntity.setGlobal(globalFlag);
+        //set init
+        if(frag.getInitializer() != null){
+            varEntity.setSetBy(parentId);
+            varEntity.setValue(frag.getInitializer().toString());
+        }
+
+        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+            varEntity.setHidden(true);
+        }
+
+        varEntity.setLocation(supplement_location(cu, frag.getStartPosition(), frag.getLength()));
+
+        singleCollect.addEntity(varEntity);
+
+        //supplement parent method
+        if(singleCollect.isMethod(parentId)){
+            ((MethodEntity)singleCollect.getEntityById(parentId)).addLocalVar(varEntity);
+        }
+
+        //supplement static
+        if (staticFlag == 1){
+            ((ClassEntity) singleCollect.getEntityById(parentId)).addStaticMap(singleCollect.getEntityById(parentId).getQualifiedName()+"."+varName, varId);
+        }
+
+        return varId;
     }
 
     /**

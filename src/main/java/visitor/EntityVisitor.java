@@ -1,6 +1,7 @@
 package visitor;
 
 import entity.*;
+import entity.properties.Location;
 import org.eclipse.jdt.core.dom.*;
 import util.Configure;
 import util.PathUtil;
@@ -15,14 +16,6 @@ public class EntityVisitor extends ASTVisitor {
     private String fileFullPath = null;
     //current complication unit
     private CompilationUnit cu;
-//    //current file's parent package id
-//    private int packageId = -1;
-//    //current file's id
-//    private int fileId = -1;
-//    //current type id
-//    private int typeId = -1;
-//    //current method id
-//    private int methodId = -1;
 
     private final ProcessEntity processEntity = new ProcessEntity();
     SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
@@ -106,15 +99,17 @@ public class EntityVisitor extends ASTVisitor {
         //current file
         int fileId = createAFile();
 
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
+
         if(node.isStatic()){
-            ((FileEntity) singleCollect.getEntityById(fileId)).addImportStatic(node.getName().getFullyQualifiedName());
+            ((FileEntity) singleCollect.getEntityById(fileId)).addImportStatic(node.getName().getFullyQualifiedName(), loc);
         }
         else if(node.isOnDemand()){
             //add package
-            ((FileEntity) singleCollect.getEntityById(fileId)).addImportOnDemand(node.getName().getFullyQualifiedName());
+            ((FileEntity) singleCollect.getEntityById(fileId)).addImportOnDemand(node.getName().getFullyQualifiedName(), loc);
         } else {
             //add file
-            ((FileEntity) singleCollect.getEntityById(fileId)).addImportClass(node.getName().getFullyQualifiedName());
+            ((FileEntity) singleCollect.getEntityById(fileId)).addImportClass(node.getName().getFullyQualifiedName(), loc);
         }
 
         return super.visit(node);
@@ -149,9 +144,6 @@ public class EntityVisitor extends ASTVisitor {
         if(singleCollect.getEntityById(parentId) instanceof TypeEntity){
             ((TypeEntity) singleCollect.getEntityById(parentId)).addInnerType(typeId);
         }
-
-        //supplement the entity's code snippet
-        //singleCollect.getEntities().get(typeId).setCodeSnippet(node.toString());
 
         //add class or interface id into the top of stack
         scopeStack.push(typeId);
@@ -365,10 +357,6 @@ public class EntityVisitor extends ASTVisitor {
         }else{
 //            System.out.println(blockStackForMethod.peek());
 //            int currentBlock = blockStackForMethod.peek();
-//            if(this.fileFullPath.equals("java/com/android/internal/app/AlertController.java")){
-//                System.out.println(node.toString());
-//                System.out.println(blockStackForMethod.peek());
-//            }
             ArrayList<String> modifiers = new ArrayList<>();
             for(Object o : node.modifiers()){
                 modifiers.add(o.toString());
@@ -450,6 +438,28 @@ public class EntityVisitor extends ASTVisitor {
         super.endVisit(node);
     }
 
+    @Override
+    public boolean visit(VariableDeclarationExpression node) {
+
+        ArrayList<String> modifiers = new ArrayList<>();
+        for(Object o : node.modifiers()){
+            modifiers.add(o.toString());
+        }
+
+        ArrayList<Integer> forVar = processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(), node.getType().toString(), blockStack.peek(), -1, false, modifiers, cu);
+
+        //supplement method children's id
+        singleCollect.getEntityById(scopeStack.peek()).addChildrenIds(forVar);
+
+        for (int varId : forVar){
+            entityStack.push(varId);
+        }
+
+        return super.visit(node);
+    }
+
+
+
     /**
      * Visit a method parameter node
      *
@@ -514,12 +524,16 @@ public class EntityVisitor extends ASTVisitor {
     public boolean visit(MethodInvocation node){
         String methodName = node.getName().toString();
         IMethodBinding methodBinding = node.resolveMethodBinding();
+
+        //call location
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
+
         if (methodBinding != null) {
             ITypeBinding declaringClass = methodBinding.getDeclaringClass();
             String declaringTypeQualifiedName = declaringClass.getQualifiedName();
 
-            if(singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity){
-                ((MethodEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName+"-"+methodName);
+            if(singleCollect.getEntityById(scopeStack.peek()) instanceof ScopeEntity){
+                ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName+"-"+methodName, loc);
             }
 
             //check reflection
@@ -544,8 +558,9 @@ public class EntityVisitor extends ASTVisitor {
     @Override
     public boolean visit(SuperMethodInvocation node){
         String methodName = node.getName().toString();
-        if(singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity){
-            ((MethodEntity) singleCollect.getEntityById(scopeStack.peek())).addCallNondynamic(methodName);
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
+        if(singleCollect.getEntityById(scopeStack.peek()) instanceof ScopeEntity){
+            ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCallNondynamic(methodName, loc);
         }
         return super.visit(node);
     }

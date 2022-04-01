@@ -1,6 +1,7 @@
 package writer;
 
 import entity.*;
+import entity.properties.Relation;
 import util.SingleCollect;
 import util.Configure;
 import util.Tuple;
@@ -34,9 +35,9 @@ public class UndWriter {
             int id1 = entity.getId();
             String shortname1 = getShortName(id1);
             String longname1 = getLongName(id1);
-            for (Tuple<String, Integer> relation : entity.getRelation()) {
-                String depType = getDepType(relation.getRelation());
-                int id2 = relation.getId();
+            for (Relation relation : entity.getRelation()) {
+                String depType = getDepType(relation.getKind());
+                int id2 = relation.getToEntity();
                 if(!depType.equals("")) {
                     String shorname2 = getShortName(id2);
                     String longname2 = getLongName(id2);
@@ -58,9 +59,9 @@ public class UndWriter {
         for(BaseEntity entity : singleCollect.getEntities()) {
             int id1 = entity.getId();
             String longname1 = getLongName(id1);
-            for (Tuple<String, Integer> relation : entity.getRelation()) {
-                String depType = getDepType(relation.getRelation());
-                int id2 = relation.getId();
+            for (Relation relation : entity.getRelation()) {
+                String depType = getDepType(relation.getKind());
+                int id2 = relation.getToEntity();
                 if(!depType.equals("")) {
                     String longname2 = getLongName(id2);
                     if(!depSta.containsKey(depType)) {

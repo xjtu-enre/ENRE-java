@@ -1,8 +1,10 @@
 package visitor.deper;
 
 import entity.*;
+import entity.properties.Location;
 import util.PathUtil;
 import util.SingleCollect;
+import util.Tuple;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +25,12 @@ public abstract class DepBackfill{
 
         singleCollect.getEntityById(entityId1).addRelation(relationType1, entityId2);
         singleCollect.getEntityById(entityId2).addRelation(relationType2, entityId1);
+    }
+
+    protected void saveRelation(int entityId1, int entityId2, String relationType1, String relationType2, Location location) {
+
+        singleCollect.getEntityById(entityId1).addRelation(relationType1, entityId2, location);
+        singleCollect.getEntityById(entityId2).addRelation(relationType2, entityId1, location);
     }
 
     /**
@@ -62,10 +70,10 @@ public abstract class DepBackfill{
      * @param importedPackage the imported package in file
      * @return
      */
-    public int findTypeInImport(String name, HashMap<String, Integer> importedClass, HashMap<String, Integer> importedPackage){
+    public int findTypeInImport(String name, HashMap<Tuple<String, Location>, Integer> importedClass, HashMap<Tuple<String, Location>, Integer> importedPackage){
         int typeId = -1;
-        for(String fileFullName : importedClass.keySet()){
-            if(PathUtil.getLastStrByDot(fileFullName).equals(name)){
+        for(Tuple<String, Location> fileFullName : importedClass.keySet()){
+            if(PathUtil.getLastStrByDot(fileFullName.getL()).equals(name)){
                 typeId = importedClass.get(fileFullName);
                 break;
             }
@@ -73,9 +81,9 @@ public abstract class DepBackfill{
         if(typeId == -1){
             int pkgId;
             //means it is not be found in file, we need to traverse package
-            for(String pkgFullName : importedPackage.keySet()){
-                if(singleCollect.getCreatedPackage().containsKey(pkgFullName)){
-                    pkgId = singleCollect.getCreatedPackage().get(pkgFullName);
+            for(Tuple<String, Location> pkgFullName : importedPackage.keySet()){
+                if(singleCollect.getCreatedPackage().containsKey(pkgFullName.getL())){
+                    pkgId = singleCollect.getCreatedPackage().get(pkgFullName.getL());
                     for (int id : singleCollect.getEntityById(pkgId).getChildrenIds()) {
                         if (singleCollect.isFile(id)) {
                             for (int childId : singleCollect.getEntityById(id).getChildrenIds()) {

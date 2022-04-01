@@ -1,9 +1,9 @@
 package entity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import entity.properties.Location;
+import entity.properties.Relation;
 import util.Tuple;
 
 public class BaseEntity {
@@ -15,7 +15,7 @@ public class BaseEntity {
     protected ArrayList<Integer> childrenIds = new ArrayList<Integer>();
     //protected String codeSnippet;
     //String is the relation type , and Integer is corresponding entity's id
-    protected ArrayList<Tuple<String, Integer>> relation = new ArrayList<Tuple<String, Integer>>();
+    protected ArrayList<Relation> relation = new ArrayList<>();
     protected Location location = new Location();
 
     protected ArrayList<String> annotations = new ArrayList<>();
@@ -88,10 +88,14 @@ public class BaseEntity {
 //    }
 
     public void addRelation(String relation, int relatedId){
-        this.relation.add(new Tuple<String, Integer>(relation, relatedId));
+        this.relation.add(new Relation(relation, relatedId));
     }
 
-    public ArrayList<Tuple<String, Integer>> getRelation(){
+    public void addRelation(String relation, int relationId, Location relationLoc){
+        this.relation.add(new Relation(relation, relationId, relationLoc));
+    }
+
+    public ArrayList<Relation> getRelation(){
         return this.relation;
     }
 
