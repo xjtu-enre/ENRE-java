@@ -6,6 +6,7 @@ import entity.BaseEntity;
 import entity.ClassEntity;
 import entity.FileEntity;
 import entity.MethodEntity;
+import entity.properties.CallSite;
 import entity.properties.Location;
 import entity.properties.Relation;
 import util.SingleCollect;
@@ -109,8 +110,8 @@ public class Impl {
             //call method --> method
             if(entity instanceof MethodEntity){
                 String currentClass = singleCollect.getEntityById(entity.getParentId()).getQualifiedName();
-                for(Tuple<String, Location> class_method : ((MethodEntity) entity).getCall()){
-                    String calledClass = class_method.getL().split("-")[0];
+                for(CallSite class_method : ((MethodEntity) entity).getCall()){
+                    String calledClass = class_method.getDeclaringTypeQualifiedName();
                     //different class
                     if(!currentClass.equals(calledClass)){
                         if(struct.containsKey(currentClass)){

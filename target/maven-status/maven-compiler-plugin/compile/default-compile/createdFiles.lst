@@ -60,6 +60,7 @@ util\Configure.class
 visitor\deper\CastBf.class
 TempOutput\JsonFormatTool.class
 TempOutput\DependsString.class
+entity\properties\CallSite.class
 writer\JsonWriter.class
 entity\properties\Location.class
 entity\VariableEntity.class

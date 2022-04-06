@@ -3,6 +3,7 @@ package TempOutput;
 import entity.BaseEntity;
 import entity.FileEntity;
 import entity.PackageEntity;
+import entity.properties.Relation;
 import util.SingleCollect;
 
 import java.util.ArrayList;
@@ -255,7 +256,12 @@ public class DependsString {
                 for (String modifier : entity.getModifiers()) {
                     m = m.concat(modifier + " ");
                 }
-                m = m.substring(0, m.length()-1);
+                try{
+                    m = m.substring(0, m.length()-1);
+                } catch (StringIndexOutOfBoundsException e){
+                    System.out.println("Exception Entity : " + entity.getQualifiedName());
+                    System.out.println("Please check its modifiers...");
+                }
             }
             IndicesDTO indice = new IndicesDTO(entity.getQualifiedName(), entityFile, entity.getLocation().getStartLine(),
                     entity.getLocation().getStartColumn(), singleCollect.getEntityType(entity.getId()), null, m);
@@ -269,7 +275,7 @@ public class DependsString {
         dependsString.nodeNum = dependsString.variables.size();
 
         JsonMap jsonMap = new JsonMap();
-        Map<Integer, Map<Integer, Map<String, Integer>>> relationMap = jsonMap.getFinalRes();
+        Map<Integer, Map<Integer, Relation>> relationMap = jsonMap.getFinalRes();
         for(int fromEntity:relationMap.keySet()) {
             if (singleCollect.getEntityById(fromEntity) instanceof PackageEntity){
                 continue;
@@ -305,11 +311,12 @@ public class DependsString {
                 }
 
                 if (currentCell != null){
-                    for (String type : relationMap.get(fromEntity).get(toEntity).keySet()) {
-                        DetailDTO detail = new DetailDTO(fromEntity, toEntity, type, 0, 0);
-                        currentCell.addValue(type);
+//                    for (String type : relationMap.get(fromEntity).get(toEntity)) {
+                    Relation type = relationMap.get(fromEntity).get(toEntity);
+                        DetailDTO detail = new DetailDTO(fromEntity, toEntity, type.getKind(), 0, 0);
+                        currentCell.addValue(type.getKind());
                         currentCell.details.add(detail);
-                    }
+//                    }
                     dependsString.addCell(currentCell);
                 }
             }

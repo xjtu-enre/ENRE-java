@@ -13,9 +13,9 @@ import java.util.Map;
 public class JsonMap {
 
     protected SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
-    private Map<Integer, Map<Integer, Map<String, Integer>>> finalRes = new HashMap<Integer, Map<Integer, Map<String, Integer>>>();
+    private Map<Integer, Map<Integer, Relation>> finalRes = new HashMap<Integer, Map<Integer, Relation>>();
 
-    public Map<Integer, Map<Integer, Map<String, Integer>>> getFinalRes (){
+    public Map<Integer, Map<Integer, Relation>> getFinalRes (){
         for(BaseEntity entity :singleCollect.getEntities()){
             for(Relation relation : entity.getRelation()){
                 switch (relation.getKind()){
@@ -72,15 +72,14 @@ public class JsonMap {
         return finalRes;
     }
 
-    private Map<Integer, Map<String, Integer>> supplementRes(int entityId, Relation relation, String type){
-        Map<String, Integer> relationType = new HashMap<String, Integer>();
-        relationType.put(type, 1);
+    private Map<Integer, Relation> supplementRes(int entityId, Relation relation, String type){
 
-        Map<Integer, Map<String, Integer>> dest = new HashMap<>();
+        Map<Integer, Relation> dest = new HashMap<>();
         if(finalRes.containsKey(entityId)){
             dest = finalRes.get(entityId);
         }
-        dest.put(relation.getToEntity(),relationType);
+        relation.setKind(type);
+        dest.put(relation.getToEntity(),relation);
 
         return dest;
     }

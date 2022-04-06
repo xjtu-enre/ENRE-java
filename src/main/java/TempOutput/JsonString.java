@@ -3,6 +3,7 @@ package TempOutput;
 import java.util.*;
 
 import entity.*;
+import entity.properties.Relation;
 import org.json.JSONObject;
 
 import util.SingleCollect;
@@ -20,7 +21,7 @@ public class JsonString {
         return nameTonum;
     }
 
-    public static String JSONWriteRelation(Map<Integer, Map<Integer, Map<String, Integer>>> relationMap) throws Exception {
+    public static String JSONWriteRelation(Map<Integer, Map<Integer, Relation>> relationMap) throws Exception {
 
         JSONObject obj=new JSONObject();//创建JSONObject对象
 
@@ -75,9 +76,16 @@ public class JsonString {
             if (!entity.getModifiers().isEmpty()){
                 String m = "";
                 for (String modifier : entity.getModifiers()){
-                    m = m.concat(modifier + " ");
+                    if (!modifier.contains("@")){
+                        m = m.concat(modifier + " ");
+                    }
                 }
-                entityObj.put("modifiers", m.substring(0, m.length()-1));
+                try {
+                    entityObj.put("modifiers", m.substring(0, m.length()-1));
+                }catch (StringIndexOutOfBoundsException e){
+                    entityObj.put("modifiers", m);
+                }
+
             }
 
 //            if(entity instanceof MethodEntity){
@@ -89,7 +97,7 @@ public class JsonString {
 //            }
             if(entity instanceof VariableEntity){
                 entityObj.put("global", ((VariableEntity) entity).getGlobal());
-//                entityObj.put("type", ((VariableEntity) entity).getType());
+                entityObj.put("type", ((VariableEntity) entity).getType());
             }
             if(entity instanceof TypeEntity && !((TypeEntity) entity).getInnerType().isEmpty()){
                 entityObj.put("innerType", ((TypeEntity) entity).getInnerType());
@@ -117,7 +125,8 @@ public class JsonString {
 
         for(int fromEntity:relationMap.keySet()) {
             for(int toEntity:relationMap.get(fromEntity).keySet()) {
-                for(String type:relationMap.get(fromEntity).get(toEntity).keySet()) {
+//                for(Relation type : relationMap.get(fromEntity).get(toEntity)) {
+                    Relation type = relationMap.get(fromEntity).get(toEntity);
                     JSONObject subObj=new JSONObject();//创建对象数组里的子对象
 
 //                    JSONObject srcObj = new JSONObject();
@@ -142,11 +151,14 @@ public class JsonString {
 //   l                 subObj.accumulate("dest", destObj);
 
                     JSONObject reObj=new JSONObject();//创建对象数组里的子对象
-                    reObj.put(type, 1);
+                    reObj.put(type.getKind(), 1);
+                    if (type.getBindVar() != -1){
+                        reObj.put("bindVar", type.getBindVar());
+                    }
                     subObj.accumulate("values",reObj);
                     obj.accumulate("cells",subObj);
 
-                }
+//                }
 
             }
         }

@@ -4,6 +4,7 @@ import entity.BaseEntity;
 import entity.ClassEntity;
 import entity.MethodEntity;
 import entity.ScopeEntity;
+import entity.properties.CallSite;
 import entity.properties.Location;
 import util.Configure;
 import util.Tuple;
@@ -16,10 +17,10 @@ public class CallBf extends DepBackfill{
             if(entity instanceof ScopeEntity){
                 //call
                 if(!((ScopeEntity) entity).getCall().isEmpty()){
-                    for(Tuple<String, Location> className2method : ((ScopeEntity) entity).getCall()){
-                        int id = findMethodByType(className2method.getL());
+                    for(CallSite className2method : ((ScopeEntity) entity).getCall()){
+                        int id = findMethodByType(className2method.getDeclaringTypeQualifiedName(), className2method.getCallMethodName());
                         if(id != -1){
-                            saveRelation(entity.getId(), id, Configure.RELATION_CALL, Configure.RELATION_CALLED_BY, className2method.getR());
+                            saveRelation(entity.getId(), id, Configure.RELATION_CALL, Configure.RELATION_CALLED_BY, className2method.getLocation(), className2method.getBindVar());
                         }
                     }
                 }
@@ -55,10 +56,10 @@ public class CallBf extends DepBackfill{
         return methodId;
     }
 
-    public int findMethodByType(String classQualifiedName2method){
+    public int findMethodByType(String classQualifiedName, String methodName){
         int declaredClassId = -1;
-        String classQualifiedName = classQualifiedName2method.split("-")[0];
-        String methodName = classQualifiedName2method.split("-")[1];
+//        String classQualifiedName = classQualifiedName2method.split("-")[0];
+//        String methodName = classQualifiedName2method.split("-")[1];
         if(singleCollect.getCreatedType().containsKey(classQualifiedName)){
             declaredClassId = singleCollect.getCreatedType().get(classQualifiedName);
         }

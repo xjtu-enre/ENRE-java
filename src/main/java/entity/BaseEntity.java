@@ -95,6 +95,10 @@ public class BaseEntity {
         this.relation.add(new Relation(relation, relationId, relationLoc));
     }
 
+    public void addRelation(String relation, int relationId, Location relationLoc, int bindVar){
+        this.relation.add(new Relation(relation, relationId, relationLoc, bindVar));
+    }
+
     public ArrayList<Relation> getRelation(){
         return this.relation;
     }
