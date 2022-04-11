@@ -10,10 +10,14 @@ public class VarInfoBf extends DepBackfill{
     @Override
     public void setDep() {
         for(BaseEntity entity :singleCollect.getEntities()){
-            //set
             if(entity instanceof VariableEntity){
+                //set
                 if(((VariableEntity) entity).getSetBy() != 0)
                     saveRelation(entity.getId(),((VariableEntity) entity).getSetBy(), Configure.RELATION_SET, Configure.RELATION_SETED_BY);
+                //Typed
+                if (singleCollect.getCreatedType().containsKey(entity.getRawType())){
+                    saveRelation(entity.getId(), singleCollect.getCreatedType().get(entity.getRawType()), Configure.RELATION_TYPED, Configure.RELATION_TYPED_BY);
+                }
             }
             //use & modify
             if(entity instanceof MethodEntity){

@@ -175,7 +175,7 @@ public abstract class DepBackfill{
                 MethodEntity methodEntity = (MethodEntity) singleCollect.getEntityById(childId);
                 OverrideBf.innerMeth iMeth = new OverrideBf.innerMeth(methodEntity.getName(), methodEntity.getReturnType());
                 for(int paraId : methodEntity.getParameters()){
-                    iMeth.addPara(((VariableEntity) singleCollect.getEntityById(paraId)).getType());
+                    iMeth.addPara(singleCollect.getEntityById(paraId).getRawType());
                 }
                 iMeths.put(iMeth, methodEntity.getId());
             }

@@ -30,12 +30,18 @@ public class Configure {
     public static final String STRING_COLON = ":";
     public static final String EQUAL = "=";
 
-    public static final String BASIC_ENTITY_METHOD = "method";
-    public static final String BASIC_ENTITY_CLASS = "class";
-    public static final String BASIC_ENTITY_FILE = "file";
-    public static final String BASIC_ENTITY_PACKAGE = "package";
-    public static final String BASIC_ENTITY_INTERFACE = "interface";
-    public static final String BASIC_ENTITY_VARIABLE = "variable";
+    public static final String BASIC_ENTITY_METHOD = "Method";
+    public static final String BASIC_ENTITY_CLASS = "Class";
+    public static final String BASIC_ENTITY_FILE = "File";
+    public static final String BASIC_ENTITY_PACKAGE = "Package";
+    public static final String BASIC_ENTITY_INTERFACE = "Interface";
+    public static final String BASIC_ENTITY_VARIABLE = "Variable";
+    public static final String BASIC_ENTITY_CONSTRUCTOR = "Constructor";
+    public static final String BASIC_ENTITY_ANNOTATION = "Annotation";
+    public static final String BASIC_ENTITY_ENUM = "Enum";
+    public static final String BASIC_ENTITY_ENUM_CONSTANT = "Enum Constant";
+    public static final String BASIC_ENTITY_ANNOTATION_MEMBER = "Annotation Member";
+
 
     public static final String IMPLICIT_DEPENDENCY = "Implicit";
     public static final String EXPLICIT_DEPENDENCY = "Explicit";
@@ -100,6 +106,9 @@ public class Configure {
     public static final String RELATION_REFLECT = "Reflect";
     public static final String RELATION_REFLECTED_BY = "Reflected by";
 
+    public static final String RELATION_TYPED = "Typed";
+    public static final String RELATION_TYPED_BY = "Type by";
+
     public static final String RELATION_EXTEND = "Extend";
 
     //public static final String RELATION_LEVEL_FILE = "File";
@@ -118,14 +127,14 @@ public class Configure {
     //kinds of annotation target type
     public static final String ANNOTATION_TYPE = "Another annotation";
     public static final String CONSTRUCTOR = "Constructor";
-    public static final String FIELD = "Field";
-    public static final String LOCAL_VARIABLE = "Local variable";
-    public static final String METHOD = "Method";
-    public static final String PACKAGE = "Package";
-    public static final String PARAMETER = "Parameter";
-    public static final String CLASS_TYPE = "Class";
-    public static final String INTERFACE_TYPE = "Interface";
-    public static final String ENUMERATION_TYPE = "Enumeration";
+    public static final String ANNOTATION_FIELD = "Field";
+    public static final String ANNOTATION_LOCAL_VARIABLE = "Local variable";
+    public static final String ANNOTATION_METHOD = "Method";
+    public static final String ANNOTATION_PACKAGE = "Package";
+    public static final String ANNOTATION_PARAMETER = "Parameter";
+    public static final String ANNOTATION_CLASS_TYPE = "Class";
+    public static final String ANNOTATION_INTERFACE_TYPE = "Interface";
+    public static final String ANNOTATION_ENUMERATION_TYPE = "Enumeration";
 
     //kinds of annotation retention
     public static final String SOURCE = "Source";

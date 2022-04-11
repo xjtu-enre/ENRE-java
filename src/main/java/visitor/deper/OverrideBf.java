@@ -91,7 +91,7 @@ public class OverrideBf extends DepBackfill{
             MethodEntity currentMeth = (MethodEntity) singleCollect.getEntityById(MethId);
             ArrayList<String> currentParas = new ArrayList<>();
             for (int paraId : currentMeth.getParameters()){
-                currentParas.add(((VariableEntity) singleCollect.getEntityById(paraId)).getType());
+                currentParas.add(singleCollect.getEntityById(paraId).getRawType());
             }
             for (OverrideBf.innerMeth superMeth : superMeths.keySet()){
                 if (currentMeth.getName().equals(superMeth.getName())){

@@ -66,6 +66,8 @@ public class JsonMap {
                     case Configure.RELATION_REFLECT:
                         finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_REFLECT));
                         break;
+                    case Configure.RELATION_TYPED:
+                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation, Configure.RELATION_TYPED));
                 }
             }
         }

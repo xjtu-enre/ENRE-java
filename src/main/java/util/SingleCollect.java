@@ -198,27 +198,28 @@ public class SingleCollect {
     public String getEntityType(int id){
         String type = "Unknown";
         if(isPackage(id))
-            type = "Package";
+            type = Configure.BASIC_ENTITY_PACKAGE;
         else if (isClass(id))
-            type = "Class";
+            type = Configure.BASIC_ENTITY_CLASS;
         else if (isMethod(id))
-            type = "Method";
+            type = Configure.BASIC_ENTITY_METHOD;
         else if (isFile(id))
-            type = "File";
+            type = Configure.BASIC_ENTITY_FILE;
         else if (isConstructor(id))
-            type = "Constructor";
+//            type = Configure.BASIC_ENTITY_CONSTRUCTOR;
+            type = Configure.BASIC_ENTITY_METHOD;
         else if (isInterface(id))
-            type = "Interface";
+            type = Configure.ANNOTATION_INTERFACE_TYPE;
         else if (isAnnotation(id))
-            type = "Annotation";
+            type = Configure.BASIC_ENTITY_ANNOTATION;
         else if (isEnum(id))
-            type = "Enum";
+            type = Configure.BASIC_ENTITY_ENUM;
         else if (isEnumCont(id))
-            type = "Enum Constant";
+            type = Configure.BASIC_ENTITY_ENUM_CONSTANT;
         else if (isAnnotationMem(id))
-            type = "Annotation Member";
+            type = Configure.BASIC_ENTITY_ANNOTATION_MEMBER;
         else if (isVariable(id))
-            type = "Variable";
+            type = Configure.BASIC_ENTITY_VARIABLE;
         return type;
     }
 

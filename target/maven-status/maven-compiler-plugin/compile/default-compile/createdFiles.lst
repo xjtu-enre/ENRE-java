@@ -46,6 +46,7 @@ util\OsUtil.class
 visitor\deper\ContainBf.class
 writer\VizWriter\Render.class
 formator\spreadsheet\Csvgrapher.class
+visitor\CKVisitor.class
 formator\fxml\XCell.class
 entity\ClassEntity.class
 TempOutput\CreateFileUtil.class

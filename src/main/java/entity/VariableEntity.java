@@ -2,7 +2,7 @@ package entity;
 
 public class VariableEntity extends BaseEntity{
 
-    private String type;
+//    private String type;
     private String value = null;
     //for local variable
     private int blockId;
@@ -15,16 +15,16 @@ public class VariableEntity extends BaseEntity{
     public VariableEntity(int id, String name, String type){
         this.id = id;
         this.name = name;
-        this.type = type;
+        this.rawType = type;
     }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+//
+//    public String getType() {
+//        return type;
+//    }
+//
+//    public void setType(String type) {
+//        this.type = type;
+//    }
 
     public String getValue() {
         return value;
@@ -61,7 +61,7 @@ public class VariableEntity extends BaseEntity{
     @Override
     public String toString() {
         return "VariableEntity{" +
-                "type='" + type + '\'' +
+                "type='" + rawType + '\'' +
                 ", value='" + value + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", simpleName='" + name + '\'' +

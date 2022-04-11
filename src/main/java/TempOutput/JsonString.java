@@ -69,10 +69,31 @@ public class JsonString {
             entityObj.put("qualifiedName", entity.getQualifiedName());
             entityObj.put("parentId", entity.getParentId());
             entityObj.put("external", false);
+            if (entity.getRawType() != null){
+                String raw = entity.getRawType();
+                if (raw.contains("<")){
+                    raw = raw.replace("<", "-");
+                }
+                if (raw.contains(">")){
+                    raw = raw.replace(">", "");
+                }
+                if (raw.contains("[")){
+                    raw = raw.replace("[", "-");
+                }
+                if (raw.contains("]")){
+                    raw = raw.replace("]", "");
+                }
+                if (raw.contains(",")){
+                    raw = raw.replace(",", " ");
+                }
+                entityObj.put("rawType", raw);
+            }
+            //AOSP HIDDEN API
             JSONObject hiddenObj = new JSONObject();
             hiddenObj.put("hidden", entity.getHidden());
             hiddenObj.put("maxTargetSdk", entity.getMaxTargetSdk());
             entityObj.accumulate("aosp_hidden", hiddenObj);
+            //Modifiers
             if (!entity.getModifiers().isEmpty()){
                 String m = "";
                 for (String modifier : entity.getModifiers()){
@@ -94,10 +115,9 @@ public class JsonString {
 //                    parTYpe.add(((VariableEntity) singleCollect.getEntityById(parId)).getType());
 //                }
 //                entityObj.put("ParameterType", parTYpe.toArray());
-//            }
+
             if(entity instanceof VariableEntity){
                 entityObj.put("global", ((VariableEntity) entity).getGlobal());
-                entityObj.put("type", ((VariableEntity) entity).getType());
             }
             if(entity instanceof TypeEntity && !((TypeEntity) entity).getInnerType().isEmpty()){
                 entityObj.put("innerType", ((TypeEntity) entity).getInnerType());

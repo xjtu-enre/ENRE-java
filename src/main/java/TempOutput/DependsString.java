@@ -4,6 +4,7 @@ import entity.BaseEntity;
 import entity.FileEntity;
 import entity.PackageEntity;
 import entity.properties.Relation;
+import util.Configure;
 import util.SingleCollect;
 
 import java.util.ArrayList;
@@ -264,7 +265,8 @@ public class DependsString {
                 }
             }
             IndicesDTO indice = new IndicesDTO(entity.getQualifiedName(), entityFile, entity.getLocation().getStartLine(),
-                    entity.getLocation().getStartColumn(), singleCollect.getEntityType(entity.getId()), null, m);
+                    entity.getLocation().getStartColumn(), singleCollect.getEntityType(entity.getId()),
+                    processRawType(singleCollect.getEntityType(entity.getId()), entity.getRawType()), m);
             dependsString.addIndice(indice);
         }
         dependsString.indexNum = singleCollect.getEntities().size();
@@ -324,6 +326,31 @@ public class DependsString {
         dependsString.edgeNum = dependsString.cells.size();
 
         return dependsString;
+    }
+
+    public String processRawType(String entityType, String rawType){
+        if (entityType.equals(Configure.BASIC_ENTITY_METHOD)){
+            if (singleCollect.getCreatedType().containsKey(rawType)){
+                return rawType;
+            }else {
+                return "<Builtin>";
+            }
+        }
+        if (rawType == null){
+            return null;
+        }else {
+            if (rawType.contains("<")){
+                rawType = rawType.split("<")[0];
+            } else if (rawType.contains("[")){
+                rawType = rawType.split("\\[")[0];
+            }
+
+            if (rawType.contains("java")){
+                String[] temp = rawType.split("\\.");
+                rawType = temp[temp.length - 1];
+            }
+        }
+        return rawType;
     }
 
 }

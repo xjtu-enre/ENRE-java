@@ -347,7 +347,13 @@ public class EntityVisitor extends ASTVisitor {
         ArrayList<Integer> methodVarId = new ArrayList<Integer>();
 
         //get the var type
-        String varType = node.getType().toString();
+        String rawType;
+        try {
+            rawType = node.getType().resolveBinding().getQualifiedName();
+        } catch (NullPointerException e){
+            rawType = node.getType().toString();
+        }
+
         if(blockStack.isEmpty()){
             /**
              * static initial
@@ -361,7 +367,7 @@ public class EntityVisitor extends ASTVisitor {
             for(Object o : node.modifiers()){
                 modifiers.add(o.toString());
             }
-            methodVarId.addAll(processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(),varType, blockStack.peek(), -1, false, modifiers, cu));
+            methodVarId.addAll(processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(),rawType, blockStack.peek(), -1, false, modifiers, cu));
         }
 
         //supplement method children's id
@@ -395,8 +401,13 @@ public class EntityVisitor extends ASTVisitor {
 
         ArrayList<Integer> classVarId = new ArrayList<>();
 
-        //get the var type
-        String varType = node.getType().toString();
+        //get the var rawtype
+        String rawType;
+        try {
+            rawType = node.getType().resolveBinding().getQualifiedName();
+        } catch (NullPointerException e){
+            rawType = node.getType().toString();
+        }
         //the class var belong to type block, so the block id is typeId
         int typeId = scopeStack.peek();
 
@@ -416,7 +427,7 @@ public class EntityVisitor extends ASTVisitor {
         /**
          * change block id from type id to -1
          */
-        classVarId.addAll(processEntity.processVarDeclFragment(node.fragments(),typeId,varType, -1,staticFlag, true, modifiers, cu));
+        classVarId.addAll(processEntity.processVarDeclFragment(node.fragments(),typeId,rawType, -1,staticFlag, true, modifiers, cu));
 
         //supplement method children's id
         singleCollect.getEntityById(typeId).addChildrenIds(classVarId);
@@ -446,7 +457,14 @@ public class EntityVisitor extends ASTVisitor {
             modifiers.add(o.toString());
         }
 
-        ArrayList<Integer> forVar = processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(), node.getType().toString(), blockStack.peek(), -1, false, modifiers, cu);
+        String rawType;
+        try {
+            rawType = node.getType().resolveBinding().getQualifiedName();
+        } catch (NullPointerException e){
+            rawType = node.getType().toString();
+        }
+
+        ArrayList<Integer> forVar = processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(), rawType, blockStack.peek(), -1, false, modifiers, cu);
 
         //supplement method children's id
         singleCollect.getEntityById(scopeStack.peek()).addChildrenIds(forVar);
@@ -472,7 +490,12 @@ public class EntityVisitor extends ASTVisitor {
         int parId;
 
         //get the parameter's type
-        String parType = node.getType().toString();
+        String parType;
+        try {
+            parType = node.getType().resolveBinding().getQualifiedName();
+        } catch (NullPointerException e){
+            parType = node.getType().toString();
+        }
         int methodId = scopeStack.peek();
         parId = processEntity.processSingleVar(node.getName().getFullyQualifiedName(), methodId, parType);
         entityStack.push(parId);

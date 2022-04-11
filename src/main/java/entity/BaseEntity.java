@@ -25,6 +25,11 @@ public class BaseEntity {
     protected ArrayList<String> modifiers = new ArrayList<>();
 
     /**
+     *
+     */
+    protected String rawType;
+
+    /**
      * check whether the entities are hidden
      * 3 situations
      * package " com.android.internal"
@@ -153,6 +158,14 @@ public class BaseEntity {
 
     public ArrayList<String> getModifiers(){
         return this.modifiers;
+    }
+
+    public void setRawType(String rawType) {
+        this.rawType = rawType;
+    }
+
+    public String getRawType(){
+        return this.rawType;
     }
 
     @Override
