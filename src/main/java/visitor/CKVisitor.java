@@ -2,12 +2,11 @@ package visitor;
 
 import org.eclipse.jdt.core.dom.*;
 import util.Configure;
+import util.SingleCollect;
 
-public class CKVisitor extends EntityVisitor {
+public class CKVisitor extends ASTVisitor {
 
-    public CKVisitor(String fileFullPath, CompilationUnit compilationUnit) {
-        super(fileFullPath, compilationUnit);
-    }
+    public SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
 
     @Override
     public boolean visit(TryStatement node) {

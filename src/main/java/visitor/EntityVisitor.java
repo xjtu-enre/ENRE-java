@@ -10,7 +10,7 @@ import util.SingleCollect;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class EntityVisitor extends ASTVisitor {
+public class EntityVisitor extends CKVisitor {
 
     //current file full path now visiting
     private String fileFullPath = null;
@@ -458,11 +458,11 @@ public class EntityVisitor extends ASTVisitor {
         }
 
         String rawType;
-        try {
-            rawType = node.getType().resolveBinding().getQualifiedName();
-        } catch (NullPointerException e){
+//        try {
+//            rawType = node.getType().resolveBinding().getQualifiedName();
+//        } catch (NullPointerException e){
             rawType = node.getType().toString();
-        }
+//        }
 
         ArrayList<Integer> forVar = processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(), rawType, blockStack.peek(), -1, false, modifiers, cu);
 

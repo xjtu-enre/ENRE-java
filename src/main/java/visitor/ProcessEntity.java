@@ -35,10 +35,10 @@ public class ProcessEntity {
         Location location = new Location();
 
         location.setStartLine(cu.getLineNumber(start_position));
-        location.setEndLine(cu.getLineNumber(start_position+length));
+        location.setEndLine(cu.getLineNumber(start_position+length-1));
 
         location.setStartColumn(cu.getColumnNumber(start_position));
-        location.setEndColumn(cu.getColumnNumber(start_position+length));
+        location.setEndColumn(cu.getColumnNumber(start_position+length-1));
 
         location.setStartOffset(start_position);
         location.setEndOffset(start_position+length);

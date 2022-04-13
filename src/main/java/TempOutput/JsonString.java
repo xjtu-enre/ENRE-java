@@ -133,7 +133,7 @@ public class JsonString {
             } else {
                 entityFile = ((FileEntity) singleCollect.getEntityById(getCurrentFileId(entity.getId()))).getFullPath();
             }
-            entityObj.put("entityFile", entityFile);
+            entityObj.put("File", entityFile);
 
             if(entity instanceof VariableEntity){
                 entityObj.put("global", ((VariableEntity) entity).getGlobal());
