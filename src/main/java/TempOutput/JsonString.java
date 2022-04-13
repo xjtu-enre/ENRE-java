@@ -21,6 +21,24 @@ public class JsonString {
         return nameTonum;
     }
 
+    /**
+     * get current entity's file id
+     * @param id
+     * @return
+     */
+    public static int getCurrentFileId(int id){
+        SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
+        if(singleCollect.getEntityById(id) instanceof FileEntity){
+            return id;
+        }
+        else if (singleCollect.getEntityById(singleCollect.getEntityById(id).getParentId()) instanceof FileEntity){
+            return singleCollect.getEntityById(id).getParentId();
+        }
+        else {
+            return getCurrentFileId(singleCollect.getEntityById(id).getParentId());
+        }
+    }
+
     public static String JSONWriteRelation(Map<Integer, Map<Integer, Relation>> relationMap) throws Exception {
 
         JSONObject obj=new JSONObject();//创建JSONObject对象
@@ -108,13 +126,14 @@ public class JsonString {
                 }
 
             }
-
-//            if(entity instanceof MethodEntity){
-//                List<String> parTYpe = new ArrayList<>();
-//                for(int parId : ((MethodEntity) entity).getParameters()){
-//                    parTYpe.add(((VariableEntity) singleCollect.getEntityById(parId)).getType());
-//                }
-//                entityObj.put("ParameterType", parTYpe.toArray());
+            //entity File
+            String entityFile;
+            if (entity instanceof PackageEntity){
+                entityFile = null;
+            } else {
+                entityFile = ((FileEntity) singleCollect.getEntityById(getCurrentFileId(entity.getId()))).getFullPath();
+            }
+            entityObj.put("entityFile", entityFile);
 
             if(entity instanceof VariableEntity){
                 entityObj.put("global", ((VariableEntity) entity).getGlobal());
