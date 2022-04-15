@@ -587,8 +587,31 @@ public class EntityVisitor extends CKVisitor {
                     singleCollect.getEntityById(scopeStack.peek()).addReflect(node.arguments().toString());
                 }
             }
+            if (declaringTypeQualifiedName.equals("java.lang.Object")){
+                if (methodName.equals("getClass") && bindVar != -1){
+                    singleCollect.getEntityById(scopeStack.peek()).addReflect(singleCollect.getEntityById(bindVar).getRawType());
+                }
+            }
         }
 
+        return super.visit(node);
+    }
+
+    /**
+     * ( Type | void ) . class
+     * check reflection
+     * @param node
+     * @return
+     */
+    @Override
+    public boolean visit(TypeLiteral node) {
+        String type;
+        try {
+            type = node.getType().resolveBinding().getQualifiedName();
+        }catch (NullPointerException e){
+            type = node.getType().toString();
+        }
+        singleCollect.getEntityById(scopeStack.peek()).addReflect(type);
         return super.visit(node);
     }
 

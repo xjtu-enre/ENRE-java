@@ -1,9 +1,9 @@
 # Entity : Method
 ## Supported pattern
 ```
-name : PackageDeclaration
+name : MethodDeclaration
 ```
-### Syntax : Package Definitions
+### Syntax : Method Definitions
 ```
 Package Declaration:
     [ Javadoc ] { Annotation } package Name ;
