@@ -57,6 +57,7 @@ E:\JavaExtractor\src\main\java\formator\fxml\XDepObject.java
 E:\JavaExtractor\src\main\java\visitor\deper\ReflectBf.java
 E:\JavaExtractor\src\main\java\formator\MapObject.java
 E:\JavaExtractor\src\main\java\writer\XmlWriter.java
+E:\JavaExtractor\src\main\java\visitor\RelationVisitor.java
 E:\JavaExtractor\src\main\java\entity\properties\Block.java
 E:\JavaExtractor\src\main\java\visitor\deper\AnnotationBf.java
 E:\JavaExtractor\src\main\java\TempOutput\DependsString.java

@@ -123,6 +123,8 @@ public class Configure {
     public static final String LOCAL_BLOCK_ELSE = "ElseBlock";
     public static final String LOCAL_BLOCK_SWITCH = "SwitchBlock";
     public static final String LOCAL_BLOCK_SWITCH_CASE_CLAUSE = "SwitchCaseClauseBlock"; //include default
+    public static final String LOCAL_BLOCK_TRY = "TryBlock";
+    public static final String LOCAL_BLOCK_CATCH = "CatchBlock";
 
     //kinds of annotation target type
     public static final String ANNOTATION_TYPE = "Another annotation";

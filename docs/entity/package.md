@@ -20,5 +20,5 @@ entities:
     filter: package
     items:
         -   name: hello
-            loc: [ 1, 1 ]
+            loc: [ 1, 1, 1, 14]
 ```

@@ -298,7 +298,7 @@ public class ProcessEntity {
      * @param parentId
      * @return
      */
-    public int processEnumConstant(EnumConstantDeclaration node, int parentId){
+    public int processEnumConstant(EnumConstantDeclaration node, int parentId, CompilationUnit cu){
         int constantId = singleCollect.getCurrentIndex();
         String constantName = node.getName().getIdentifier();
         String qualifiedName;
@@ -310,6 +310,7 @@ public class ProcessEntity {
         }
 
         EnumConstantEntity<String> enumConstantEntity = new EnumConstantEntity<String>(constantId, constantName, qualifiedName, parentId);
+        enumConstantEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
 
         for(Object o : node.modifiers()) {
             enumConstantEntity.addModifier(o.toString());
@@ -376,7 +377,7 @@ public class ProcessEntity {
         return annotationId;
     }
 
-    public int processAnnotationMember(AnnotationTypeMemberDeclaration node, int parentId){
+    public int processAnnotationMember(AnnotationTypeMemberDeclaration node, int parentId, CompilationUnit cu){
         int memberId = singleCollect.getCurrentIndex();
         String memberName = node.getName().getIdentifier();
         String qualifiedName;
@@ -389,6 +390,7 @@ public class ProcessEntity {
 
         AnnotationTypeMember annotationTypeMember = new AnnotationTypeMember(memberId, node.getType().toString(), memberName, qualifiedName, parentId);
         annotationTypeMember.setRawType(node.getType().resolveBinding().getQualifiedName());
+        annotationTypeMember.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
 
         for(Object o : node.modifiers()) {
             annotationTypeMember.addModifier(o.toString());
@@ -504,6 +506,8 @@ public class ProcessEntity {
         varEntity.setBlockId(blockId);
         varEntity.addModifiers(modifiers);
         varEntity.setGlobal(globalFlag);
+        varEntity.setLocation(supplement_location(cu, frag.getStartPosition(), frag.getLength()));
+
         //set init
         if(frag.getInitializer() != null){
             varEntity.setSetBy(parentId);

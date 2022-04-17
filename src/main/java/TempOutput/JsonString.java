@@ -4,6 +4,7 @@ import java.util.*;
 
 import entity.*;
 import entity.properties.Relation;
+import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.json.JSONObject;
 
 import util.SingleCollect;
@@ -89,22 +90,7 @@ public class JsonString {
             entityObj.put("external", false);
             if (entity.getRawType() != null){
                 String raw = entity.getRawType();
-                if (raw.contains("<")){
-                    raw = raw.replace("<", "-");
-                }
-                if (raw.contains(">")){
-                    raw = raw.replace(">", "");
-                }
-                if (raw.contains("[")){
-                    raw = raw.replace("[", "-");
-                }
-                if (raw.contains("]")){
-                    raw = raw.replace("]", "");
-                }
-                if (raw.contains(",")){
-                    raw = raw.replace(",", " ");
-                }
-                entityObj.put("rawType", raw);
+                entityObj.put("rawType", processRawType(raw));
             }
             //AOSP HIDDEN API
             JSONObject hiddenObj = new JSONObject();
@@ -118,12 +104,15 @@ public class JsonString {
                     if (!modifier.contains("@")){
                         m = m.concat(modifier + " ");
                     }
+                    if (m.length()>1){
+                        m = m.substring(0, m.length()-1);
+                    }
                 }
-                try {
-                    entityObj.put("modifiers", m.substring(0, m.length()-1));
-                }catch (StringIndexOutOfBoundsException e){
+//                try {
+//                    entityObj.put("modifiers", m.substring(0, m.length()-1));
+//                }catch (StringIndexOutOfBoundsException e){
                     entityObj.put("modifiers", m);
-                }
+//                }
 
             }
             //entity File
@@ -134,18 +123,33 @@ public class JsonString {
                 entityFile = ((FileEntity) singleCollect.getEntityById(getCurrentFileId(entity.getId()))).getFullPath();
             }
             entityObj.put("File", entityFile);
-
+            //variable kind
             if(entity instanceof VariableEntity){
                 entityObj.put("global", ((VariableEntity) entity).getGlobal());
             }
+            //inner Type
             if(entity instanceof TypeEntity && !((TypeEntity) entity).getInnerType().isEmpty()){
                 entityObj.put("innerType", ((TypeEntity) entity).getInnerType());
             }
-            if(entity instanceof ScopeEntity){
-                entityObj.put("startLine", entity.getLocation().getStartLine());
-                entityObj.put("endLine", entity.getLocation().getEndLine());
-                entityObj.put("startColumn", entity.getLocation().getStartColumn());
-                entityObj.put("endColumn", entity.getLocation().getEndColumn());
+            //location
+            if (!(entity instanceof FileEntity || entity instanceof PackageEntity)){
+                JSONObject locObj = new JSONObject();
+                locObj.put("startLine", entity.getLocation().getStartLine());
+                locObj.put("endLine", entity.getLocation().getEndLine());
+                locObj.put("startColumn", entity.getLocation().getStartColumn());
+                locObj.put("endColumn", entity.getLocation().getEndColumn());
+                entityObj.accumulate("location", locObj);
+            }
+            //method parameter Type
+            if (entity instanceof MethodEntity){
+                String p = "";
+                if (! ((MethodEntity) entity).getParameters().isEmpty()){
+                    for (int parId : ((MethodEntity) entity).getParameters()){
+                        p = p.concat(processRawType(singleCollect.getEntityById(parId).getRawType()) + " ");
+                    }
+                    p = p.substring(0, p.length()-1);
+                }
+                entityObj.put("parameterTypes", p);
             }
 
 //            subObjVariable.add(entity.getQualifiedName());
@@ -219,6 +223,34 @@ public class JsonString {
         obj.put("variables",subObjVariable);
 
         return obj.toString();
+    }
+
+    public static String processRawType (String rawType){
+        if (rawType == null){
+            return null;
+        }else {
+            if (rawType.contains("<")){
+                rawType = rawType.replace("<", "-");
+            }
+            if (rawType.contains(">")){
+                rawType = rawType.replace(">", "");
+            }
+            if (rawType.contains("[")){
+                rawType = rawType.replace("[", "-");
+            }
+            if (rawType.contains("]")){
+                rawType = rawType.replace("]", "");
+            }
+            if (rawType.contains(",")){
+                rawType = rawType.replace(",", " ");
+            }
+
+            if (rawType.contains("java")){
+                String[] temp = rawType.split("\\.");
+                rawType = temp[temp.length - 1];
+            }
+        }
+        return rawType;
     }
 
 }
