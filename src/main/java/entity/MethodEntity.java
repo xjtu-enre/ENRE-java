@@ -36,6 +36,11 @@ public class MethodEntity extends ScopeEntity{
         }
         for(VariableEntity var : this.getLocalVars()){
 //            System.out.println(varName);
+//            if ("info".equals(varName)){
+//                if(var.getName().equals(varName) && isCurrentVarCover(var.getBlockId(), localBlockId)){
+//                    return var.getId();
+//                }
+//            }
             if(var.getName().equals(varName) && isCurrentVarCover(var.getBlockId(), localBlockId)){
                 return var.getId();
             }

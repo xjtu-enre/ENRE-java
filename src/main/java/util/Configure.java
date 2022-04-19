@@ -73,7 +73,7 @@ public class Configure {
     public static final String RELATION_SETED_BY = "Seted by";
 
     //method->OperandVar
-    public static final String RELATION_USE = "Use";
+    public static final String RELATION_USE = "UseVar";
     public static final String RELATION_USED_BY = "Used by";
 
     //method->OperandVar

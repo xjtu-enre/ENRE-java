@@ -161,6 +161,36 @@ public class EntityVisitor extends CKVisitor {
         super.endVisit(node);
     }
 
+    public String currentInstanceRawType;
+
+    @Override
+    public boolean visit(ClassInstanceCreation node) {
+        try {
+            currentInstanceRawType = node.getType().resolveBinding().getQualifiedName();
+        }catch (NullPointerException e){
+            currentInstanceRawType = node.getType().toString();
+        }
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(AnonymousClassDeclaration node) {
+        int classId = processEntity.processAnonymous(node, scopeStack.peek(), cu, currentInstanceRawType);
+        scopeStack.push(classId);
+        entityStack.push(classId);
+        return super.visit(node);
+    }
+
+    @Override
+    public void endVisit(AnonymousClassDeclaration node) {
+        //pop entity stack
+        if(!scopeStack.isEmpty()){
+            scopeStack.pop();
+        }
+        super.endVisit(node);
+    }
+
+
     /**
      * Visit a Enum Declaration node and create an enum entity
      * @param node
@@ -830,9 +860,9 @@ public class EntityVisitor extends CKVisitor {
     public boolean visit(SimpleName node) {
         String varName = node.getIdentifier();
 
-        if (!entityStack.isEmpty() && singleCollect.getEntityById(entityStack.peek()) instanceof MethodEntity && !isQualifiedName){
-            processVarInMethod(varName, entityStack.peek());
-            int methodId = entityStack.peek();
+        if (!scopeStack.isEmpty() && (singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity) && !isQualifiedName){
+            processVarInMethod(varName, scopeStack.peek());
+            int methodId = scopeStack.peek();
             if(((MethodEntity)singleCollect.getEntityById(methodId)).getName2Id().containsKey(varName)) {
                 ((MethodEntity) singleCollect.getEntityById(methodId)).addName2Usage(varName, "use");
             }
@@ -890,8 +920,7 @@ public class EntityVisitor extends CKVisitor {
         return -1;
     }
 
-    private int searchVarInPara(String varName){
-        int methodId = scopeStack.peek();
+    private int searchVarInPara(String varName, int methodId){
         int varId = -1;
         for(int id : ((MethodEntity)singleCollect.getEntityById(methodId)).getParameters()){
             if(singleCollect.getEntityById(id).getName().equals(varName)){
@@ -917,12 +946,14 @@ public class EntityVisitor extends CKVisitor {
         String role = "Local";
         //search in method block, local var
         if (singleCollect.getEntityById(entityId) instanceof MethodEntity) {
-//            System.out.println(singleCollect.getEntityById(entityId).getQualifiedName());
+            if ("com.android.launcher3.accessibility.LauncherAccessibilityDelegate.performAction.AnonymousClass.run".equals(singleCollect.getEntityById(entityId).getQualifiedName())){
+                varId = ((MethodEntity) singleCollect.getEntityById(entityId)).searchLocalVar(name, blockStack.peek());
+            }
             varId = ((MethodEntity) singleCollect.getEntityById(entityId)).searchLocalVar(name, blockStack.peek());
         }
         //parameter
         if(varId == -1 && singleCollect.getEntityById(entityId) instanceof MethodEntity){
-            varId = searchVarInPara(name);
+            varId = searchVarInPara(name, entityId);
             role = "parameter";
         }
         //global var

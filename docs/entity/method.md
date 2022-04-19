@@ -1,4 +1,5 @@
 # Entity : Method
+
 ## Supported pattern
 ```
 name : MethodDeclaration

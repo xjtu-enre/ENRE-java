@@ -13,7 +13,7 @@ public class VarInfoBf extends DepBackfill{
             if(entity instanceof VariableEntity){
                 //set
                 if(((VariableEntity) entity).getSetBy() != 0)
-                    saveRelation(entity.getId(),((VariableEntity) entity).getSetBy(), Configure.RELATION_SET, Configure.RELATION_SETED_BY);
+                    saveRelation(((VariableEntity) entity).getSetBy(),entity.getId(), Configure.RELATION_SET, Configure.RELATION_SETED_BY);
                 //Typed
                 if (singleCollect.getCreatedType().containsKey(entity.getRawType())){
                     saveRelation(entity.getId(), singleCollect.getCreatedType().get(entity.getRawType()), Configure.RELATION_TYPED, Configure.RELATION_TYPED_BY);
@@ -24,10 +24,10 @@ public class VarInfoBf extends DepBackfill{
                 for(String varName : ((MethodEntity) entity).getName2Usage().keySet()){
                     for(String usage : ((MethodEntity) entity).getName2Usage().get(varName)){
                         if(usage.equals("use")){
-                            saveRelation(((MethodEntity) entity).getName2Id().get(varName), entity.getId(), Configure.RELATION_USE, Configure.RELATION_USED_BY);
+                            saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_USE, Configure.RELATION_USED_BY);
                         }
                         else if(usage.equals("modify")){
-                            saveRelation(((MethodEntity) entity).getName2Id().get(varName), entity.getId(), Configure.RELATION_MODIFY, Configure.RELATION_MODIFIED_BY);
+                            saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_MODIFY, Configure.RELATION_MODIFIED_BY);
                         }
                     }
                 }

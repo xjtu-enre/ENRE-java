@@ -95,10 +95,10 @@ public class IdentifyEntities {
 
             try{
                 System.out.println(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name));
-                if("src/main/java/helloJDT/LauncherAccessibilityDelegate.java".equals(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name))){
-                    pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
-                }
-//                pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
+//                if("src/main/java/helloJDT/LauncherAccessibilityDelegate.java".equals(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name))){
+//                    pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
+//                }
+                pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
             }
             catch (EmptyStackException e){
                 System.out.println("Empty Stack: "+ pair.source);

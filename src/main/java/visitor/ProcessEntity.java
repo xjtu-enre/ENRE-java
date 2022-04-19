@@ -244,6 +244,23 @@ public class ProcessEntity {
         return typeId;
     }
 
+    public int processAnonymous(AnonymousClassDeclaration node, int parentId, CompilationUnit cu, String rawType){
+        int classId = singleCollect.getCurrentIndex();
+        String typeName = "Anonymous_Class";
+        String qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName()+"."+typeName;
+        ClassEntity classEntity = new ClassEntity(classId, typeName, qualifiedName, parentId);
+        classEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
+        classEntity.setRawType(rawType);
+
+        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+            classEntity.setHidden(true);
+        }
+        singleCollect.addEntity(classEntity);
+        singleCollect.getEntityById(parentId).addChildId(classId);
+
+        return classId;
+    }
+
     /**
      * process an Enum declaration node
      * @param node

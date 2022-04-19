@@ -1,23 +1,34 @@
 # Entity: Enum
+An `enum type` is a special data type that enables for a variable to be a set of predefined constants. The variable must be equal to one of the values that have been predefined for it. 
 ## Supported pattern
-```
+```yaml
 name : EnumDeclaration
 ```
 ### Syntax : Package Definitions
-```
-Package Declaration:
-    [ Javadoc ] { Annotation } package Name ;
+```yaml
+EnumDeclaration:
+     [ Javadoc ] { ExtendedModifier } enum Identifier
+         [ implements Type { , Type } ]
+         {
+         [ EnumConstantDeclaration { , EnumConstantDeclaration } ] [ , ]
+         [ ; { ClassBodyDeclaration | ; } ]
+         }
 ```
 ### Examples : 
-- Package declaration
+- Enum declaration
+```java
+package hello;
+
+public enum Day {
+    SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
+    THURSDAY, FRIDAY, SATURDAY 
+}
 ```
-Package hello;
-```
-```
-name: Package Declaration
+```yaml
+name: Enum Declaration
 entities:
-    filter: package
+    filter: enum
     items:
-        -   name: hello
+        -   name: Day
             loc: [ 1, 1 ]
 ```
