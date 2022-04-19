@@ -406,7 +406,11 @@ public class ProcessEntity {
         }
 
         AnnotationTypeMember annotationTypeMember = new AnnotationTypeMember(memberId, node.getType().toString(), memberName, qualifiedName, parentId);
-        annotationTypeMember.setRawType(node.getType().resolveBinding().getQualifiedName());
+        try {
+            annotationTypeMember.setRawType(node.getType().resolveBinding().getQualifiedName());
+        }catch (NullPointerException e){
+            annotationTypeMember.setRawType(node.getType().toString());
+        }
         annotationTypeMember.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
 
         for(Object o : node.modifiers()) {
