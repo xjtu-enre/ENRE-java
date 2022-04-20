@@ -506,7 +506,7 @@ public class EntityVisitor extends CKVisitor {
         return super.visit(node);
     }
 
-
+    boolean isParameterDeclaration;
 
     /**
      * Visit a method parameter node
@@ -518,6 +518,7 @@ public class EntityVisitor extends CKVisitor {
     public boolean visit(SingleVariableDeclaration node) {
 
         int parId;
+        isParameterDeclaration = true;
 
         //get the parameter's type
         String parType;
@@ -546,6 +547,7 @@ public class EntityVisitor extends CKVisitor {
 
     @Override
     public void endVisit(SingleVariableDeclaration node) {
+        isParameterDeclaration = false;
         entityStack.pop();
         super.endVisit(node);
     }
@@ -860,7 +862,7 @@ public class EntityVisitor extends CKVisitor {
     public boolean visit(SimpleName node) {
         String varName = node.getIdentifier();
 
-        if (!scopeStack.isEmpty() && (singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity) && !isQualifiedName){
+        if (!scopeStack.isEmpty() && (singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity) && !isQualifiedName && !isParameterDeclaration){
             processVarInMethod(varName, scopeStack.peek());
             int methodId = scopeStack.peek();
             if(((MethodEntity)singleCollect.getEntityById(methodId)).getName2Id().containsKey(varName)) {

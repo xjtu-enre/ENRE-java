@@ -24,6 +24,9 @@ public class InheritBf extends DepBackfill{
                     if(tmp instanceof FileEntity){
                         superId = findTypeInImport(superName, ((FileEntity) tmp).getImportClass(), ((FileEntity) tmp).getImportOnDemand());
                     }
+                    if (superId == -1 && singleCollect.getCreatedType().containsKey(superName)){
+                        superId = singleCollect.getCreatedType().get(superName);
+                    }
                 }
                 ((ClassEntity) entity).setSuperClassId(superId);
                 if(superId != -1){
