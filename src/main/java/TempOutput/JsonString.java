@@ -104,14 +104,14 @@ public class JsonString {
                     if (!modifier.contains("@")){
                         m = m.concat(modifier + " ");
                     }
-                    if (m.length()>1){
-                        m = m.substring(0, m.length()-1);
-                    }
+                }
+                if (m.length()>1){
+                    m = m.substring(0, m.length()-1);
                 }
 //                try {
 //                    entityObj.put("modifiers", m.substring(0, m.length()-1));
 //                }catch (StringIndexOutOfBoundsException e){
-                    entityObj.put("modifiers", m);
+                entityObj.put("modifiers", m);
 //                }
 
             }
