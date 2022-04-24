@@ -105,7 +105,7 @@ public class JsonString {
                         m = m.concat(modifier + " ");
                     }
                 }
-                if (m.length()>1){
+                if (m.endsWith(" ")){
                     m = m.substring(0, m.length()-1);
                 }
 //                try {
