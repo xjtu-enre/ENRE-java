@@ -142,14 +142,20 @@ public class JsonString {
             }
             //method parameter Type
             if (entity instanceof MethodEntity){
-                String p = "";
+                String parType = "";
+                String parName = "";
                 if (! ((MethodEntity) entity).getParameters().isEmpty()){
                     for (int parId : ((MethodEntity) entity).getParameters()){
-                        p = p.concat(processRawType(singleCollect.getEntityById(parId).getRawType()) + " ");
+                        parType = parType.concat(processRawType(singleCollect.getEntityById(parId).getRawType()) + " ");
+                        parName = parName.concat(singleCollect.getEntityById(parId).getName() + " ");
                     }
-                    p = p.substring(0, p.length()-1);
+                    parType = parType.substring(0, parType.length()-1);
+                    parName = parName.substring(0, parName.length()-1);
                 }
-                entityObj.put("parameterTypes", p);
+                JSONObject parObj = new JSONObject();
+                parObj.put("names", parName);
+                parObj.put("types", parType);
+                entityObj.accumulate("parameter", parObj);
             }
 
 //            subObjVariable.add(entity.getQualifiedName());
@@ -179,14 +185,6 @@ public class JsonString {
 //                    srcObj.put("qualified name", singleCollect.getEntityById(fromEntity).getQualifiedName());
 //                    srcObj.put("parentId", singleCollect.getEntityById(fromEntity).getParentId());
 //                    srcObj.put("childrenIds", singleCollect.getEntityById(fromEntity).getChildrenIds());
-//
-//                    JSONObject destObj = new JSONObject();
-//                    destObj.put("id", toEntity);
-//                    destObj.put("type", singleCollect.getEntityType(toEntity));
-//                    destObj.put("name", singleCollect.getEntityById(toEntity).getName());
-//                    destObj.put("qualified name", singleCollect.getEntityById(toEntity).getQualifiedName());
-//                    destObj.put("parentId", singleCollect.getEntityById(toEntity).getParentId());
-//                    destObj.put("childrenIds", singleCollect.getEntityById(toEntity).getChildrenIds());
 
                     subObj.put("src",fromEntity);
                     subObj.put("dest",toEntity);
@@ -230,21 +228,23 @@ public class JsonString {
             return null;
         }else {
             if (rawType.contains("<")){
-                rawType = rawType.replace("<", "-");
+                String[] temp = rawType.split("<");
+                rawType = processRawType(temp[0]).concat("-"+processRawType(temp[1]));
             }
             if (rawType.contains(">")){
                 rawType = rawType.replace(">", "");
             }
             if (rawType.contains("[")){
-                rawType = rawType.replace("[", "-");
+                String[] temp = rawType.split("\\[");
+                rawType = processRawType(temp[0]).concat("-"+processRawType(temp[1]));
             }
             if (rawType.contains("]")){
                 rawType = rawType.replace("]", "");
             }
             if (rawType.contains(",")){
-                rawType = rawType.replace(",", " ");
+                String[] temp = rawType.split(",");
+                rawType = processRawType(temp[0]).concat(" "+processRawType(temp[1]));
             }
-
             if (rawType.contains("java")){
                 String[] temp = rawType.split("\\.");
                 rawType = temp[temp.length - 1];

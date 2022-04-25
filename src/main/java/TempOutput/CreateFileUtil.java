@@ -35,7 +35,7 @@ public class CreateFileUtil {
             file.createNewFile();
 
             Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-            JsonFormatTool tool = new JsonFormatTool();
+//            JsonFormatTool tool = new JsonFormatTool();
 
 //            for(BaseEntity entity: SingleCollect.getSingleCollectInstance().getEntities()){
 //                JSONObject jo = JSONObject.fromObject(entity);
@@ -45,9 +45,14 @@ public class CreateFileUtil {
 //                write.write(entityData);
 //            }
 
-            String result = jsonString;
-
-            write.write(tool.formatJson(result));
+            //write.write(tool.formatJson(result));
+            JSONObject object = JSONObject.fromObject(jsonString);
+            try{
+                write.write(JSON.toJSONString(object, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue,
+                        SerializerFeature.WriteDateUseDateFormat));
+            }catch (OutOfMemoryError e){
+                write.write(jsonString);
+            }
 
             write.flush();
             write.close();
