@@ -167,6 +167,9 @@ public class ProcessEntity {
         String qualifiedName;
         try{
             qualifiedName = iTypeBinding.getQualifiedName();
+            if (qualifiedName.equals("")){
+                qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName()+"."+typeName;
+            }
         } catch (NullPointerException e){
             if (singleCollect.isFile(parentId)){
                 if (singleCollect.getEntityById(parentId).getParentId() != -1){

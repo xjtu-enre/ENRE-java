@@ -1,0 +1,28 @@
+{
+  "entity": {
+    "Package": 3,
+    "File": 1,
+    "Class": 7,
+    "Enum": 1,
+    "Interface": 2,
+    "Annotation": 1,
+    "Variable": 12,
+    "Method": 8,
+    "Annotation Member": 6,
+    "Enum Constant": 3
+  },
+  "dependency": {
+    "Annotate": 0,
+    "Call": 0,
+    "Cast": 0,
+    "Define": 0,
+    "Contain": 0,
+    "Implement": 0,
+    "Inherit": 0,
+    "Override": 0,
+    "Set": 0,
+    "UseVar": 0,
+    "Typed": 0,
+    "Modify": 0
+  }
+}

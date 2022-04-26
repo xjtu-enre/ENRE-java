@@ -46,16 +46,16 @@ public class CreateFileUtil {
 //                write.write(entityData);
 //            }
             String result = jsonString;
-            //write.write(tool.formatJson(result));
-            JSONObject object = JSONObject.fromObject(result);
-            System.out.println("---------outputFile------------");
-            try{
-//                write.write(JSON.toJSONString(object, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue,
-//                        SerializerFeature.WriteDateUseDateFormat));
-                write.write(tool.formatJson(result));
-            }catch (OutOfMemoryError e){
-                write.write(jsonString);
-            }
+            write.write(tool.formatJson(result));
+//            JSONObject object = JSONObject.fromObject(result);
+//            System.out.println("---------outputFile------------");
+//            try{
+//            write.write(JSON.toJSONString(object, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue,
+//                    SerializerFeature.WriteDateUseDateFormat));
+//                write.write(tool.formatJson(result));
+//            }catch (OutOfMemoryError e){
+//                write.write(jsonString);
+//            }
 
             write.flush();
             write.close();
