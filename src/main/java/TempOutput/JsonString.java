@@ -81,6 +81,7 @@ public class JsonString {
 
         while(iterator.hasNext()) {
             BaseEntity entity = iterator.next();
+//            System.out.println(entity.getQualifiedName());
             JSONObject entityObj = new JSONObject();
             entityObj.put("id", entity.getId());
             entityObj.put("category", singleCollect.getEntityType(entity.getId()));

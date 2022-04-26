@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 public class CreateFileUtil {
     /**
@@ -34,8 +35,8 @@ public class CreateFileUtil {
             }
             file.createNewFile();
 
-            Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-//            JsonFormatTool tool = new JsonFormatTool();
+            Writer write = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+            JsonFormatTool tool = new JsonFormatTool();
 
 //            for(BaseEntity entity: SingleCollect.getSingleCollectInstance().getEntities()){
 //                JSONObject jo = JSONObject.fromObject(entity);
@@ -44,12 +45,14 @@ public class CreateFileUtil {
 //                //write.write(tool.formatJson(jo.toString())+", ");
 //                write.write(entityData);
 //            }
-
+            String result = jsonString;
             //write.write(tool.formatJson(result));
-            JSONObject object = JSONObject.fromObject(jsonString);
+            JSONObject object = JSONObject.fromObject(result);
+            System.out.println("---------outputFile------------");
             try{
-                write.write(JSON.toJSONString(object, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue,
-                        SerializerFeature.WriteDateUseDateFormat));
+//                write.write(JSON.toJSONString(object, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue,
+//                        SerializerFeature.WriteDateUseDateFormat));
+                write.write(tool.formatJson(result));
             }catch (OutOfMemoryError e){
                 write.write(jsonString);
             }

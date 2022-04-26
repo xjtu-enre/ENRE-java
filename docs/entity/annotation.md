@@ -32,9 +32,9 @@ package hello;
 }
 ```
 ```yaml
-name: Enum Declaration
+name: Annotation Declaration
 entities:
-    filter: enum
+    filter: annotation
     items:
         -   name: Day
             loc: [ 1, 1 ]
