@@ -71,11 +71,69 @@ public class Person {
 
 ```
 ```yaml
-name: Package Declaration
+name: Method Declaration
 entities:
-    filter: package
+    filter: method
     items:
-        -   name: hello
-            location : []
+        -   name: getName
+            location : [7, 4, 9, 4]
+            rawType: String
+            qualifiedName: helloJDT.pkg.test.Person.getName
+            category: Method
+            modifiers: public
+        -   name: setName
+            location : [11, 4, 13, 4]
+            rawType: void
+            qualifiedName: helloJDT.pkg.test.Person.setName
+            category: Method
+            modifiers: public
+            parameter:
+                - types: String
+                - names: name
+        -   name: getAge
+            location : [15, 4, 17, 4]
+            rawType: int
+            qualifiedName: helloJDT.pkg.test.Person.getAge
+            category: Method
+            modifiers: public
+        -   name: setAge
+            location : [19, 4, 21, 4]
+            rawType: void
+            qualifiedName: helloJDT.pkg.test.Person.setAge
+            category: Method
+            modifiers: public
+            parameter:
+                - types: int
+                - names: age
+        -   name: Person
+            location : [23, 4, 24, 4]
+            rawType: helloJDT.pkg.test.Person.Person
+            qualifiedName: helloJDT.pkg.test.Person.Person
+            category: Method
+            modifiers: public
+        -   name: Person
+            location : [26, 4, 29, 4]
+            rawType: helloJDT.pkg.test.Person.Person
+            qualifiedName: helloJDT.pkg.test.Person.Person
+            category: Method
+            modifiers: private
+            parameter:
+                - types: String
+                - names: name
+        -   name: fun
+            location : [31, 4, 33, 4]
+            rawType: void
+            qualifiedName: helloJDT.pkg.test.Person.fun
+            category: Method
+            modifiers: public
+        -   name: fun
+            location : [35, 4, 37, 4]
+            rawType: void
+            qualifiedName: helloJDT.pkg.test.Person.fun
+            category: Method
+            modifiers: public
+            parameter:
+                - types: String int
+                - names:name age
 ```
 

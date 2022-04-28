@@ -4,7 +4,7 @@ An `enum constant` is a set of predefined constants defined in enum.
 ```yaml
 name : EnumConstantDeclaration
 ```
-### Syntax : Package Definitions
+### Syntax : Enum Constant Definitions
 ```yaml
 EnumConstantDeclaration:
      [ Javadoc ] { ExtendedModifier } Identifier

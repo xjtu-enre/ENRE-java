@@ -1,7 +1,7 @@
 # Entity : File
 The `.java` files which save the whole java information
 ### Examples : 
-- File created
+- Create a file
 ```java
 package hello;
 

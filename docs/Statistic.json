@@ -19,6 +19,7 @@
     "Contain": 0,
     "Implement": 0,
     "Inherit": 0,
+    "Import": 4,
     "Override": 0,
     "Set": 0,
     "UseVar": 0,

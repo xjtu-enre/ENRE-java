@@ -4,7 +4,7 @@ An `enum type` is a special data type that enables for a variable to be a set of
 ```yaml
 name : EnumDeclaration
 ```
-### Syntax : Package Definitions
+### Syntax : Enum Definitions
 ```yaml
 EnumDeclaration:
      [ Javadoc ] { ExtendedModifier } enum Identifier

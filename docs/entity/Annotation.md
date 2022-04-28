@@ -4,7 +4,7 @@
 ```yaml
 name : AnnotationTypeDeclaration
 ```
-### Syntax : Package Definitions
+### Syntax : Annotation Definitions
 ```yaml
 AnnotationTypeDeclaration:
    [ Javadoc ] { ExtendedModifier } @ interface Identifier

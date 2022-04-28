@@ -4,7 +4,7 @@ An `interface` is a contract between a class and the outside world. When a class
 ```yaml
 name : TypeDeclaration
 ```
-### Syntax : Class Definitions
+### Syntax : Interface Definitions
 ```yaml
 Interface Declaration:
       [ Javadoc ] { ExtendedModifier } interface Identifier
