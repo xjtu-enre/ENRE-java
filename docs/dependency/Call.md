@@ -1,5 +1,5 @@
 # Dependency: Call
-A entity calls other methods in its scope   
+An entity calls other methods in its scope   
 ## Supported pattern
 ```yaml
 name : MethodInvocation
@@ -8,7 +8,7 @@ name : MethodInvocation
 ```yaml
 MethodInvocation:
      [ Expression . ]
-         [ < Type { , Type } > ]
+         [  Type { , Type }  ]
          Identifier ( [ Expression { , Expression } ] )
 ```
 ### Examples : 

@@ -42,7 +42,7 @@ public class ClassEntity extends TypeEntity{
         return this.interfaces;
     }
 
-    public void addInterfaces(String name, int id){
+    public void addInterface(String name, int id){
         this.interfaces.put(name, id);
     }
 

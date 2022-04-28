@@ -32,8 +32,8 @@ public class JsonMap {
                         finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CALL));
                         break;
                     case Configure.RELATION_CALL_NON_DYNAMIC:
-//                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CALL_NON_DYNAMIC));
-                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CALL));
+                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CALL_NON_DYNAMIC));
+//                        finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_CALL));
                         break;
                     case Configure.RELATION_IMPLEMENT:
                         finalRes.put(entity.getId(),supplementRes(entity.getId(), relation,Configure.RELATION_IMPLEMENT));

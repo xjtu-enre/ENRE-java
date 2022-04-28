@@ -191,7 +191,6 @@ public class ProcessEntity {
             if(node.superInterfaceTypes() != null){
                 List<Type> superType = node.superInterfaceTypes();
                 for(Type superInter : superType){
-                    //if the super's name is same with the current, we well record the qualified name
                     interfaceEntity.addExtendsName(superInter.resolveBinding().getQualifiedName());
                 }
             }
@@ -218,15 +217,27 @@ public class ProcessEntity {
             }
 
             //interface, default id is -1
-            if(iTypeBinding != null){
-                ITypeBinding[] interfaces = iTypeBinding.getInterfaces();
-                for( ITypeBinding temp : interfaces) {
-                    if(temp.getName().equals(node.getName().toString())){
-                        classEntity.addInterfaces(temp.getQualifiedName(),-1);
-                    }else{
-                        classEntity.addInterfaces(temp.getName(),-1);
-                    }
+//            if(iTypeBinding != null){
+//                ITypeBinding[] interfaces = iTypeBinding.getInterfaces();
+//                for( ITypeBinding temp : interfaces) {
+//                    if(temp.getName().equals(node.getName().toString())){
+//                        classEntity.addInterface(temp.getQualifiedName(),-1);
+//                    }else{
+//                        classEntity.addInterface(temp.getName(),-1);
+//                    }
+//                }
+//            }
+
+            //superclass
+            try {
+                List superInterfaces = node.superInterfaceTypes();
+                for (Object temp : superInterfaces){
+                     if (temp instanceof Type){
+                         classEntity.addInterface(((Type) temp).resolveBinding().getQualifiedName(), -1);
+                     }
                 }
+            } catch (NullPointerException e){
+//                e.printStackTrace();
             }
 
             for(Object o : node.modifiers()) {

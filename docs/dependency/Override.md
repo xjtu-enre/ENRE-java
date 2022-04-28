@@ -1,4 +1,4 @@
-# Dependency: Import
+# Dependency: Override
 A file imports other class, enum or package, or static imports method or var.
 ## Supported pattern
 ```yaml
