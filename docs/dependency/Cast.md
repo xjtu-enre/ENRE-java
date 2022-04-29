@@ -11,3 +11,31 @@ CastExpression:
 ```
 ### Examples : 
 - Cast expression
+```java
+//Hello.java
+public class Hello{
+
+}
+```
+```java
+//Controller.java
+public class Controller{
+    public void service(Test test){
+        Hello hello = (Hello) test;
+    }
+}
+```
+```yaml
+scenario: Cast Expression
+entities:
+    items:
+        -   name: Hello
+            category : Class
+        -   name: service
+            category : Method
+            qualifiedName: Controller.service
+dependencies: 
+        -   src: @Controller/Method[0]
+            dest: @Hello/Class[0]
+            kind: Cast
+```

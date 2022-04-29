@@ -36,13 +36,135 @@ EnumDeclaration:
 ```
 ### Examples : 
 - Package contains package
-
+```java
+package hello.pkg;
+```
+```yaml
+scenario: Package contains package
+entities:
+    items:
+        -   name: hello
+            category : Package
+            qualifiedName: hello
+        -   name: pkg
+            category : Package
+            qualifiedName: hello.pkg
+dependencies: 
+        -   src: hello
+            dest: pkg
+            kind: Contain
+```
 - Package contains files
+```java
+package hello;
 
+
+```
+```yaml
+scenario: Package contains package
+entities:
+    items:
+        -   name: hello
+            category : Package
+            qualifiedName: hello
+        -   name: pkg
+            category : Package
+            qualifiedName: hello.pkg
+dependencies: 
+        -   src: hello
+            dest: pkg
+            kind: Contain
+```
 - File contains class(es)
+```java
+//Hello.java
+public class Hello{
 
+}
+
+class Test{
+
+}
+```
+```yaml
+scenario: File contains classes
+entities:
+    items:
+        -   name: Hello.java
+            category : File
+            qualifiedName: Hello.java
+        -   name: Hello
+            category : Class
+        -   name: Test
+            category : Class
+dependencies: 
+        -   src: @Hello
+            dest: @Hello/Class[0]
+            kind: Contain
+        -   src: @Hello
+            dest: @Hello/Class[1]
+            kind: Contain
+```
 - File contains enum(s)
+```java
+//Hello.java
+public enum Hello{
 
+}
+```
+```yaml
+scenario: File contains enum
+entities:
+    items:
+        -   name: Hello.java
+            category : File
+            qualifiedName: Hello.java
+        -   name: Hello
+            category : Enum
+dependencies: 
+        -   src: @Hello
+            dest: @Hello/Enum[0]
+            kind: Contain
+```
 - File contains interface(s)
+```java
+//Hello.java
+public interface Hello{
 
+}
+```
+```yaml
+scenario: File contains interface
+entities:
+    items:
+        -   name: Hello.java
+            category : File
+            qualifiedName: Hello.java
+        -   name: Hello
+            category : Interface
+dependencies: 
+        -   src: @Hello
+            dest: @Hello/Interface[0]
+            kind: Contain
+```
 - File contains annotation(s)
+```java
+//Hello.java
+@interface Hello{
+
+}
+```
+```yaml
+scenario: File contains Annotation
+entities:
+    items:
+        -   name: Hello.java
+            category : File
+            qualifiedName: Hello.java
+        -   name: Hello
+            category : Annotation
+dependencies: 
+        -   src: @Hello
+            dest: @Hello/Annotation[0]
+            kind: Contain
+```

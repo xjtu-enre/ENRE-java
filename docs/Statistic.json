@@ -12,18 +12,18 @@
     "Enum Constant": 3
   },
   "dependency": {
-    "Annotate": 0,
+    "Annotate": 3,
     "Call": 0,
-    "Cast": 0,
+    "Cast": 1,
     "Define": 8,
-    "Contain": 0,
+    "Contain": 7,
     "Implement": 6,
     "Inherit": 5,
     "Import": 6,
     "Override": 0,
     "Set": 0,
     "UseVar": 0,
-    "Typed": 0,
+    "Typed": 2,
     "Modify": 0
   }
 }
