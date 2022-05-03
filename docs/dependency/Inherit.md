@@ -43,8 +43,8 @@ entities:
             modifiers: public abstract
             File: AbstractStringCacheStore.java
 dependencies: 
-        -   src: @InMemoryCacheStore/Class[0]
-            dest: @AbstractStringCacheStore/Class[0]
+        -   src: InMemoryCacheStore/Class[0]
+            dest: AbstractStringCacheStore/Class[0]
             kind: inherit
 ```
 - Class extends one parameterized type
@@ -75,8 +75,8 @@ entities:
             modifiers: public abstract
             File: AbstractStringCacheStore.java
 dependencies: 
-        -   src: @AbstractStringCacheStore/Class[0]
-            dest: @AbstractCacheStore/Class[0]
+        -   src: AbstractStringCacheStore/Class[0]
+            dest: AbstractCacheStore/Class[0]
             kind: inherit
 ```
 - Interface extends one super interface
@@ -105,8 +105,8 @@ entities:
             qualifiedName: JournalService
             modifiers: public
 dependencies: 
-        -   src: @JournalService/Interface[0]
-            dest: @CrudService/Interface[0]
+        -   src: JournalService/Interface[0]
+            dest: CrudService/Interface[0]
             kind: inherit
 ```
 - Interface extends multiple super interfaces
@@ -142,10 +142,10 @@ entities:
             category : Interface
             modifiers: public
 dependencies: 
-        -   src: @JournalService/Interface[0]
+        -   src: JournalService/Interface[0]
             dest: CrudService/Interface[0]
             kind: inherit
-        -   src: @JournalService/Interface[0]
-            dest: @BaseService/Interface[0]
+        -   src: JournalService/Interface[0]
+            dest: BaseService/Interface[0]
             kind: inherit
 ```

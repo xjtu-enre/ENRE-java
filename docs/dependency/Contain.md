@@ -98,11 +98,11 @@ entities:
         -   name: Test
             category : Class
 dependencies: 
-        -   src: @Hello
-            dest: @Hello/Class[0]
+        -   src: Hello
+            dest: Hello/Class[0]
             kind: Contain
-        -   src: @Hello
-            dest: @Hello/Class[1]
+        -   src: Hello
+            dest: Hello/Class[1]
             kind: Contain
 ```
 - File contains enum(s)
@@ -122,8 +122,8 @@ entities:
         -   name: Hello
             category : Enum
 dependencies: 
-        -   src: @Hello
-            dest: @Hello/Enum[0]
+        -   src: Hello
+            dest: Hello/Enum[0]
             kind: Contain
 ```
 - File contains interface(s)
@@ -143,8 +143,8 @@ entities:
         -   name: Hello
             category : Interface
 dependencies: 
-        -   src: @Hello
-            dest: @Hello/Interface[0]
+        -   src: Hello
+            dest: Hello/Interface[0]
             kind: Contain
 ```
 - File contains annotation(s)
@@ -164,7 +164,7 @@ entities:
         -   name: Hello
             category : Annotation
 dependencies: 
-        -   src: @Hello
-            dest: @Hello/Annotation[0]
+        -   src: Hello
+            dest: Hello/Annotation[0]
             kind: Contain
 ```

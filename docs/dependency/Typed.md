@@ -49,8 +49,8 @@ entities:
             category : Variable
             qualifiedName: Foo.getHello.hello
 dependencies: 
-        -   src: @Foo/Variable[0]
-            dest: @Hello/Class[0]
+        -   src: Foo/Variable[0]
+            dest: Hello/Class[0]
             kind: Typed
 ```
 - Variable Declaration Statement

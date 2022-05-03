@@ -37,17 +37,17 @@ entities:
     items:
         -   name: Foo
             category : Class
-            loc: @file1/[ 2, 0, 5, 0 ]
+            loc: file1/[ 2, 0, 5, 0 ]
             rawType: Foo
             qualifiedName: Foo
         -   name: Bar
             category : Class
-            loc: @file2/[ 2, 0, 8, 0 ]
+            loc: file2/[ 2, 0, 8, 0 ]
             rawType: Bar
             qualifiedName: Bar
 dependencies: 
-        -   src: @file2
-            dest: @file1/@class[0]
+        -   src: file2
+            dest: file1/@class[0]
             kind: import
 ```
 - Import class (known package)
@@ -81,15 +81,15 @@ entities:
     items:
         -   name: Name
             category : Class
-            loc: @file2/[ 4, 0, 8, 0 ]
+            loc: file2/[ 4, 0, 8, 0 ]
             rawType: test_package1.Name
             qualifiedName: test_package1.Name
         -   name: Hello.java
             category : File
             qualifiedName: test_package2.Hello.java
 dependencies: 
-        -   src: @file1
-            dest: @file2/@Class[0]
+        -   src: file1
+            dest: file2/Class[0]
             kind: import
 ```
 - Import Static Var
@@ -121,7 +121,7 @@ entities:
     items:
         -   name: Foo
             category : Class
-            loc: @file1/[ 2, 0, 7, 0 ]
+            loc: file1/[ 2, 0, 7, 0 ]
             rawType: Foo
             qualifiedName: Foo
         -   name: MSG
@@ -130,12 +130,12 @@ entities:
             qualifiedName: Foo.MSG
         -   name: Bar
             category : Class
-            loc: @file2/[ 2, 0, 11, 0 ]
+            loc: file2/[ 2, 0, 11, 0 ]
             rawType: Bar
             qualifiedName: Bar
 dependencies: 
-        -   src: @file2
-            dest: @file1/@Variable[0]
+        -   src: file2
+            dest: file1/Variable[0]
             kind: import
 ```
 - Import On Demand
@@ -177,7 +177,7 @@ entities:
             category : Package
             qualifiedName: helloJDT.pkg
 dependencies: 
-        -   src: @HelloJDT.java
+        -   src: HelloJDT.java
             dest: helloJDT.pkg
             kind: import
 ```
@@ -273,11 +273,11 @@ entities:
             category : Enum
             qualifiedName: run.halo.app.model.enums.PostStatus
             rawType: run.halo.app.model.enums.PostStatus
-            loc: @PostStatus/[ 4, 0, 41, 0 ]
+            loc: PostStatus/[ 4, 0, 41, 0 ]
             modifiers: public
 dependencies: 
-        -   src: @BasePostMinimalDTO.java
-            dest: @PostStatus.java/@Enum[0]
+        -   src: BasePostMinimalDTO.java
+            dest: PostStatus.java/Enum[0]
             kind: import
 ```
 - Import Annotation
@@ -431,10 +431,10 @@ entities:
             category : Annotation
             qualifiedName: run.halo.app.cache.lock.CacheParam
             rawType: run.halo.app.cache.lock.CacheParam
-            loc: @CacheParam/[ 11, 0, 23, 0 ]
+            loc: CacheParam/[ 11, 0, 23, 0 ]
             modifiers: public
 dependencies: 
-        -   src: @JournalController
-            dest: @CacheParam.java/@Annotation[0]
+        -   src: JournalController
+            dest: CacheParam.java/Annotation[0]
             kind: import
 ```

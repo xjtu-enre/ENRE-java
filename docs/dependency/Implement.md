@@ -43,8 +43,8 @@ entities:
             category : Interface
             modifiers: public
 dependencies: 
-        -   src: @BaseService/Class[0]
-            dest: @Bed/Interface[0]
+        -   src: BaseService/Class[0]
+            dest: Bed/Interface[0]
             kind: implement
 ```
 - An enum implements an interface
@@ -75,8 +75,8 @@ entities:
             category : Interface
             modifiers: public
 dependencies: 
-        -   src: @BaseService/Enum[0]
-            dest: @Bed/Interface[0]
+        -   src: BaseService/Enum[0]
+            dest: Bed/Interface[0]
             kind: implement
 ```
 - A class implements multiple interfaces
@@ -118,11 +118,11 @@ entities:
             category : Interface
             modifiers: public
 dependencies: 
-        -   src: @BaseService/Class[0]
-            dest: @Photo/Interface[0]
+        -   src: BaseService/Class[0]
+            dest: Photo/Interface[0]
             kind: implement
-        -   src: @BaseService/Class[0]
-            dest: @Drink/Interface[0]
+        -   src: BaseService/Class[0]
+            dest: Drink/Interface[0]
             kind: implement
 ```
 - An enum implements multiple interfaces
@@ -164,10 +164,10 @@ entities:
             category : Interface
             modifiers: public
 dependencies: 
-        -   src: @BaseService/Enum[0]
-            dest: @Photo/Interface[0]
+        -   src: BaseService/Enum[0]
+            dest: Photo/Interface[0]
             kind: implement
-        -   src: @BaseService/Enum[0]
-            dest: @Drink/Interface[0]
+        -   src: BaseService/Enum[0]
+            dest: Drink/Interface[0]
             kind: implement
 ```

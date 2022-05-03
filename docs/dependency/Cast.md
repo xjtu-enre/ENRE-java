@@ -35,7 +35,7 @@ entities:
             category : Method
             qualifiedName: Controller.service
 dependencies: 
-        -   src: @Controller/Method[0]
-            dest: @Hello/Class[0]
+        -   src: Controller/Method[0]
+            dest: Hello/Class[0]
             kind: Cast
 ```

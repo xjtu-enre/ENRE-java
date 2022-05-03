@@ -54,8 +54,8 @@ entities:
         -   name: DisableOnCondition
             category : Annotation
 dependencies: 
-        -   src: @DisableOnCondition/Annotation[0]
-            dest: @MailController/Method[0]
+        -   src: DisableOnCondition/Annotation[0]
+            dest: MailController/Method[0]
             kind: Annotate
 ```
 - Normal annotation
@@ -146,8 +146,8 @@ entities:
             modifiers: public
             qualifiedName: AdminController.authPreCheck
 dependencies: 
-        -   src: @CacheLock/Annotation[0]
-            dest: @AdminController/Method[0]
+        -   src: CacheLock/Annotation[0]
+            dest: AdminController/Method[0]
             kind: Annotate
 ```
 - Single member annotation
@@ -183,7 +183,7 @@ entities:
             modifiers: private final
             qualifiedName: BaseController.adminService
 dependencies: 
-        -   src: @CacheParam/Annotation[0]
-            dest: @BaseController/Variable[0]
+        -   src: CacheParam/Annotation[0]
+            dest: BaseController/Variable[0]
             kind: Annotate
 ```

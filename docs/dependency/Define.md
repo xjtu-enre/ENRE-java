@@ -48,8 +48,8 @@ entities:
             category : Method
             modifiers: public
 dependencies: 
-        -   src: @BaseService/Class[0]
-            dest: @BaseService/Method[0]
+        -   src: BaseService/Class[0]
+            dest: BaseService/Method[0]
             kind: Define
 ```
 - Define a method (interface)
@@ -73,8 +73,8 @@ entities:
         -   name: laundry
             category : Method
 dependencies: 
-        -   src: @BaseService/Interface[0]
-            dest: @BaseService/Method[0]
+        -   src: BaseService/Interface[0]
+            dest: BaseService/Method[0]
             kind: Define
 ```
 - Define a field (global variable)
@@ -99,8 +99,8 @@ entities:
             category : Variable
             modifiers: public static final
 dependencies: 
-        -   src: @BaseService/Class[0]
-            dest: @BaseService/Variable[0]
+        -   src: BaseService/Class[0]
+            dest: BaseService/Variable[0]
             kind: Define
 ```
 - Define a variable (local variable)
@@ -132,8 +132,8 @@ entities:
             category : Variable
             rawType: String
 dependencies: 
-        -   src: @BaseService/Method[0]
-            dest: @BaseService/Variable[1]
+        -   src: BaseService/Method[0]
+            dest: BaseService/Variable[1]
             kind: Define
 ```
 - Define an enum constant
@@ -164,11 +164,11 @@ entities:
         -   name: MINIO
             category : Enum Constant
 dependencies: 
-        -   src: @AttachmentType/Enum[0]
-            dest: @AttachmentType/Enum Constant[0]
+        -   src: AttachmentType/Enum[0]
+            dest: AttachmentType/Enum Constant[0]
             kind: Define
-        -   src: @AttachmentType/Enum[0]
-            dest: @AttachmentType/Enum Constant[1]
+        -   src: AttachmentType/Enum[0]
+            dest: AttachmentType/Enum Constant[1]
             kind: Define
 ```
 - Define an annotation member
@@ -216,10 +216,10 @@ entities:
             category : Annotation Member
             loc: [ 25, 4, 26, 33 ]
 dependencies: 
-        -   src: @DisableOnCondition/Annotation[0]
-            dest: @DisableOnCondition/Annotation Member[0]
+        -   src: DisableOnCondition/Annotation[0]
+            dest: DisableOnCondition/Annotation Member[0]
             kind: Define
-        -   src: @DisableOnCondition/Enum[0]
-            dest: @DisableOnCondition/Annotation Member[1]
+        -   src: DisableOnCondition/Enum[0]
+            dest: DisableOnCondition/Annotation Member[1]
             kind: Define
 ```
