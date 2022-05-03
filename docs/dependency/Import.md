@@ -32,7 +32,7 @@ class Bar extends Foo {
 
 ```
 ```yaml
-scenario: Import Class
+name: Import Class
 entities:
     items:
         -   name: Foo
@@ -76,7 +76,7 @@ public class Name {
 }
 ```
 ```yaml
-scenario: Import Class
+name: Import Class
 entities:
     items:
         -   name: Name
@@ -116,7 +116,7 @@ class Bar extends Foo {
 }
 ```
 ```yaml
-scenario: Import Static Var
+name: Import Static Var
 entities:
     items:
         -   name: Foo
@@ -167,7 +167,7 @@ public class HelloJDT implements JDTpkg_2 {
 }
 ```
 ```yaml
-scenario: Import on demand
+name: Import on demand
 entities:
     items:
         -   name: HelloJDT.java
@@ -263,7 +263,7 @@ public enum PostStatus implements ValueEnum<Integer> {
 
 ```
 ```yaml
-scenario: Import enum
+name: Import enum
 entities:
     items:
         -   name: BasePostMinimalDTO.java
@@ -421,7 +421,7 @@ public class JournalController {
 }
 ```
 ```yaml
-scenario: Import annotation
+name: Import annotation
 entities:
     items:
         -   name: JournalController.java

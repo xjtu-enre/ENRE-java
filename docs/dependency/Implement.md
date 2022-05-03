@@ -33,7 +33,7 @@ public interface Bed{
 }
 ```
 ```yaml
-scenario: A class implements an interface
+name: A class implements an interface
 entities:
     items:
         -   name: BaseService
@@ -65,7 +65,7 @@ public interface Bed{
 }
 ```
 ```yaml
-scenario: An enum implements an interface
+name: An enum implements an interface
 entities:
     items:
         -   name: BaseService
@@ -105,7 +105,7 @@ public interface Drink{
 }
 ```
 ```yaml
-scenario: A class implements multiple interfaces
+name: A class implements multiple interfaces
 entities:
     items:
         -   name: BaseService
@@ -151,7 +151,7 @@ public interface Drink{
 }
 ```
 ```yaml
-scenario: A class implements multiple interfaces
+name: A class implements multiple interfaces
 entities:
     items:
         -   name: BaseService

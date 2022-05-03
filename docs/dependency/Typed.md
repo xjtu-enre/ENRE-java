@@ -35,7 +35,7 @@ public class Foo{
 }
 ```
 ```yaml
-scenario: Cast Expression
+name: Cast Expression
 entities:
     items:
         -   name: Hello

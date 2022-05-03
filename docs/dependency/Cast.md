@@ -26,7 +26,7 @@ public class Controller{
 }
 ```
 ```yaml
-scenario: Cast Expression
+name: Cast Expression
 entities:
     items:
         -   name: Hello

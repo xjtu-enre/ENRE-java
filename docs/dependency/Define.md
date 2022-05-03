@@ -38,7 +38,7 @@ public class BaseService {
 }
 ```
 ```yaml
-scenario: A class defines a method
+name: A class defines a method
 entities:
     items:
         -   name: BaseService
@@ -64,7 +64,7 @@ public interface BaseService {
 }
 ```
 ```yaml
-scenario: An interface defines a method
+name: An interface defines a method
 entities:
     items:
         -   name: BaseService
@@ -89,7 +89,7 @@ public class BaseService {
 }
 ```
 ```yaml
-scenario: A class defines a field
+name: A class defines a field
 entities:
     items:
         -   name: BaseService
@@ -119,7 +119,7 @@ public class BaseService {
 }
 ```
 ```yaml
-scenario: A method defines a variable
+name: A method defines a variable
 entities:
     items:
         -   name: laundry
@@ -153,7 +153,7 @@ public enum AttachmentType implements ValueEnum<Integer> {
 }
 ```
 ```yaml
-scenario: A enum defines enum constants
+name: A enum defines enum constants
 entities:
     items:
         -   name: AttachmentType
@@ -202,7 +202,7 @@ public @interface DisableOnCondition {
 }
 ```
 ```yaml
-scenario: An annotation defines annotation members
+name: An annotation defines annotation members
 entities:
     items:
         -   name: DisableOnCondition

@@ -2,7 +2,7 @@
 A class is a blueprint or prototype from which objects are created,it models the state and behavior of a real-world object.
 ## Supported pattern
 ```yaml
-name : TypeDeclaration
+name : ClassDeclaration
 ```
 ### Syntax : Class Definitions
 ```yaml
@@ -49,7 +49,7 @@ class Foo{
 }
 ```
 ```yaml
-name: Class Declaration
+name: NestedClassDeclaration
 entities:
     filter: class
     items:

@@ -29,7 +29,7 @@ public abstract class AbstractStringCacheStore extends AbstractCacheStore<String
 }
 ```
 ```yaml
-scenario: Class extends one super class
+name: Class extends one super class
 entities:
     items:
         -   name: InMemoryCacheStore
@@ -61,7 +61,7 @@ public abstract class AbstractCacheStore<K, V> implements CacheStore<K, V> {
 }
 ```
 ```yaml
-scenario: Class extends one parameterized type
+name: Class extends one parameterized type
 entities:
     items:
         -   name: AbstractCacheStore
@@ -93,7 +93,7 @@ public interface CrudService<D, I> {
 }
 ```
 ```yaml
-scenario: Interface extends one super type
+name: Interface extends one super type
 entities:
     items:
         -   name: CrudService
@@ -129,7 +129,7 @@ public interface BaseService {
 }
 ```
 ```yaml
-scenario: Interface extends one super type
+name: Interface extends one super type
 entities:
     items:
         -   name: CrudService

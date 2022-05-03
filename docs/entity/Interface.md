@@ -2,7 +2,7 @@
 An `interface` is a contract between a class and the outside world. When a class implements an interface, it promises to provide the behavior published by that interface.
 ## Supported pattern
 ```yaml
-name : TypeDeclaration
+name : InterfaceDeclaration
 ```
 ### Syntax : Interface Definitions
 ```yaml
@@ -99,7 +99,7 @@ public class HelloWorldAnonymousClasses {
 
 ```
 ```yaml
-name: Interface Declaration
+name: Nested Interface Declaration
 entities:
     filter: interface
     items:

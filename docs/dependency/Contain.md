@@ -40,7 +40,7 @@ EnumDeclaration:
 package hello.pkg;
 ```
 ```yaml
-scenario: Package contains package
+name: Package contains package
 entities:
     items:
         -   name: hello
@@ -61,7 +61,7 @@ package hello;
 
 ```
 ```yaml
-scenario: Package contains package
+name: Package contains package
 entities:
     items:
         -   name: hello
@@ -87,7 +87,7 @@ class Test{
 }
 ```
 ```yaml
-scenario: File contains classes
+name: File contains classes
 entities:
     items:
         -   name: Hello.java
@@ -113,7 +113,7 @@ public enum Hello{
 }
 ```
 ```yaml
-scenario: File contains enum
+name: File contains enum
 entities:
     items:
         -   name: Hello.java
@@ -134,7 +134,7 @@ public interface Hello{
 }
 ```
 ```yaml
-scenario: File contains interface
+name: File contains interface
 entities:
     items:
         -   name: Hello.java
@@ -155,7 +155,7 @@ dependencies:
 }
 ```
 ```yaml
-scenario: File contains Annotation
+name: File contains Annotation
 entities:
     items:
         -   name: Hello.java

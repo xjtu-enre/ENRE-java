@@ -2,7 +2,7 @@
 `Annotations`, a form of metadata, provide data about a program that is not part of the program itself. Annotations have no direct effect on the operation of the code they annotate.
 ## Supported pattern
 ```yaml
-name : AnnotationTypeDeclaration
+name : AnnotationDeclaration
 ```
 ### Syntax : Annotation Definitions
 ```yaml
@@ -32,7 +32,7 @@ package hello;
 }
 ```
 ```yaml
-name: Annotation Declaration
+name: AnnotationDeclaration
 entities:
     filter: annotation
     items:

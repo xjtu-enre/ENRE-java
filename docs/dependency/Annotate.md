@@ -2,10 +2,7 @@
 A self-defined annotation annotate different kinds of entities.
 ## Supported pattern
 ```yaml
-name : 
-    - MarkerAnnotation
-    - NormalAnnotation
-    - SingleMemberAnnotation
+name : Annotates
 ```
 ### Syntax : 
 ```yaml
@@ -47,7 +44,7 @@ public @interface DisableOnCondition {
 }
 ```
 ```yaml
-scenario: Marker annotation
+name: Marker Annotation
 entities:
     items:
         -   name: testMail
@@ -138,7 +135,7 @@ public @interface CacheLock {
 }
 ```
 ```yaml
-scenario: Normal annotation
+name: Normal Annotation
 entities:
     items:
         -   name: CacheLock
@@ -175,7 +172,7 @@ public @interface CacheParam {
 }
 ```
 ```yaml
-scenario: Single member annotation
+name: Single Member Annotation
 entities:
     items:
         -   name: CacheParam
