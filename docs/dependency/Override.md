@@ -2,7 +2,7 @@
 A type 
 ## Supported pattern
 ```yaml
-name : ImportDeclaration
+name : Override
 ```
 ### Syntax : 
 ```yaml

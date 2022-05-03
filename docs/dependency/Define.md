@@ -2,10 +2,7 @@
 A type define fields or methods, a method defines variables.
 ## Supported pattern
 ```yaml
-name: 
-    - MethodDeclaration
-    - VariableDeclaration
-    - FieldDeclaration
+name: Define
 ```
 ### Syntax : 
 ```yaml
@@ -48,9 +45,10 @@ entities:
             category : Method
             modifiers: public
 dependencies: 
+    items:
         -   src: BaseService/Class[0]
             dest: BaseService/Method[0]
-            kind: Define
+            category: Define
 ```
 - Define a method (interface)
 ```java
@@ -73,9 +71,10 @@ entities:
         -   name: laundry
             category : Method
 dependencies: 
+    items:
         -   src: BaseService/Interface[0]
             dest: BaseService/Method[0]
-            kind: Define
+            category: Define
 ```
 - Define a field (global variable)
 ```java
@@ -99,9 +98,10 @@ entities:
             category : Variable
             modifiers: public static final
 dependencies: 
+    items:
         -   src: BaseService/Class[0]
             dest: BaseService/Variable[0]
-            kind: Define
+            category: Define
 ```
 - Define a variable (local variable)
 ```java
@@ -132,9 +132,10 @@ entities:
             category : Variable
             rawType: String
 dependencies: 
+    items:
         -   src: BaseService/Method[0]
             dest: BaseService/Variable[1]
-            kind: Define
+            category: Define
 ```
 - Define an enum constant
 ```java
@@ -164,12 +165,13 @@ entities:
         -   name: MINIO
             category : Enum Constant
 dependencies: 
+    items:
         -   src: AttachmentType/Enum[0]
             dest: AttachmentType/Enum Constant[0]
-            kind: Define
+            category: Define
         -   src: AttachmentType/Enum[0]
             dest: AttachmentType/Enum Constant[1]
-            kind: Define
+            category: Define
 ```
 - Define an annotation member
 ```java
@@ -216,10 +218,11 @@ entities:
             category : Annotation Member
             loc: [ 25, 4, 26, 33 ]
 dependencies: 
+    items:
         -   src: DisableOnCondition/Annotation[0]
             dest: DisableOnCondition/Annotation Member[0]
-            kind: Define
+            category: Define
         -   src: DisableOnCondition/Enum[0]
             dest: DisableOnCondition/Annotation Member[1]
-            kind: Define
+            category: Define
 ```

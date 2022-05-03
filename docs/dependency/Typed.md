@@ -2,9 +2,7 @@
 A variable's type is one of the (self-defined) Class or other types.
 ## Supported pattern
 ```yaml
-name : 
-    - VariableDeclaration
-    - FieldDeclaration
+name : Typed
 ```
 ### Syntax : 
 ```yaml
@@ -48,9 +46,10 @@ entities:
         -   name: hello
             category : Variable
             qualifiedName: Foo.getHello.hello
-dependencies: 
+dependencies:
+    items:
         -   src: Foo/Variable[0]
             dest: Hello/Class[0]
-            kind: Typed
+            category: Typed
 ```
 - Variable Declaration Statement

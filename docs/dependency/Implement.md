@@ -2,7 +2,7 @@
 A type(class or enum) implements interfaces.
 ## Supported pattern
 ```yaml
-keyword : implements
+name : Implement
 ```
 ### Syntax : 
 ```yaml
@@ -42,10 +42,11 @@ entities:
         -   name: Bed
             category : Interface
             modifiers: public
-dependencies: 
+dependencies:
+    items:
         -   src: BaseService/Class[0]
             dest: Bed/Interface[0]
-            kind: implement
+            category: implement
 ```
 - An enum implements an interface
 ```java
@@ -74,10 +75,11 @@ entities:
         -   name: Bed
             category : Interface
             modifiers: public
-dependencies: 
+dependencies:
+    items:
         -   src: BaseService/Enum[0]
             dest: Bed/Interface[0]
-            kind: implement
+            category: implement
 ```
 - A class implements multiple interfaces
 ```java
@@ -117,13 +119,14 @@ entities:
         -   name: Drink
             category : Interface
             modifiers: public
-dependencies: 
+dependencies:
+    items:
         -   src: BaseService/Class[0]
             dest: Photo/Interface[0]
-            kind: implement
+            category: implement
         -   src: BaseService/Class[0]
             dest: Drink/Interface[0]
-            kind: implement
+            category: implement
 ```
 - An enum implements multiple interfaces
 ```java
@@ -151,7 +154,7 @@ public interface Drink{
 }
 ```
 ```yaml
-name: A class implements multiple interfaces
+name: A enum implements multiple interfaces
 entities:
     items:
         -   name: BaseService
@@ -163,11 +166,12 @@ entities:
         -   name: Drink
             category : Interface
             modifiers: public
-dependencies: 
+dependencies:
+    items:
         -   src: BaseService/Enum[0]
             dest: Photo/Interface[0]
-            kind: implement
+            category: implement
         -   src: BaseService/Enum[0]
             dest: Drink/Interface[0]
-            kind: implement
+            category: implement
 ```

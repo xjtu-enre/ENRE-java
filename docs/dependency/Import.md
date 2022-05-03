@@ -2,7 +2,7 @@
 A file imports other class, enum or package, or static imports method or var.
 ## Supported pattern
 ```yaml
-name : ImportDeclaration
+name : Import
 ```
 ### Syntax : 
 ```yaml
@@ -32,7 +32,7 @@ class Bar extends Foo {
 
 ```
 ```yaml
-name: Import Class
+name: Import Class From Default Class
 entities:
     items:
         -   name: Foo
@@ -45,10 +45,11 @@ entities:
             loc: file2/[ 2, 0, 8, 0 ]
             rawType: Bar
             qualifiedName: Bar
-dependencies: 
+dependencies:
+    items:
         -   src: file2
             dest: file1/@class[0]
-            kind: import
+            category: import
 ```
 - Import class (known package)
 ```java
@@ -76,7 +77,7 @@ public class Name {
 }
 ```
 ```yaml
-name: Import Class
+name: Import Class From Explicit Package
 entities:
     items:
         -   name: Name
@@ -87,10 +88,11 @@ entities:
         -   name: Hello.java
             category : File
             qualifiedName: test_package2.Hello.java
-dependencies: 
+dependencies:
+    items:
         -   src: file1
             dest: file2/Class[0]
-            kind: import
+            category: import
 ```
 - Import Static Var
 ```java
@@ -133,10 +135,11 @@ entities:
             loc: file2/[ 2, 0, 11, 0 ]
             rawType: Bar
             qualifiedName: Bar
-dependencies: 
+dependencies:
+    items:
         -   src: file2
             dest: file1/Variable[0]
-            kind: import
+            category: import
 ```
 - Import On Demand
 ```java
@@ -176,10 +179,11 @@ entities:
         -   name: helloJDT.pkg
             category : Package
             qualifiedName: helloJDT.pkg
-dependencies: 
+dependencies:
+    items:
         -   src: HelloJDT.java
             dest: helloJDT.pkg
-            kind: import
+            category: import
 ```
 - Import Enum
 ```java
@@ -275,10 +279,11 @@ entities:
             rawType: run.halo.app.model.enums.PostStatus
             loc: PostStatus/[ 4, 0, 41, 0 ]
             modifiers: public
-dependencies: 
+dependencies:
+    items:
         -   src: BasePostMinimalDTO.java
             dest: PostStatus.java/Enum[0]
-            kind: import
+            category: import
 ```
 - Import Annotation
 ```java
@@ -433,8 +438,9 @@ entities:
             rawType: run.halo.app.cache.lock.CacheParam
             loc: CacheParam/[ 11, 0, 23, 0 ]
             modifiers: public
-dependencies: 
+dependencies:
+    items:
         -   src: JournalController
             dest: CacheParam.java/Annotation[0]
-            kind: import
+            category: import
 ```

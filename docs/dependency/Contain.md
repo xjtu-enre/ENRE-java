@@ -2,11 +2,7 @@
 A Package contains files, or a file contains types.
 ## Supported pattern
 ```yaml
-name: 
-    - ClassDeclaration
-    - InterfaceDeclaration
-    - EnumDeclaration
-    - AnnotationTypeDeclaration
+name: Contain
 ```
 ### Syntax : 
 ```yaml
@@ -49,12 +45,13 @@ entities:
         -   name: pkg
             category : Package
             qualifiedName: hello.pkg
-dependencies: 
+dependencies:
+    items:
         -   src: hello
             dest: pkg
-            kind: Contain
+            category: Contain
 ```
-- Package contains files
+<!-- - Package contains files
 ```java
 package hello;
 
@@ -74,7 +71,7 @@ dependencies:
         -   src: hello
             dest: pkg
             kind: Contain
-```
+``` -->
 - File contains class(es)
 ```java
 //Hello.java
@@ -97,13 +94,14 @@ entities:
             category : Class
         -   name: Test
             category : Class
-dependencies: 
+dependencies:
+    items:
         -   src: Hello
             dest: Hello/Class[0]
-            kind: Contain
+            category: Contain
         -   src: Hello
             dest: Hello/Class[1]
-            kind: Contain
+            category: Contain
 ```
 - File contains enum(s)
 ```java
@@ -121,10 +119,11 @@ entities:
             qualifiedName: Hello.java
         -   name: Hello
             category : Enum
-dependencies: 
+dependencies:
+    items:
         -   src: Hello
             dest: Hello/Enum[0]
-            kind: Contain
+            category: Contain
 ```
 - File contains interface(s)
 ```java
@@ -142,10 +141,11 @@ entities:
             qualifiedName: Hello.java
         -   name: Hello
             category : Interface
-dependencies: 
+dependencies:
+    items:
         -   src: Hello
             dest: Hello/Interface[0]
-            kind: Contain
+            category: Contain
 ```
 - File contains annotation(s)
 ```java
@@ -164,7 +164,8 @@ entities:
         -   name: Hello
             category : Annotation
 dependencies: 
+    items:
         -   src: Hello
             dest: Hello/Annotation[0]
-            kind: Contain
+            category: Contain
 ```

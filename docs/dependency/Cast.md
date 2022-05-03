@@ -2,7 +2,7 @@
 An entity casts another (self-defined) type to a variable in its scope.
 ## Supported pattern
 ```yaml
-name : CastExpression
+name : Cast
 ```
 ### Syntax : 
 ```yaml
@@ -34,8 +34,9 @@ entities:
         -   name: service
             category : Method
             qualifiedName: Controller.service
-dependencies: 
+dependencies:
+    items:
         -   src: Controller/Method[0]
             dest: Hello/Class[0]
-            kind: Cast
+            category: Cast
 ```

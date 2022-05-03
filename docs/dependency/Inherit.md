@@ -2,7 +2,7 @@
 A class extends one super (abstract) class, or an interface extends single or multiple super interfaces.
 ## Supported pattern
 ```yaml
-keyword: extends
+name: extends
 ```
 ### Syntax : 
 ```yaml
@@ -42,10 +42,11 @@ entities:
             qualifiedName: AbstractStringCacheStore
             modifiers: public abstract
             File: AbstractStringCacheStore.java
-dependencies: 
+dependencies:
+    items:
         -   src: InMemoryCacheStore/Class[0]
             dest: AbstractStringCacheStore/Class[0]
-            kind: inherit
+            category: inherit
 ```
 - Class extends one parameterized type
 ```java
@@ -74,10 +75,11 @@ entities:
             qualifiedName: AbstractStringCacheStore
             modifiers: public abstract
             File: AbstractStringCacheStore.java
-dependencies: 
+dependencies:
+    items:
         -   src: AbstractStringCacheStore/Class[0]
             dest: AbstractCacheStore/Class[0]
-            kind: inherit
+            category: inherit
 ```
 - Interface extends one super interface
 ```java
@@ -104,10 +106,11 @@ entities:
             category : Interface
             qualifiedName: JournalService
             modifiers: public
-dependencies: 
+dependencies:
+    items:
         -   src: JournalService/Interface[0]
             dest: CrudService/Interface[0]
-            kind: inherit
+            category: inherit
 ```
 - Interface extends multiple super interfaces
 ```java
@@ -141,11 +144,12 @@ entities:
         -   name: BaseService
             category : Interface
             modifiers: public
-dependencies: 
+dependencies:
+    items:
         -   src: JournalService/Interface[0]
             dest: CrudService/Interface[0]
-            kind: inherit
+            category: inherit
         -   src: JournalService/Interface[0]
             dest: BaseService/Interface[0]
-            kind: inherit
+            category: inherit
 ```

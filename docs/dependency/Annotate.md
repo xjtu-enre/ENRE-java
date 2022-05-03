@@ -2,7 +2,7 @@
 A self-defined annotation annotate different kinds of entities.
 ## Supported pattern
 ```yaml
-name : Annotates
+name : Annotate
 ```
 ### Syntax : 
 ```yaml
@@ -54,9 +54,10 @@ entities:
         -   name: DisableOnCondition
             category : Annotation
 dependencies: 
+    items:
         -   src: DisableOnCondition/Annotation[0]
             dest: MailController/Method[0]
-            kind: Annotate
+            category: Annotate
 ```
 - Normal annotation
 ```java
@@ -145,10 +146,11 @@ entities:
             category : Method
             modifiers: public
             qualifiedName: AdminController.authPreCheck
-dependencies: 
+dependencies:
+    items:
         -   src: CacheLock/Annotation[0]
             dest: AdminController/Method[0]
-            kind: Annotate
+            category: Annotate
 ```
 - Single member annotation
 ```java
@@ -182,8 +184,9 @@ entities:
             category : Variable
             modifiers: private final
             qualifiedName: BaseController.adminService
-dependencies: 
+dependencies:
+    items:
         -   src: CacheParam/Annotation[0]
             dest: BaseController/Variable[0]
-            kind: Annotate
+            category: Annotate
 ```
