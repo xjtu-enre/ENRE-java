@@ -2,10 +2,7 @@
 A self-defined annotation annotate different kinds of entities.
 ## Supported pattern
 ```yaml
-name : 
-    - MarkerAnnotation
-    - NormalAnnotation
-    - SingleMemberAnnotation
+name : Annotate
 ```
 ### Syntax : 
 ```yaml
@@ -47,7 +44,7 @@ public @interface DisableOnCondition {
 }
 ```
 ```yaml
-scenario: Marker annotation
+name: Marker Annotation
 entities:
     items:
         -   name: testMail
@@ -57,9 +54,10 @@ entities:
         -   name: DisableOnCondition
             category : Annotation
 dependencies: 
-        -   src: @DisableOnCondition/Annotation[0]
-            dest: @MailController/Method[0]
-            kind: Annotate
+    items:
+        -   src: DisableOnCondition/Annotation[0]
+            dest: MailController/Method[0]
+            category: Annotate
 ```
 - Normal annotation
 ```java
@@ -138,7 +136,7 @@ public @interface CacheLock {
 }
 ```
 ```yaml
-scenario: Normal annotation
+name: Normal Annotation
 entities:
     items:
         -   name: CacheLock
@@ -148,10 +146,11 @@ entities:
             category : Method
             modifiers: public
             qualifiedName: AdminController.authPreCheck
-dependencies: 
-        -   src: @CacheLock/Annotation[0]
-            dest: @AdminController/Method[0]
-            kind: Annotate
+dependencies:
+    items:
+        -   src: CacheLock/Annotation[0]
+            dest: AdminController/Method[0]
+            category: Annotate
 ```
 - Single member annotation
 ```java
@@ -175,7 +174,7 @@ public @interface CacheParam {
 }
 ```
 ```yaml
-scenario: Single member annotation
+name: Single Member Annotation
 entities:
     items:
         -   name: CacheParam
@@ -185,8 +184,9 @@ entities:
             category : Variable
             modifiers: private final
             qualifiedName: BaseController.adminService
-dependencies: 
-        -   src: @CacheParam/Annotation[0]
-            dest: @BaseController/Variable[0]
-            kind: Annotate
+dependencies:
+    items:
+        -   src: CacheParam/Annotation[0]
+            dest: BaseController/Variable[0]
+            category: Annotate
 ```

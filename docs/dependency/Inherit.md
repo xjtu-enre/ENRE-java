@@ -2,7 +2,7 @@
 A class extends one super (abstract) class, or an interface extends single or multiple super interfaces.
 ## Supported pattern
 ```yaml
-keyword: extends
+name: extends
 ```
 ### Syntax : 
 ```yaml
@@ -29,7 +29,7 @@ public abstract class AbstractStringCacheStore extends AbstractCacheStore<String
 }
 ```
 ```yaml
-scenario: Class extends one super class
+name: Class extends one super class
 entities:
     items:
         -   name: InMemoryCacheStore
@@ -42,10 +42,11 @@ entities:
             qualifiedName: AbstractStringCacheStore
             modifiers: public abstract
             File: AbstractStringCacheStore.java
-dependencies: 
-        -   src: @InMemoryCacheStore/Class[0]
-            dest: @AbstractStringCacheStore/Class[0]
-            kind: inherit
+dependencies:
+    items:
+        -   src: InMemoryCacheStore/Class[0]
+            dest: AbstractStringCacheStore/Class[0]
+            category: inherit
 ```
 - Class extends one parameterized type
 ```java
@@ -61,7 +62,7 @@ public abstract class AbstractCacheStore<K, V> implements CacheStore<K, V> {
 }
 ```
 ```yaml
-scenario: Class extends one parameterized type
+name: Class extends one parameterized type
 entities:
     items:
         -   name: AbstractCacheStore
@@ -74,10 +75,11 @@ entities:
             qualifiedName: AbstractStringCacheStore
             modifiers: public abstract
             File: AbstractStringCacheStore.java
-dependencies: 
-        -   src: @AbstractStringCacheStore/Class[0]
-            dest: @AbstractCacheStore/Class[0]
-            kind: inherit
+dependencies:
+    items:
+        -   src: AbstractStringCacheStore/Class[0]
+            dest: AbstractCacheStore/Class[0]
+            category: inherit
 ```
 - Interface extends one super interface
 ```java
@@ -93,7 +95,7 @@ public interface CrudService<D, I> {
 }
 ```
 ```yaml
-scenario: Interface extends one super type
+name: Interface extends one super type
 entities:
     items:
         -   name: CrudService
@@ -104,10 +106,11 @@ entities:
             category : Interface
             qualifiedName: JournalService
             modifiers: public
-dependencies: 
-        -   src: @JournalService/Interface[0]
-            dest: @CrudService/Interface[0]
-            kind: inherit
+dependencies:
+    items:
+        -   src: JournalService/Interface[0]
+            dest: CrudService/Interface[0]
+            category: inherit
 ```
 - Interface extends multiple super interfaces
 ```java
@@ -129,7 +132,7 @@ public interface BaseService {
 }
 ```
 ```yaml
-scenario: Interface extends one super type
+name: Interface extends one super type
 entities:
     items:
         -   name: CrudService
@@ -141,11 +144,12 @@ entities:
         -   name: BaseService
             category : Interface
             modifiers: public
-dependencies: 
-        -   src: @JournalService/Interface[0]
+dependencies:
+    items:
+        -   src: JournalService/Interface[0]
             dest: CrudService/Interface[0]
-            kind: inherit
-        -   src: @JournalService/Interface[0]
-            dest: @BaseService/Interface[0]
-            kind: inherit
+            category: inherit
+        -   src: JournalService/Interface[0]
+            dest: BaseService/Interface[0]
+            category: inherit
 ```

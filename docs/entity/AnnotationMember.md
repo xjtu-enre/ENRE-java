@@ -2,7 +2,7 @@
 `Annotation Member` looks a lot like a method, which provides extra actions about this annotation.
 ## Supported pattern
 ```yaml
-name : AnnotationTypeMemberDeclaration
+name : AnnotationMemberDeclaration
 ```
 ### Syntax : AnnotationMember Definitions
 ```yaml
@@ -26,7 +26,7 @@ package hello;
 }
 ```
 ```yaml
-name: Annotation Declaration
+name: AnnotationMemberDeclaration
 entities:
     filter: annotation
     items:

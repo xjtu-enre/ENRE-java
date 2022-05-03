@@ -2,7 +2,7 @@
 An entity calls other methods in its scope   
 ## Supported pattern
 ```yaml
-name : MethodInvocation
+name : Call
 ```
 ### Syntax : 
 ```yaml

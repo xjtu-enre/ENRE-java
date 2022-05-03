@@ -2,11 +2,7 @@
 A Package contains files, or a file contains types.
 ## Supported pattern
 ```yaml
-name: 
-    - ClassDeclaration
-    - InterfaceDeclaration
-    - EnumDeclaration
-    - AnnotationTypeDeclaration
+name: Contain
 ```
 ### Syntax : 
 ```yaml
@@ -40,7 +36,7 @@ EnumDeclaration:
 package hello.pkg;
 ```
 ```yaml
-scenario: Package contains package
+name: Package contains package
 entities:
     items:
         -   name: hello
@@ -49,19 +45,20 @@ entities:
         -   name: pkg
             category : Package
             qualifiedName: hello.pkg
-dependencies: 
+dependencies:
+    items:
         -   src: hello
             dest: pkg
-            kind: Contain
+            category: Contain
 ```
-- Package contains files
+<!-- - Package contains files
 ```java
 package hello;
 
 
 ```
 ```yaml
-scenario: Package contains package
+name: Package contains package
 entities:
     items:
         -   name: hello
@@ -74,7 +71,7 @@ dependencies:
         -   src: hello
             dest: pkg
             kind: Contain
-```
+``` -->
 - File contains class(es)
 ```java
 //Hello.java
@@ -87,7 +84,7 @@ class Test{
 }
 ```
 ```yaml
-scenario: File contains classes
+name: File contains classes
 entities:
     items:
         -   name: Hello.java
@@ -97,13 +94,14 @@ entities:
             category : Class
         -   name: Test
             category : Class
-dependencies: 
-        -   src: @Hello
-            dest: @Hello/Class[0]
-            kind: Contain
-        -   src: @Hello
-            dest: @Hello/Class[1]
-            kind: Contain
+dependencies:
+    items:
+        -   src: Hello
+            dest: Hello/Class[0]
+            category: Contain
+        -   src: Hello
+            dest: Hello/Class[1]
+            category: Contain
 ```
 - File contains enum(s)
 ```java
@@ -113,7 +111,7 @@ public enum Hello{
 }
 ```
 ```yaml
-scenario: File contains enum
+name: File contains enum
 entities:
     items:
         -   name: Hello.java
@@ -121,10 +119,11 @@ entities:
             qualifiedName: Hello.java
         -   name: Hello
             category : Enum
-dependencies: 
-        -   src: @Hello
-            dest: @Hello/Enum[0]
-            kind: Contain
+dependencies:
+    items:
+        -   src: Hello
+            dest: Hello/Enum[0]
+            category: Contain
 ```
 - File contains interface(s)
 ```java
@@ -134,7 +133,7 @@ public interface Hello{
 }
 ```
 ```yaml
-scenario: File contains interface
+name: File contains interface
 entities:
     items:
         -   name: Hello.java
@@ -142,10 +141,11 @@ entities:
             qualifiedName: Hello.java
         -   name: Hello
             category : Interface
-dependencies: 
-        -   src: @Hello
-            dest: @Hello/Interface[0]
-            kind: Contain
+dependencies:
+    items:
+        -   src: Hello
+            dest: Hello/Interface[0]
+            category: Contain
 ```
 - File contains annotation(s)
 ```java
@@ -155,7 +155,7 @@ dependencies:
 }
 ```
 ```yaml
-scenario: File contains Annotation
+name: File contains Annotation
 entities:
     items:
         -   name: Hello.java
@@ -164,7 +164,8 @@ entities:
         -   name: Hello
             category : Annotation
 dependencies: 
-        -   src: @Hello
-            dest: @Hello/Annotation[0]
-            kind: Contain
+    items:
+        -   src: Hello
+            dest: Hello/Annotation[0]
+            category: Contain
 ```

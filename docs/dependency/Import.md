@@ -2,7 +2,7 @@
 A file imports other class, enum or package, or static imports method or var.
 ## Supported pattern
 ```yaml
-name : ImportDeclaration
+name : Import
 ```
 ### Syntax : 
 ```yaml
@@ -32,23 +32,24 @@ class Bar extends Foo {
 
 ```
 ```yaml
-scenario: Import Class
+name: Import Class From Default Class
 entities:
     items:
         -   name: Foo
             category : Class
-            loc: @file1/[ 2, 0, 5, 0 ]
+            loc: file1/[ 2, 0, 5, 0 ]
             rawType: Foo
             qualifiedName: Foo
         -   name: Bar
             category : Class
-            loc: @file2/[ 2, 0, 8, 0 ]
+            loc: file2/[ 2, 0, 8, 0 ]
             rawType: Bar
             qualifiedName: Bar
-dependencies: 
-        -   src: @file2
-            dest: @file1/@class[0]
-            kind: import
+dependencies:
+    items:
+        -   src: file2
+            dest: file1/@class[0]
+            category: import
 ```
 - Import class (known package)
 ```java
@@ -76,21 +77,22 @@ public class Name {
 }
 ```
 ```yaml
-scenario: Import Class
+name: Import Class From Explicit Package
 entities:
     items:
         -   name: Name
             category : Class
-            loc: @file2/[ 4, 0, 8, 0 ]
+            loc: file2/[ 4, 0, 8, 0 ]
             rawType: test_package1.Name
             qualifiedName: test_package1.Name
         -   name: Hello.java
             category : File
             qualifiedName: test_package2.Hello.java
-dependencies: 
-        -   src: @file1
-            dest: @file2/@Class[0]
-            kind: import
+dependencies:
+    items:
+        -   src: file1
+            dest: file2/Class[0]
+            category: import
 ```
 - Import Static Var
 ```java
@@ -116,12 +118,12 @@ class Bar extends Foo {
 }
 ```
 ```yaml
-scenario: Import Static Var
+name: Import Static Var
 entities:
     items:
         -   name: Foo
             category : Class
-            loc: @file1/[ 2, 0, 7, 0 ]
+            loc: file1/[ 2, 0, 7, 0 ]
             rawType: Foo
             qualifiedName: Foo
         -   name: MSG
@@ -130,13 +132,14 @@ entities:
             qualifiedName: Foo.MSG
         -   name: Bar
             category : Class
-            loc: @file2/[ 2, 0, 11, 0 ]
+            loc: file2/[ 2, 0, 11, 0 ]
             rawType: Bar
             qualifiedName: Bar
-dependencies: 
-        -   src: @file2
-            dest: @file1/@Variable[0]
-            kind: import
+dependencies:
+    items:
+        -   src: file2
+            dest: file1/Variable[0]
+            category: import
 ```
 - Import On Demand
 ```java
@@ -167,7 +170,7 @@ public class HelloJDT implements JDTpkg_2 {
 }
 ```
 ```yaml
-scenario: Import on demand
+name: Import on demand
 entities:
     items:
         -   name: HelloJDT.java
@@ -176,10 +179,11 @@ entities:
         -   name: helloJDT.pkg
             category : Package
             qualifiedName: helloJDT.pkg
-dependencies: 
-        -   src: @HelloJDT.java
+dependencies:
+    items:
+        -   src: HelloJDT.java
             dest: helloJDT.pkg
-            kind: import
+            category: import
 ```
 - Import Enum
 ```java
@@ -263,7 +267,7 @@ public enum PostStatus implements ValueEnum<Integer> {
 
 ```
 ```yaml
-scenario: Import enum
+name: Import enum
 entities:
     items:
         -   name: BasePostMinimalDTO.java
@@ -273,12 +277,13 @@ entities:
             category : Enum
             qualifiedName: run.halo.app.model.enums.PostStatus
             rawType: run.halo.app.model.enums.PostStatus
-            loc: @PostStatus/[ 4, 0, 41, 0 ]
+            loc: PostStatus/[ 4, 0, 41, 0 ]
             modifiers: public
-dependencies: 
-        -   src: @BasePostMinimalDTO.java
-            dest: @PostStatus.java/@Enum[0]
-            kind: import
+dependencies:
+    items:
+        -   src: BasePostMinimalDTO.java
+            dest: PostStatus.java/Enum[0]
+            category: import
 ```
 - Import Annotation
 ```java
@@ -421,7 +426,7 @@ public class JournalController {
 }
 ```
 ```yaml
-scenario: Import annotation
+name: Import annotation
 entities:
     items:
         -   name: JournalController.java
@@ -431,10 +436,11 @@ entities:
             category : Annotation
             qualifiedName: run.halo.app.cache.lock.CacheParam
             rawType: run.halo.app.cache.lock.CacheParam
-            loc: @CacheParam/[ 11, 0, 23, 0 ]
+            loc: CacheParam/[ 11, 0, 23, 0 ]
             modifiers: public
-dependencies: 
-        -   src: @JournalController
-            dest: @CacheParam.java/@Annotation[0]
-            kind: import
+dependencies:
+    items:
+        -   src: JournalController
+            dest: CacheParam.java/Annotation[0]
+            category: import
 ```

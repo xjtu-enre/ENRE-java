@@ -2,7 +2,7 @@
 A type(class or enum) implements interfaces.
 ## Supported pattern
 ```yaml
-keyword : implements
+name : Implement
 ```
 ### Syntax : 
 ```yaml
@@ -33,7 +33,7 @@ public interface Bed{
 }
 ```
 ```yaml
-scenario: A class implements an interface
+name: A class implements an interface
 entities:
     items:
         -   name: BaseService
@@ -42,10 +42,11 @@ entities:
         -   name: Bed
             category : Interface
             modifiers: public
-dependencies: 
-        -   src: @BaseService/Class[0]
-            dest: @Bed/Interface[0]
-            kind: implement
+dependencies:
+    items:
+        -   src: BaseService/Class[0]
+            dest: Bed/Interface[0]
+            category: implement
 ```
 - An enum implements an interface
 ```java
@@ -65,7 +66,7 @@ public interface Bed{
 }
 ```
 ```yaml
-scenario: An enum implements an interface
+name: An enum implements an interface
 entities:
     items:
         -   name: BaseService
@@ -74,10 +75,11 @@ entities:
         -   name: Bed
             category : Interface
             modifiers: public
-dependencies: 
-        -   src: @BaseService/Enum[0]
-            dest: @Bed/Interface[0]
-            kind: implement
+dependencies:
+    items:
+        -   src: BaseService/Enum[0]
+            dest: Bed/Interface[0]
+            category: implement
 ```
 - A class implements multiple interfaces
 ```java
@@ -105,7 +107,7 @@ public interface Drink{
 }
 ```
 ```yaml
-scenario: A class implements multiple interfaces
+name: A class implements multiple interfaces
 entities:
     items:
         -   name: BaseService
@@ -117,13 +119,14 @@ entities:
         -   name: Drink
             category : Interface
             modifiers: public
-dependencies: 
-        -   src: @BaseService/Class[0]
-            dest: @Photo/Interface[0]
-            kind: implement
-        -   src: @BaseService/Class[0]
-            dest: @Drink/Interface[0]
-            kind: implement
+dependencies:
+    items:
+        -   src: BaseService/Class[0]
+            dest: Photo/Interface[0]
+            category: implement
+        -   src: BaseService/Class[0]
+            dest: Drink/Interface[0]
+            category: implement
 ```
 - An enum implements multiple interfaces
 ```java
@@ -151,7 +154,7 @@ public interface Drink{
 }
 ```
 ```yaml
-scenario: A class implements multiple interfaces
+name: A enum implements multiple interfaces
 entities:
     items:
         -   name: BaseService
@@ -163,11 +166,12 @@ entities:
         -   name: Drink
             category : Interface
             modifiers: public
-dependencies: 
-        -   src: @BaseService/Enum[0]
-            dest: @Photo/Interface[0]
-            kind: implement
-        -   src: @BaseService/Enum[0]
-            dest: @Drink/Interface[0]
-            kind: implement
+dependencies:
+    items:
+        -   src: BaseService/Enum[0]
+            dest: Photo/Interface[0]
+            category: implement
+        -   src: BaseService/Enum[0]
+            dest: Drink/Interface[0]
+            category: implement
 ```

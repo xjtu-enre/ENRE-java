@@ -81,7 +81,7 @@ public class foo{
 }
 ```
 ```yaml
-name: Variable Declaration Statement
+name: Multi Variable Declaration Statement
 entities:
     filter: variable
     exact: true
@@ -112,7 +112,7 @@ class foo {
 }
 ```
 ```yaml
-name: Single Variable Declaration
+name: Parameter Declaration
 entities:
     filter: variable
     exact: true
@@ -144,7 +144,7 @@ public class foo{
 }
 ```
 ```yaml
-name: Single Variable Declaration
+name: Catch Parameter Declaration
 entities:
     filter: variable
     exact: false
@@ -175,7 +175,7 @@ public class foo{
 }
 ```
 ```yaml
-name: Single Variable Declaration
+name: For Loop Variable
 entities:
     filter: variable
     exact: true

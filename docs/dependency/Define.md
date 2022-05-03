@@ -2,10 +2,7 @@
 A type define fields or methods, a method defines variables.
 ## Supported pattern
 ```yaml
-name: 
-    - MethodDeclaration
-    - VariableDeclaration
-    - FieldDeclaration
+name: Define
 ```
 ### Syntax : 
 ```yaml
@@ -38,7 +35,7 @@ public class BaseService {
 }
 ```
 ```yaml
-scenario: A class defines a method
+name: A class defines a method
 entities:
     items:
         -   name: BaseService
@@ -48,9 +45,10 @@ entities:
             category : Method
             modifiers: public
 dependencies: 
-        -   src: @BaseService/Class[0]
-            dest: @BaseService/Method[0]
-            kind: Define
+    items:
+        -   src: BaseService/Class[0]
+            dest: BaseService/Method[0]
+            category: Define
 ```
 - Define a method (interface)
 ```java
@@ -64,7 +62,7 @@ public interface BaseService {
 }
 ```
 ```yaml
-scenario: An interface defines a method
+name: An interface defines a method
 entities:
     items:
         -   name: BaseService
@@ -73,9 +71,10 @@ entities:
         -   name: laundry
             category : Method
 dependencies: 
-        -   src: @BaseService/Interface[0]
-            dest: @BaseService/Method[0]
-            kind: Define
+    items:
+        -   src: BaseService/Interface[0]
+            dest: BaseService/Method[0]
+            category: Define
 ```
 - Define a field (global variable)
 ```java
@@ -89,7 +88,7 @@ public class BaseService {
 }
 ```
 ```yaml
-scenario: A class defines a field
+name: A class defines a field
 entities:
     items:
         -   name: BaseService
@@ -99,9 +98,10 @@ entities:
             category : Variable
             modifiers: public static final
 dependencies: 
-        -   src: @BaseService/Class[0]
-            dest: @BaseService/Variable[0]
-            kind: Define
+    items:
+        -   src: BaseService/Class[0]
+            dest: BaseService/Variable[0]
+            category: Define
 ```
 - Define a variable (local variable)
 ```java
@@ -119,7 +119,7 @@ public class BaseService {
 }
 ```
 ```yaml
-scenario: A method defines a variable
+name: A method defines a variable
 entities:
     items:
         -   name: laundry
@@ -132,9 +132,10 @@ entities:
             category : Variable
             rawType: String
 dependencies: 
-        -   src: @BaseService/Method[0]
-            dest: @BaseService/Variable[1]
-            kind: Define
+    items:
+        -   src: BaseService/Method[0]
+            dest: BaseService/Variable[1]
+            category: Define
 ```
 - Define an enum constant
 ```java
@@ -153,7 +154,7 @@ public enum AttachmentType implements ValueEnum<Integer> {
 }
 ```
 ```yaml
-scenario: A enum defines enum constants
+name: A enum defines enum constants
 entities:
     items:
         -   name: AttachmentType
@@ -164,12 +165,13 @@ entities:
         -   name: MINIO
             category : Enum Constant
 dependencies: 
-        -   src: @AttachmentType/Enum[0]
-            dest: @AttachmentType/Enum Constant[0]
-            kind: Define
-        -   src: @AttachmentType/Enum[0]
-            dest: @AttachmentType/Enum Constant[1]
-            kind: Define
+    items:
+        -   src: AttachmentType/Enum[0]
+            dest: AttachmentType/Enum Constant[0]
+            category: Define
+        -   src: AttachmentType/Enum[0]
+            dest: AttachmentType/Enum Constant[1]
+            category: Define
 ```
 - Define an annotation member
 ```java
@@ -202,7 +204,7 @@ public @interface DisableOnCondition {
 }
 ```
 ```yaml
-scenario: An annotation defines annotation members
+name: An annotation defines annotation members
 entities:
     items:
         -   name: DisableOnCondition
@@ -216,10 +218,11 @@ entities:
             category : Annotation Member
             loc: [ 25, 4, 26, 33 ]
 dependencies: 
-        -   src: @DisableOnCondition/Annotation[0]
-            dest: @DisableOnCondition/Annotation Member[0]
-            kind: Define
-        -   src: @DisableOnCondition/Enum[0]
-            dest: @DisableOnCondition/Annotation Member[1]
-            kind: Define
+    items:
+        -   src: DisableOnCondition/Annotation[0]
+            dest: DisableOnCondition/Annotation Member[0]
+            category: Define
+        -   src: DisableOnCondition/Enum[0]
+            dest: DisableOnCondition/Annotation Member[1]
+            category: Define
 ```
