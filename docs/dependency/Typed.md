@@ -15,7 +15,7 @@ FieldDeclaration:
          { , VariableDeclarationFragment } ;
 ```
 ### Examples : 
-- Field Declaration
+- Variable Declaration Statement
 ```java
 //Hello.java
 public class Hello{
@@ -48,8 +48,37 @@ entities:
             qualifiedName: Foo.getHello.hello
 dependencies:
     items:
+        -   src: Foo/Variable[1]
+            dest: Hello/Class[0]
+            category: Typed
+```
+- Field Declaration
+```java
+//Hello.java
+public class Hello{
+
+}
+```
+```java
+//Foo.java
+public class Foo{
+    Hello hello = new Hello();
+}
+```
+```yaml
+name: Cast Expression
+entities:
+    items:
+        -   name: Hello
+            category : Class
+        -   name: Foo
+            category : Class
+        -   name: hello
+            category : Variable
+            qualifiedName: Foo.hello
+dependencies:
+    items:
         -   src: Foo/Variable[0]
             dest: Hello/Class[0]
             category: Typed
 ```
-- Variable Declaration Statement

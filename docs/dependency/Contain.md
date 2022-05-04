@@ -84,7 +84,7 @@ class Test{
 }
 ```
 ```yaml
-name: File contains classes
+name: File Contains Classes
 entities:
     items:
         -   name: Hello.java
