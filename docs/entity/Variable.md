@@ -1,11 +1,16 @@
-# Entity : Variable
+# Entity: Variable
+
 A `variable entity' is a container which stores values.
+
 ## Supported pattern
+
 ```yaml
-name : VariableDeclaration
+name: Variable
 ```
-### Syntax : Variable Definitions
-```yaml
+
+### Syntax: Variable Definitions
+
+```text
  VariableDeclarationExpression:
     { ExtendedModifier } Type VariableDeclarationFragment
          { , VariableDeclarationFragment }
@@ -23,194 +28,221 @@ name : VariableDeclaration
 
  SingleVariableDeclaration:
     { ExtendedModifier } Type {Annotation} [ ... ] Identifier { Dimension } [ = Expression ]
-
 ```
-### Examples : 
-- Field (global variable) declaration 
-```java
-package hello;
 
-class foo{
+#### Examples:
+
+* Field (global variable) declaration 
+
+```java
+class Foo {
     public int a;
 }
 ```
+
 ```yaml
 name: Field Declaration
-entities:
-    filter: variable
+entity:
+    filter: Variable
+    r:
+        d: Var
+        e: .
+        s: Field
+        u: .
     exact: true
     items:
         -   name : a
-            category : Variable
-            qualifiedName : hello.foo.a
-            rawType : int
-            modifiers : public
+            qualifiedName : Foo.a
             global : true
 ```
-- Variable Declaration Statement (single var)
+
+* Variable Declaration Statement (single var)
+
 ```java
-public class foo{
-        
-    public String getHello(){
+class Foo {
+    public String getHello() {
         String a = "hello";
         return a;
     }
 }
 ```
+
 ```yaml
 name: Variable Declaration Statement
-entities:
-    filter: variable
+entity:
+    filter: Variable
+    r:
+        d: Var
+        e: .
+        s: x
+        u: .
     exact: true
     items:
         -   name : a
-            category : Variable
-            qualifiedName : foo.getHello.a
-            rawType : String
+            qualifiedName : Foo.getHello.a
             global : false
 ```
-- Variable Declaration Statement (multiple vars)
+
+* Variable Declaration Statement (multiple vars)
+
 ```java
-public class foo{
-        
-    public String getHello(){
+class Foo{
+    public String getHello() {
         String a, b, c;
         a = "hello";
         return a;
     }
 }
 ```
+
 ```yaml
 name: Multi Variable Declaration Statement
-entities:
-    filter: variable
+entity:
+    filter: Variable
+    r:
+        d: Var
+        e: .
+        s: x
+        u: .
     exact: true
     items:
         -   name : a
             category : Variable
-            qualifiedName : foo.getHello.a
+            qualifiedName : Foo.getHello.a
             rawType : String
             global : false
         -   name : b
             category : Variable
-            qualifiedName : foo.getHello.b
+            qualifiedName : Foo.getHello.b
             rawType : String
             global : false
         -   name : c
             category : Variable
-            qualifiedName : foo.getHello.c
+            qualifiedName : Foo.getHello.c
             rawType : String
             global : false
 ```
-- Single Variable Declaration (parameter)
+
+* Single Variable Declaration (parameter)
+
 ```java
-class foo {
-    
+class Foo {
     public int max(int num1, int num2){
         return Math.max(num1, num2);
     }
 }
 ```
+
 ```yaml
 name: Parameter Declaration
-entities:
-    filter: variable
+entity:
+    filter: Variable
+    r:
+        d: o/hidden
+        e: .
+        s: x
+        u: Parameter
     exact: true
     items:
         -   name : num1
-            category : Variable
-            qualifiedName : foo.max.num1
+            qualifiedName : Foo.max.num1
             rawType : int
             global : false
         -   name : num2
-            category : Variable
-            qualifiedName : foo.max.num2
+            qualifiedName : Foo.max.num2
             rawType : int
             global : false
 ```
-- Single Variable Declaration (catch exception)
+
+* Single Variable Declaration (catch exception)
+
 ```java
-public class foo{
-    
-     public static void main(String args[]){
-          try{
-             int a[] = new int[2];
-             System.out.println("Access element three :" + a[3]);
-          }catch(ArrayIndexOutOfBoundsException e){
-             System.out.println("Exception thrown  :" + e);
-          }
-          System.out.println("Out of the block");
-     }
+// Foo.java
+public class Foo{
+    public static void main(String args[]) {
+        try{
+            int a[] = new int[2];
+            a[3] = 1;
+        } catch(ArrayIndexOutOfBoundsException e) {
+            System.out.println(e);
+        }
+    }
 }
 ```
+
 ```yaml
 name: Catch Parameter Declaration
-entities:
-    filter: variable
-    exact: false
+entity:
+    filter: Variable
+    r:
+        d: x
+        e: .
+        s: x
+        u: Catch Parameter
     items:
-        -   name : a
-            category : Variable
-            qualifiedName : foo.main.a
-            rawType : int
-            global : false
-        -   name : e
-            category : Variable
-            qualifiedName : foo.main.e
-            global : false
+        -   name: e
+            qualifiedName: Foo.main.e
+            global: false
 ```
-- Single Variable Declaration (enhanced-for statement)
-```java
-public class foo{
 
-       public ArrayList<Integer> printTest(){
-            ArrayList<Integer> result = new ArrayList<>();
-            for (Integer integer : this.test) {
-                if (integer > this.getB()) {
-                    result.add(integer);
-                }
+* Single Variable Declaration (enhanced-for statement)
+
+```java
+// Foo.java
+public class Foo{
+    public ArrayList<Integer> printTest() {
+        ArrayList<Integer> result = new ArrayList<>();
+        for (Integer integer : this.test) {
+            if (integer > this.getB()) {
+                result.add(integer);
             }
-            return result;
         }
+        return result;
+    }
 }
 ```
+
 ```yaml
 name: For Loop Variable
 entities:
-    filter: variable
-    exact: true
+    filter: Variable
+    r:
+        d: Var
+        e: .
+        s: x
+        u: .
     items:
-        -   name : result
-            category : Variable
-            qualifiedName : foo.printTest.result
-            rawType : ArrayList<Integer>
-            global : false
         -   name : integer
-            category : Variable
-            qualifiedName : foo.printTest.integer
+            qualifiedName : Foo.printTest.integer
             rawType : Integer
             global : false
 ```
-- Variable Declaration Expression (for statement)
-```java
-public class foo{
 
+* Variable Declaration Expression (for statement)
+
+```java
+// Foo.java
+public class Foo{
     public void imply() {
-        for (int i=0; i<10; i++){
+        for (int i=0; i<10; i++) {
             System.out.println(i);
         }
     }
 }
 ```
+
 ```yaml
 name: Variable Declaration Expression
 entities:
-    filter: variable
-    exact: true
+    filter: Variable
+    r:
+        d: Var
+        e: .
+        s: x
+        u: .
     items:
         -   name : i
-            category : Variable
-            qualifiedName : foo.imply.i
+            qualifiedName : Foo.imply.i
             rawType : int
             global : false
 ```

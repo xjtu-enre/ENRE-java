@@ -1,11 +1,16 @@
 # Entity : Class
+
 A class is a blueprint or prototype from which objects are created,it models the state and behavior of a real-world object.
+
 ## Supported pattern
+
 ```yaml
-name : ClassDeclaration
+name : Class
 ```
-### Syntax : Class Definitions
-```yaml
+
+### Syntax: Class Definitions
+
+```text
 Class Declaration:
       [ Javadoc ] { ExtendedModifier } class Identifier
                         [ < TypeParameter { , TypeParameter } > ]
@@ -16,122 +21,101 @@ Class Declaration:
 AnonymousClassDeclaration:
       { ClassBodyDeclaration }
 ```
-### Examples : 
-- Class declaration
-```java
-package hello;
 
+#### Examples:
+
+* Class declaration
+
+```java
 class Foo{
-    int a;
+    /* ... */
 }
 ```
+
 ```yaml
 name: Class Declaration
-entities:
-    filter: class
+entity:
+    filter: Class
+    r:
+        d: Type
+        e: .
+        s: .
+        u: .
     items:
-        -   name: foo
-            qualifiedName : hello.Foo
-            loc: [ 3, 0, 5, 0]
-            id : 3
-            parentId : 2
-            childrenIds : [4]
+        -   name: Foo
+            qualifiedName : Foo
 ```
-- Inner class declaration
-```java
-package hello;
 
-class Foo{
-    int a;
-    class Inner{
-        int b;
+* Nested class declaration
+
+```java
+class Foo {
+    class Nested {
+        /* ... */
     }
 }
 ```
+
 ```yaml
-name: NestedClassDeclaration
-entities:
-    filter: class
+name: Nested Class Declaration
+entity:
+    filter: Class
+    r:
+        d: Type
+        e: .
+        s: .
+        u: .
     items:
-        -   name: foo
-            qualifiedName : hello.Foo
-            loc: [ 3, 0, 8, 0]
-        -   name: inner
-            qualifiedName : hello.Foo.Inner
-            loc: [5, 4, 7, 4]
+        -   name: Foo
+            qualifiedName : Foo
+        -   name: Nested
+            qualifiedName : Foo.Nested
 ```
-- Anonymous class declaration
+
+* Anonymous class declaration
+
 ```java
-public class HelloWorldAnonymousClasses {
+class Foo {
   
-    interface HelloWorld {
-        void greet();
-        void greetSomeone(String someone);
+    interface Bar {
+        void a();
     }
   
-    public void sayHello() {
-        
-        class EnglishGreeting implements HelloWorld {
-            String name = "world";
-            public void greet() {
-                greetSomeone("world");
+    public void doThings() {
+
+        /**
+         * Below creates 2 anonymous class which
+         * implements interface `Bar` instantly
+         */
+        Bar anony0 = new Bar() {
+            public void a() {
+                /* ... */
             }
-            public void greetSomeone(String someone) {
-                name = someone;
-                System.out.println("Hello " + name);
-            }
-        }
-      
-        HelloWorld englishGreeting = new EnglishGreeting();
-        
-        HelloWorld frenchGreeting = new HelloWorld() {
-            String name = "tout le monde";
-            public void greet() {
-                greetSomeone("tout le monde");
-            }
-            public void greetSomeone(String someone) {
-                name = someone;
-                System.out.println("Salut " + name);
+        };
+
+        Bar anony1 = new Bar() {
+            public void a() {
+                /* ... */
             }
         };
         
-        HelloWorld spanishGreeting = new HelloWorld() {
-            String name = "mundo";
-            public void greet() {
-                greetSomeone("mundo");
-            }
-            public void greetSomeone(String someone) {
-                name = someone;
-                System.out.println("Hola, " + name);
-            }
-        };
-        englishGreeting.greet();
-        frenchGreeting.greetSomeone("Fred");
-        spanishGreeting.greet();
     }         
 }
 ```
+
 ```yaml
 name: Anonymous Class Declaration
-entities:
-    filter: class
+entity:
+    filter: Class
+    r:
+        d: r/Create
+        e: .
+        s: .
+        u: .
     items:
-        -   name: HelloWorldAnonymousClasses
-            qualifiedName : HelloWorldAnonymousClasses
-            rawType: HelloWorldAnonymousClasses
-            loc: [ 1, 0, 53, 0]
-            modifiers: public
-        -   name: EnglishGreeting
-            qualifiedName : HelloWorldAnonymousClasses.sayHello.EnglishGreeting
-            rawType: HelloWorldAnonymousClasses.sayHello.EnglishGreeting
-            loc: [ 9, 8, 18, 8]
-            modifiers: public
-        -   name: Anonymous_Class
-            qualifiedName : HelloWorldAnonymousClasses.sayHello.Anonymous_Class
-            rawType: HelloWorldAnonymousClasses.HelloWorld
-            loc: [ 25, 53, 32, 8]
-        -   name: Anonymous_Class
-            qualifiedName : HelloWorldAnonymousClasses.sayHello.Anonymous_Class
-            rawType: HelloWorldAnonymousClasses.HelloWorld
-            loc: [36, 54, 45, 8]
+        -   name: <Anonymous type="Class">
+            qualifiedName : Foo.doThings.<Anonymous type="Class">
+        -   name: <Anonymous type="Class">
+            qualifiedName : Foo.doThings.<Anonymous type="Class">
+
 ```

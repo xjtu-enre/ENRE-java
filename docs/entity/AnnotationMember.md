@@ -1,57 +1,44 @@
 # Entity: Annotation Member
+
 `Annotation Member` looks a lot like a method, which provides extra actions about this annotation.
+
 ## Supported pattern
+
 ```yaml
-name : AnnotationMemberDeclaration
+name: Annotation Member
 ```
-### Syntax : AnnotationMember Definitions
-```yaml
+
+### Syntax: AnnotationMember Definitions
+
+```text
 AnnotationTypeMemberDeclaration:
    [ Javadoc ] { ExtendedModifier }
        Type Identifier ( ) [ default Expression ] ;
 ```
-### Examples : 
-- Annotation declaration
-```java
-package hello;
 
-@interface ClassPreamble {
-   String author();
-   String date();
-   int currentRevision() default 1;
-   String lastModified() default "N/A";
-   String lastModifiedBy() default "N/A";
-   // Note use of array
-   String[] reviewers();
+#### Examples:
+
+* Annotation member declaration
+
+```java
+@interface Foo {
+   String bar();
+   int baz() default 1;     // Assign a default value
 }
 ```
+
 ```yaml
-name: AnnotationMemberDeclaration
-entities:
-    filter: annotation
+name: Annotation Member Declaration
+entity:
+    filter: Annotation Member
+    r:
+        d: Function
+        e: .
+        s: Field
+        u: Abstract Method
     items:
-        -   name: author
-            loc: [ 4, 4, 4, 19 ]
-            rawType: String
-            qualifiedName: helloJDT.ClassPreamble.author
-        -   name: date
-            loc: [ 5, 4, 5, 17 ]
-            rawType: String
-            qualifiedName: helloJDT.ClassPreamble.date
-        -   name: currentRevision
-            loc: [ 6, 4, 6, 35 ]
-            rawType: int
-            qualifiedName: helloJDT.ClassPreamble.currentRevision
-        -   name: lastModified
-            loc: [ 7, 4, 7, 39 ]
-            rawType: String
-            qualifiedName: helloJDT.ClassPreamble.lastModified
-        -   name: lastModifiedBy
-            loc: [ 8, 4, 8, 41 ]
-            rawType: String
-            qualifiedName: helloJDT.ClassPreamble.lastModifiedBy
-        -   name: reviewers
-            loc: [ 10, 4, 10, 24 ]
-            rawType: String-
-            qualifiedName: helloJDT.ClassPreamble.reviewers
+        -   name: bar
+            qualifiedName: Foo.bar
+        -   name: baz
+            qualifiedName: Foo.baz
 ```

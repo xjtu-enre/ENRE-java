@@ -1,42 +1,65 @@
-# Entity : Package
+# Entity: Package
+
 A `package entity` is a namespace which bundles types together and arranges file system so that compiler can find source files.
+
 ## Supported pattern
+
 ```yaml
-name : PackageDeclaration
+name: Package
 ```
-### Syntax : Package Definitions
-```yaml
+
+### Syntax: Package Definitions
+
+```text
 Package Declaration:
     [ Javadoc ] { Annotation } package Name ;
 ```
-### Examples : 
-- Package declaration (Single)
+
+#### Examples:
+
+* Package declaration (Single)
+
 ```java
-package hello;
+package foo;
 ```
+
 ```yaml
-name: Package Declaration
-entities:
-    filter: package
+name: Single Package Declaration
+entity:
+    filter: Package
+    r:
+        d: .
+        e: .
+        s: .
+        u: .
     items:
-        -   name: hello
-            qualifiedName : hello
-            id : 0
+        -   name: foo
+            qualifiedName: foo
 ```
-- Package declaration (Multiple)
+
+* Package declaration (Multiple)
+
 ```java
-package hello.test;
+package foo.bar;
 ```
+
 ```yaml
-name: Package Declaration
-entities:
-    filter: package
+name: Multilayer Package Declaration
+entity:
+    filter: Package
     items:
-        -   name: hello
-            qualifiedName : hello
-            id : 0
-            childrenIds : [1]
-        -   name: hello
-            qualifiedName : hello
-            id : 1
+        -   name: foo
+            qualifiedName: foo
+            r:
+                d: x
+                e: .
+                s: .
+                u: .
+        -   name: bar
+            qualifiedName: foo.bar
+            r:
+                d: .
+                e: .
+                s: .
+                u: .
 ```
