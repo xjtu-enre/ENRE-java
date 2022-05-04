@@ -1,11 +1,15 @@
 # Entity: Annotation
+
 `Annotations`, a form of metadata, provide data about a program that is not part of the program itself. Annotations have no direct effect on the operation of the code they annotate.
+
 ## Supported pattern
+
 ```yaml
-name : AnnotationDeclaration
+name: Annotation
 ```
-### Syntax : Annotation Definitions
-```yaml
+### Syntax: Annotation Definitions
+
+```text
 AnnotationTypeDeclaration:
    [ Javadoc ] { ExtendedModifier } @ interface Identifier
                 { { AnnotationTypeBodyDeclaration | ; } }
@@ -16,28 +20,51 @@ AnnotationTypeDeclaration:
        EnumDeclaration
        AnnotationTypeDeclaration
 ```
-### Examples : 
-- Annotation declaration
-```java
-package hello;
 
-@interface ClassPreamble {
-   String author();
-   String date();
-   int currentRevision() default 1;
-   String lastModified() default "N/A";
-   String lastModifiedBy() default "N/A";
-   // Note use of array
-   String[] reviewers();
+#### Examples:
+
+* Annotation declared in default package
+
+```java
+@interface Foo {
+   /* ... */
 }
 ```
+
 ```yaml
-name: AnnotationDeclaration
-entities:
-    filter: annotation
+name: Annotation In Default Package
+entity:
+    filter: Annotation
+    r:
+        d: Type
+        e: .
+        s: .
+        u: xInterface
     items:
-        -   name: ClassPreamble
-            loc: [ 3, 0, 11, 0 ]
-            rawType: hello.ClassPreamble
-            qualifiedName: hello.ClassPreamble
+        -   name: Foo
+            qualifiedName: Foo
+```
+
+* Annotation declared in explicitly named package
+
+```java
+package foo;
+
+@interface Bar {
+   /* ... */
+}
+```
+
+```yaml
+name: Annotation In Named Package
+entity:
+    filter: Annotation
+    items:
+        -   name: Bar
+            qualifiedName: foo.Bar
+            r:
+                d: Type
+                e: .
+                s: .
+                u: .
 ```
