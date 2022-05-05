@@ -1,13 +1,22 @@
-# Dependency: Import
-A file imports other class, enum or package, or static imports method or var.
+# Dependency: UseVar
+An entity uses a var in its scope, which could be a local var, a field or a parameter.
 ## Supported pattern
 ```yaml
 name : UseVar
 ```
 ### Syntax : 
 ```yaml
-ImportDeclaration:
-    import [ static ] Name [ . * ] ;
+UseVar:
+    class {
+        var;
+        method {
+          var
+        }
+    }
 ```
 ### Examples : 
-- Import declaration (unknown package)
+- Method Uses Local Var
+
+- Method Uses Field
+
+- Method Uses Parameter

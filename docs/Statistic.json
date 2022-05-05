@@ -13,17 +13,18 @@
   },
   "dependency": {
     "Annotate": 3,
-    "Call": 0,
+    "Call": 6,
     "Cast": 1,
     "Define": 8,
     "Contain": 7,
     "Implement": 6,
     "Inherit": 5,
     "Import": 6,
-    "Override": 0,
-    "Set": 0,
+    "Override": 1,
+    "Set": 3,
     "UseVar": 0,
     "Typed": 2,
-    "Modify": 0
+    "Modify": 2,
+    "Reflect": 0
   }
 }
