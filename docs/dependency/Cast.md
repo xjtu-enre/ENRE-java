@@ -46,4 +46,9 @@ relation:
         -   src: file0/foo
             dest: file0/Bar
             category: Cast
+            r:
+                d: .
+                e: .
+                s: o/Weak/Type Use
+                u: Use Cast
 ```
