@@ -1,10 +1,15 @@
 # Dependency: Typed
+
 A variable's type is one of the (self-defined) Class or other types.
+
 ## Supported pattern
+
 ```yaml
-name : Typed
+name: Typed
 ```
-### Syntax : 
+
+### Syntax:
+
 ```text
 VariableDeclarationStatement:
     { ExtendedModifier } Type VariableDeclarationFragment
@@ -14,24 +19,24 @@ FieldDeclaration:
     [Javadoc] { ExtendedModifier } Type VariableDeclarationFragment
          { , VariableDeclarationFragment } ;
 ```
-### Examples : 
-- Variable Declaration Statement
-```java
-//Hello.java
-public class Hello{
 
-}
-```
+#### Examples:
+
+* Variable Declaration Statement
+
 ```java
 //Foo.java
-public class Foo{
-    public String hello;
-    
-    public Hello getHello(){
+public class Foo {
+    public Hello getHello() {
         Hello hello = new Hello();
     }
 }
+
+class Hello{
+    /* ... */
+}
 ```
+
 ```yaml
 name: Type A Var
 entity:
@@ -48,25 +53,31 @@ entity:
             qualifiedName: Foo.getHello.hello
 relation:
     items:
-        -   src: file0/Variable[1]
-            dest: file1/Class[0]
+        -   src: file0/hello
+            dest: file0/Hello
             category: Typed
+            r:
+                d: x
+                e: .
+                s: x
+                u: .
 ```
-- Field Declaration
-```java
-//Hello.java
-public class Hello{
 
-}
-```
+* Field Declaration
+
 ```java
 //Foo.java
 public class Foo{
     Hello hello = new Hello();
 }
+
+public class Hello{
+    /* ... */
+}
 ```
+
 ```yaml
-name: Cast Expression
+name: Type A Field
 entity:
     items:
         -   name: Hello
@@ -78,7 +89,12 @@ entity:
             qualifiedName: Foo.hello
 relation:
     items:
-        -   src: file1/Variable[0]
-            dest: file0/Class[0]
+        -   src: file0/hello
+            dest: file0/Hello
             category: Typed
+            r:
+                d: x
+                e: .
+                s: x
+                u: .
 ```
