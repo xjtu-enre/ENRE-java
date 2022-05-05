@@ -98,10 +98,10 @@ entity:
             category: Method
 relation:
     r:
-        d: .
+        d: x
         e: .
-        s: .
-        u: .
+        s: x
+        u: x
     items:
         -   src: file1/Method[0]
             dest: file0/"fun"[0]
@@ -149,10 +149,10 @@ entity:
             category: Method
 relation:
     r:
-        d: .
+        d: x
         e: .
-        s: .
-        u: .
+        s: x
+        u: x
     items:
         -   src: file0/Method[0]
             dest: file0/Class[0]
@@ -239,10 +239,10 @@ entity:
             category: Method
 relation:
     r:
-        d: .
+        d: x
         e: .
-        s: .
-        u: .
+        s: x
+        u: x
     items:
         -   src: file1/Method[0]
             dest: file0/Class[0]
@@ -328,10 +328,10 @@ entity:
             category: Method
 relation:
     r:
-        d: .
+        d: x
         e: .
-        s: .
-        u: .
+        s: x
+        u: x
     items:
         -   src: file1/Method[0]
             dest: file0/Class[0]
