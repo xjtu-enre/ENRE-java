@@ -1,24 +1,32 @@
 # Dependency: Set
+
 A variable, which is just declared before, is set a value by a method.
+
 ## Supported pattern
+
 ```yaml
-name : Set
+name: Set
 ```
-### Syntax : 
+### Syntax:
+
 ```text
 Assignment:
     var = value;
 ```
-### Examples : 
-- Method Set Local Var
+
+#### Examples:
+
+* Method Set Local Var
+
 ```java
-//Foo.java
-public class Foo{
+// Foo.java
+public class Foo {
     public static final String MSG = "MSG";
     
     public void getNum(){
         int i = 1;
         String hello = "Hello";
+        hello = "World";
     }
 }
 ```
@@ -41,14 +49,27 @@ entity:
             category: Variable
             qualifiedName: Foo.getNum.i
 relation:
+    r:
+        d: x
+        e: .
+        s: x
+        u: Set Init
     items:
-        -   src: file0/Class[0]
-            dest: file0/Variable[0]
+        -   src: file0/Foo
+            dest: file0/MSG
             category: Set
-        -   src: file0/Method[0]
-            dest: file0/Variable[1]
+        -   src: file0/getNum
+            dest: file0/i
             category: Set
-        -   src: file0/Method[0]
-            dest: file0/Variable[2]
+        -   src: file0/getNum
+            dest: file0/Hello
             category: Set
+        -   src: file0/getNum
+            dest: file0/Hello
+            category: Set
+            r:
+                d: x
+                e: x
+                s: x
+                u: Set
 ```
