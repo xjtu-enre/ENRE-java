@@ -5,7 +5,7 @@ A variable, which is just set a value before, is modified by a method.
 name : Modify
 ```
 ### Syntax : 
-```yaml
+```text
 Assignment:
     class var = some_value;
     var = value;
@@ -24,7 +24,7 @@ public class Foo{
 ```
 ```yaml
 name: Modify Field
-entities:
+entity:
     items:
         -   name: Foo
             category : Class
@@ -34,10 +34,10 @@ entities:
         -   name: changeType
             category : Method
             qualifiedName: Foo.changeType
-dependencies:
+relation:
     items:
-        -   src: Foo/Method[0]
-            dest: Foo/Variable[0]
+        -   src: file0/Method[0]
+            dest: file0/Variable[0]
             category: Modify
 ```
 - Modify Local Var
@@ -58,7 +58,7 @@ public class Foo{
 ```
 ```yaml
 name: Modify Local Var
-entities:
+entity:
     items:
         -   name: Foo
             category : Class
@@ -68,9 +68,9 @@ entities:
         -   name: changeType
             category : Method
             qualifiedName: Foo.changeType
-dependencies:
+relation:
     items:
-        -   src: Foo/Method[0]
-            dest: Foo/Variable[0]
+        -   src: file0/Method[0]
+            dest: file0/Variable[0]
             category: Modify
 ```

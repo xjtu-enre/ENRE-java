@@ -24,7 +24,7 @@ public class InMemoryCacheStore extends AbstractStringCacheStore {
 ```
 ```java
 //AbstractStringCacheStore.java
-public abstract class AbstractStringCacheStore extends AbstractCacheStore<String, String> {
+public abstract class AbstractStringCacheStore {
     
 }
 ```
@@ -36,16 +36,14 @@ entity:
             category : Class
             qualifiedName: InMemoryCacheStore
             modifiers: public
-            File: InMemoryCacheStore.java
         -   name: AbstractStringCacheStore
             category : Class
             qualifiedName: AbstractStringCacheStore
             modifiers: public abstract
-            File: AbstractStringCacheStore.java
 relation:
     items:
-        -   src: InMemoryCacheStore/Class[0]
-            dest: AbstractStringCacheStore/Class[0]
+        -   src: file0/Class[0]
+            dest: file1/Class[0]
             category: inherit
 ```
 - Class extends one parameterized type
@@ -57,7 +55,7 @@ public abstract class AbstractStringCacheStore extends AbstractCacheStore<String
 ```
 ```java
 //AbstractCacheStore.java
-public abstract class AbstractCacheStore<K, V> implements CacheStore<K, V> {
+public abstract class AbstractCacheStore<K, V> {
     
 }
 ```
@@ -69,16 +67,14 @@ entity:
             category : Class
             qualifiedName: AbstractCacheStore
             modifiers: public abstract
-            File: InMemoryCacheStore.java
         -   name: AbstractStringCacheStore
             category : Class
             qualifiedName: AbstractStringCacheStore
             modifiers: public abstract
-            File: AbstractStringCacheStore.java
 relation:
     items:
-        -   src: AbstractStringCacheStore/Class[0]
-            dest: AbstractCacheStore/Class[0]
+        -   src: file0/Class[0]
+            dest: file1/Class[0]
             category: inherit
 ```
 - Interface extends one super interface
@@ -108,14 +104,14 @@ entity:
             modifiers: public
 relation:
     items:
-        -   src: JournalService/Interface[0]
-            dest: CrudService/Interface[0]
+        -   src: file0/Interface[0]
+            dest: file1/Interface[0]
             category: inherit
 ```
 - Interface extends multiple super interfaces
 ```java
 //JournalService.java
-public interface JournalService extends CrudService<Journal, Integer>, BaseService {
+public interface JournalService extends CrudService<String, Integer>, BaseService {
     
 }
 ```
@@ -146,10 +142,10 @@ entity:
             modifiers: public
 relation:
     items:
-        -   src: JournalService/Interface[0]
-            dest: CrudService/Interface[0]
+        -   src: file0/Interface[0]
+            dest: file1/Interface[0]
             category: inherit
-        -   src: JournalService/Interface[0]
-            dest: BaseService/Interface[0]
+        -   src: file0/Interface[0]
+            dest: file2/Interface[0]
             category: inherit
 ```

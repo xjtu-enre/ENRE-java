@@ -5,7 +5,7 @@ A variable's type is one of the (self-defined) Class or other types.
 name : Typed
 ```
 ### Syntax : 
-```yaml
+```text
 VariableDeclarationStatement:
     { ExtendedModifier } Type VariableDeclarationFragment
         { , VariableDeclarationFragment } ;
@@ -33,7 +33,7 @@ public class Foo{
 }
 ```
 ```yaml
-name: Cast Expression
+name: Type A Var
 entity:
     items:
         -   name: Hello
@@ -48,8 +48,8 @@ entity:
             qualifiedName: Foo.getHello.hello
 relation:
     items:
-        -   src: Foo/Variable[1]
-            dest: Hello/Class[0]
+        -   src: file0/Variable[1]
+            dest: file1/Class[0]
             category: Typed
 ```
 - Field Declaration
@@ -67,7 +67,7 @@ public class Foo{
 ```
 ```yaml
 name: Cast Expression
-entities:
+entity:
     items:
         -   name: Hello
             category : Class
@@ -76,9 +76,9 @@ entities:
         -   name: hello
             category : Variable
             qualifiedName: Foo.hello
-dependencies:
+relation:
     items:
-        -   src: Foo/Variable[0]
-            dest: Hello/Class[0]
+        -   src: file1/Variable[0]
+            dest: file0/Class[0]
             category: Typed
 ```

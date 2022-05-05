@@ -44,8 +44,8 @@ entity:
             modifiers: public
 relation:
     items:
-        -   src: BaseService/Class[0]
-            dest: Bed/Interface[0]
+        -   src: file0/Class[0]
+            dest: file1/Interface[0]
             category: implement
 ```
 - An enum implements an interface
@@ -77,8 +77,8 @@ entity:
             modifiers: public
 relation:
     items:
-        -   src: BaseService/Enum[0]
-            dest: Bed/Interface[0]
+        -   src: file0/Enum[0]
+            dest: file1/Interface[0]
             category: implement
 ```
 - A class implements multiple interfaces
@@ -121,11 +121,11 @@ entity:
             modifiers: public
 relation:
     items:
-        -   src: BaseService/Class[0]
-            dest: Photo/Interface[0]
+        -   src: file0/Class[0]
+            dest: file1/Interface[0]
             category: implement
-        -   src: BaseService/Class[0]
-            dest: Drink/Interface[0]
+        -   src: file0/Class[0]
+            dest: file2/Interface[0]
             category: implement
 ```
 - An enum implements multiple interfaces
@@ -168,10 +168,10 @@ entity:
             modifiers: public
 relation:
     items:
-        -   src: BaseService/Enum[0]
-            dest: Photo/Interface[0]
+        -   src: file0/Enum[0]
+            dest: file1/Interface[0]
             category: implement
-        -   src: BaseService/Enum[0]
-            dest: Drink/Interface[0]
+        -   src: file0/Enum[0]
+            dest: file2/Interface[0]
             category: implement
 ```
