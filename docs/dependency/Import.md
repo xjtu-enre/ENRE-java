@@ -46,14 +46,20 @@ entity:
             rawType: Bar
             qualifiedName: Bar
 relation:
+    negative: true
     items:
         -   src: file1
             dest: file0/Class[0]
             category: import
+            r:
+                d: x
+                e: x
+                s: x
+                u: .
 ```
 - Import class (known package)
 ```java
-//file0.java
+//test_pkg2/Hello.java
 package test_package2;
 
 import test_package1.Name;
@@ -67,8 +73,8 @@ public class Hello {
 }
 ```
 ```java
-//file1.java
-package test_package1;
+//test_pkg1/Name.java
+package test_pkg1;
 
 public class Name {
     public String getIt(){
@@ -93,6 +99,11 @@ relation:
         -   src: file0
             dest: file1/Class[0]
             category: import
+            r:
+                d: .
+                e: .
+                s: .
+                u: .
 ```
 - Import Static Var
 ```java
@@ -140,9 +151,15 @@ relation:
         -   src: file1
             dest: file0/Variable[0]
             category: import
+            r:
+                d: .
+                e: .
+                s: .
+                u: .
 ```
 - Import On Demand
 ```java
+//helloJDT/pkg/JDTpkg_2.java
 package helloJDT.pkg;
 
 interface JDTpkg_2 {
@@ -150,7 +167,7 @@ interface JDTpkg_2 {
 }
 ```
 ```java
-//HelloJDT.java
+//helloJDT/HelloJDT.java
 package helloJDT;
 
 import helloJDT.pkg.*;
@@ -188,6 +205,11 @@ relation:
         -   src: file0
             dest: helloJDT.pkg
             category: import
+            r:
+                d: x
+                e: .
+                s: .
+                u: .
 ```
 - Import Enum
 ```java
@@ -265,6 +287,11 @@ relation:
         -   src: file0
             dest: file1/Enum[0]
             category: import
+            r:
+                d: .
+                e: .
+                s: .
+                u: .
 ```
 - Import Annotation
 ```java
@@ -300,4 +327,9 @@ relation:
         -   src: file1
             dest: file0/Annotation[0]
             category: import
+            r:
+                d: .
+                e: .
+                s: .
+                u: .
 ```

@@ -290,7 +290,11 @@ public class ProcessEntity {
             qualifiedName = node.resolveBinding().getQualifiedName();
         } catch (NullPointerException e){
             if (singleCollect.isFile(parentId)){
-                qualifiedName = singleCollect.getEntityById(singleCollect.getEntityById(parentId).getParentId()).getQualifiedName()+"."+enumName;
+                if (singleCollect.getEntityById(parentId).getParentId() == -1){
+                    qualifiedName = enumName;
+                }else {
+                    qualifiedName = singleCollect.getEntityById(singleCollect.getEntityById(parentId).getParentId()).getQualifiedName()+"."+enumName;
+                }
             } else {
                 qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName()+"."+enumName;
             }

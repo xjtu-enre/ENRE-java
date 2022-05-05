@@ -45,25 +45,30 @@ public abstract class DepBackfill{
      * @return the type id
      */
     public int findTypeWithFullname(String fileFullName) {
-        String pkgFullName = PathUtil.deleteLastStrByDot(fileFullName);
+//        String pkgFullName = PathUtil.deleteLastStrByDot(fileFullName);
         int typeId = -1;
-        if(singleCollect.getCreatedPackage().containsKey(pkgFullName)){
-            int pkgId = singleCollect.getCreatedPackage().get(pkgFullName);
-            for (int id : singleCollect.getEntityById(pkgId).getChildrenIds()) {
-                if(singleCollect.isFile(id)){
-                    for(int childId : singleCollect.getEntityById(id).getChildrenIds()){
-                        if(singleCollect.getEntityById(childId).getQualifiedName().equals(fileFullName)){
-                            typeId = childId;
-                            break;
-                        }
-                    }
-                }
-                if(typeId != -1){
-                    break;
-                }
-            }
-
+        if (singleCollect.getCreatedType().containsKey(fileFullName)){
+            typeId = singleCollect.getCreatedType().get(fileFullName);
+        } else if (singleCollect.getCreatedAnt().containsKey(fileFullName)){
+            typeId = singleCollect.getCreatedAnt().get(fileFullName);
         }
+//        if(singleCollect.getCreatedPackage().containsKey(pkgFullName)){
+//            int pkgId = singleCollect.getCreatedPackage().get(pkgFullName);
+//            for (int id : singleCollect.getEntityById(pkgId).getChildrenIds()) {
+//                if(singleCollect.isFile(id)){
+//                    for(int childId : singleCollect.getEntityById(id).getChildrenIds()){
+//                        if(singleCollect.getEntityById(childId).getQualifiedName().equals(fileFullName)){
+//                            typeId = childId;
+//                            break;
+//                        }
+//                    }
+//                }
+//                if(typeId != -1){
+//                    break;
+//                }
+//            }
+//
+//        }
         // if this file is well-known the fileId is -1
         // Otherwise, fileId cannot be -1
         return typeId;
