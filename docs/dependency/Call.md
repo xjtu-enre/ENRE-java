@@ -8,7 +8,7 @@ An entity calls other methods in its scope
 name: Call
 ```
 
-### Syntax: 
+### Syntax:
 
 ```text
 MethodInvocation:
@@ -56,6 +56,11 @@ relation:
         -   src: file0/bar
             dest: file0/foo
             category: Call
+            r:
+                d: .
+                e: .
+                s: .
+                u: .
 ```
 
 * Method call (not through ".")
@@ -63,7 +68,7 @@ relation:
 ```java
 //Foo.java
 public class Foo{
-    public Hello getHello(){
+    public void getHello(){
         /* ... */
     }
     
@@ -74,7 +79,7 @@ public class Foo{
 ```
 
 ```yaml
-name: Method Direct Method Call
+name: Method Direct Call Method
 entity:
     items:
         -   name: Hello
@@ -95,6 +100,11 @@ relation:
         -   src: file0/print
             dest: file0/getHello
             category: Call
+            r:
+                d: .
+                e: .
+                s: .
+                u: .
 ```
 
 * Class call
@@ -106,7 +116,7 @@ public class Foo{
 }
 
 class Bar {
-    public static void bar(){
+    public static Bar bar(){
         /* ... */
     }
     
@@ -132,6 +142,11 @@ relation:
         -   src: file0/Foo
             dest: file0/bar
             category: Call
+            r:
+                d: .
+                e: .
+                s: o/Wrong Src
+                u: .
 ```
 
 * Method call (multiple methods)
@@ -174,6 +189,11 @@ entity:
             category : Method
             qualifiedName: Bar.bar
 relation:
+    r:
+        d: .
+        e: .
+        s: .
+        u: .
     items:
         -   src: file0/foo
             dest: file0/bar
