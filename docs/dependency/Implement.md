@@ -52,6 +52,11 @@ relation:
         -   src: file0/BaseService
             dest: file0/Bed
             category: Implement
+            r:
+                d: .
+                e: .
+                s:
+                u: Implement Couple
 ```
 
 * An enum implements an interface
@@ -84,6 +89,11 @@ relation:
         -   src: file0/BaseService
             dest: file0/Bed
             category: Implement
+            r:
+                d: x
+                e: .
+                s: Inheritance
+                u: Implement Couple
 ```
 
 * A class implements multiple interfaces
@@ -96,7 +106,7 @@ interface Photo{
     /* ... */
 }
 
-public interface Drink{
+interface Drink{
     /* ... */
 }
 
@@ -119,6 +129,11 @@ entity:
             category : Interface
             modifiers: public
 relation:
+    r:
+        d: .
+        e: .
+        s: Inheritance
+        u: Implement Couple
     items:
         -   src: file0/BaseService
             dest: file0/Photo
@@ -161,6 +176,11 @@ entity:
             category : Interface
             modifiers: public
 relation:
+    r:
+        d: x
+        e: .
+        s: Inheritance
+        u: Implement Couple
     items:
         -   src: file0/BaseService
             dest: file0/Photo
