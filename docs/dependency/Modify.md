@@ -1,27 +1,36 @@
 # Dependency: Modify
+
 A variable, which is just set a value before, is modified by a method.
+
 ## Supported pattern
+
 ```yaml
-name : Modify
+name: Modify
 ```
-### Syntax : 
+
+### Syntax: 
+
 ```text
 Assignment:
     class var = some_value;
     var = value;
 ```
-### Examples : 
-- Modify a field
+
+#### Examples:
+
+* Modify a field
+
 ```java
-//Foo.java
-public class Foo{
+// Foo.java
+public class Foo {
     String type = "class";
     
-    public void changeType(){
+    public void changeType() {
         type = "method";
     }
 }
 ```
+
 ```yaml
 name: Modify Field
 entity:
@@ -36,16 +45,17 @@ entity:
             qualifiedName: Foo.changeType
 relation:
     items:
-        -   src: file0/Method[0]
-            dest: file0/Variable[0]
+        -   src: file0/changeType
+            dest: file0/type
             category: Modify
 ```
-- Modify Local Var
+
+* Modify Local Var
+
 ```java
 //Foo.java
-public class Foo{
-    
-    public String changeType(int i){
+public class Foo {
+    public String changeType(int i) {
         String type = "num";
         if (i > 0){
             type = "positive";
@@ -56,6 +66,7 @@ public class Foo{
     }
 }
 ```
+
 ```yaml
 name: Modify Local Var
 entity:
@@ -70,7 +81,7 @@ entity:
             qualifiedName: Foo.changeType
 relation:
     items:
-        -   src: file0/Method[0]
-            dest: file0/Variable[0]
+        -   src: file0/changeType
+            dest: file0/type
             category: Modify
 ```
