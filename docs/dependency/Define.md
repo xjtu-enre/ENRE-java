@@ -49,6 +49,11 @@ relation:
         -   src: file0/Class[0]
             dest: file0/Method[0]
             category: Define
+            r:
+                d: x
+                e: .
+                s: x
+                u: Define
 ```
 - Define a method (interface)
 ```java
