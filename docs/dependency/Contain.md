@@ -74,7 +74,7 @@ package pkg;
 ```
 
 ```yaml
-name: Package contains files
+name: Package contains Files
 entity:
     items:
         -   name: Hello.java
@@ -83,7 +83,8 @@ entity:
         -   name: pkg
             category : Package
             qualifiedName: pkg
-relation: 
+relation:
+    items:
         -   src: file0/pkg
             dest: file0
             category: Contain
