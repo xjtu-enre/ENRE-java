@@ -192,19 +192,9 @@ relation:
 - Import Enum
 ```java
 //BasePostMinimalDTO.java
-package run.halo.app.model.dto.post;
+import PostStatus;
 
-import java.util.Date;
-import lombok.Data;
-import run.halo.app.model.dto.base.OutputConverter;
-import run.halo.app.model.entity.BasePost;
-import run.halo.app.model.enums.PostEditorType;
-import run.halo.app.model.enums.PostStatus;
-
-@Data
-@ToString
-@EqualsAndHashCode
-public class BasePostMinimalDTO implements OutputConverter<BasePostMinimalDTO, BasePost> {
+public class BasePostMinimalDTO  {
 
     private Integer id;
 
@@ -213,8 +203,6 @@ public class BasePostMinimalDTO implements OutputConverter<BasePostMinimalDTO, B
     private PostStatus status;
 
     private String slug;
-
-    private PostEditorType editorType;
 
     private String metaKeywords;
 
@@ -225,8 +213,6 @@ public class BasePostMinimalDTO implements OutputConverter<BasePostMinimalDTO, B
 ```
 ```java
 //PostStatus.java
-package run.halo.app.model.enums;
-
 public enum PostStatus {
 
     /**
@@ -268,12 +254,11 @@ entity:
     items:
         -   name: BasePostMinimalDTO.java
             category : File
-            qualifiedName: run.halo.app.model.dto.post.BasePostMinimalDTO.java
+            qualifiedName: BasePostMinimalDTO.java
         -   name: PostStatus
             category : Enum
-            qualifiedName: run.halo.app.model.enums.PostStatus
-            rawType: run.halo.app.model.enums.PostStatus
-            loc: PostStatus/[ 4, 0, 41, 0 ]
+            qualifiedName: PostStatus
+            rawType: PostStatus
             modifiers: public
 relation:
     items:
@@ -284,140 +269,18 @@ relation:
 - Import Annotation
 ```java
 //CacheParam.java
-package run.halo.app.cache.lock;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-/**
- * Cache parameter annotation.
- *
- */
-@Target(ElementType.PARAMETER)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Inherited
 public @interface CacheParam {
 
 }
 ```
 ```java
 //JournalController.java
-package run.halo.app.controller.content.api;
+import CacheParam;
 
-import static org.springframework.data.domain.Sort.Direction.DESC;
-
-import run.halo.app.cache.lock.CacheLock;
-import run.halo.app.cache.lock.CacheParam;
-import run.halo.app.model.dto.BaseCommentDTO;
-import run.halo.app.model.dto.JournalDTO;
-import run.halo.app.model.dto.JournalWithCmtCountDTO;
-import run.halo.app.model.entity.Journal;
-import run.halo.app.model.entity.JournalComment;
-import run.halo.app.model.enums.CommentStatus;
-import run.halo.app.model.enums.JournalType;
-import run.halo.app.model.params.JournalCommentParam;
-import run.halo.app.model.vo.BaseCommentVO;
-import run.halo.app.model.vo.BaseCommentWithParentVO;
-import run.halo.app.model.vo.CommentWithHasChildrenVO;
-import run.halo.app.service.JournalCommentService;
-import run.halo.app.service.JournalService;
-import run.halo.app.service.OptionService;
-
-/**
- * Content journal controller.
- */
-@RestController("ApiContentJournalController")
-@RequestMapping("/api/content/journals")
 public class JournalController {
 
-    private final JournalService journalService;
-
-    private final JournalCommentService journalCommentService;
-
-    private final OptionService optionService;
-
-    public JournalController(JournalService journalService,
-        JournalCommentService journalCommentService,
-        OptionService optionService) {
-        this.journalService = journalService;
-        this.journalCommentService = journalCommentService;
-        this.optionService = optionService;
-    }
-
-    @GetMapping
-    @ApiOperation("Lists journals")
-    public Page<JournalWithCmtCountDTO> pageBy(
-        @PageableDefault(sort = "createTime", direction = DESC) Pageable pageable) {
-        Page<Journal> journals = journalService.pageBy(JournalType.PUBLIC, pageable);
-        return journalService.convertToCmtCountDto(journals);
-    }
-
-    @GetMapping("{journalId:\\d+}")
-    @ApiOperation("Gets a journal detail")
-    public JournalDTO getBy(@PathVariable("journalId") Integer journalId) {
-        Journal journal = journalService.getById(journalId);
-        return journalService.convertTo(journal);
-    }
-
-    @GetMapping("{journalId:\\d+}/comments/top_view")
-    public Page<CommentWithHasChildrenVO> listTopComments(
-        @PathVariable("journalId") Integer journalId,
-        @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-        @SortDefault(sort = "createTime", direction = DESC) Sort sort) {
-        return journalCommentService.pageTopCommentsBy(journalId, CommentStatus.PUBLISHED,
-            PageRequest.of(page, optionService.getCommentPageSize(), sort));
-    }
-
-    @GetMapping("{journalId:\\d+}/comments/{commentParentId:\\d+}/children")
-    public List<BaseCommentDTO> listChildrenBy(@PathVariable("journalId") Integer journalId,
-        @PathVariable("commentParentId") Long commentParentId,
-        @SortDefault(sort = "createTime", direction = DESC) Sort sort) {
-        // Find all children comments
-        List<JournalComment> postComments = journalCommentService
-            .listChildrenBy(journalId, commentParentId, CommentStatus.PUBLISHED, sort);
-        // Convert to base comment dto
-        return journalCommentService.convertTo(postComments);
-    }
-
-    @GetMapping("{journalId:\\d+}/comments/tree_view")
-    @ApiOperation("Lists comments with tree view")
-    public Page<BaseCommentVO> listCommentsTree(@PathVariable("journalId") Integer journalId,
-        @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-        @SortDefault(sort = "createTime", direction = DESC) Sort sort) {
-        return journalCommentService
-            .pageVosBy(journalId, PageRequest.of(page, optionService.getCommentPageSize(), sort));
-    }
-
-    @GetMapping("{journalId:\\d+}/comments/list_view")
-    @ApiOperation("Lists comment with list view")
-    public Page<BaseCommentWithParentVO> listComments(@PathVariable("journalId") Integer journalId,
-        @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-        @SortDefault(sort = "createTime", direction = DESC) Sort sort) {
-        return journalCommentService.pageWithParentVoBy(journalId,
-            PageRequest.of(page, optionService.getCommentPageSize(), sort));
-    }
-
-    @PostMapping("comments")
-    @ApiOperation("Comments a post")
-    @CacheLock(autoDelete = false, traceRequest = true)
-    public BaseCommentDTO comment(@RequestBody JournalCommentParam journalCommentParam) {
-
-        // Escape content
-        journalCommentParam.setContent(HtmlUtils
-            .htmlEscape(journalCommentParam.getContent(), StandardCharsets.UTF_8.displayName()));
-        return journalCommentService.convertTo(journalCommentService.createBy(journalCommentParam));
-    }
-
-    @PostMapping("{id:\\d+}/likes")
-    @ApiOperation("Likes a journal")
-    @CacheLock(autoDelete = false, traceRequest = true)
-    public void like(@PathVariable("id") @CacheParam Integer id) {
-        journalService.increaseLike(id);
+    public void like(@CacheParam Integer id) {
+        /* ... */
     }
 }
 ```
@@ -427,12 +290,10 @@ entity:
     items:
         -   name: JournalController.java
             category : File
-            qualifiedName: run.halo.app.controller.content.api.JournalController.java
         -   name: CacheParam
             category : Annotation
-            qualifiedName: run.halo.app.cache.lock.CacheParam
-            rawType: run.halo.app.cache.lock.CacheParam
-            loc: CacheParam/[ 11, 0, 23, 0 ]
+            qualifiedName: CacheParam
+            rawType: CacheParam
             modifiers: public
 relation:
     items:

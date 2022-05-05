@@ -203,7 +203,7 @@ relation:
             category: Call
 ```
 
-* Method call (multiple methods)
+* Method Call Super 
 
 ```java
 // Foo.java
@@ -230,7 +230,7 @@ class Bar extends Foo{
 ```
 
 ```yaml
-name: Method Call Returned Method
+name: Method Call Super 
 entity:
     items:
         -   name: Foo
