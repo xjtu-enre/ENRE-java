@@ -182,3 +182,56 @@ relation:
             dest: file0/getBar
             category: Call
 ```
+
+* Method call (multiple methods)
+
+```java
+// Foo.java
+public class Foo {
+    public Bar getBar(){
+        Bar mBar = new Bar();
+        return mBar;
+    }
+    
+    public void foo(){
+        getBar().bar();
+    }
+}
+
+class Bar extends Foo{
+    public void bar(){
+        /* ... */
+    }
+    
+    public void getFoo(){
+        super.foo();
+    }
+}
+```
+
+```yaml
+name: Method Call Returned Method
+entity:
+    items:
+        -   name: Foo
+            category : Class
+        -   name: Bar
+            category : Class
+        -   name: foo
+            category : Method
+            qualifiedName: Foo.foo
+        -   name: getBar
+            category : Method
+            qualifiedName: Foo.getBar
+        -   name: bar
+            category : Method
+            qualifiedName: Bar.bar
+        -   name: getFoo
+            category : Method
+            qualifiedName: Bar.getFoo
+relation:
+    items:
+        -   src: file0/getFoo
+            dest: file0/foo
+            category: Call
+```

@@ -51,11 +51,11 @@ relation:
         s: .
         u: .
     items:
-        -   src: File0/Method[0]
-            dest: File0/Variable[1]
+        -   src: file0/Method[0]
+            dest: file0/Variable[1]
             category: UseVar
-        -   src: File0/Method[0]
-            dest: File0/Variable[0]
+        -   src: file0/Method[0]
+            dest: file0/Variable[0]
             category: UseVar
 ```
 * Method Uses Field (By This)
@@ -96,11 +96,11 @@ relation:
         s: .
         u: .
     items:
-        -   src: File0/Method[0]
-            dest: File0/Variable[1]
+        -   src: file0/Method[0]
+            dest: file0/Variable[1]
             category: UseVar
-        -   src: File0/Method[0]
-            dest: File0/Variable[0]
+        -   src: file0/Method[0]
+            dest: file0/Variable[0]
             category: UseVar
 ```
 
@@ -142,11 +142,11 @@ relation:
         s: .
         u: .
     items:
-        -   src: File0/Method[0]
-            dest: File0/Variable[1]
+        -   src: file0/Method[0]
+            dest: file0/Variable[1]
             category: UseVar
-        -   src: File0/Method[0]
-            dest: File0/Variable[0]
+        -   src: file0/Method[0]
+            dest: file0/Variable[0]
             category: UseVar
 ```
 
@@ -184,7 +184,7 @@ relation:
         s: .
         u: .
     items:
-        -   src: File0/Method[0]
-            dest: File0/Variable[0]
+        -   src: file0/Method[0]
+            dest: file0/Variable[0]
             category: UseVar
 ```

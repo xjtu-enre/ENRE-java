@@ -48,8 +48,8 @@ entity:
             qualifiedName: Foo.getHello.hello
 relation:
     items:
-        -   src: File0/Variable[1]
-            dest: File1/Class[0]
+        -   src: file0/Variable[1]
+            dest: file1/Class[0]
             category: Typed
 ```
 - Field Declaration
@@ -78,7 +78,7 @@ entity:
             qualifiedName: Foo.hello
 relation:
     items:
-        -   src: File1/Variable[0]
-            dest: File0/Class[0]
+        -   src: file1/Variable[0]
+            dest: file0/Class[0]
             category: Typed
 ```

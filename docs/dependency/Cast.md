@@ -36,7 +36,7 @@ entity:
             qualifiedName: Controller.service
 relation:
     items:
-        -   src: Controller/Method[0]
-            dest: Hello/Class[0]
+        -   src: file1/Method[0]
+            dest: file0/Class[0]
             category: Cast
 ```

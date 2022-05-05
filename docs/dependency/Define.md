@@ -46,8 +46,8 @@ entity:
             modifiers: public
 relation: 
     items:
-        -   src: BaseService/Class[0]
-            dest: BaseService/Method[0]
+        -   src: file0/Class[0]
+            dest: file0/Method[0]
             category: Define
 ```
 - Define a method (interface)
@@ -72,8 +72,8 @@ entity:
             category : Method
 relation: 
     items:
-        -   src: BaseService/Interface[0]
-            dest: BaseService/Method[0]
+        -   src: file0/Interface[0]
+            dest: file0/Method[0]
             category: Define
 ```
 - Define a field (global variable)
@@ -99,8 +99,8 @@ entity:
             modifiers: public static final
 relation: 
     items:
-        -   src: BaseService/Class[0]
-            dest: BaseService/Variable[0]
+        -   src: file0/Class[0]
+            dest: file0/Variable[0]
             category: Define
 ```
 - Define a variable (local variable)
@@ -133,8 +133,8 @@ entity:
             rawType: String
 relation: 
     items:
-        -   src: BaseService/Method[0]
-            dest: BaseService/Variable[1]
+        -   src: file0/Method[0]
+            dest: file0/Variable[1]
             category: Define
 ```
 - Define an enum constant
@@ -166,11 +166,11 @@ entity:
             category : Enum Constant
 relation: 
     items:
-        -   src: AttachmentType/Enum[0]
-            dest: AttachmentType/Enum Constant[0]
+        -   src: file0/Enum[0]
+            dest: file0/Enum Constant[0]
             category: Define
-        -   src: AttachmentType/Enum[0]
-            dest: AttachmentType/Enum Constant[1]
+        -   src: file0/Enum[0]
+            dest: file0/Enum Constant[1]
             category: Define
 ```
 - Define an annotation member
@@ -219,10 +219,10 @@ entity:
             loc: [ 25, 4, 26, 33 ]
 relation: 
     items:
-        -   src: DisableOnCondition/Annotation[0]
-            dest: DisableOnCondition/Annotation Member[0]
+        -   src: file0/Annotation[0]
+            dest: file0/Annotation Member[0]
             category: Define
-        -   src: DisableOnCondition/Enum[0]
-            dest: DisableOnCondition/Annotation Member[1]
+        -   src: file0/Enum[0]
+            dest: file0/Annotation Member[1]
             category: Define
 ```

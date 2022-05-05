@@ -36,8 +36,8 @@ entity:
             qualifiedName: Foo.changeType
 relation:
     items:
-        -   src: Foo/Method[0]
-            dest: Foo/Variable[0]
+        -   src: file0/Method[0]
+            dest: file0/Variable[0]
             category: Modify
 ```
 - Modify Local Var
@@ -70,7 +70,7 @@ entity:
             qualifiedName: Foo.changeType
 relation:
     items:
-        -   src: Foo/Method[0]
-            dest: Foo/Variable[0]
+        -   src: file0/Method[0]
+            dest: file0/Variable[0]
             category: Modify
 ```

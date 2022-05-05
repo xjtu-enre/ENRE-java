@@ -53,7 +53,7 @@ entity:
             File: AuthenticationException.java 
 relation:
     items:
-        -   src: AuthenticationException/Method[0]
-            dest: AbstractException/Method[0]
+        -   src: file1/Method[0]
+            dest: file0/Method[0]
             category: Override
 ```

@@ -42,13 +42,13 @@ entity:
             qualifiedName: Foo.getNum.i
 relation:
     items:
-        -   src: Foo/Class[0]
-            dest: Foo/Variable[0]
+        -   src: file0/Class[0]
+            dest: file0/Variable[0]
             category: Set
-        -   src: Foo/Method[0]
-            dest: Foo/Variable[1]
+        -   src: file0/Method[0]
+            dest: file0/Variable[1]
             category: Set
-        -   src: Foo/Method[0]
-            dest: Foo/Variable[2]
+        -   src: file0/Method[0]
+            dest: file0/Variable[2]
             category: Set
 ```

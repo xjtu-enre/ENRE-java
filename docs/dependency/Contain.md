@@ -96,11 +96,11 @@ entity:
             category : Class
 relation:
     items:
-        -   src: Hello
-            dest: Hello/Class[0]
+        -   src: file0
+            dest: file0/Class[0]
             category: Contain
-        -   src: Hello
-            dest: Hello/Class[1]
+        -   src: file0
+            dest: file0/Class[1]
             category: Contain
 ```
 - File contains enum(s)
@@ -121,8 +121,8 @@ entity:
             category : Enum
 relation:
     items:
-        -   src: Hello
-            dest: Hello/Enum[0]
+        -   src: file0
+            dest: file0/Enum[0]
             category: Contain
 ```
 - File contains interface(s)
@@ -143,8 +143,8 @@ entity:
             category : Interface
 relation:
     items:
-        -   src: Hello
-            dest: Hello/Interface[0]
+        -   src: file0
+            dest: file0/Interface[0]
             category: Contain
 ```
 - File contains annotation(s)
@@ -165,7 +165,7 @@ entity:
             category : Annotation
 relation: 
     items:
-        -   src: Hello
-            dest: Hello/Annotation[0]
+        -   src: file0
+            dest: file0/Annotation[0]
             category: Contain
 ```

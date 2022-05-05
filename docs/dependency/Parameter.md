@@ -2,7 +2,7 @@
 A method needs parameters to receive messages.
 ## Supported pattern
 ```yaml
-name : UseVar
+name : Parameter
 ```
 ### Syntax : 
 ```txt
@@ -49,10 +49,10 @@ relation:
         s: .
         u: .
     items:
-        -   src: File0/Method[1]
-            dest: File0/"name"[1]
+        -   src: file0/Method[1]
+            dest: file0/"name"[1]
             category: Parameter
-        -   src: File0/Method[1]
-            dest: File0/"age"[1]
+        -   src: file0/Method[1]
+            dest: file0/"age"[1]
             category: Parameter
 ```

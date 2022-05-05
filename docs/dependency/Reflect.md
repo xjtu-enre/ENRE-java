@@ -103,11 +103,11 @@ relation:
         s: .
         u: .
     items:
-        -   src: File1/Method[0]
-            dest: File0/"fun"[0]
+        -   src: file1/Method[0]
+            dest: file0/"fun"[0]
             category: Reflect
-        -   src: File1/Method[0]
-            dest: File0/"fun"[1]
+        -   src: file1/Method[0]
+            dest: file0/"fun"[1]
             category: Reflect
 ```
 
@@ -154,8 +154,8 @@ relation:
         s: .
         u: .
     items:
-        -   src: File0/Method[0]
-            dest: File0/Class[0]
+        -   src: file0/Method[0]
+            dest: file0/Class[0]
             category: Reflect
 ```
 
@@ -244,8 +244,8 @@ relation:
         s: .
         u: .
     items:
-        -   src: File1/Method[0]
-            dest: File0/Class[0]
+        -   src: file1/Method[0]
+            dest: file0/Class[0]
             category: Reflect
 ```
 
@@ -333,7 +333,7 @@ relation:
         s: .
         u: .
     items:
-        -   src: File1/Method[0]
-            dest: File0/Class[0]
+        -   src: file1/Method[0]
+            dest: file0/Class[0]
             category: Reflect
 ```
