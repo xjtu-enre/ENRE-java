@@ -22,9 +22,10 @@
     "Import": 6,
     "Override": 1,
     "Set": 3,
-    "UseVar": 0,
+    "UseVar": 7,
     "Typed": 2,
     "Modify": 2,
-    "Reflect": 0
+    "Reflect": 5,
+    "Parameter": 2
   }
 }

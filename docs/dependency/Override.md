@@ -5,7 +5,7 @@ A type override its super class method, which has the same name, return and para
 name : Override
 ```
 ### Syntax : 
-```yaml
+```text
 Override:
     public SuperClass{ void method() }
     public Class extends SuperClass { void method() }
@@ -16,7 +16,7 @@ Override:
 //AbstractException.java
 public abstract class AbstractException {
 
-    public abstract HttpStatus getStatus();
+    public abstract String getStatus();
 }
 ```
 ```java
@@ -25,14 +25,14 @@ import AbstractException;
 public class AuthenticationException extends AbstractException {
 
     @Override
-    public HttpStatus getStatus() {
-        return HttpStatus.UNAUTHORIZED;
+    public String getStatus() {
+        return "UNAUTHORIZED";
     }
 }
 ```
 ```yaml
 name: Override Superclass Method
-entities:
+entity:
     items:
         -   name: AbstractException
             category : Class
@@ -51,7 +51,7 @@ entities:
             category : Method
             qualifiedName: AuthenticationException.getStatus
             File: AuthenticationException.java 
-dependencies:
+relation:
     items:
         -   src: AuthenticationException/Method[0]
             dest: AbstractException/Method[0]

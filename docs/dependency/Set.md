@@ -5,7 +5,7 @@ A variable, which is just declared before, is set a value by a method.
 name : Set
 ```
 ### Syntax : 
-```yaml
+```text
 Assignment:
     var = value;
 ```
@@ -23,8 +23,8 @@ public class Foo{
 }
 ```
 ```yaml
-name: Cast Expression
-entities:
+name: Set Local Var
+entity:
     items:
         -   name: Foo
             category : Class
@@ -40,7 +40,7 @@ entities:
         -   name: i
             category: Variable
             qualifiedName: Foo.getNum.i
-dependencies:
+relation:
     items:
         -   src: Foo/Class[0]
             dest: Foo/Variable[0]

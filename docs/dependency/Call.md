@@ -5,10 +5,14 @@ An entity calls other methods in its scope
 name : Call
 ```
 ### Syntax : 
-```yaml
+```text
 MethodInvocation:
      [ Expression . ]
          [  Type { , Type }  ]
+         Identifier ( [ Expression { , Expression } ] )
+SuperMethodInvocation:
+     [ ClassName . ] super .
+         [ < Type { , Type } > ]
          Identifier ( [ Expression { , Expression } ] )
 ```
 ### Examples : 
@@ -144,7 +148,7 @@ dependencies:
             dest: Hello/Method[0]
             category: Call
 ```
-- Method call (multiple methods)
+- Multiple Method call
 ```java
 //Hello.java
 public class Hello{
@@ -172,7 +176,7 @@ public class Foo{
 }
 ```
 ```yaml
-name: Method Call
+name: Multiple Method call
 entities:
     items:
         -   name: Hello
@@ -197,3 +201,5 @@ dependencies:
             dest: Foo/Method[0]
             category: Call
 ```
+
+- Super Method Call
