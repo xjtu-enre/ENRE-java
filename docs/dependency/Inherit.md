@@ -128,7 +128,7 @@ public interface BaseService {
 }
 ```
 ```yaml
-name: Interface extends one super type
+name: Interface extends multiple super interfaces
 entity:
     items:
         -   name: CrudService

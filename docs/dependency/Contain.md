@@ -69,9 +69,10 @@ entity:
         -   name: pkg
             category : Package
 relation: 
+    items:
         -   src: pkg
             dest: file0
-            kind: Contain
+            category: Contain
 ``` 
 
 - File contains class(es)

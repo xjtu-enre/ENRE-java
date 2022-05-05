@@ -3,17 +3,23 @@ The `.java` files which save the whole java information
 ### Examples : 
 - Create a file
 ```java
+//Foo.java
 package hello;
 
-class foo{
+class Foo{
 
 }
 ```
 ```yaml
-entities:
-    filter: file
+name: File Created
+entity:
+    filter: File
+    r:
+        d: .
+        e: .
+        s: .
+        u: .
     items:
-        -   name: foo.java
-            qualifiedName: hello.foo.java
-            File: hello/foo.java
+        -   name: Foo.java
+            qualifiedName : Foo.java
 ```
