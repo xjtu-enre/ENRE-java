@@ -1,6 +1,6 @@
 # Dependency: Modify
 
-A variable, which is just set a value before, is modified by a method.
+A variable, which is read and write at the same time, is recognized as modified (Otherwise may only Use or Set).
 
 ## Supported pattern
 
@@ -12,8 +12,8 @@ name: Modify
 
 ```text
 Assignment:
-    class var = some_value;
-    var = value;
+    var++;
+    var += / -= / *= / /= / ...
 ```
 
 #### Examples:
@@ -23,10 +23,10 @@ Assignment:
 ```java
 // Foo.java
 public class Foo {
-    String type = "class";
+    int foo = 0;
     
-    public void changeType() {
-        type = "method";
+    public void counting() {
+        foo++;
     }
 }
 ```
@@ -37,22 +37,22 @@ entity:
     items:
         -   name: Foo
             category : Class
-        -   name: type
+        -   name: foo
             category : Variable
-            qualifiedName: Foo.type
-        -   name: changeType
+            qualifiedName: Foo.foo
+        -   name: counting
             category : Method
-            qualifiedName: Foo.changeType
+            qualifiedName: Foo.counting
 relation:
     items:
-        -   src: file0/changeType
-            dest: file0/type
+        -   src: file0/counting
+            dest: file0/foo
             category: Modify
             r:
-                d: Use
-                e: UseVar
-                s: Use
-                u: Set
+                d: x/weak/Use
+                e: xUseVar
+                s: o/weak/Use
+                u: .
 ```
 
 * Modify Local Var
@@ -60,14 +60,12 @@ relation:
 ```java
 //Foo.java
 public class Foo {
-    public String changeType(int i) {
-        String type = "num";
-        if (i > 0){
-            type = "positive";
-        }else {
-            type = "negative";
-        }
-        return type;
+    public int counting(int i) {
+        int j = i % 2;              // <--- Set
+        j += 1;                     // <--- Modify
+        j += 2;                     // <--- Modify
+        j /= 3;                     // <--- Modify
+        return j;
     }
 }
 ```
@@ -78,20 +76,20 @@ entity:
     items:
         -   name: Foo
             category : Class
-        -   name: type
+        -   name: j
             category : Variable
-            qualifiedName: Foo.changeType.type
-        -   name: changeType
+            qualifiedName: Foo.counting.j
+        -   name: counting
             category : Method
-            qualifiedName: Foo.changeType
+            qualifiedName: Foo.counting
 relation:
     items:
-        -   src: file0/changeType
-            dest: file0/type
+        -   src: file0/counting
+            dest: file0/j
             category: Modify
             r:
-                d: Use
+                d: o/weak/Use
                 e: x
                 s: x
-                u: Set
+                u: .
 ```
