@@ -66,15 +66,15 @@ relation:
                 u: Declare
 ```
 
-<!-- * Package contains files
-
+- Package contains files
 ```java
 // Hello.java
 package pkg;
+}
 ```
 
 ```yaml
-name: Package Contains Package
+name: Package contains files
 entity:
     items:
         -   name: Hello.java
@@ -83,11 +83,11 @@ entity:
         -   name: pkg
             category : Package
             qualifiedName: pkg
-relation:
-        -   src: file0
-            dest: 
-            kind: Contain
-``` -->
+relation: 
+        -   src: file0/pkg
+            dest: file0
+            category: Contain
+```
 
 * File contains class(es)
 
