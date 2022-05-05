@@ -70,6 +70,9 @@ relation:
 ```java
 // Hello.java
 package pkg;
+
+public class Hello {
+
 }
 ```
 
@@ -84,10 +87,15 @@ entity:
             category : Package
             qualifiedName: pkg
 relation:
-    items:
+    items:A
         -   src: file0/pkg
             dest: file0
             category: Contain
+            r:
+                d: x
+                e: .
+                s: x
+                u: x
 ```
 
 * File contains class(es)
