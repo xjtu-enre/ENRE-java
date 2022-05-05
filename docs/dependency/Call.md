@@ -1,79 +1,70 @@
 # Dependency: Call
-An entity calls other methods in its scope   
+
+An entity calls other methods in its scope
+
 ## Supported pattern
+
 ```yaml
-name : Call
+name: Call
 ```
-### Syntax : 
-```yaml
+
+### Syntax: 
+
+```text
 MethodInvocation:
      [ Expression . ]
          [  Type { , Type }  ]
          Identifier ( [ Expression { , Expression } ] )
 ```
-### Examples : 
-- Method call (through ".")
+
+#### Examples:
+
+* Method call (through ".")
+
 ```java
-//Hello.java
-public class Hello{
-    
-    public void getHello(){
-        System.out.println("Hello!");
-    }
-    
-}
-```
-```java
-//Foo.java
+// Foo.java
 public class Foo{
-    public String hello;
-    
-    public void print(){
-        Hello hello = new Hello();
-        hello.getHello();
+    public void foo(){
+        /* ... */
+    }
+}
+
+class Bar{
+    public void bar(){
+        Foo mFoo = new Foo();
+        mFoo.foo();
     }
 }
 ```
+
 ```yaml
-name: Method Call
-entities:
+name: Method Dot Call Method
+entity:
     items:
-        -   name: Hello
-            category : Class
         -   name: Foo
             category : Class
-        -   name: getHello
+        -   name: Bar
+            category : Class
+        -   name: foo
             category : Method
-            qualifiedName: Hello.getHello
-        -   name: print
+            qualifiedName: Foo.foo
+        -   name: bar
             category : Method
-            qualifiedName: Foo.print
-dependencies:
+            qualifiedName: Bar.bar
+relation:
     items:
-        -   src: Foo/Method[0]
-            dest: Hello/Method[0]
+        -   src: file0/bar
+            dest: file0/foo
             category: Call
 ```
-- Method call (not through ".")
-```java
-//Hello.java
-public class Hello{
-    
-    public void getHello(){
-        System.out.println("Hello!");
-    }
-    
-}
-```
+
+* Method call (not through ".")
+
 ```java
 //Foo.java
 public class Foo{
-    public String hello;
-
     public Hello getHello(){
-        Hello hello = new Hello();
-        hello.getHello();
-        return hello;
+        /* ... */
     }
     
     public void print(){
@@ -81,99 +72,10 @@ public class Foo{
     }
 }
 ```
-```yaml
-name: Method Call
-entities:
-    items:
-        -   name: Hello
-            category : Class
-        -   name: Foo
-            category : Class
-        -   name: getHello
-            category : Method
-            qualifiedName: Hello.getHello
-        -   name: getHello
-            category : Method
-            qualifiedName: Foo.getHello
-        -   name: print
-            category : Method
-            qualifiedName: Foo.print
-dependencies:
-    items:
-        -   src: Foo/Method[0]
-            dest: Hello/Method[0]
-            category: Call
-        -   src: Foo/Method[1]
-            dest: Foo/Method[0]
-            category: Call
-```
-- Class call
-```java
-//Hello.java
-public class Hello{
-    
-    public static void getHello(){
-        System.out.println("Hello!");
-    }
-    
-}
-```
-```java
-//Foo.java
-public class Foo{
-    public Hello hello = Hello.getHello();
-}
-```
-```yaml
-name: Method Call
-entities:
-    items:
-        -   name: Hello
-            category : Class
-        -   name: Foo
-            category : Class
-        -   name: getHello
-            category : Method
-            qualifiedName: Hello.getHello
-        -   name: hello
-            category : Variable
-            qualifiedName: Foo.hello
-dependencies:
-    items:
-        -   src: Foo/Class[0]
-            dest: Hello/Method[0]
-            category: Call
-```
-- Method call (multiple methods)
-```java
-//Hello.java
-public class Hello{
-    
-    public static void getter(){
-        System.out.println("Hello!");
-    }
-    
-}
-```
-```java
-//Foo.java
-import hello;
 
-public class Foo{
-    
-    public hello getHello(){
-        Hello hello = new hello();
-        return hello;
-    }
-    
-    public void print(){
-        getHello().getter();
-    }
-}
-```
 ```yaml
-name: Method Call
-entities:
+name: Method Direct Method Call
+entity:
     items:
         -   name: Hello
             category : Class
@@ -181,19 +83,102 @@ entities:
             category : Class
         -   name: getHello
             category : Method
-            qualifiedName: Foo.getHello
-        -   name: getter
+            qualifiedName: Hello.getHello
+        -   name: getHello
             category : Method
-            qualifiedName: Hello.getter
+            qualifiedName: Foo.getHello
         -   name: print
             category : Method
             qualifiedName: Foo.print
-dependencies:
+relation:
     items:
-        -   src: Foo/Method[1]
-            dest: Hello/Method[0]
+        -   src: file0/print
+            dest: file0/getHello
             category: Call
-        -   src: Foo/Method[1]
-            dest: Foo/Method[0]
+```
+
+* Class call
+
+```java
+// Foo.java
+public class Foo{
+    public Bar mBar = Bar.bar();
+}
+
+class Bar {
+    public static void bar(){
+        /* ... */
+    }
+    
+}
+```
+
+```yaml
+name: Class Call Method
+entity:
+    items:
+        -   name: Foo
+            category : Class
+        -   name: Bar
+            category : Class
+        -   name: bar
+            category : Method
+            qualifiedName: Bar.bar
+        -   name: mBar
+            category : Variable
+            qualifiedName: Foo.mBar
+relation:
+    items:
+        -   src: file0/Foo
+            dest: file0/bar
+            category: Call
+```
+
+* Method call (multiple methods)
+
+```java
+// Foo.java
+public class Foo {
+    public Bar getBar(){
+        Bar mBar = new Bar();
+        return mBar;
+    }
+    
+    public void foo(){
+        getBar().bar();
+    }
+}
+
+class Bar {
+    public void bar(){
+        /* ... */
+    }
+}
+```
+
+```yaml
+name: Method Call Returned Method
+entity:
+    items:
+        -   name: Foo
+            category : Class
+        -   name: Bar
+            category : Class
+        -   name: foo
+            category : Method
+            qualifiedName: Foo.foo
+        -   name: getBar
+            category : Method
+            qualifiedName: Foo.getBar
+        -   name: bar
+            category : Method
+            qualifiedName: Bar.bar
+relation:
+    items:
+        -   src: file0/foo
+            dest: file0/bar
+            category: Call
+        -   src: file0/foo
+            dest: file0/getBar
             category: Call
 ```
