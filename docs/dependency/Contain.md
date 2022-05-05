@@ -57,7 +57,7 @@ entity:
 relation:
     items:
         -   src: file0/hello
-            dest: fil0/pkg
+            dest: file0/pkg
             category: Contain
             r:
                 d: x
@@ -87,7 +87,7 @@ entity:
             category : Package
             qualifiedName: pkg
 relation:
-    items:A
+    items:
         -   src: file0/pkg
             dest: file0
             category: Contain

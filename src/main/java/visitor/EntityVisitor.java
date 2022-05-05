@@ -865,7 +865,8 @@ public class EntityVisitor extends CKVisitor {
         if (!scopeStack.isEmpty() && (singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity) && !isQualifiedName && !isParameterDeclaration){
             processVarInMethod(varName, scopeStack.peek());
             int methodId = scopeStack.peek();
-            if(((MethodEntity)singleCollect.getEntityById(methodId)).getName2Id().containsKey(varName)) {
+            if(!((MethodEntity)singleCollect.getEntityById(methodId)).getName2Usage().containsKey(varName) &&
+                    ((MethodEntity)singleCollect.getEntityById(methodId)).getName2Id().containsKey(varName)) {
                 ((MethodEntity) singleCollect.getEntityById(methodId)).addName2Usage(varName, "use");
             }
         }
