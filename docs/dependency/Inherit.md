@@ -1,11 +1,16 @@
 # Dependency: Inherit
+
 A class extends one super (abstract) class, or an interface extends single or multiple super interfaces.
+
 ## Supported pattern
+
 ```yaml
 name: extends
 ```
-### Syntax : 
-```yaml
+
+### Syntax: 
+
+```text
 Class Declaration:
       [ Javadoc ] { ExtendedModifier } class Identifier
                         [ < TypeParameter { , TypeParameter } > ]
@@ -14,138 +19,135 @@ Class Declaration:
                         [ permits Type { , Type } ]
                         { { ClassBodyDeclaration | ; } }
 ```
-### Examples : 
-- Class extends one super class
+
+#### Examples: 
+
+* Class extends one super class
+
 ```java
-//InMemoryCacheStore.java
-public class InMemoryCacheStore extends AbstractStringCacheStore {
-    
+// Foo.java
+class Bar {
+    /* ... */
+}
+
+public class Foo extends Bar {
+    /* ... */
 }
 ```
-```java
-//AbstractStringCacheStore.java
-public abstract class AbstractStringCacheStore {
-    
-}
-```
+
 ```yaml
-name: Class extends one super class
+name: Class Extends Class
 entity:
     items:
-        -   name: InMemoryCacheStore
+        -   name: Foo
             category : Class
-            qualifiedName: InMemoryCacheStore
+            qualifiedName: Foo
             modifiers: public
-        -   name: AbstractStringCacheStore
+        -   name: Bar
             category : Class
-            qualifiedName: AbstractStringCacheStore
-            modifiers: public abstract
+            qualifiedName: Bar
 relation:
     items:
-        -   src: file0/Class[0]
-            dest: file1/Class[0]
-            category: inherit
+        -   src: file0/Foo
+            dest: file0/Bar
+            category: Inherit
 ```
-- Class extends one parameterized type
+
+* Class extends one parameterized type
+
 ```java
-//AbstractStringCacheStore.java
-public abstract class AbstractStringCacheStore extends AbstractCacheStore<String, String> {
-    
+// Foo.java
+class Bar<K, V> {
+    /* ... */
+}
+
+public class Foo extends Bar<String, int> {
+    /* ... */
 }
 ```
-```java
-//AbstractCacheStore.java
-public abstract class AbstractCacheStore<K, V> {
-    
-}
-```
+
 ```yaml
-name: Class extends one parameterized type
+name: Class Extends Class With Generics
 entity:
     items:
-        -   name: AbstractCacheStore
+        -   name: Foo
             category : Class
-            qualifiedName: AbstractCacheStore
-            modifiers: public abstract
-        -   name: AbstractStringCacheStore
+            qualifiedName: Foo
+        -   name: Bar
             category : Class
-            qualifiedName: AbstractStringCacheStore
-            modifiers: public abstract
+            qualifiedName: Bar
 relation:
     items:
-        -   src: file0/Class[0]
-            dest: file1/Class[0]
-            category: inherit
+        -   src: file0/Foo
+            dest: file0/Bar
+            category: Inherit
 ```
-- Interface extends one super interface
+
+* Interface extends one super interface
+
 ```java
-//JournalService.java
-public interface JournalService extends CrudService<Journal, Integer> {
-    
+// Foo.java
+interface Bar<T> {
+    /* ... */
+}
+
+public interface Foo extends Bar<String> {
+    /* ... */
 }
 ```
-```java
-//CrudService.java
-public interface CrudService<D, I> {
-    
-}
-```
+
 ```yaml
-name: Interface extends one super type
+name: Interface Extends Interface
 entity:
     items:
-        -   name: CrudService
+        -   name: Foo
             category : Interface
-            qualifiedName: CrudService
+            qualifiedName: Foo
             modifiers: public
-        -   name: JournalService
+        -   name: Bar
             category : Interface
-            qualifiedName: JournalService
-            modifiers: public
+            qualifiedName: Bar
 relation:
     items:
-        -   src: file0/Interface[0]
-            dest: file1/Interface[0]
-            category: inherit
+        -   src: file0/Foo
+            dest: file0/Bar
+            category: Inherit
 ```
-- Interface extends multiple super interfaces
+
+* Interface extends multiple super interfaces
+
 ```java
-//JournalService.java
-public interface JournalService extends CrudService<String, Integer>, BaseService {
-    
+// Foo.java
+interface Bar<T> {
+    /* ... */
+}
+
+interface Baz {
+    /* ... */
+}
+
+public interface Foo extends Bar<String>, Baz {
+    /* ... */
 }
 ```
-```java
-//CrudService.java
-public interface CrudService<D, I> {
-    
-}
-```
-```java
-//BaseService.java
-public interface BaseService {
-    
-}
-```
+
 ```yaml
-name: Interface extends one super type
+name: Interface Extends Multiple Interfaces
 entity:
     items:
-        -   name: CrudService
+        -   name: Foo
             category : Interface
             modifiers: public
-        -   name: JournalService
+        -   name: Bar
             category : Interface
-            modifiers: public
-        -   name: BaseService
+        -   name: Baz
             category : Interface
-            modifiers: public
 relation:
     items:
-        -   src: file0/Interface[0]
-            dest: file1/Interface[0]
-            category: inherit
-        -   src: file0/Interface[0]
-            dest: file2/Interface[0]
-            category: inherit
+        -   src: file0/Foo
+            dest: file0/Bar
+            category: Inherit
+        -   src: file0/Foo
+            dest: file0/Bar
+            category: Inherit
 ```
