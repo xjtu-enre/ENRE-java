@@ -55,7 +55,7 @@ relation:
             r:
                 d: .
                 e: .
-                s:
+                s: Inheritance
                 u: Implement Couple
 ```
 
