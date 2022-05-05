@@ -26,30 +26,19 @@ SingleMemberAnnotation:
 * Marker annotation
 
 ```java
-//MailController.java
-public class MailController {
-
-    private final MailService mailService;
-
-    @DisableOnCondition
-    public BaseResponse<String> testMail(@Valid @RequestBody MailParam mailParam) {
-        mailService.sendTextMail(mailParam.getTo(), mailParam.getSubject(), mailParam.getContent());
-        return BaseResponse.ok("已发送，请查收。若确认没有收到邮件，请检查服务器日志");
-    }
-}
-```
-
-```java
-//DisableOnCondition.java
+// MailController.java
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface DisableOnCondition {
-    @AliasFor("mode")
-    Mode value() default Mode.DEMO;
+@interface DisableOnCondition {
+    int value() default 0;
+}
 
-    @AliasFor("value")
-    Mode mode() default Mode.DEMO;
+public class MailController {
+    @DisableOnCondition
+    public void testMail() {
+        /* ... */
+    }
 }
 ```
 
@@ -63,140 +52,97 @@ entity:
             modifiers: public
         -   name: DisableOnCondition
             category : Annotation
-relation: 
+relation:
     items:
-        -   src: DisableOnCondition/Annotation[0]
-            dest: MailController/Method[0]
+        -   src: file0/DisableOnCondition
+            dest: file0/testMail
             category: Annotate
+            r:
+                d: Annotation
+                e: .
+                s: Annotation Use
+                u: x
 ```
-- Normal annotation
+
+* Normal annotation
+
 ```java
-//AdminController.java
-public class AdminController {
-
-    private final AdminService adminService;
-
-    private final OptionService optionService;
-
-    @CacheLock(autoDelete = false, prefix = "login_precheck")
-    public LoginPreCheckDTO authPreCheck(@RequestBody @Valid LoginParam loginParam) {
-        final User user = adminService.authenticate(loginParam);
-        return new LoginPreCheckDTO(MFAType.useMFA(user.getMfaType()));
-    }
-}
-```
-```java
-//CacheLock.java
+// MailController.java
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Inherited
-public @interface CacheLock {
+@interface DisableOnCondition {
+    int value() default 0;
+    String comment() default "";
+}
 
-    /**
-     * Cache prefix, default is ""
-     *
-     * @return cache prefix
-     */
-    @AliasFor("value")
-    String prefix() default "";
-
-    /**
-     * Alias of prefix, default is ""
-     *
-     * @return alias of prefix
-     */
-    @AliasFor("prefix")
-    String value() default "";
-
-    /**
-     * Expired time, default is 5.
-     *
-     * @return expired time
-     */
-    long expired() default 5;
-
-    /**
-     * Time unit, default is TimeUnit.SECONDS.
-     *
-     * @return time unit
-     */
-    TimeUnit timeUnit() default TimeUnit.SECONDS;
-
-    /**
-     * Delimiter, default is ':'
-     *
-     * @return delimiter
-     */
-    String delimiter() default ":";
-
-    /**
-     * Whether delete cache after method invocation.
-     *
-     * @return true if delete cache after method invocation; false otherwise
-     */
-    boolean autoDelete() default true;
-
-    /**
-     * Whether trace the request info.
-     *
-     * @return true if trace the request info; false otherwise
-     */
-    boolean traceRequest() default false;
+public class MailController {
+    @DisableOnCondition(value = 1, comment = "No need")      // Overrides the default value
+    public void testMail() {
+        /* ... */
+    }
 }
 ```
+
 ```yaml
 name: Normal Annotation
 entity:
     items:
-        -   name: CacheLock
-            category : Annotation
-            modifiers: public
-        -   name: authPreCheck
+        -   name: testMail
             category : Method
+            qualifiedName: MailController.testMail
             modifiers: public
-            qualifiedName: AdminController.authPreCheck
-relation:
+        -   name: DisableOnCondition
+            category : Annotation
+relation: 
     items:
-        -   src: CacheLock/Annotation[0]
-            dest: AdminController/Method[0]
+        -   src: file0/DisableOnCondition
+            dest: file0/testMail
             category: Annotate
+            r:
+                d: Annotation
+                e: .
+                s: Annotation Use
+                u: x
 ```
-- Single member annotation
-```java
-//BaseController.java
-public class BaseController {
 
-    @CacheParam(10)
-    private final AdminService adminService;
-    
-}
-```
+* Single member annotation
+
 ```java
-//CacheParam.java
+// MailController.java
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Inherited
-public @interface CacheParam {
+@interface DisableOnCondition {
+    int value() default 0;
+}
 
-    long expired() default 5;
+public class MailController {
+    @DisableOnCondition(1 + 1)      // Calculate and Override the default value
+    public void testMail() {
+        /* ... */
+    }
 }
 ```
+
 ```yaml
 name: Single Member Annotation
 entity:
     items:
-        -   name: CacheParam
-            category : Annotation
+        -   name: testMail
+            category : Method
+            qualifiedName: MailController.testMail
             modifiers: public
-        -   name: adminService
-            category : Variable
-            modifiers: private final
-            qualifiedName: BaseController.adminService
+        -   name: DisableOnCondition
+            category : Annotation
 relation:
     items:
-        -   src: CacheParam/Annotation[0]
-            dest: BaseController/Variable[0]
+        -   src: file0/DisableOnCondition
+            dest: file0/testMail
             category: Annotate
+            r:
+                d: Annotation
+                e: .
+                s: Annotation Use
+                u: x
 ```
