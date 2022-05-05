@@ -84,7 +84,7 @@ entity:
 relation:
     r:
         d: .
-        e: x
+        e: .
         s: Inheritance
         u: Extend Couple
     items:
@@ -120,7 +120,7 @@ entity:
 relation:
     r:
         d: .
-        e: x
+        e: .
         s: Inheritance
         u: Extend Couple
     items:
@@ -160,7 +160,7 @@ entity:
 relation:
     r:
         d: .
-        e: x
+        e: .
         s: Inheritance
         u: Extend Couple
     items:
