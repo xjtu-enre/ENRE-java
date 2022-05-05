@@ -1,10 +1,15 @@
 # Dependency: UseVar
+
 An entity uses a var in its scope, which could be a local var, a field or a parameter.
+
 ## Supported pattern
+
 ```yaml
-name : UseVar
+name: UseVar
 ```
-### Syntax : 
+
+### Syntax:
+
 ```txt
 UseVar:
     class {
@@ -14,21 +19,25 @@ UseVar:
         }
     }
 ```
-### Examples : 
+
+#### Examples:
+
 * Method Uses Local Var
+
 ```java
 //Hello.java
-public class Hello{
-    public void getter(int num){
+public class Hello {
+    public void getter(int num) {
         int i = 0;
-        if (num > 0){
+        if (num > 0) {
             i = i + num;
-        }else {
+        } else {
             /* ... */
         }
     }
 }
 ```
+
 ```yaml
 name: Method Uses Local Var
 entity:
@@ -45,29 +54,35 @@ entity:
             qualifiedName: Hello.getter.i
             category: Variable
 relation:
-    r:
-        d: .
-        e: .
-        s: .
-        u: .
     items:
-        -   src: file0/Method[0]
-            dest: file0/Variable[1]
+        -   src: file0/getter
+            dest: file0/i
             category: UseVar
-        -   src: file0/Method[0]
-            dest: file0/Variable[0]
+            r:
+                d: Use
+                e: o/Bug
+                s:
+                u:
+        -   src: file0/getter
+            dest: file0/num
             category: UseVar
+            r:
+                d: Use
+                e: .
+                s: x
+                u: .
 ```
+
 * Method Uses Field (By This)
 
 ```java
 //Hello.java
-public class Hello{
+public class Hello {
     int i = 0;
-    public void getter(int num){
-        if (num > 0){
+    public void getter(int num) {
+        if (num > 0) {
             this.i = this.i + num;
-        }else {
+        } else {
             /* ... */
         }
     }
@@ -75,7 +90,7 @@ public class Hello{
 ```
 
 ```yaml
-name: Method Uses Field (By This)
+name: Method Uses Field By This
 entity:
     items:
         -   name: Hello
@@ -91,16 +106,16 @@ entity:
             category: Variable
 relation:
     r:
-        d: .
+        d: Use
         e: .
-        s: .
+        s: Use
         u: .
     items:
-        -   src: file0/Method[0]
-            dest: file0/Variable[1]
+        -   src: file0/getter
+            dest: file0/i
             category: UseVar
-        -   src: file0/Method[0]
-            dest: file0/Variable[0]
+        -   src: file0/getter
+            dest: file0/num
             category: UseVar
 ```
 
@@ -108,12 +123,12 @@ relation:
 
 ```java
 //Hello.java
-public class Hello{
+public class Hello {
     int i = 0;
-    public void getter(int num){
-        if (num > 0){
+    public void getter(int num) {
+        if (num > 0) {
             i = i + num;
-        }else {
+        } else {
             /* ... */
         }
     }
@@ -137,16 +152,16 @@ entity:
             category: Variable
 relation:
     r:
-        d: .
+        d: Use
         e: .
-        s: .
+        s: Use
         u: .
     items:
-        -   src: file0/Method[0]
-            dest: file0/Variable[1]
+        -   src: file0/getter
+            dest: file0/num
             category: UseVar
-        -   src: file0/Method[0]
-            dest: file0/Variable[0]
+        -   src: file0/getter
+            dest: file0/i
             category: UseVar
 ```
 
@@ -154,11 +169,11 @@ relation:
 
 ```java
 //Hello.java
-public class Hello{
-    public String getter(int num){
-        if (num > 0){
+public class Hello {
+    public String getter(int num) {
+        if (num > 0) {
             return "positive";
-        }else {
+        } else {
             return "negative";
         }
     }
@@ -179,12 +194,12 @@ entity:
             category: Variable
 relation:
     r:
-        d: .
+        d: Use
         e: .
-        s: .
+        s: x
         u: .
     items:
-        -   src: file0/Method[0]
-            dest: file0/Variable[0]
+        -   src: file0/getter
+            dest: file0/num
             category: UseVar
 ```
