@@ -1,11 +1,16 @@
 # Dependency: Annotate
+
 A self-defined annotation annotate different kinds of entities.
+
 ## Supported pattern
+
 ```yaml
-name : Annotate
+name: Annotate
 ```
-### Syntax : 
-```yaml
+
+### Syntax: 
+
+```text
 MarkerAnnotation:
    @ TypeName
 
@@ -15,8 +20,11 @@ NormalAnnotation:
 SingleMemberAnnotation:
    @ TypeName ( Expression  )
 ```
-### Examples : 
-- Marker annotation
+
+#### Examples:
+
+* Marker annotation
+
 ```java
 //MailController.java
 public class MailController {
@@ -30,6 +38,7 @@ public class MailController {
     }
 }
 ```
+
 ```java
 //DisableOnCondition.java
 @Target(ElementType.METHOD)
@@ -43,9 +52,10 @@ public @interface DisableOnCondition {
     Mode mode() default Mode.DEMO;
 }
 ```
+
 ```yaml
 name: Marker Annotation
-entities:
+entity:
     items:
         -   name: testMail
             category : Method
@@ -53,7 +63,7 @@ entities:
             modifiers: public
         -   name: DisableOnCondition
             category : Annotation
-dependencies: 
+relation: 
     items:
         -   src: DisableOnCondition/Annotation[0]
             dest: MailController/Method[0]
@@ -137,7 +147,7 @@ public @interface CacheLock {
 ```
 ```yaml
 name: Normal Annotation
-entities:
+entity:
     items:
         -   name: CacheLock
             category : Annotation
@@ -146,7 +156,7 @@ entities:
             category : Method
             modifiers: public
             qualifiedName: AdminController.authPreCheck
-dependencies:
+relation:
     items:
         -   src: CacheLock/Annotation[0]
             dest: AdminController/Method[0]
@@ -175,7 +185,7 @@ public @interface CacheParam {
 ```
 ```yaml
 name: Single Member Annotation
-entities:
+entity:
     items:
         -   name: CacheParam
             category : Annotation
@@ -184,7 +194,7 @@ entities:
             category : Variable
             modifiers: private final
             qualifiedName: BaseController.adminService
-dependencies:
+relation:
     items:
         -   src: CacheParam/Annotation[0]
             dest: BaseController/Variable[0]

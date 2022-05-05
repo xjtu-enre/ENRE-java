@@ -33,7 +33,7 @@ class Bar extends Foo {
 ```
 ```yaml
 name: Import Class From Default Class
-entities:
+entity:
     items:
         -   name: Foo
             category : Class
@@ -45,7 +45,7 @@ entities:
             loc: file2/[ 2, 0, 8, 0 ]
             rawType: Bar
             qualifiedName: Bar
-dependencies:
+relation:
     items:
         -   src: file2
             dest: file1/@class[0]
@@ -78,7 +78,7 @@ public class Name {
 ```
 ```yaml
 name: Import Class From Explicit Package
-entities:
+entity:
     items:
         -   name: Name
             category : Class
@@ -88,7 +88,7 @@ entities:
         -   name: Hello.java
             category : File
             qualifiedName: test_package2.Hello.java
-dependencies:
+relation:
     items:
         -   src: file1
             dest: file2/Class[0]
@@ -119,7 +119,7 @@ class Bar extends Foo {
 ```
 ```yaml
 name: Import Static Var
-entities:
+entity:
     items:
         -   name: Foo
             category : Class
@@ -135,7 +135,7 @@ entities:
             loc: file2/[ 2, 0, 11, 0 ]
             rawType: Bar
             qualifiedName: Bar
-dependencies:
+relation:
     items:
         -   src: file2
             dest: file1/Variable[0]
@@ -171,7 +171,7 @@ public class HelloJDT implements JDTpkg_2 {
 ```
 ```yaml
 name: Import on demand
-entities:
+entity:
     items:
         -   name: HelloJDT.java
             category : File
@@ -179,7 +179,7 @@ entities:
         -   name: helloJDT.pkg
             category : Package
             qualifiedName: helloJDT.pkg
-dependencies:
+relation:
     items:
         -   src: HelloJDT.java
             dest: helloJDT.pkg
@@ -268,7 +268,7 @@ public enum PostStatus implements ValueEnum<Integer> {
 ```
 ```yaml
 name: Import enum
-entities:
+entity:
     items:
         -   name: BasePostMinimalDTO.java
             category : File
@@ -279,7 +279,7 @@ entities:
             rawType: run.halo.app.model.enums.PostStatus
             loc: PostStatus/[ 4, 0, 41, 0 ]
             modifiers: public
-dependencies:
+relation:
     items:
         -   src: BasePostMinimalDTO.java
             dest: PostStatus.java/Enum[0]
@@ -427,7 +427,7 @@ public class JournalController {
 ```
 ```yaml
 name: Import annotation
-entities:
+entity:
     items:
         -   name: JournalController.java
             category : File
@@ -438,7 +438,7 @@ entities:
             rawType: run.halo.app.cache.lock.CacheParam
             loc: CacheParam/[ 11, 0, 23, 0 ]
             modifiers: public
-dependencies:
+relation:
     items:
         -   src: JournalController
             dest: CacheParam.java/Annotation[0]

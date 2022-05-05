@@ -27,14 +27,14 @@ public class Controller{
 ```
 ```yaml
 name: Cast Expression
-entities:
+entity:
     items:
         -   name: Hello
             category : Class
         -   name: service
             category : Method
             qualifiedName: Controller.service
-dependencies:
+relation:
     items:
         -   src: Controller/Method[0]
             dest: Hello/Class[0]

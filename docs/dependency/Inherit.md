@@ -30,7 +30,7 @@ public abstract class AbstractStringCacheStore extends AbstractCacheStore<String
 ```
 ```yaml
 name: Class extends one super class
-entities:
+entity:
     items:
         -   name: InMemoryCacheStore
             category : Class
@@ -42,7 +42,7 @@ entities:
             qualifiedName: AbstractStringCacheStore
             modifiers: public abstract
             File: AbstractStringCacheStore.java
-dependencies:
+relation:
     items:
         -   src: InMemoryCacheStore/Class[0]
             dest: AbstractStringCacheStore/Class[0]
@@ -63,7 +63,7 @@ public abstract class AbstractCacheStore<K, V> implements CacheStore<K, V> {
 ```
 ```yaml
 name: Class extends one parameterized type
-entities:
+entity:
     items:
         -   name: AbstractCacheStore
             category : Class
@@ -75,7 +75,7 @@ entities:
             qualifiedName: AbstractStringCacheStore
             modifiers: public abstract
             File: AbstractStringCacheStore.java
-dependencies:
+relation:
     items:
         -   src: AbstractStringCacheStore/Class[0]
             dest: AbstractCacheStore/Class[0]
@@ -96,7 +96,7 @@ public interface CrudService<D, I> {
 ```
 ```yaml
 name: Interface extends one super type
-entities:
+entity:
     items:
         -   name: CrudService
             category : Interface
@@ -106,7 +106,7 @@ entities:
             category : Interface
             qualifiedName: JournalService
             modifiers: public
-dependencies:
+relation:
     items:
         -   src: JournalService/Interface[0]
             dest: CrudService/Interface[0]
@@ -133,7 +133,7 @@ public interface BaseService {
 ```
 ```yaml
 name: Interface extends one super type
-entities:
+entity:
     items:
         -   name: CrudService
             category : Interface
@@ -144,7 +144,7 @@ entities:
         -   name: BaseService
             category : Interface
             modifiers: public
-dependencies:
+relation:
     items:
         -   src: JournalService/Interface[0]
             dest: CrudService/Interface[0]

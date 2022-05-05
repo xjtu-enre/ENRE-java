@@ -37,7 +37,7 @@ package hello.pkg;
 ```
 ```yaml
 name: Package contains package
-entities:
+entity:
     items:
         -   name: hello
             category : Package
@@ -45,7 +45,7 @@ entities:
         -   name: pkg
             category : Package
             qualifiedName: hello.pkg
-dependencies:
+relation:
     items:
         -   src: hello
             dest: pkg
@@ -59,7 +59,7 @@ package hello;
 ```
 ```yaml
 name: Package contains package
-entities:
+entity:
     items:
         -   name: hello
             category : Package
@@ -67,7 +67,7 @@ entities:
         -   name: pkg
             category : Package
             qualifiedName: hello.pkg
-dependencies: 
+relation: 
         -   src: hello
             dest: pkg
             kind: Contain
@@ -85,7 +85,7 @@ class Test{
 ```
 ```yaml
 name: File contains classes
-entities:
+entity:
     items:
         -   name: Hello.java
             category : File
@@ -94,7 +94,7 @@ entities:
             category : Class
         -   name: Test
             category : Class
-dependencies:
+relation:
     items:
         -   src: Hello
             dest: Hello/Class[0]
@@ -112,14 +112,14 @@ public enum Hello{
 ```
 ```yaml
 name: File contains enum
-entities:
+entity:
     items:
         -   name: Hello.java
             category : File
             qualifiedName: Hello.java
         -   name: Hello
             category : Enum
-dependencies:
+relation:
     items:
         -   src: Hello
             dest: Hello/Enum[0]
@@ -134,14 +134,14 @@ public interface Hello{
 ```
 ```yaml
 name: File contains interface
-entities:
+entity:
     items:
         -   name: Hello.java
             category : File
             qualifiedName: Hello.java
         -   name: Hello
             category : Interface
-dependencies:
+relation:
     items:
         -   src: Hello
             dest: Hello/Interface[0]
@@ -156,14 +156,14 @@ dependencies:
 ```
 ```yaml
 name: File contains Annotation
-entities:
+entity:
     items:
         -   name: Hello.java
             category : File
             qualifiedName: Hello.java
         -   name: Hello
             category : Annotation
-dependencies: 
+relation: 
     items:
         -   src: Hello
             dest: Hello/Annotation[0]

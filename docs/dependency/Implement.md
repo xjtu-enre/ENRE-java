@@ -34,7 +34,7 @@ public interface Bed{
 ```
 ```yaml
 name: A class implements an interface
-entities:
+entity:
     items:
         -   name: BaseService
             category : Class
@@ -42,7 +42,7 @@ entities:
         -   name: Bed
             category : Interface
             modifiers: public
-dependencies:
+relation:
     items:
         -   src: BaseService/Class[0]
             dest: Bed/Interface[0]
@@ -67,7 +67,7 @@ public interface Bed{
 ```
 ```yaml
 name: An enum implements an interface
-entities:
+entity:
     items:
         -   name: BaseService
             category : Enum
@@ -75,7 +75,7 @@ entities:
         -   name: Bed
             category : Interface
             modifiers: public
-dependencies:
+relation:
     items:
         -   src: BaseService/Enum[0]
             dest: Bed/Interface[0]
@@ -108,7 +108,7 @@ public interface Drink{
 ```
 ```yaml
 name: A class implements multiple interfaces
-entities:
+entity:
     items:
         -   name: BaseService
             category : Class
@@ -119,7 +119,7 @@ entities:
         -   name: Drink
             category : Interface
             modifiers: public
-dependencies:
+relation:
     items:
         -   src: BaseService/Class[0]
             dest: Photo/Interface[0]
@@ -155,7 +155,7 @@ public interface Drink{
 ```
 ```yaml
 name: A enum implements multiple interfaces
-entities:
+entity:
     items:
         -   name: BaseService
             category : Enum
@@ -166,7 +166,7 @@ entities:
         -   name: Drink
             category : Interface
             modifiers: public
-dependencies:
+relation:
     items:
         -   src: BaseService/Enum[0]
             dest: Photo/Interface[0]

@@ -34,7 +34,7 @@ public class Foo{
 ```
 ```yaml
 name: Cast Expression
-entities:
+entity:
     items:
         -   name: Hello
             category : Class
@@ -46,7 +46,7 @@ entities:
         -   name: hello
             category : Variable
             qualifiedName: Foo.getHello.hello
-dependencies:
+relation:
     items:
         -   src: Foo/Variable[0]
             dest: Hello/Class[0]

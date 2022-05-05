@@ -36,7 +36,7 @@ public class BaseService {
 ```
 ```yaml
 name: A class defines a method
-entities:
+entity:
     items:
         -   name: BaseService
             category : Class
@@ -44,7 +44,7 @@ entities:
         -   name: laundry
             category : Method
             modifiers: public
-dependencies: 
+relation: 
     items:
         -   src: BaseService/Class[0]
             dest: BaseService/Method[0]
@@ -63,14 +63,14 @@ public interface BaseService {
 ```
 ```yaml
 name: An interface defines a method
-entities:
+entity:
     items:
         -   name: BaseService
             category : Interface
             modifiers: public
         -   name: laundry
             category : Method
-dependencies: 
+relation: 
     items:
         -   src: BaseService/Interface[0]
             dest: BaseService/Method[0]
@@ -89,7 +89,7 @@ public class BaseService {
 ```
 ```yaml
 name: A class defines a field
-entities:
+entity:
     items:
         -   name: BaseService
             category : Class
@@ -97,7 +97,7 @@ entities:
         -   name: MSG
             category : Variable
             modifiers: public static final
-dependencies: 
+relation: 
     items:
         -   src: BaseService/Class[0]
             dest: BaseService/Variable[0]
@@ -120,7 +120,7 @@ public class BaseService {
 ```
 ```yaml
 name: A method defines a variable
-entities:
+entity:
     items:
         -   name: laundry
             category : method
@@ -131,7 +131,7 @@ entities:
         -   name: clothes
             category : Variable
             rawType: String
-dependencies: 
+relation: 
     items:
         -   src: BaseService/Method[0]
             dest: BaseService/Variable[1]
@@ -155,7 +155,7 @@ public enum AttachmentType implements ValueEnum<Integer> {
 ```
 ```yaml
 name: A enum defines enum constants
-entities:
+entity:
     items:
         -   name: AttachmentType
             category : Enum
@@ -164,7 +164,7 @@ entities:
             category : Enum Constant
         -   name: MINIO
             category : Enum Constant
-dependencies: 
+relation: 
     items:
         -   src: AttachmentType/Enum[0]
             dest: AttachmentType/Enum Constant[0]
@@ -205,7 +205,7 @@ public @interface DisableOnCondition {
 ```
 ```yaml
 name: An annotation defines annotation members
-entities:
+entity:
     items:
         -   name: DisableOnCondition
             category : Annotation
@@ -217,7 +217,7 @@ entities:
         -   name: mode
             category : Annotation Member
             loc: [ 25, 4, 26, 33 ]
-dependencies: 
+relation: 
     items:
         -   src: DisableOnCondition/Annotation[0]
             dest: DisableOnCondition/Annotation Member[0]
