@@ -59,6 +59,11 @@ relation:
         -   src: file0/hello
             dest: fil0/pkg
             category: Contain
+            r:
+                d: x
+                e: .
+                s: x
+                u: Declare
 ```
 
 <!-- * Package contains files
@@ -109,6 +114,11 @@ entity:
         -   name: Test
             category : Class
 relation:
+    r:
+        d: x
+        e: .
+        s: x
+        u: Define
     items:
         -   src: file0
             dest: file0/Hello
@@ -137,6 +147,11 @@ entity:
         -   name: Hello
             category : Enum
 relation:
+    r:
+        d: x
+        e: .
+        s: x
+        u: Define
     items:
         -   src: file0
             dest: file0/Hello
@@ -153,7 +168,7 @@ public interface Hello {
 ```
 
 ```yaml
-name: File contains interface
+name: File Contains Interface
 entity:
     items:
         -   name: Hello.java
@@ -162,6 +177,11 @@ entity:
         -   name: Hello
             category : Interface
 relation:
+    r:
+        d: x
+        e: .
+        s: x
+        u: Define
     items:
         -   src: file0
             dest: file0/Interface[0]
@@ -187,6 +207,11 @@ entity:
         -   name: Hello
             category : Annotation
 relation:
+    r:
+        d: x
+        e: .
+        s: x
+        u: Define
     items:
         -   src: file0
             dest: file0/Hello
