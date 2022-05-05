@@ -57,7 +57,7 @@ entity:
 relation:
     items:
         -   src: file0/hello
-            dest: fil0/pkg
+            dest: file0/pkg
             category: Contain
             r:
                 d: x

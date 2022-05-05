@@ -30,6 +30,7 @@ package hello;
 public class BaseService {
 
     public void laundry(){
+        /* ... */
     }
 
 }
@@ -52,8 +53,8 @@ relation:
             r:
                 d: x
                 e: .
-                s: x
-                u: Define
+                s: o/Concept
+                u: .
 ```
 - Define a method (interface)
 ```java
@@ -62,7 +63,7 @@ package hello;
 
 public interface BaseService {
 
-    void laundry(){}
+    void laundry();
 
 }
 ```
@@ -80,6 +81,11 @@ relation:
         -   src: file0/Interface[0]
             dest: file0/Method[0]
             category: Define
+            r:
+                d: x
+                e: .
+                s: o/Concept
+                u: .
 ```
 - Define a field (global variable)
 ```java
@@ -107,6 +113,11 @@ relation:
         -   src: file0/Class[0]
             dest: file0/Variable[0]
             category: Define
+            r:
+                d: x
+                e: .
+                s: o/Concept
+                u: .
 ```
 - Define a variable (local variable)
 ```java
@@ -141,12 +152,17 @@ relation:
         -   src: file0/Method[0]
             dest: file0/Variable[1]
             category: Define
+            r:
+                d: x
+                e: .
+                s: o/Concept
+                u: .
 ```
 - Define an enum constant
 ```java
 //AttachmentType.java
-public enum AttachmentType implements ValueEnum<Integer> {
-
+public enum AttachmentType  {
+    
     /**
      * 服务器
      */
@@ -156,6 +172,12 @@ public enum AttachmentType implements ValueEnum<Integer> {
      * MINIO
      */
     MINIO(8);
+
+    int num;
+    
+    public AttachmentType(int i){
+        this.num = i;
+    }
 }
 ```
 ```yaml
@@ -170,6 +192,11 @@ entity:
         -   name: MINIO
             category : Enum Constant
 relation: 
+    r:
+        d: x
+        e: .
+        s: o/Concept
+        u: .
     items:
         -   src: file0/Enum[0]
             dest: file0/Enum Constant[0]
@@ -177,35 +204,21 @@ relation:
         -   src: file0/Enum[0]
             dest: file0/Enum Constant[1]
             category: Define
+            r:
+                d: x
+                e: .
+                s: o/Concept
+                u: .
 ```
 - Define an annotation member
 ```java
 //DisableOnCondition.java
-package run.halo.app.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.springframework.core.annotation.AliasFor;
-import run.halo.app.model.enums.Mode;
-
-/**
- * 该注解可以限制某些条件下禁止访问api
- *
- * @author 
- * @date 
- */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
 public @interface DisableOnCondition {
-    @AliasFor("mode")
-    Mode value() default Mode.DEMO;
-
-    @AliasFor("value")
-    Mode mode() default Mode.DEMO;
+    
+    String value() default "Mode.DEMO";
+    
+    String mode() default "Mode.DEMO";
 }
 ```
 ```yaml
@@ -223,6 +236,11 @@ entity:
             category : Annotation Member
             loc: [ 25, 4, 26, 33 ]
 relation: 
+    r:
+         d: x
+         e: .
+         s: o/Concept
+         u: .
     items:
         -   src: file0/Annotation[0]
             dest: file0/Annotation Member[0]
@@ -230,4 +248,9 @@ relation:
         -   src: file0/Enum[0]
             dest: file0/Annotation Member[1]
             category: Define
+            r:
+                d: x
+                e: .
+                s: o/Concept
+                u: .
 ```
