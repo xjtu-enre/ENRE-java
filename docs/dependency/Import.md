@@ -269,37 +269,15 @@ relation:
 - Import Annotation
 ```java
 //CacheParam.java
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-/**
- * Cache parameter annotation.
- *
- */
-@Target(ElementType.PARAMETER)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Inherited
 public @interface CacheParam {
 
 }
 ```
 ```java
 //JournalController.java
-import run.halo.app.cache.lock.CacheParam;
+import CacheParam;
 
 public class JournalController {
-
-    private final JournalService journalService;
-
-    private final JournalCommentService journalCommentService;
-
-    private final OptionService optionService;
-
 
     public void like(@CacheParam Integer id) {
         /* ... */
