@@ -1,58 +1,52 @@
 # Dependency: Parameter
+
 A method needs parameters to receive messages.
+
 ## Supported pattern
+
 ```yaml
-name : Parameter
+name: Parameter
 ```
-### Syntax : 
-```txt
+
+### Syntax:
+
+```text
 method (parType par){...}
 ```
-### Examples : 
+
+#### Examples: 
 
 * Simple Parameter
+
 ```java
-//Person.java
-public class Person {
-        private String name;
-        private int age;
-        private static String msg="hello world";
-    
-        public Person() {
-        }
-         
-        public void fun(String name,int age) {
-            System.out.println("我叫"+name+",今年"+age+"岁");
-        }
+// Foo.java
+public class Foo {
+    public void foo(String name) {
+        /* ... */
     }
+}
 ```
 
 ```yaml
 name: Obtaining Method
 entity:
     items:
-        -   name: Person
+        -   name: Foo
             category: Class
-        -   name: fun
-            qualifiedName: Person.fun
+        -   name: do
+            qualifiedName: Foo.do
             category: Method
-        -   name: Person
-            category: Method
-            qualifiedName: Person.Person
         -   name: name
-            qualifiedName: Person.fun.name
+            qualifiedName: Foo.do.name
             category: Variable
 relation:
     r:
-        d: .
+        d: x
         e: .
-        s: .
-        u: .
+        s: x
+        u: e/Parameter
     items:
-        -   src: file0/Method[1]
-            dest: file0/"name"[1]
-            category: Parameter
-        -   src: file0/Method[1]
-            dest: file0/"age"[1]
+        -   src: file0/do
+            dest: file0/name
             category: Parameter
 ```
