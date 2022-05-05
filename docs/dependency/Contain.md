@@ -1,11 +1,16 @@
 # Dependency: Contain
+
 A Package contains files, or a file contains types.
+
 ## Supported pattern
+
 ```yaml
 name: Contain
 ```
-### Syntax : 
-```yaml
+
+### Syntax: 
+
+```text
 AnnotationTypeDeclaration:
    [ Javadoc ] { ExtendedModifier } @ interface Identifier
                 { { AnnotationTypeBodyDeclaration | ; } }
@@ -30,13 +35,17 @@ EnumDeclaration:
          [ ; { ClassBodyDeclaration | ; } ]
          }
 ```
-### Examples : 
-- Package contains package
+
+#### Examples:
+
+* Package contains package
+
 ```java
 package hello.pkg;
 ```
+
 ```yaml
-name: Package contains package
+name: Package Contains Package
 entity:
     items:
         -   name: hello
@@ -47,46 +56,54 @@ entity:
             qualifiedName: hello.pkg
 relation:
     items:
-        -   src: hello
-            dest: pkg
+        -   src: file0/hello
+            dest: fil0/pkg
             category: Contain
+            r:
+                d: x
+                e: .
+                s: x
+                u: Declare
 ```
+
 - Package contains files
 ```java
-//Hello.java
+// Hello.java
 package pkg;
-
-public class Hello{ 
-    /* --- */
 }
 ```
+
 ```yaml
 name: Package contains files
 entity:
     items:
         -   name: Hello.java
             category : File
+            qualifiedName: Hello.java
         -   name: pkg
             category : Package
+            qualifiedName: pkg
 relation: 
-        -   src: pkg
+        -   src: file0/pkg
             dest: file0
-            kind: Contain
-``` 
+            category: Contain
+```
 
-- File contains class(es)
+* File contains class(es)
+
 ```java
-//Hello.java
-public class Hello{
-
+// Hello.java
+public class Hello {
+    /* ... */
 }
 
-class Test{
-
+class Test {
+    /* ... */
 }
 ```
+
 ```yaml
-name: File contains classes
+name: File Contains Classes
 entity:
     items:
         -   name: Hello.java
@@ -97,23 +114,31 @@ entity:
         -   name: Test
             category : Class
 relation:
+    r:
+        d: x
+        e: .
+        s: x
+        u: Define
     items:
         -   src: file0
-            dest: file0/Class[0]
+            dest: file0/Hello
             category: Contain
         -   src: file0
-            dest: file0/Class[1]
+            dest: file0/Test
             category: Contain
 ```
-- File contains enum(s)
-```java
-//Hello.java
-public enum Hello{
 
+* File contains enum(s)
+
+```java
+// Hello.java
+public enum Hello {
+    /* ... */
 }
 ```
+
 ```yaml
-name: File contains enum
+name: File Contains Enum
 entity:
     items:
         -   name: Hello.java
@@ -122,20 +147,28 @@ entity:
         -   name: Hello
             category : Enum
 relation:
+    r:
+        d: x
+        e: .
+        s: x
+        u: Define
     items:
         -   src: file0
-            dest: file0/Enum[0]
+            dest: file0/Hello
             category: Contain
 ```
-- File contains interface(s)
-```java
-//Hello.java
-public interface Hello{
 
+* File contains interface(s)
+
+```java
+// Hello.java
+public interface Hello {
+    /* ... */
 }
 ```
+
 ```yaml
-name: File contains interface
+name: File Contains Interface
 entity:
     items:
         -   name: Hello.java
@@ -144,20 +177,28 @@ entity:
         -   name: Hello
             category : Interface
 relation:
+    r:
+        d: x
+        e: .
+        s: x
+        u: Define
     items:
         -   src: file0
             dest: file0/Interface[0]
             category: Contain
 ```
-- File contains annotation(s)
-```java
-//Hello.java
-@interface Hello{
 
+* File contains annotation(s)
+
+```java
+// Hello.java
+@interface Hello {
+    /* ... */
 }
 ```
+
 ```yaml
-name: File contains Annotation
+name: File Contains Annotation
 entity:
     items:
         -   name: Hello.java
@@ -165,9 +206,14 @@ entity:
             qualifiedName: Hello.java
         -   name: Hello
             category : Annotation
-relation: 
+relation:
+    r:
+        d: x
+        e: .
+        s: x
+        u: Define
     items:
         -   src: file0
-            dest: file0/Annotation[0]
+            dest: file0/Hello
             category: Contain
 ```

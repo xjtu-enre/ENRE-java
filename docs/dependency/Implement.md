@@ -1,11 +1,16 @@
 # Dependency: Implement
+
 A type(class or enum) implements interfaces.
+
 ## Supported pattern
+
 ```yaml
-name : Implement
+name: Implement
 ```
-### Syntax : 
-```yaml
+
+### Syntax:
+
+```text
 Class Declaration:
       [ Javadoc ] { ExtendedModifier } class Identifier
                         [ < TypeParameter { , TypeParameter } > ]
@@ -14,26 +19,26 @@ Class Declaration:
                         [ permits Type { , Type } ]
                         { { ClassBodyDeclaration | ; } }
 ```
-### Examples : 
-- A class implements an interface
+
+#### Examples:
+
+* A class implements an interface
+
 ```java
-//BaseService.java
+// BaseService.java
 package hello;
+
+interface Bed {
+    /* ... */
+}
 
 public class BaseService implements Bed {
-
+    /* ... */
 }
 ```
-```java
-//Bed.java
-package hello;
 
-public interface Bed{
-
-}
-```
 ```yaml
-name: A class implements an interface
+name: Class Implements Interface
 entity:
     items:
         -   name: BaseService
@@ -44,29 +49,33 @@ entity:
             modifiers: public
 relation:
     items:
-        -   src: file0/Class[0]
-            dest: file1/Interface[0]
-            category: implement
+        -   src: file0/BaseService
+            dest: file0/Bed
+            category: Implement
+            r:
+                d: .
+                e: .
+                s:
+                u: Implement Couple
 ```
-- An enum implements an interface
+
+* An enum implements an interface
+
 ```java
 //BaseService.java
 package hello;
+
+interface Bed {
+    /* ... */
+}
 
 public enum BaseService implements Bed {
-
+    /* ... */
 }
 ```
-```java
-//Bed.java
-package hello;
 
-public interface Bed{
-
-}
-```
 ```yaml
-name: An enum implements an interface
+name: Enum Implements Interface
 entity:
     items:
         -   name: BaseService
@@ -77,37 +86,37 @@ entity:
             modifiers: public
 relation:
     items:
-        -   src: file0/Enum[0]
-            dest: file1/Interface[0]
-            category: implement
+        -   src: file0/BaseService
+            dest: file0/Bed
+            category: Implement
+            r:
+                d: x
+                e: .
+                s: Inheritance
+                u: Implement Couple
 ```
-- A class implements multiple interfaces
+
+* A class implements multiple interfaces
+
 ```java
 //BaseService.java
 package hello;
 
+interface Photo{
+    /* ... */
+}
+
+interface Drink{
+    /* ... */
+}
+
 public class BaseService implements Photo, Drink {
-
+    /* ... */
 }
 ```
-```java
-//Photo.java
-package hello;
 
-public interface Photo{
-
-}
-```
-```java
-//Drink.java
-package hello;
-
-public interface Drink{
-
-}
-```
 ```yaml
-name: A class implements multiple interfaces
+name: Class Implements Multiple Interfaces
 entity:
     items:
         -   name: BaseService
@@ -120,41 +129,41 @@ entity:
             category : Interface
             modifiers: public
 relation:
+    r:
+        d: .
+        e: .
+        s: Inheritance
+        u: Implement Couple
     items:
-        -   src: file0/Class[0]
-            dest: file1/Interface[0]
-            category: implement
-        -   src: file0/Class[0]
-            dest: file2/Interface[0]
-            category: implement
+        -   src: file0/BaseService
+            dest: file0/Photo
+            category: Implement
+        -   src: file0/BaseService
+            dest: file0/Drink
+            category: Implement
 ```
-- An enum implements multiple interfaces
+
+* An enum implements multiple interfaces
+
 ```java
 //BaseService.java
 package hello;
 
+interface Photo {
+    /* ... */
+}
+
+interface Drink {
+    /* ... */
+}
+
 public enum BaseService implements Photo, Drink {
-
+    /* ... */
 }
 ```
-```java
-//Photo.java
-package hello;
 
-public interface Photo{
-
-}
-```
-```java
-//Drink.java
-package hello;
-
-public interface Drink{
-
-}
-```
 ```yaml
-name: A enum implements multiple interfaces
+name: Enum Implements Multiple Interfaces
 entity:
     items:
         -   name: BaseService
@@ -167,11 +176,16 @@ entity:
             category : Interface
             modifiers: public
 relation:
+    r:
+        d: x
+        e: .
+        s: Inheritance
+        u: Implement Couple
     items:
-        -   src: file0/Enum[0]
-            dest: file1/Interface[0]
-            category: implement
-        -   src: file0/Enum[0]
-            dest: file2/Interface[0]
-            category: implement
+        -   src: file0/BaseService
+            dest: file0/Photo
+            category: Implement
+        -   src: file0/BaseService
+            dest: file0/Drink
+            category: Implement
 ```
