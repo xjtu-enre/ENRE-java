@@ -51,27 +51,29 @@ relation:
             dest: pkg
             category: Contain
 ```
-<!-- - Package contains files
+- Package contains files
 ```java
-package hello;
+//Hello.java
+package pkg;
 
-
+public class Hello{ 
+    /* --- */
+}
 ```
 ```yaml
-name: Package contains package
+name: Package contains files
 entity:
     items:
-        -   name: hello
-            category : Package
-            qualifiedName: hello
+        -   name: Hello.java
+            category : File
         -   name: pkg
             category : Package
-            qualifiedName: hello.pkg
 relation: 
-        -   src: hello
-            dest: pkg
+        -   src: pkg
+            dest: file0
             kind: Contain
-``` -->
+``` 
+
 - File contains class(es)
 ```java
 //Hello.java

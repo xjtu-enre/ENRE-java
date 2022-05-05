@@ -12,14 +12,14 @@ ImportDeclaration:
 ### Examples : 
 - Import declaration (unknown package)
 ```java
-// file1.java
+//Foo.java
 class Foo {
     public void doThings(){}
     public int failed(){}
 }
 ```
 ```java
-//file2.java
+//Bar.java
 import Foo;
 
 class Bar extends Foo { 
@@ -47,13 +47,13 @@ entity:
             qualifiedName: Bar
 relation:
     items:
-        -   src: file2
-            dest: file1/@class[0]
+        -   src: file1
+            dest: file0/Class[0]
             category: import
 ```
 - Import class (known package)
 ```java
-//file1
+//file0.java
 package test_package2;
 
 import test_package1.Name;
@@ -67,7 +67,7 @@ public class Hello {
 }
 ```
 ```java
-//file2
+//file1.java
 package test_package1;
 
 public class Name {
@@ -82,7 +82,7 @@ entity:
     items:
         -   name: Name
             category : Class
-            loc: file2/[ 4, 0, 8, 0 ]
+            loc: file1/[ 4, 0, 8, 0 ]
             rawType: test_package1.Name
             qualifiedName: test_package1.Name
         -   name: Hello.java
@@ -90,13 +90,13 @@ entity:
             qualifiedName: test_package2.Hello.java
 relation:
     items:
-        -   src: file1
-            dest: file2/Class[0]
+        -   src: file0
+            dest: file1/Class[0]
             category: import
 ```
 - Import Static Var
 ```java
-// file1.java
+// Foo.java
 class Foo {
     public static final String MSG = "msg";
 
@@ -105,7 +105,7 @@ class Foo {
 }
 ```
 ```java
-//file2.java
+//Bar.java
 import Foo.MSG;
 import Foo;
 
@@ -123,7 +123,7 @@ entity:
     items:
         -   name: Foo
             category : Class
-            loc: file1/[ 2, 0, 7, 0 ]
+            loc: file0/[ 2, 0, 7, 0 ]
             rawType: Foo
             qualifiedName: Foo
         -   name: MSG
@@ -132,18 +132,22 @@ entity:
             qualifiedName: Foo.MSG
         -   name: Bar
             category : Class
-            loc: file2/[ 2, 0, 11, 0 ]
+            loc: file1/[ 2, 0, 11, 0 ]
             rawType: Bar
             qualifiedName: Bar
 relation:
     items:
-        -   src: file2
-            dest: file1/Variable[0]
+        -   src: file1
+            dest: file0/Variable[0]
             category: import
 ```
 - Import On Demand
 ```java
 package helloJDT.pkg;
+
+interface JDTpkg_2 {
+
+}
 ```
 ```java
 //HelloJDT.java
@@ -181,7 +185,7 @@ entity:
             qualifiedName: helloJDT.pkg
 relation:
     items:
-        -   src: HelloJDT.java
+        -   src: file0
             dest: helloJDT.pkg
             category: import
 ```
@@ -192,8 +196,6 @@ package run.halo.app.model.dto.post;
 
 import java.util.Date;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import run.halo.app.model.dto.base.OutputConverter;
 import run.halo.app.model.entity.BasePost;
 import run.halo.app.model.enums.PostEditorType;
@@ -214,12 +216,6 @@ public class BasePostMinimalDTO implements OutputConverter<BasePostMinimalDTO, B
 
     private PostEditorType editorType;
 
-    private Date updateTime;
-
-    private Date createTime;
-
-    private Date editTime;
-
     private String metaKeywords;
 
     private String metaDescription;
@@ -231,7 +227,7 @@ public class BasePostMinimalDTO implements OutputConverter<BasePostMinimalDTO, B
 //PostStatus.java
 package run.halo.app.model.enums;
 
-public enum PostStatus implements ValueEnum<Integer> {
+public enum PostStatus {
 
     /**
      * Published status.
@@ -281,8 +277,8 @@ entity:
             modifiers: public
 relation:
     items:
-        -   src: BasePostMinimalDTO.java
-            dest: PostStatus.java/Enum[0]
+        -   src: file0
+            dest: file1/Enum[0]
             category: import
 ```
 - Import Annotation
@@ -440,7 +436,7 @@ entity:
             modifiers: public
 relation:
     items:
-        -   src: JournalController
-            dest: CacheParam.java/Annotation[0]
+        -   src: file1
+            dest: file0/Annotation[0]
             category: import
 ```
