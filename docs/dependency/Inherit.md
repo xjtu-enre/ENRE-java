@@ -5,7 +5,7 @@ A class extends one super (abstract) class, or an interface extends single or mu
 ## Supported pattern
 
 ```yaml
-name: extends
+name: Inherit
 ```
 
 ### Syntax: 
@@ -47,6 +47,11 @@ entity:
             category : Class
             qualifiedName: Bar
 relation:
+    r:
+        d: .
+        e: .
+        s: Inheritance
+        u: Extend Couple
     items:
         -   src: file0/Foo
             dest: file0/Bar
@@ -61,7 +66,7 @@ class Bar<K, V> {
     /* ... */
 }
 
-public class Foo extends Bar<String, int> {
+public class Foo extends Bar<String, Integer> {
     /* ... */
 }
 ```
@@ -77,6 +82,11 @@ entity:
             category : Class
             qualifiedName: Bar
 relation:
+    r:
+        d: .
+        e: x
+        s: Inheritance
+        u: Extend Couple
     items:
         -   src: file0/Foo
             dest: file0/Bar
@@ -108,6 +118,11 @@ entity:
             category : Interface
             qualifiedName: Bar
 relation:
+    r:
+        d: .
+        e: x
+        s: Inheritance
+        u: Extend Couple
     items:
         -   src: file0/Foo
             dest: file0/Bar
@@ -143,6 +158,11 @@ entity:
         -   name: Baz
             category : Interface
 relation:
+    r:
+        d: .
+        e: x
+        s: Inheritance
+        u: Extend Couple
     items:
         -   src: file0/Foo
             dest: file0/Bar
