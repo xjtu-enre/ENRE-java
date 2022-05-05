@@ -48,6 +48,11 @@ relation:
         -   src: file0/changeType
             dest: file0/type
             category: Modify
+            r:
+                d: Use
+                e: UseVar
+                s: Use
+                u: Set
 ```
 
 * Modify Local Var
@@ -84,4 +89,9 @@ relation:
         -   src: file0/changeType
             dest: file0/type
             category: Modify
+            r:
+                d: Use
+                e: x
+                s: x
+                u: Set
 ```
