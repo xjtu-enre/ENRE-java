@@ -20,6 +20,7 @@ TypeParameter:
 * Generic class declaration 
 
 ```java
+// Foo.java
 public abstract class Foo<K, V>{
     /* ... */
 }
@@ -28,13 +29,12 @@ public abstract class Foo<K, V>{
 ```yaml
 name: Generic Class Declaration 
 entity:
-    filter: Variable
+    filter: TypeParameter
     r:
-        d: .
-        e: .
-        s: .
-        u: .
-    exact: true
+        d: x
+        e: x
+        s: Type Parameter
+        u: TypeVariable
     items:
         -   name : K
             qualifiedName : Foo.K
