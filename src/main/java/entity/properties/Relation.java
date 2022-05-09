@@ -7,11 +7,20 @@ public class Relation {
     Location location;
 
     /**
-     * Record the produce call entity Id
+     * Record the implement call entity Id
      * eg. for var.meth, it records var Id
      * eg. for var.meth_1.meth_2, it records var Id for both.
      */
     int bindVar = -1;
+
+    /**
+     * Record the usage info of reflected method
+     * eg. meth = class.getMethod(...);
+     *     meth.setAccessible(true);
+     *     meth.invoke();
+     */
+    boolean modifyAccessible = false;
+    boolean invoke = false;
 
     public Relation(String kind, int toEntity){
         this.kind = kind;
@@ -61,5 +70,21 @@ public class Relation {
 
     public void setBindVar(int bindVar) {
         this.bindVar = bindVar;
+    }
+
+    public void setModifyAccessible(boolean accessible){
+        this.modifyAccessible = accessible;
+    }
+
+    public boolean getModifyAccessible(){
+        return this.modifyAccessible;
+    }
+
+    public void setInvoke(boolean invoke){
+        this.invoke = invoke;
+    }
+
+    public boolean getInvoke(){
+        return this.invoke;
     }
 }

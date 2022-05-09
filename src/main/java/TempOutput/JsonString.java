@@ -197,6 +197,17 @@ public class JsonString {
                     if (type.getBindVar() != -1){
                         reObj.put("bindVar", type.getBindVar());
                     }
+                    if (type.getModifyAccessible()){
+                        reObj.put("modifyAccessible", true);
+                    }
+                    if (type.getInvoke()){
+                        JSONObject locObj = new JSONObject();
+                        locObj.put("startLine", type.getLocation().getStartLine());
+                        locObj.put("endLine", type.getLocation().getEndLine());
+                        locObj.put("startColumn", type.getLocation().getStartColumn());
+                        locObj.put("endColumn", type.getLocation().getEndColumn());
+                        reObj.accumulate("invoke", locObj);
+                    }
                     subObj.accumulate("values",reObj);
                     obj.accumulate("cells",subObj);
 

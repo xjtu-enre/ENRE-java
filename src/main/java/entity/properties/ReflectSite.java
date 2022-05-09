@@ -1,0 +1,94 @@
+package entity.properties;
+
+import util.Configure;
+
+public class ReflectSite {
+
+    String reflectObj;
+    int reflectObjId;
+    int implementVar;
+    int bindVar;
+    String kind;
+    String[] arguments;
+    boolean modifyAccessible;
+    Location invoke;
+
+    public ReflectSite(String classQualifiedName, int implementVar){
+        this.reflectObj = classQualifiedName;
+        this.implementVar = implementVar;
+        this.kind = Configure.REFLECT_CLASS;
+    }
+
+    public ReflectSite(String methodSimpleName, String[] args, int implementVar, int bindVar){
+        this.reflectObj = methodSimpleName;
+        this.implementVar = implementVar;
+        this.kind = Configure.REFLECT_METHOD;
+        this.arguments = args;
+        this.bindVar = bindVar;
+    }
+
+    public void setBindVar(int id){
+        this.bindVar = id;
+    }
+
+    public int getBindVar(){
+        return this.bindVar;
+    }
+
+    public String getReflectObj() {
+        return reflectObj;
+    }
+
+    public void setReflectObj(String reflectObj) {
+        this.reflectObj = reflectObj;
+    }
+
+    public void setReflectObjId(int id){
+        this.reflectObjId = id;
+    }
+
+    public int getReflectObjId(){
+        return this.reflectObjId;
+    }
+
+    public int getImplementVar() {
+        return implementVar;
+    }
+
+    public void setImplementVar(int implementVar) {
+        this.implementVar = implementVar;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public String[] getArguments() {
+        return arguments;
+    }
+
+    public void setArguments(String[] arguments) {
+        this.arguments = arguments;
+    }
+
+    public boolean getModifyAccessible() {
+        return modifyAccessible;
+    }
+
+    public void setModifyAccessible(boolean setAccessible) {
+        this.modifyAccessible = setAccessible;
+    }
+
+    public Location getInvoke() {
+        return invoke;
+    }
+
+    public void setInvoke(Location invoke) {
+        this.invoke = invoke;
+    }
+
+}

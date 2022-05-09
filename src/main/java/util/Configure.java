@@ -105,6 +105,10 @@ public class Configure {
 
     public static final String RELATION_REFLECT = "Reflect";
     public static final String RELATION_REFLECTED_BY = "Reflected by";
+    public static final String REFLECT_CLASS = "Reflect Class";
+    public static final String REFLECT_METHOD = "Reflect Method";
+    public static final String REFLECT_FIELD = "Reflect Field";
+    public static final String REFLECT_CONSTRUCTOR = "Reflect Constructor";
 
     public static final String RELATION_TYPED = "Typed";
     public static final String RELATION_TYPED_BY = "Type by";

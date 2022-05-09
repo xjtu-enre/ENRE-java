@@ -3,6 +3,7 @@ package entity;
 import java.util.ArrayList;
 
 import entity.properties.Location;
+import entity.properties.ReflectSite;
 import entity.properties.Relation;
 import util.Tuple;
 
@@ -20,7 +21,7 @@ public class BaseEntity {
 
     protected ArrayList<String> annotations = new ArrayList<>();
 
-    protected ArrayList<String> reflects = new ArrayList<>();
+    protected ArrayList<ReflectSite> reflects = new ArrayList<>();
 
     protected ArrayList<String> modifiers = new ArrayList<>();
 
@@ -104,6 +105,14 @@ public class BaseEntity {
         this.relation.add(new Relation(relation, relationId, relationLoc, bindVar));
     }
 
+    public void addRelation(String relation, int relationId, Location relationLoc, boolean refAccessible, boolean invoke){
+        Relation ref = new Relation(relation, relationId, relationLoc);
+        ref.setModifyAccessible(refAccessible);
+        ref.setInvoke(invoke);
+        this.relation.add(ref);
+
+    }
+
     public ArrayList<Relation> getRelation(){
         return this.relation;
     }
@@ -124,11 +133,11 @@ public class BaseEntity {
         return this.annotations;
     }
 
-    public void addReflect(String reflect){
+    public void addReflect(ReflectSite reflect){
         this.reflects.add(reflect);
     }
 
-    public ArrayList<String> getReflects(){
+    public ArrayList<ReflectSite> getReflects(){
         return this.reflects;
     }
 
