@@ -1,9 +1,6 @@
 package visitor.deper;
 
-import entity.BaseEntity;
-import entity.ClassEntity;
-import entity.MethodEntity;
-import entity.VariableEntity;
+import entity.*;
 import util.Configure;
 
 import java.util.*;
@@ -20,6 +17,19 @@ public class OverrideBf extends DepBackfill{
                         int overrideMeth = checkOverride(childId, superMeths);
                         if (overrideMeth != -1){
                             saveRelation( childId, overrideMeth, Configure.RELATION_OVERRIDE, Configure.RELATION_OVERRIDE_BY);
+                        }
+                    }
+                }
+            }
+            if (entity instanceof InterfaceEntity){
+                if (!((InterfaceEntity) entity).getExtendsIds().isEmpty()){
+                    for (int superInterfaceId : ((InterfaceEntity) entity).getExtendsIds()){
+                        HashMap<innerMeth, Integer> superMeths = getInnerMeth((InterfaceEntity) singleCollect.getEntityById(superInterfaceId));
+                        for(int childId: entity.getChildrenIds()){
+                            int overrideMeth = checkOverride(childId, superMeths);
+                            if (overrideMeth != -1){
+                                saveRelation( childId, overrideMeth, Configure.RELATION_OVERRIDE, Configure.RELATION_OVERRIDE_BY);
+                            }
                         }
                     }
                 }
@@ -87,7 +97,8 @@ public class OverrideBf extends DepBackfill{
      * @return if override, return super method id, else -1
      */
     protected int checkOverride(int MethId, HashMap<OverrideBf.innerMeth, Integer> superMeths){
-        if(singleCollect.getEntityById(MethId) instanceof MethodEntity){
+        //Constructor cannot be override
+        if(singleCollect.getEntityById(MethId) instanceof MethodEntity && !singleCollect.isConstructor(MethId)){
             MethodEntity currentMeth = (MethodEntity) singleCollect.getEntityById(MethId);
             ArrayList<String> currentParas = new ArrayList<>();
             for (int paraId : currentMeth.getParameters()){

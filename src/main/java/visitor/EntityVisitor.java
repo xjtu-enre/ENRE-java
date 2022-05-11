@@ -284,9 +284,9 @@ public class EntityVisitor extends CKVisitor {
         singleCollect.getEntityById(entityStack.peek()).addAnnotation(annotationName);
 
         //check hidden
-        if ("UnsupportedAppUsage".equals(annotationName)){
-            singleCollect.getEntityById(entityStack.peek()).setHidden(true);
-        }
+//        if ("UnsupportedAppUsage".equals(annotationName)){
+//            singleCollect.getEntityById(entityStack.peek()).setHidden(true);
+//        }
 
         return super.visit(node);
     }
@@ -298,16 +298,16 @@ public class EntityVisitor extends CKVisitor {
         singleCollect.getEntityById(entityStack.peek()).addAnnotation(annotationName);
 
         //check hidden
-        if ("UnsupportedAppUsage".equals(annotationName)){
-            singleCollect.getEntityById(entityStack.peek()).setHidden(true);
-            for (Object value : node.values()){
-                if (value instanceof MemberValuePair){
-                    if ("maxTargetSdk".equals(((MemberValuePair) value).getName().toString())){
-                        singleCollect.getEntityById(entityStack.peek()).setMaxTargetSdk(getMaxTargetSdk(((MemberValuePair) value).getValue().toString()));
-                    }
-                }
-            }
-        }
+//        if ("UnsupportedAppUsage".equals(annotationName)){
+//            singleCollect.getEntityById(entityStack.peek()).setHidden(true);
+//            for (Object value : node.values()){
+//                if (value instanceof MemberValuePair){
+//                    if ("maxTargetSdk".equals(((MemberValuePair) value).getName().toString())){
+//                        singleCollect.getEntityById(entityStack.peek()).setMaxTargetSdk(getMaxTargetSdk(((MemberValuePair) value).getValue().toString()));
+//                    }
+//                }
+//            }
+//        }
 
         return super.visit(node);
     }
@@ -857,26 +857,26 @@ public class EntityVisitor extends CKVisitor {
     }
 
 
-    /**
-     * check Hidden API
-     * Entities with the javadoc attribute '@hide', itself and all children node are hidden
-     * @param node Javadoc node
-     * @return
-     */
-    @Override
-    public boolean visit(Javadoc node) {
-        for ( Object tag : node.tags()){
-            if ("@hide".equals(((TagElement) tag).getTagName()) && ((TagElement) tag).getTagName() != null){
-                singleCollect.getEntityById(entityStack.peek()).setHidden(true);
-            }
-            for ( Object sub : ((TagElement) tag).fragments()){
-                if ( sub instanceof TagElement && "@hide".equals(((TagElement) sub).getTagName())){
-                    singleCollect.getEntityById(entityStack.peek()).setHidden(true);
-                }
-            }
-        }
-        return super.visit(node);
-    }
+//    /**
+//     * check Hidden API
+//     * Entities with the javadoc attribute '@hide', itself and all children node are hidden
+//     * @param node Javadoc node
+//     * @return
+//     */
+//    @Override
+//    public boolean visit(Javadoc node) {
+//        for ( Object tag : node.tags()){
+//            if ("@hide".equals(((TagElement) tag).getTagName()) && ((TagElement) tag).getTagName() != null){
+//                singleCollect.getEntityById(entityStack.peek()).setHidden(true);
+//            }
+//            for ( Object sub : ((TagElement) tag).fragments()){
+//                if ( sub instanceof TagElement && "@hide".equals(((TagElement) sub).getTagName())){
+//                    singleCollect.getEntityById(entityStack.peek()).setHidden(true);
+//                }
+//            }
+//        }
+//        return super.visit(node);
+//    }
 
     //-----------------------------------------------------------------------------
 

@@ -94,10 +94,10 @@ public class JsonString {
                 entityObj.put("rawType", processRawType(raw));
             }
             //AOSP HIDDEN API
-            JSONObject hiddenObj = new JSONObject();
-            hiddenObj.put("hidden", entity.getHidden());
-            hiddenObj.put("maxTargetSdk", entity.getMaxTargetSdk());
-            entityObj.accumulate("aosp_hidden", hiddenObj);
+//            JSONObject hiddenObj = new JSONObject();
+//            hiddenObj.put("hidden", entity.getHidden());
+//            hiddenObj.put("maxTargetSdk", entity.getMaxTargetSdk());
+//            entityObj.accumulate("aosp_hidden", hiddenObj);
             //Modifiers
             if (!entity.getModifiers().isEmpty()){
                 String m = "";

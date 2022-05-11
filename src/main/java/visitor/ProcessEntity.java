@@ -66,9 +66,9 @@ public class ProcessEntity {
         currentPackageEntity.setSimpleName();
         currentPackageEntity.setParentId(-1);
 
-        if (getHidden()){
-            currentPackageEntity.setHidden(true);
-        }
+//        if (getHidden()){
+//            currentPackageEntity.setHidden(true);
+//        }
 
         singleCollect.addEntity(currentPackageEntity);
         return packageId;
@@ -135,9 +135,9 @@ public class ProcessEntity {
             fileEntity.setQualifiedName(fileEntity.getName());
         }
 
-        if (getHidden()){
-            fileEntity.setHidden(true);
-        }
+//        if (getHidden()){
+//            fileEntity.setHidden(true);
+//        }
 
         singleCollect.addEntity(fileEntity);
         singleCollect.addFileId(fileId);
@@ -198,9 +198,9 @@ public class ProcessEntity {
                 interfaceEntity.addModifier(o.toString());
             }
 
-            if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
-                interfaceEntity.setHidden(true);
-            }
+//            if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+//                interfaceEntity.setHidden(true);
+//            }
             singleCollect.addEntity(interfaceEntity);
         }else{
             ClassEntity classEntity = new ClassEntity(typeId, typeName, qualifiedName, parentId);
@@ -244,9 +244,9 @@ public class ProcessEntity {
                 classEntity.addModifier(o.toString());
             }
 
-            if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
-                classEntity.setHidden(true);
-            }
+//            if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+//                classEntity.setHidden(true);
+//            }
             singleCollect.addEntity(classEntity);
         }
         //add file's children id
@@ -266,9 +266,9 @@ public class ProcessEntity {
         classEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
         classEntity.setRawType(rawType);
 
-        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
-            classEntity.setHidden(true);
-        }
+//        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+//            classEntity.setHidden(true);
+//        }
         singleCollect.addEntity(classEntity);
         singleCollect.getEntityById(parentId).addChildId(classId);
 
@@ -316,9 +316,9 @@ public class ProcessEntity {
             enumEntity.addModifier(o.toString());
         }
 
-        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
-            enumEntity.setHidden(true);
-        }
+//        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+//            enumEntity.setHidden(true);
+//        }
 
         singleCollect.addEntity(enumEntity);
         //add parent's children Id
@@ -351,9 +351,9 @@ public class ProcessEntity {
             enumConstantEntity.addModifier(o.toString());
         }
 
-        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
-            enumConstantEntity.setHidden(true);
-        }
+//        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+//            enumConstantEntity.setHidden(true);
+//        }
 
         singleCollect.addEntity(enumConstantEntity);
         singleCollect.getEntityById(parentId).addChildId(constantId);
@@ -395,9 +395,9 @@ public class ProcessEntity {
 
         annotationEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
 
-        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
-            annotationEntity.setHidden(true);
-        }
+//        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+//            annotationEntity.setHidden(true);
+//        }
 
         for(Object o : node.modifiers()) {
             annotationEntity.addModifier(o.toString());
@@ -439,9 +439,9 @@ public class ProcessEntity {
             annotationTypeMember.setDefault_value(node.getDefault().toString());
         }
 
-        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
-            annotationTypeMember.setHidden(true);
-        }
+//        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+//            annotationTypeMember.setHidden(true);
+//        }
 
         singleCollect.addEntity(annotationTypeMember);
         singleCollect.getEntityById(parentId).addChildId(memberId);
@@ -489,9 +489,9 @@ public class ProcessEntity {
             }
         }
 
-        if (getHidden() || singleCollect.getEntityById(parentTypeId).getHidden()){
-            methodEntity.setHidden(true);
-        }
+//        if (getHidden() || singleCollect.getEntityById(parentTypeId).getHidden()){
+//            methodEntity.setHidden(true);
+//        }
         singleCollect.addEntity(methodEntity);
 
         //add type's children id
@@ -553,9 +553,9 @@ public class ProcessEntity {
             varEntity.setValue(frag.getInitializer().toString());
         }
 
-        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
-            varEntity.setHidden(true);
-        }
+//        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
+//            varEntity.setHidden(true);
+//        }
 
         varEntity.setLocation(supplement_location(cu, frag.getStartPosition(), frag.getLength()));
 
@@ -591,9 +591,9 @@ public class ProcessEntity {
         parameterEntity.setQualifiedName(singleCollect.getEntityById(parentMethodId).getQualifiedName()+"."+name);
         parameterEntity.setParentId(parentMethodId);
 
-        if (getHidden() || singleCollect.getEntityById(parentMethodId).getHidden()){
-            parameterEntity.setHidden(true);
-        }
+//        if (getHidden() || singleCollect.getEntityById(parentMethodId).getHidden()){
+//            parameterEntity.setHidden(true);
+//        }
 
         singleCollect.addEntity(parameterEntity);
 

@@ -141,21 +141,21 @@ public class BaseEntity {
         return this.reflects;
     }
 
-    public boolean getHidden(){
-        return this.hidden;
-    }
-
-    public void setHidden(boolean hidden){
-        this.hidden = hidden;
-    }
-
-    public int getMaxTargetSdk(){
-        return this.maxTargetSdk;
-    }
-
-    public void setMaxTargetSdk(int maxTargetSdk) {
-        this.maxTargetSdk = maxTargetSdk;
-    }
+//    public boolean getHidden(){
+//        return this.hidden;
+//    }
+//
+//    public void setHidden(boolean hidden){
+//        this.hidden = hidden;
+//    }
+//
+//    public int getMaxTargetSdk(){
+//        return this.maxTargetSdk;
+//    }
+//
+//    public void setMaxTargetSdk(int maxTargetSdk) {
+//        this.maxTargetSdk = maxTargetSdk;
+//    }
 
     public void addModifier (String modifier){
         this.modifiers.add(modifier);

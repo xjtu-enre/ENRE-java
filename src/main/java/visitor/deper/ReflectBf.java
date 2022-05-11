@@ -37,16 +37,18 @@ public class ReflectBf extends DepBackfill{
                                 reflectMeth.addPara(args[i].split("\\.")[0]);
                             }
                         }
-                        HashMap<OverrideBf.innerMeth, Integer> reflectMeths = getInnerMeth((ClassEntity) singleCollect.getEntityById(findReflectMethodClass(entity.getReflects(), reflect.getBindVar())));
-                        int reflectId = -1;
-                        for (OverrideBf.innerMeth classMeth : reflectMeths.keySet()){
-                            if (reflectMeth.getName().equals(classMeth.getName()) && classMeth.comparePara(reflectMeth.para)){
-                                reflectId = reflectMeths.get(classMeth);
-                                break;
+                        if (findReflectMethodClass(entity.getReflects(), reflect.getBindVar()) != -1){
+                            HashMap<OverrideBf.innerMeth, Integer> reflectMeths = getInnerMeth((ClassEntity) singleCollect.getEntityById(findReflectMethodClass(entity.getReflects(), reflect.getBindVar())));
+                            int reflectId = -1;
+                            for (OverrideBf.innerMeth classMeth : reflectMeths.keySet()){
+                                if (reflectMeth.getName().equals(classMeth.getName()) && classMeth.comparePara(reflectMeth.para)){
+                                    reflectId = reflectMeths.get(classMeth);
+                                    break;
+                                }
                             }
-                        }
-                        if(reflectId != -1){
-                            saveRelation(entity.getId(), reflectId, Configure.RELATION_REFLECT, Configure.RELATION_REFLECTED_BY, reflect.getInvoke(), reflect.getModifyAccessible(), true);
+                            if(reflectId != -1){
+                                saveRelation(entity.getId(), reflectId, Configure.RELATION_REFLECT, Configure.RELATION_REFLECTED_BY, reflect.getInvoke(), reflect.getModifyAccessible(), true);
+                            }
                         }
                     }
                 }

@@ -176,12 +176,12 @@ public abstract class DepBackfill{
 
     /**
      * Get class method
-     * @param classEntity super class entity
+     * @param typeEntity super class entity
      * @return HashMap<innerMeth, Integer>
      */
-    protected HashMap<OverrideBf.innerMeth, Integer> getInnerMeth(ClassEntity classEntity){
+    protected HashMap<OverrideBf.innerMeth, Integer> getInnerMeth(TypeEntity typeEntity){
         HashMap<OverrideBf.innerMeth, Integer> iMeths = new HashMap<>();
-        for(int childId : classEntity.getChildrenIds()){
+        for(int childId : typeEntity.getChildrenIds()){
             if(singleCollect.getEntityById(childId) instanceof MethodEntity){
                 MethodEntity methodEntity = (MethodEntity) singleCollect.getEntityById(childId);
                 OverrideBf.innerMeth iMeth = new OverrideBf.innerMeth(methodEntity.getName(), methodEntity.getReturnType());
