@@ -6,10 +6,22 @@ public class ReflectSite {
 
     String reflectObj;
     int reflectObjId;
-    int implementVar;
-    int bindVar;
+
     String kind;
     String[] arguments;
+
+    /**
+     * For reflect class and method in same line
+     * Class.class.getDeclaredMethod(...)
+     */
+    String declaredClass;
+
+    /**
+     * For reflect class and method in separated line
+     */
+    int implementVar;
+    int bindVar;
+
     boolean modifyAccessible;
     Location invoke;
 
@@ -17,6 +29,14 @@ public class ReflectSite {
         this.reflectObj = classQualifiedName;
         this.implementVar = implementVar;
         this.kind = Configure.REFLECT_CLASS;
+    }
+
+    public ReflectSite(String methodSimpleName, String[] args, String declaredClass, int implementVar){
+        this.reflectObj = methodSimpleName;
+        this.arguments = args;
+        this.declaredClass = declaredClass;
+        this.kind = Configure.REFLECT_METHOD;
+        this.implementVar = implementVar;
     }
 
     public ReflectSite(String methodSimpleName, String[] args, int implementVar, int bindVar){
@@ -89,6 +109,14 @@ public class ReflectSite {
 
     public void setInvoke(Location invoke) {
         this.invoke = invoke;
+    }
+
+    public void setDeclaredClass(String declaredClass){
+        this.declaredClass = declaredClass;
+    }
+
+    public String getDeclaredClass(){
+        return this.declaredClass;
     }
 
 }

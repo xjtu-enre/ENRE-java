@@ -61,6 +61,9 @@ public class ReflectBf extends DepBackfill{
             if (reflectSite.getKind().equals(Configure.REFLECT_CLASS) && reflectSite.getImplementVar() == refBindVar){
                 return reflectSite.getReflectObjId();
             }
+            if (reflectSite.getDeclaredClass() != null && singleCollect.getCreatedType().containsKey(reflectSite.getDeclaredClass())){
+                return singleCollect.getCreatedType().get(reflectSite.getDeclaredClass());
+            }
         }
         return -1;
     }

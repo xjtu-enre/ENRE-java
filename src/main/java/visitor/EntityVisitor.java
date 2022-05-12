@@ -596,7 +596,7 @@ public class EntityVisitor extends CKVisitor {
         while (currentExpression instanceof QualifiedName){
             currentExpression = ((QualifiedName) currentExpression).getQualifier();
         }
-        int bindVar = -1;
+        int bindVar;
         if (currentExpression instanceof SimpleName){
             bindVar = processVarInMethod(currentExpression.toString(), scopeStack.peek());
         }else if (currentExpression instanceof FieldAccess){
@@ -605,6 +605,7 @@ public class EntityVisitor extends CKVisitor {
             bindVar = processVarInMethod(((ArrayAccess) currentExpression).getArray().toString(), scopeStack.peek());
         } else {
 //            System.out.println(currentExpression);
+            bindVar = -1;
         }
 
         if (methodBinding != null) {
@@ -623,16 +624,16 @@ public class EntityVisitor extends CKVisitor {
     }
 
     public void checkReflection(String declaringTypeQualifiedName, String methodName, int bindVar, List arguments, Location loc){
+        var split = arguments.toString().replace("]", "").split(", ");
         switch (declaringTypeQualifiedName){
             case "java.lang.Class" :
                 if(methodName.equals("forName") && arguments.size() == 1){
                     singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(arguments.get(0).toString().replace("\"", ""),
                             getCurrentLeftSideVar()));
                 }
-                if(methodName.equals("getMethod")){
-                    String[] args = arguments.toString().replace("]", "").split(", ");
-                    String refMethName = args[0].replace("\"", "").substring(1);
-                    singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(refMethName, args, getCurrentLeftSideVar(), bindVar));
+                if(methodName.equals("getMethod") || methodName.equals("getDeclaredMethod")){
+                    String refMethName = split[0].replace("\"", "").substring(1);
+                    singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(refMethName, split, getCurrentLeftSideVar(), bindVar));
                 }
                 break;
             case "java.lang.Object" :
@@ -661,6 +662,16 @@ public class EntityVisitor extends CKVisitor {
                         }
                         break;
                 }
+        }
+        if (declaringTypeQualifiedName.contains("<")){
+            String kind = declaringTypeQualifiedName.split("<")[0];
+            String declaringClass = declaringTypeQualifiedName.split("<")[1].replace(">","");
+            if ("java.lang.Class".equals(kind)){
+                if(methodName.equals("getMethod") || methodName.equals("getDeclaredMethod")){
+                    String refMethName = split[0].replace("\"", "").substring(1);
+                    singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(refMethName, split, declaringClass, getCurrentLeftSideVar()));
+                }
+            }
         }
     }
 
