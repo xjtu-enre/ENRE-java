@@ -2,6 +2,7 @@ package visitor.deper;
 
 import entity.BaseEntity;
 import entity.ClassEntity;
+import entity.TypeEntity;
 import entity.properties.ReflectSite;
 import util.Configure;
 
@@ -38,7 +39,7 @@ public class ReflectBf extends DepBackfill{
                             }
                         }
                         if (findReflectMethodClass(entity.getReflects(), reflect.getBindVar()) != -1){
-                            HashMap<OverrideBf.innerMeth, Integer> reflectMeths = getInnerMeth((ClassEntity) singleCollect.getEntityById(findReflectMethodClass(entity.getReflects(), reflect.getBindVar())));
+                            HashMap<OverrideBf.innerMeth, Integer> reflectMeths = getInnerMeth((TypeEntity) singleCollect.getEntityById(findReflectMethodClass(entity.getReflects(), reflect.getBindVar())));
                             int reflectId = -1;
                             for (OverrideBf.innerMeth classMeth : reflectMeths.keySet()){
                                 if (reflectMeth.getName().equals(classMeth.getName()) && classMeth.comparePara(reflectMeth.para)){

@@ -201,12 +201,16 @@ public class JsonString {
                         reObj.put("modifyAccessible", true);
                     }
                     if (type.getInvoke()){
-                        JSONObject locObj = new JSONObject();
-                        locObj.put("startLine", type.getLocation().getStartLine());
-                        locObj.put("endLine", type.getLocation().getEndLine());
-                        locObj.put("startColumn", type.getLocation().getStartColumn());
-                        locObj.put("endColumn", type.getLocation().getEndColumn());
-                        reObj.accumulate("invoke", locObj);
+                        try{
+                            JSONObject locObj = new JSONObject();
+                            locObj.put("startLine", type.getLocation().getStartLine());
+                            locObj.put("endLine", type.getLocation().getEndLine());
+                            locObj.put("startColumn", type.getLocation().getStartColumn());
+                            locObj.put("endColumn", type.getLocation().getEndColumn());
+                            reObj.accumulate("invoke", locObj);
+                        } catch (NullPointerException e){
+                            reObj.put("invoke", true);
+                        }
                     }
                     subObj.accumulate("values",reObj);
                     obj.accumulate("cells",subObj);
