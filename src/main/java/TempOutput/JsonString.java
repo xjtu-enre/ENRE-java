@@ -4,7 +4,6 @@ import java.util.*;
 
 import entity.*;
 import entity.properties.Relation;
-import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.json.JSONObject;
 
 import util.SingleCollect;
@@ -40,11 +39,17 @@ public class JsonString {
         }
     }
 
-    public static String JSONWriteRelation(Map<Integer, Map<Integer, Relation>> relationMap) throws Exception {
+    public static String JSONWriteRelation(Map<Integer, Map<Integer, Relation>> relationMap, String hiddenPath) throws Exception {
 
         JSONObject obj=new JSONObject();//创建JSONObject对象
 
         SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
+        ProcessHidden processHidden = new ProcessHidden();
+        if (hiddenPath != null){
+            processHidden.convertCSV(hiddenPath);
+            System.out.println(processHidden.getResult());
+        }
+
 
         obj.put("schemaVersion","1");
         Iterator<BaseEntity> iterator = singleCollect.getEntities().iterator();
@@ -127,6 +132,9 @@ public class JsonString {
             //variable kind
             if(entity instanceof VariableEntity){
                 entityObj.put("global", ((VariableEntity) entity).getGlobal());
+                if (!processHidden.getResult().isEmpty() && ((VariableEntity) entity).getGlobal() && processHidden.checkHidden((VariableEntity) entity)!= null){
+                    entityObj.put("hidden", processHidden.checkHidden((VariableEntity) entity));
+                }
             }
             //inner Type
             if(entity instanceof TypeEntity && !((TypeEntity) entity).getInnerType().isEmpty()){
@@ -157,6 +165,9 @@ public class JsonString {
                 parObj.put("names", parName);
                 parObj.put("types", parType);
                 entityObj.accumulate("parameter", parObj);
+                if (!processHidden.getResult().isEmpty() && processHidden.checkHidden((MethodEntity)entity, parType)!= null){
+                    entityObj.put("hidden", processHidden.checkHidden((MethodEntity)entity, parType));
+                }
             }
 
 //            subObjVariable.add(entity.getQualifiedName());

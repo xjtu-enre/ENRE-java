@@ -624,7 +624,7 @@ public class EntityVisitor extends CKVisitor {
     }
 
     public void checkReflection(String declaringTypeQualifiedName, String methodName, int bindVar, List arguments, Location loc){
-        var split = arguments.toString().replace("]", "").split(", ");
+        String[] args = arguments.toString().replace("]", "").split(", ");
         switch (declaringTypeQualifiedName){
             case "java.lang.Class" :
                 if(methodName.equals("forName") && arguments.size() == 1){
@@ -632,8 +632,8 @@ public class EntityVisitor extends CKVisitor {
                             getCurrentLeftSideVar()));
                 }
                 if(methodName.equals("getMethod") || methodName.equals("getDeclaredMethod")){
-                    String refMethName = split[0].replace("\"", "").substring(1);
-                    singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(refMethName, split, getCurrentLeftSideVar(), bindVar));
+                    String refMethName = args[0].replace("\"", "").substring(1);
+                    singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(refMethName, args, getCurrentLeftSideVar(), bindVar));
                 }
                 break;
             case "java.lang.Object" :
@@ -668,8 +668,8 @@ public class EntityVisitor extends CKVisitor {
             String declaringClass = declaringTypeQualifiedName.split("<")[1].replace(">","");
             if ("java.lang.Class".equals(kind)){
                 if(methodName.equals("getMethod") || methodName.equals("getDeclaredMethod")){
-                    String refMethName = split[0].replace("\"", "").substring(1);
-                    singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(refMethName, split, declaringClass, getCurrentLeftSideVar()));
+                    String refMethName = args[0].replace("\"", "").substring(1);
+                    singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(refMethName, args, declaringClass, getCurrentLeftSideVar()));
                 }
             }
         }

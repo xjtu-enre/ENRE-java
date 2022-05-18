@@ -78,6 +78,9 @@ public class OverrideBf extends DepBackfill{
                         if (s.equals(value)) {
                             flag = true;
                             break;
+                        } else if ((s.equals("Integer") && value.equals("int")) || (value.equals("Integer") && s.equals("int"))){
+                            flag = true;
+                            break;
                         } else {
                             flag = false;
                         }

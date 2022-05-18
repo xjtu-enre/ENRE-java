@@ -1,6 +1,6 @@
 package util;
 
-public class Tuple<L,R>  {
+public class Tuple<L,R> {
 
     private L l;
     private R r;

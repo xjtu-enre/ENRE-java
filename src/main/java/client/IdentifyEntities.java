@@ -103,9 +103,9 @@ public class IdentifyEntities {
             catch (EmptyStackException e){
                 System.out.println("Empty Stack: "+ pair.source);
             }
-//            catch (ClassCastException e){
-//                System.out.println("Class Cast: "+ pair.source);
-//            }
+            catch (NullPointerException e){
+                System.out.println("Class Cast: "+ pair.source);
+            }
         }
 
         System.out.println("Entities identified successfully...");

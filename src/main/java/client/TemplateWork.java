@@ -26,11 +26,15 @@ public class TemplateWork {
         String projectName = args[2];
         String depMask = "111111111";
         String aidlDir = null;
+        String hiddenDir = null;
         if (args.length > 3) {
             projectName = args[3];
         }
         if (args.length > 4) {
             aidlDir = args[4];
+        }
+        if (args.length > 5){
+            hiddenDir = args[5];
         }
 
         config(lang, inputDir, projectName);
@@ -78,7 +82,7 @@ public class TemplateWork {
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-node", Django.nodeWriter());
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-edge", Django.edgeWriter(jsonMap.getFinalRes()));
         //specific-anti-
-        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",configure.getAnalyzedProjectName()+ "-out", JsonString.JSONWriteRelation(jsonMap.getFinalRes()));
+        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",configure.getAnalyzedProjectName()+ "-out", JsonString.JSONWriteRelation(jsonMap.getFinalRes(), hiddenDir));
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-imports", Verification.JSONWriteRela(verify.getRela()));
 //        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",configure.getAnalyzedProjectName()+ "-generic-anti-out",
 //                JSON.toJSONString(depends.getDependsString(projectName, inputDir, lang)));
