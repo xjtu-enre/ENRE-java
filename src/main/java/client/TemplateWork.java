@@ -1,6 +1,7 @@
 package client;
 
 import TempOutput.*;
+import picocli.CommandLine;
 import visitor.relationInf.RelationInf;
 import formator.Formator;
 import formator.fjson.JDepObject;
@@ -20,22 +21,53 @@ public class TemplateWork {
 
     protected static Configure configure = Configure.getConfigureInstance();
 
-    public final void workflow(String[] args) throws Exception {
-        String lang = args[0];
-        String inputDir = args[1];
-        String projectName = args[2];
+    public final void workflow(String[] args) {
+//        String lang = args[0];
+//        String inputDir = args[1];
+//        String projectName = args[2];
+//        String depMask = "111111111";
+//        String aidlDir = null;
+//        String hiddenDir = null;
+//        if (args.length > 3) {
+//            projectName = args[3];
+//        }
+//        if (args.length > 4) {
+//            aidlDir = args[4];
+//        }
+//        if (args.length > 5){
+//            hiddenDir = args[5];
+//        }
+
+        try {
+            EnreCommand app = CommandLine.populateCommand(new EnreCommand(), args);
+            if (app.help) {
+                CommandLine.usage(new EnreCommand(), System.out);
+                System.exit(0);
+            }
+            executeCommand(app);
+        } catch (Exception e) {
+            if (e instanceof CommandLine.PicocliException) {
+                CommandLine.usage(new EnreCommand(), System.out);
+            } else if (e instanceof CommandLine.ParameterException){
+                System.err.println(e.getMessage());
+            }else {
+                System.err.println("Exception encountered. If it is a design error, please report issue to us." );
+                e.printStackTrace();
+            }
+            System.exit(0);
+        }
+
+    }
+
+    public void executeCommand(EnreCommand app) throws Exception {
+        String lang = app.getLang();
+        String inputDir = app.getSrc();
+        String projectName = app.getProjectName();
         String depMask = "111111111";
-        String aidlDir = null;
-        String hiddenDir = null;
-        if (args.length > 3) {
-            projectName = args[3];
-        }
-        if (args.length > 4) {
-            aidlDir = args[4];
-        }
-        if (args.length > 5){
-            hiddenDir = args[5];
-        }
+        String aidlDir = app.getAidl();
+        String hiddenDir = app.getHidden();
+
+        String[] additionDir = app.getDir();
 
         config(lang, inputDir, projectName);
         String[] depTypes = getDepType(depMask);
@@ -45,9 +77,17 @@ public class TemplateWork {
         //identify Entities
         IdentifyEntities entityTreeBuilder;
         if(aidlDir != null){
-            entityTreeBuilder = new IdentifyEntities(inputDir, projectName, aidlDir);
+            if (additionDir.length != 0){
+                entityTreeBuilder = new IdentifyEntities(inputDir, projectName, aidlDir, additionDir);
+            } else {
+                entityTreeBuilder = new IdentifyEntities(inputDir, projectName, aidlDir);
+            }
         }else {
-            entityTreeBuilder = new IdentifyEntities(inputDir, projectName);
+            if (additionDir.length != 0){
+                entityTreeBuilder = new IdentifyEntities(inputDir, projectName, additionDir);
+            } else {
+                entityTreeBuilder = new IdentifyEntities(inputDir, projectName);
+            }
         }
         entityTreeBuilder.run();
 
@@ -83,13 +123,14 @@ public class TemplateWork {
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-edge", Django.edgeWriter(jsonMap.getFinalRes()));
         //specific-anti-
         CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",configure.getAnalyzedProjectName()+ "-out", JsonString.JSONWriteRelation(jsonMap.getFinalRes(), hiddenDir));
+//        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",configure.getAnalyzedProjectName()+ "-hidden-not-match", ProcessHidden.getProcessHiddeninstance().outputResult());
+
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-imports", Verification.JSONWriteRela(verify.getRela()));
 //        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",configure.getAnalyzedProjectName()+ "-generic-anti-out",
 //                JSON.toJSONString(depends.getDependsString(projectName, inputDir, lang)));
 
         //output the summary of the acquired results.
         summary();
-
     }
 
     /**

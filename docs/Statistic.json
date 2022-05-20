@@ -27,5 +27,9 @@
     "Modify": 2,
     "Reflect": 5,
     "Parameter": 2
+  },
+  "command": {
+    "AOSP": "java E:\\Android\\base base -a E:\\aidl -hd E:\\Android\\hiddenapi-flags.csv",
+    "TEST": "java C:\\Users\\98703\\IdeaProjects\\helloJDT helloJDT -d E:\\temp\\helloJDT -d D:\\test_project\\helloJDT"
   }
 }

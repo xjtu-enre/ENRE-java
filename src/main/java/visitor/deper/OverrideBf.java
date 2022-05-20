@@ -73,12 +73,35 @@ public class OverrideBf extends DepBackfill{
             }
             else if (para.size() == this.para.size()){
                 boolean flag = false;
+//                System.out.println(para);
+//                System.out.println(this.para);
                 for (String s : this.para) {
                     for (String value : para) {
-                        if (s.equals(value)) {
+                        if (s.contains(value)) {
                             flag = true;
                             break;
                         } else if ((s.equals("Integer") && value.equals("int")) || (value.equals("Integer") && s.equals("int"))){
+                            flag = true;
+                            break;
+                        } else if ((s.equals("Boolean") && value.equals("boolean")) || (value.equals("Boolean") && s.equals("boolean"))) {
+                            flag = true;
+                            break;
+                        } else if ((s.equals("Long") && value.equals("long")) || (value.equals("Long") && s.equals("long"))) {
+                            flag = true;
+                            break;
+                        } else if ((s.equals("Byte") && value.equals("byte")) || (value.equals("Byte") && s.equals("byte"))) {
+                            flag = true;
+                            break;
+                        } else if ((s.equals("Character") && value.equals("char")) || (value.equals("Character") && s.equals("char"))) {
+                            flag = true;
+                            break;
+                        } else if ((s.equals("double") && value.equals("Double")) || (value.equals("double") && s.equals("Double"))) {
+                            flag = true;
+                            break;
+                        } else if ((s.equals("float") && value.equals("Float")) || (value.equals("float") && s.equals("Float"))) {
+                            flag = true;
+                            break;
+                        } else if ((s.equals("short") && value.equals("Short")) || (value.equals("short") && s.equals("Short"))) {
                             flag = true;
                             break;
                         } else {

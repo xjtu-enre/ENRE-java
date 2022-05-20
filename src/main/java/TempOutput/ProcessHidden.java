@@ -1,18 +1,26 @@
 package TempOutput;
 
+import com.google.gson.stream.JsonReader;
 import com.opencsv.CSVReader;
 import entity.MethodEntity;
+import entity.TypeEntity;
 import entity.VariableEntity;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.json.JSONObject;
+
 import util.Tuple;
 import util.Triple;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class ProcessHidden {
+
+    private ProcessHidden(){}
+
+    private static ProcessHidden processHiddeninstance = new ProcessHidden();
+
     HashMap<String, ArrayList<HiddenEntity>> result = new HashMap<>();
 
     public void setResult(HashMap<String, ArrayList<HiddenEntity>> result) {
@@ -33,12 +41,18 @@ public class ProcessHidden {
         return this.result;
     }
 
+    public static ProcessHidden getProcessHiddeninstance() {
+        return processHiddeninstance;
+    }
+
     static class HiddenEntity {
 
         String qualifiedName = null;
         ArrayList<String> hiddenApi = new ArrayList<>();
         ArrayList<String> parameter = new ArrayList<>();
         String rawType = null;
+        String originalSignature = null;
+        boolean isMatch = false;
 
         public String getQualifiedName() {
             return qualifiedName;
@@ -76,6 +90,22 @@ public class ProcessHidden {
             this.rawType = rawType;
         }
 
+        public void setOriginalSignature(String originalSignature) {
+            this.originalSignature = originalSignature;
+        }
+
+        public String getOriginalSignature() {
+            return originalSignature;
+        }
+
+        public boolean isMatch() {
+            return isMatch;
+        }
+
+        public void setMatch(boolean match) {
+            isMatch = match;
+        }
+
         @Override
         public String toString() {
             return "hiddenEntity{" +
@@ -83,6 +113,7 @@ public class ProcessHidden {
                     ", hiddenApi='" + hiddenApi + '\'' +
                     ", parameter=" + parameter +
                     ", rawType='" + rawType + '\'' +
+                    ", originalSignature='" + originalSignature + '\'' +
                     '}';
         }
     }
@@ -180,8 +211,8 @@ public class ProcessHidden {
             if (methodName.equals("<init>")) {
                 methodName = "Constructor";
             } else if (methodName.equals("<clinit>")) {
-                // pending
-                return null;
+                methodName = "Class_Constructor";
+//                return null;
             }
             parameters = process_parameter(method.split("\\(")[1].split("\\)")[0]);
             returnType = process_type_signature(method.split("\\(")[1].split("\\)")[1]);
@@ -203,7 +234,7 @@ public class ProcessHidden {
                                 this.addEntity(entity.qualifiedName, entity);
                             }
                             entity = new HiddenEntity();
-                            String entityName = "";
+                            entity.setOriginalSignature(e);
                             if (process_class(e.split("->", 2)[0]) == null){
                                 continue;
                             }
@@ -219,7 +250,11 @@ public class ProcessHidden {
                                     String[] temp = classQualifiedName.split("\\.");
                                     methodName = temp[temp.length - 1];
                                 }
-                                entity.setQualifiedName(classQualifiedName+"."+methodName);
+                                String entityQualifiedName = classQualifiedName+"."+methodName;
+                                if (methodName.equals("Class_Constructor")){
+                                    entityQualifiedName = classQualifiedName;
+                                }
+                                entity.setQualifiedName(entityQualifiedName);
                                 entity.setParameter(parameter);
                                 entity.setRawType(returnType);
                             } else {
@@ -255,6 +290,27 @@ public class ProcessHidden {
                     } else if ((s.equals("Integer") && value.equals("int")) || (value.equals("Integer") && s.equals("int"))){
                         flag = true;
                         break;
+                    }  else if ((s.equals("Boolean") && value.equals("boolean")) || (value.equals("Boolean") && s.equals("boolean"))) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("Long") && value.equals("long")) || (value.equals("Long") && s.equals("long"))) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("Byte") && value.equals("byte")) || (value.equals("Byte") && s.equals("byte"))) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("Character") && value.equals("char")) || (value.equals("Character") && s.equals("char"))) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("double") && value.equals("Double")) || (value.equals("double") && s.equals("Double"))) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("float") && value.equals("Float")) || (value.equals("float") && s.equals("Float"))) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("short") && value.equals("Short")) || (value.equals("short") && s.equals("Short"))) {
+                        flag = true;
+                        break;
                     } else {
                         flag = false;
                     }
@@ -266,20 +322,45 @@ public class ProcessHidden {
         }
     }
 
-    public String checkHidden(MethodEntity entity, String parType){
+    public String checkHidden(TypeEntity entity){
         if (this.result.containsKey(entity.getQualifiedName())){
             if (this.result.get(entity.getQualifiedName()).size() == 1){
-                return this.result.get(entity.getQualifiedName()).get(0).getHiddenApi().toString();
+                this.result.get(entity.getQualifiedName()).get(0).setMatch(true);
+                return refactorHidden(this.result.get(entity.getQualifiedName()).get(0).getHiddenApi());
             }
             else {
                 for (HiddenEntity hiddenEntity: this.result.get(entity.getQualifiedName())){
-                    if (entity.getRawType() != null && hiddenEntity.getRawType() != null && entity.getRawType().equals(hiddenEntity.getRawType())){
-//                        if (!hiddenEntity.getParameter().isEmpty() && comparePara(hiddenEntity.getParameter(), parType.split(" "))){
-                            return hiddenEntity.getHiddenApi().toString();
-//                        }
+                    if (hiddenEntity.getOriginalSignature().contains("<clinit>")){
+                        hiddenEntity.setMatch(true);
+                        return refactorHidden(hiddenEntity.getHiddenApi());
                     }
-                    else {
-                        System.out.println(entity.getQualifiedName());
+                }
+            }
+        }
+        return null;
+    }
+
+    public String checkHidden(MethodEntity entity, String parType){
+        if (this.result.containsKey(entity.getQualifiedName())){
+            if (this.result.get(entity.getQualifiedName()).size() == 1){
+                this.result.get(entity.getQualifiedName()).get(0).setMatch(true);
+                return refactorHidden(this.result.get(entity.getQualifiedName()).get(0).getHiddenApi());
+            }
+            else {
+                for (HiddenEntity hiddenEntity: this.result.get(entity.getQualifiedName())){
+                    if (entity.getRawType() != null && hiddenEntity.getRawType() != null){
+                        if (entity.isConstructor()){
+                            if (!hiddenEntity.getParameter().isEmpty() && comparePara(hiddenEntity.getParameter(), parType.split(" "))){
+                                hiddenEntity.setMatch(true);
+                                return refactorHidden(hiddenEntity.getHiddenApi());
+                            }
+                        } else if (entity.getRawType().equals(hiddenEntity.getRawType())){
+                            if (!hiddenEntity.getParameter().isEmpty() && comparePara(hiddenEntity.getParameter(), parType.split(" "))){
+                                hiddenEntity.setMatch(true);
+                                return refactorHidden(hiddenEntity.getHiddenApi());
+                            }
+                        }
+
                     }
                 }
             }
@@ -299,7 +380,8 @@ public class ProcessHidden {
         if (this.result.containsKey(entity.getQualifiedName())){
             for (HiddenEntity hiddenEntity: this.result.get(entity.getQualifiedName())){
                 if (entity.getRawType().equals(hiddenEntity.getRawType())){
-                    return hiddenEntity.getHiddenApi().toString();
+                    hiddenEntity.setMatch(true);
+                    return refactorHidden(hiddenEntity.getHiddenApi());
                 }
             }
         }
@@ -312,7 +394,144 @@ public class ProcessHidden {
         return null;
     }
 
+    public String refactorHidden(ArrayList<String> hiddenApi){
+        String hidden = "";
+        for (String temp: hiddenApi){
+            hidden = hidden.concat(temp+" ");
+        }
+        hidden = hidden.substring(0, hidden.length()-1);
+        return hidden;
+    }
 
+    public String outputResult(){
+        JSONObject obj=new JSONObject();
+        List<JSONObject> subCategories = new ArrayList<>();
+        for (ArrayList<HiddenEntity> hiddenEntities: this.getResult().values()){
+            for (HiddenEntity hidden : hiddenEntities){
+                if (!hidden.isMatch){
+                    JSONObject current = new JSONObject();
+                    current.put("signature", hidden.getOriginalSignature());
+                    current.put("qualifiedName", hidden.getQualifiedName());
+                    current.put("rawType", hidden.getRawType());
+                    current.put("parameter", hidden.getParameter());
+                    current.put("hiddenApi", hidden.getHiddenApi());
+                    subCategories.add(current);
+                }
+            }
+        }
+        obj.accumulate("NotMatch", subCategories);
+        return obj.toString();
+    }
 
+    public void checkMatch(String qualifiedName, String rawType, String parameterType){
+        //check match
+        if (ProcessHidden.getProcessHiddeninstance().getResult().containsKey(qualifiedName)){
+            for (HiddenEntity hiddenEntity: ProcessHidden.getProcessHiddeninstance().getResult().get(qualifiedName)){
+                if (rawType!=null && rawType.equals(hiddenEntity.getRawType())){
+                    if (parameterType!=null){
+                        String hiddenPars = "";
+                        for (String par: hiddenEntity.getParameter()){
+                            hiddenPars = hiddenPars.concat(JsonString.processRawType(par)+" ");
+                        }
+                        if (!hiddenPars.equals("")){
+                            hiddenPars = hiddenPars.substring(0, hiddenPars.length()-1);
+                        }
+                        if (parameterType.equals(hiddenPars)){
+                            hiddenEntity.setMatch(true);
+                        }
+                    } else {
+                        hiddenEntity.setMatch(true);
+                    }
+                }
+            }
+        }
+    }
 
+    public static void main(String[] args) throws IOException {
+        ProcessHidden processHidden = ProcessHidden.getProcessHiddeninstance();
+        processHidden.convertCSV("E:\\Android\\hiddenapi-flags.csv");
+        FileReader in = new FileReader("base-enre-out\\base-out-with-hidden.json");
+        JsonReader reader = new JsonReader(in);
+        reader.beginObject();
+        String rootName = null;
+        while (reader.hasNext()){
+            rootName = reader.nextName();
+            if ("variables".equals(rootName)){
+                System.out.println("Begin reading files...");
+                reader.beginArray();
+                while (reader.hasNext()){
+                    reader.beginObject();
+                    String k = null;
+                    String qualifiedName = null;
+                    String rawType = null;
+                    String parameterType = null;
+                    boolean isMatch = false;
+                    while (reader.hasNext()){
+                        k = reader.nextName();
+                        switch (k) {
+                            case "hidden":
+                                isMatch = true;
+                                reader.skipValue();
+                                break;
+                            case "qualifiedName":
+                                qualifiedName = reader.nextString();
+                                break;
+                            case "rawType":
+                                rawType = reader.nextString();
+                                break;
+                            case "parameter":
+                                reader.beginObject();
+                                while (reader.hasNext()){
+                                    if (reader.nextName().equals("types")){
+                                        parameterType = reader.nextString();
+                                    } else {
+                                        reader.skipValue();
+                                    }
+                                }
+                                reader.endObject();
+                                break;
+                            default:
+                                reader.skipValue();
+                                break;
+                        }
+                    }
+                    reader.endObject();
+                    if (isMatch){
+                        processHidden.checkMatch(qualifiedName, rawType, parameterType);
+                    }
+                }
+            } else {
+                reader.beginObject();
+                while (reader.hasNext()) {
+                    System.out.println(reader.nextName() + ":" + reader.nextString());
+                }
+                reader.endObject();
+            }
+        }
+        //output not match
+        String fileName = "base-enre-out\\hidden-not-match.csv";
+        Writer out = null;
+        FileOutputStream fileOs = null;
+        fileOs = new FileOutputStream(fileName);
+        out = new OutputStreamWriter(fileOs, "GBK");
+        //字符数组是头行
+        CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader("OriginalSignature", "processName", "processRawType", "processParameter").withQuote(null));
+        List<Object> objects = new ArrayList<>();
+        for (ArrayList<HiddenEntity> hiddenEntities : processHidden.getResult().values()) {
+            for (HiddenEntity entity : hiddenEntities){
+                if (!entity.isMatch()){
+                    objects.add(entity.getOriginalSignature());
+                    objects.add(entity.getQualifiedName());
+                    objects.add(entity.getRawType());
+                    objects.add(entity.getParameter());
+                    //打印一行
+                    printer.printRecord(objects);
+                    //打印完后注意将数组clear掉
+                    objects.clear();
+                }
+            }
+
+        }
+        out.flush();
+    }
 }

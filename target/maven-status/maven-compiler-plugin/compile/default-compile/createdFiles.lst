@@ -21,9 +21,11 @@ entity\ExternalEntity.class
 TempOutput\Django.class
 util\PathUtil.class
 visitor\deper\ParametersBf.class
+client\EnreCommand.class
 formator\fxml\XBuildObject.class
 TempOutput\DependsString$IndicesDTO.class
 visitor\deper\ReflectBf.class
+util\Triple.class
 client\TemplateWork.class
 entity\properties\Block.class
 entity\ScopeEntity.class
@@ -76,11 +78,13 @@ entity\MethodEntity.class
 entity\EnumConstantEntity.class
 entity\BaseEntity.class
 entity\EnumEntity.class
+TempOutput\ProcessHidden.class
 entity\properties\Relation.class
 entity\AnnotationEntity.class
 client\IdentifyRelations.class
 formator\MapObject.class
 TempOutput\Verification.class
+TempOutput\ProcessHidden$HiddenEntity.class
 client\Main.class
 formator\fxml\XFiles.class
 util\CompilationUnitPair.class

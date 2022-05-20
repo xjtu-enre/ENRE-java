@@ -45,8 +45,10 @@ public class CreateFileUtil {
 //                //write.write(tool.formatJson(jo.toString())+", ");
 //                write.write(entityData);
 //            }
+
             String result = jsonString;
             write.write(tool.formatJson(result));
+
 //            JSONObject object = JSONObject.fromObject(result);
 //            System.out.println("---------outputFile------------");
 //            try{

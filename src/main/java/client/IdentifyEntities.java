@@ -18,6 +18,7 @@ public class IdentifyEntities {
 
     private String project_path;
     private String project_name;
+    private ArrayList<String> additional_path = new ArrayList<>();
     private String aidl_path = null;
 
     public IdentifyEntities(String project_path, String project_name){
@@ -25,10 +26,27 @@ public class IdentifyEntities {
         this.project_name = project_name;
     }
 
+    public IdentifyEntities(String project_path, String project_name, String[] additional_path){
+        this.project_path = PathUtil.unifyPath(project_path);
+        this.project_name = project_name;
+        for (String path: additional_path){
+            this.additional_path.add(PathUtil.unifyPath(path));
+        }
+    }
+
     public IdentifyEntities(String project_path, String project_name, String aidl_path){
         this.project_path = PathUtil.unifyPath(project_path);
         this.project_name = project_name;
         this.aidl_path = PathUtil.unifyPath(aidl_path);
+    }
+
+    public IdentifyEntities(String project_path, String project_name, String aidl_path, String[] additional_path){
+        this.project_path = PathUtil.unifyPath(project_path);
+        this.project_name = project_name;
+        this.aidl_path = PathUtil.unifyPath(aidl_path);
+        for (String path: additional_path){
+            this.additional_path.add(PathUtil.unifyPath(path));
+        }
     }
 
     public String getProject_path() {
@@ -43,6 +61,10 @@ public class IdentifyEntities {
         return aidl_path;
     }
 
+    public ArrayList<String> getAdditional_path() {
+        return additional_path;
+    }
+
     public void run(){
 
         FileUtil current;
@@ -51,6 +73,20 @@ public class IdentifyEntities {
         } else {
             current = new FileUtil(this.getProject_path());
         }
+
+        ArrayList<String> whole_file_list = current.getFileNameList();
+        if (!this.getAdditional_path().isEmpty()){
+            for (String additionPath: this.getAdditional_path()){
+                FileUtil addition;
+                if(this.getAidl_path() != null){
+                    addition = new FileUtil(additionPath, this.getAidl_path());
+                } else {
+                    addition = new FileUtil(additionPath);
+                }
+                whole_file_list.addAll(addition.getFileNameList());
+            }
+        }
+
         //set the version of java
         ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -69,7 +105,7 @@ public class IdentifyEntities {
         parser.setEnvironment(classpath, sources, new String[]{"UTF-8"}, true);
 
         parser.setUnitName(current.getCurrentProjectName());
-        final ArrayList<CompilationUnitPair> pairs = new ArrayList<CompilationUnitPair>(current.getFileNameList().size());
+        final ArrayList<CompilationUnitPair> pairs = new ArrayList<CompilationUnitPair>(whole_file_list.size());
 
 
         try{
@@ -79,10 +115,10 @@ public class IdentifyEntities {
                     pairs.add(new CompilationUnitPair(source, ast));
                 }
             };
-            parser.createASTs(current.getFileNameList().toArray(new String[0]), null, new String[0], requester, null);
+            parser.createASTs(whole_file_list.toArray(new String[0]), null, new String[0], requester, null);
         }
         catch (NullPointerException e){
-            for(String filePath: current.getFileNameList().toArray(new String[0])){
+            for(String filePath: whole_file_list){
                 parser.setSource(filePath.toCharArray());
                 pairs.add(new CompilationUnitPair(filePath, (CompilationUnit)parser.createAST(null)));
             }
