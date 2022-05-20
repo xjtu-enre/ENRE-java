@@ -50,31 +50,59 @@ If the project is quite larger, such as base columns under Android, please incre
 
 The usage command is:
 
-```java
-java -jar <executable> <lang> <dir> <include-dir> <project-name>
+```text
+java -jar <executable> <lang> <dir> <project-name>
+```
+
+The detailed information of the parameter and option of the command is:
+
+```text
+Usage: enre_java [-h] [-a=<aidl>] [-hd=<hidden>] [-d=<dir>]... <lang> <src>
+                 <projectName>
+      <lang>          The lanauge of project files: []
+      <src>           The directory to be analyzed
+      <projectName>   The analyzed project file name
+  -a, --aidl=<aidl>   If the analyzed project is an Android project which
+                        contains .aidl files, please provide the corresponding .
+                        java files which have the same relative path with the
+                        original file
+  -d, --dir=<dir>     The additional directories to be analyzed
+  -h, --help          display this help and exit
+  -hd, --hidden=<hidden> The path of hiddenapi=flag.csv
 ```
 
 To increase the memory heap, you can add -Xmx before -jar, like: 
 
-```
-java -Xmx8192m -jar <executable> <lang> <dir> <include-dir> <project-name>
+```text
+java -Xmx20G -jar <executable> <lang> <dir> <include-dir> <project-name>
 ```
 
 - <executable> The executable jar package of ENRE-Java.
 - <lang> The language of source code that will be analysed, now it must be java.
 - <dir> The path of the source code that will be analysed.
-- <include-dir> Now it just be null is fine.
 - <project-name> A short alias name of the analysed source code project.
 
 #### Example:
 
-Use enre_java.jar to analyse a demo project "halo_1.4.10" written in Java:
+- Use enre_java.jar to analyse a demo project "halo_1.4.10" written in Java:
 
-```
+```text
 # in windows platform
-$java -jar enre_java.jar java demo-projects\halo_1.4.10 null halo_1.4.10
+$java -jar enre_java.jar java demo-projects\halo_1.4.10 halo_1.4.10
 ```
 
 After analysis, ENRE-Java finally outputs the resolved entities and dependencies in JSON files in current directory.
 
+- Use enre_java.jar to analyse the `/base` directory under AOSP, also providing the corresponding `.aidl` path:
 
+```text
+# in windows platform
+$java -jar enre_java.jar java ...\frameworks\base base -a <aidl-path>
+```
+
+- Use enre_java.jar to analyse the `/base` directory under AOSP, also providing several mirror paths which contain source files and share same project name:
+
+```text
+# in windows platform
+$java -jar enre_java.jar java ...\frameworks\base base -d ...\base
+```

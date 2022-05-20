@@ -54,11 +54,14 @@ E:\JavaExtractor\src\main\java\visitor\deper\ParametersBf.java
 E:\JavaExtractor\src\main\java\entity\ClassEntity.java
 E:\JavaExtractor\src\main\java\entity\InterfaceEntity.java
 E:\JavaExtractor\src\main\java\entity\VariableEntity.java
+E:\JavaExtractor\src\main\java\util\Triple.java
 E:\JavaExtractor\src\main\java\formator\fxml\XDepObject.java
 E:\JavaExtractor\src\main\java\visitor\deper\ReflectBf.java
 E:\JavaExtractor\src\main\java\formator\MapObject.java
+E:\JavaExtractor\src\main\java\client\EnreCommand.java
 E:\JavaExtractor\src\main\java\writer\XmlWriter.java
 E:\JavaExtractor\src\main\java\visitor\RelationVisitor.java
+E:\JavaExtractor\src\main\java\TempOutput\ProcessHidden.java
 E:\JavaExtractor\src\main\java\entity\properties\Block.java
 E:\JavaExtractor\src\main\java\visitor\deper\AnnotationBf.java
 E:\JavaExtractor\src\main\java\TempOutput\DependsString.java
