@@ -1,9 +1,6 @@
 package visitor.deper;
 
-import entity.BaseEntity;
-import entity.ClassEntity;
-import entity.MethodEntity;
-import entity.ScopeEntity;
+import entity.*;
 import entity.properties.CallSite;
 import entity.properties.Location;
 import util.Configure;
@@ -19,6 +16,9 @@ public class CallBf extends DepBackfill{
                 if(!((ScopeEntity) entity).getCall().isEmpty()){
                     for(CallSite className2method : ((ScopeEntity) entity).getCall()){
                         int id = findMethodByType(className2method.getDeclaringTypeQualifiedName(), className2method.getCallMethodName());
+                        if (className2method.getBindVar() == -1 && entity instanceof MethodEntity){
+                            ((MethodEntity) entity).getCall().get(((MethodEntity) entity).getCall().indexOf(className2method)).setBindVar(findBindVar(entity.getId(), className2method.getBindVarName()));
+                        }
                         if(id != -1){
                             saveRelation(entity.getId(), id, Configure.RELATION_CALL, Configure.RELATION_CALLED_BY, className2method.getLocation(), className2method.getBindVar());
                         }
@@ -68,6 +68,16 @@ public class CallBf extends DepBackfill{
                 if(singleCollect.getEntityById(id).getName().equals(methodName)){
                     return id;
                 }
+            }
+        }
+        return -1;
+    }
+
+    public int findBindVar(int currentMethodId, String bindVarName){
+        for(int id : singleCollect.getEntityById(singleCollect.getEntityById(currentMethodId).getParentId()).getChildrenIds()){
+            if(singleCollect.getEntityById(id) instanceof VariableEntity
+                    && bindVarName.equals(singleCollect.getEntityById(id).getName())){
+                return id;
             }
         }
         return -1;

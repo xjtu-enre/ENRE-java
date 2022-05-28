@@ -33,6 +33,10 @@ public class ScopeEntity extends BaseEntity{
         this.call.add(new CallSite(className, methodName, bindVar, loc));
     }
 
+    public void addCall(String className, String methodName, Location loc, String bindVarName){
+        this.call.add(new CallSite(className, methodName, bindVarName, loc));
+    }
+
     public  ArrayList<CallSite> getCall() {
         return this.call;
     }

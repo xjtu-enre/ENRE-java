@@ -282,6 +282,8 @@ public class ProcessHidden {
         }
         else if (para1.size() == para2.length){
             boolean flag = false;
+            System.out.println(para1);
+            System.out.println(Arrays.toString(para2));
             for (String s : para2) {
                 for (String value : para1) {
                     if (s.equals(value)) {

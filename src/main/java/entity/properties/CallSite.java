@@ -5,7 +5,8 @@ public class CallSite {
     private String declaringTypeQualifiedName;
     private String callMethodName;
     //the var implement call
-    private int bindVar;
+    private int bindVar = -1;
+    private String bindVarName = null;
     private Location location;
 
     public CallSite(String declaringTypeQualifiedName, String callMethodName, Location location) {
@@ -18,6 +19,13 @@ public class CallSite {
         this.declaringTypeQualifiedName = declaringTypeQualifiedName;
         this.callMethodName = callMethodName;
         this.bindVar = bindVar;
+        this.location = location;
+    }
+
+    public CallSite(String declaringTypeQualifiedName, String callMethodName, String bindVarName, Location location) {
+        this.declaringTypeQualifiedName = declaringTypeQualifiedName;
+        this.callMethodName = callMethodName;
+        this.bindVarName = bindVarName;
         this.location = location;
     }
 
@@ -53,4 +61,11 @@ public class CallSite {
         this.location = location;
     }
 
+    public String getBindVarName() {
+        return bindVarName;
+    }
+
+    public void setBindVarName(String bindVarName) {
+        this.bindVarName = bindVarName;
+    }
 }

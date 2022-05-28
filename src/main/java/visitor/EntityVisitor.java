@@ -597,14 +597,19 @@ public class EntityVisitor extends CKVisitor {
             currentExpression = ((QualifiedName) currentExpression).getQualifier();
         }
         int bindVar;
+        String bindVarName;
         if (currentExpression instanceof SimpleName){
+            bindVarName = currentExpression.toString();
             bindVar = processVarInMethod(currentExpression.toString(), scopeStack.peek());
         }else if (currentExpression instanceof FieldAccess){
+            bindVarName = ((FieldAccess) currentExpression).getName().getIdentifier();
             bindVar = processVarInMethod(((FieldAccess) currentExpression).getName().getIdentifier(), scopeStack.peek());
         } else if (currentExpression instanceof ArrayAccess){
+            bindVarName = ((ArrayAccess) currentExpression).getArray().toString();
             bindVar = processVarInMethod(((ArrayAccess) currentExpression).getArray().toString(), scopeStack.peek());
         } else {
 //            System.out.println(currentExpression);
+            bindVarName = currentExpression.toString();
             bindVar = -1;
         }
 
@@ -613,7 +618,12 @@ public class EntityVisitor extends CKVisitor {
             String declaringTypeQualifiedName = declaringClass.getQualifiedName();
 
             if(singleCollect.getEntityById(scopeStack.peek()) instanceof ScopeEntity){
-                ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, loc, bindVar);
+                if (bindVar != -1){
+                    ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, loc, bindVar);
+                } else {
+                    ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, loc, bindVarName);
+                }
+
             }
 
             //check reflection
@@ -1013,9 +1023,6 @@ public class EntityVisitor extends CKVisitor {
         String role = "Local";
         //search in method block, local var
         if (singleCollect.getEntityById(entityId) instanceof MethodEntity) {
-            if ("com.android.launcher3.accessibility.LauncherAccessibilityDelegate.performAction.AnonymousClass.run".equals(singleCollect.getEntityById(entityId).getQualifiedName())){
-                varId = ((MethodEntity) singleCollect.getEntityById(entityId)).searchLocalVar(name, blockStack.peek());
-            }
             varId = ((MethodEntity) singleCollect.getEntityById(entityId)).searchLocalVar(name, blockStack.peek());
         }
         //parameter
