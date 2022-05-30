@@ -608,12 +608,18 @@ public class ProcessEntity {
      * @param blockName
      * @return
      */
-    public int processLocalBlock(int functionIndex, int parentBlockId, int depth, String blockName)
-    {
-        MethodEntity functionEntity = (MethodEntity) singleCollect.getEntityById(functionIndex);
-        int blockId = functionEntity.getBlocks().size();
-        Block localBlock = new Block(blockId, blockName, parentBlockId, depth);
-        ((MethodEntity) singleCollect.getEntityById(functionIndex)).addBlock(localBlock);
+    public int processLocalBlock(int functionIndex, int parentBlockId, int depth, String blockName) {
+        int blockId;
+        if (singleCollect.isMethod(functionIndex)){
+            MethodEntity functionEntity = (MethodEntity) singleCollect.getEntityById(functionIndex);
+            blockId = functionEntity.getBlocks().size();
+            Block localBlock = new Block(blockId, blockName, parentBlockId, depth);
+            ((MethodEntity) singleCollect.getEntityById(functionIndex)).addBlock(localBlock);
+        } else {
+            // static block's id
+            blockId = -1;
+        }
+
         return blockId;
     }
 

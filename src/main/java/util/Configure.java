@@ -120,6 +120,7 @@ public class Configure {
 
     //kinds of local block, which are inside function/method body.
     public static final String LOCAL_BLOCK_METHOD = "MethodBlock";
+    public static final String LOCAL_BLOCK_STATIC = "StaticBlock";
     public static final String LOCAL_BLOCK_UNNAMED_BLOCK = "UnknownBlock";
     public static final String LOCAL_BLOCK_FOR = "ForBlock";
     public static final String LOCAL_BLOCK_ENHANCED_FOR = "EnhancedForBlock";

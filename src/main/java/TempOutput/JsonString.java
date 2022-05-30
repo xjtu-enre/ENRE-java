@@ -74,18 +74,16 @@ public class JsonString {
         }
         obj.put("relationNum", subRelations);
 
-//        JSONObject subCKIndices = new JSONObject();
-//        for (String index : singleCollect.getCkIndices().keySet()){
-//            subCKIndices.put(index, singleCollect.getCk(index));
-//        }
-//        obj.put("CKIndices", subCKIndices);
+        JSONObject subCKIndices = new JSONObject();
+        for (String index : singleCollect.getCkIndices().keySet()){
+            subCKIndices.put(index, singleCollect.getCk(index));
+        }
+        obj.put("CKIndices", subCKIndices);
 
-        List<JSONObject> subObjVariable=new ArrayList<JSONObject>();//创建对象数组里的子对象
-//        List<String> subObjVariable=new ArrayList<String>();
+        List<JSONObject> subObjVariable=new ArrayList<JSONObject>();
 
         while(iterator.hasNext()) {
             BaseEntity entity = iterator.next();
-//            System.out.println(entity.getQualifiedName());
             JSONObject entityObj = new JSONObject();
             entityObj.put("id", entity.getId());
             entityObj.put("category", singleCollect.getEntityType(entity.getId()));
@@ -132,18 +130,12 @@ public class JsonString {
             if(entity instanceof VariableEntity){
                 entityObj.put("global", ((VariableEntity) entity).getGlobal());
                 if (!processHidden.getResult().isEmpty() && ((VariableEntity) entity).getGlobal() && processHidden.checkHidden((VariableEntity) entity)!= null){
-//                    String hidden = processHidden.checkHidden((VariableEntity) entity);
-//                    entityObj.put("hidden", hidden.split("-")[0]);
-//                    entityObj.put("hiddenSignature", hidden.split("-")[1]);
                     entityObj.put("hidden", processHidden.checkHidden((VariableEntity) entity));
                 }
             }
             //inner Type
             if(entity instanceof TypeEntity){
                 if (!processHidden.getResult().isEmpty() && processHidden.checkHidden((TypeEntity)entity) != null){
-//                    String hidden = processHidden.checkHidden((TypeEntity) entity);
-//                    entityObj.put("hidden", hidden.split("-")[0]);
-//                    entityObj.put("hiddenSignature", hidden.split("-")[1]);
                     entityObj.put("hidden", processHidden.checkHidden((TypeEntity)entity));
                 }
                 if (!((TypeEntity) entity).getInnerType().isEmpty()){
@@ -176,14 +168,10 @@ public class JsonString {
                 parObj.put("types", parType);
                 entityObj.accumulate("parameter", parObj);
                 if (!processHidden.getResult().isEmpty() && processHidden.checkHidden((MethodEntity)entity, parType)!= null){
-//                    String hidden = processHidden.checkHidden((MethodEntity) entity, parType);
-//                    entityObj.put("hidden", hidden.split("-")[0]);
-//                    entityObj.put("hiddenSignature", hidden.split("-")[1]);
                     entityObj.put("hidden", processHidden.checkHidden((MethodEntity)entity, parType));
                 }
             }
 
-//            subObjVariable.add(entity.getQualifiedName());
             subObjVariable.add(entityObj);
         }
 
@@ -243,6 +231,9 @@ public class JsonString {
 
             }
         }
+        /**
+         * Output not match hidden
+         */
         processHidden.outputResult();
         return obj.toString();
     }
@@ -283,7 +274,7 @@ public class JsonString {
             }
             if (rawType.contains(",")){
                 String[] temp = rawType.split(",");
-                rawType = processRawType(temp[0]).concat(" "+processRawType(temp[1]));
+                rawType = processRawType(temp[0]).concat("-"+processRawType(temp[1]));
             }
             if (rawType.contains("java")){
                 String[] temp = rawType.split("\\.");

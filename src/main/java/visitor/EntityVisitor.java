@@ -370,6 +370,24 @@ public class EntityVisitor extends CKVisitor {
 
     }
 
+    @Override
+    public boolean visit(Block node) {
+        if (blockStack.isEmpty()){
+            int localBlockId = createABlock(Configure.LOCAL_BLOCK_STATIC);
+            blockStack.push(localBlockId);
+        }
+        return super.visit(node);
+    }
+
+    @Override
+    public void endVisit(Block node) {
+        //pop block stack
+        if (!blockStack.isEmpty() && blockStack.peek() == -1){
+            blockStack.pop();
+        }
+        super.endVisit(node);
+    }
+
     /**
      * Visit a method variable node
      * @param node
@@ -543,7 +561,12 @@ public class EntityVisitor extends CKVisitor {
         }
         //current block is method
         if(blockStack.size() == 1){
-            ((MethodEntity) singleCollect.getEntityById(methodId)).addParameter(parId);
+            if (blockStack.peek() == -1){
+                //methodId actually is Class, enhanced for in static block
+                singleCollect.getEntityById(methodId).addChildId(methodId);
+            } else {
+                ((MethodEntity) singleCollect.getEntityById(methodId)).addParameter(parId);
+            }
         }
 
         return super.visit(node);
@@ -597,7 +620,7 @@ public class EntityVisitor extends CKVisitor {
             currentExpression = ((QualifiedName) currentExpression).getQualifier();
         }
         int bindVar;
-        String bindVarName;
+        String bindVarName = "";
         if (currentExpression instanceof SimpleName){
             bindVarName = currentExpression.toString();
             bindVar = processVarInMethod(currentExpression.toString(), scopeStack.peek());
@@ -609,7 +632,9 @@ public class EntityVisitor extends CKVisitor {
             bindVar = processVarInMethod(((ArrayAccess) currentExpression).getArray().toString(), scopeStack.peek());
         } else {
 //            System.out.println(currentExpression);
-            bindVarName = currentExpression.toString();
+            if (currentExpression != null){
+                bindVarName = currentExpression.toString();
+            }
             bindVar = -1;
         }
 

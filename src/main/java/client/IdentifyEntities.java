@@ -137,10 +137,12 @@ public class IdentifyEntities {
                 pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
             }
             catch (EmptyStackException e){
+                e.printStackTrace();
                 System.out.println("Empty Stack: "+ pair.source);
             }
             catch (NullPointerException e){
-                System.out.println("Class Cast: "+ pair.source);
+                e.printStackTrace();
+                System.out.println("Null Pointer: "+ pair.source);
             }
         }
 

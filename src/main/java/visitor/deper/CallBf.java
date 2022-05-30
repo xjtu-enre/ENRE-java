@@ -16,7 +16,7 @@ public class CallBf extends DepBackfill{
                 if(!((ScopeEntity) entity).getCall().isEmpty()){
                     for(CallSite className2method : ((ScopeEntity) entity).getCall()){
                         int id = findMethodByType(className2method.getDeclaringTypeQualifiedName(), className2method.getCallMethodName());
-                        if (className2method.getBindVar() == -1 && entity instanceof MethodEntity){
+                        if (className2method.getBindVar() == -1 && !className2method.getBindVarName().equals("") && entity instanceof MethodEntity){
                             ((MethodEntity) entity).getCall().get(((MethodEntity) entity).getCall().indexOf(className2method)).setBindVar(findBindVar(entity.getId(), className2method.getBindVarName()));
                         }
                         if(id != -1){
