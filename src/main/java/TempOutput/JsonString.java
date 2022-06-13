@@ -7,6 +7,7 @@ import entity.properties.Relation;
 import org.json.JSONObject;
 
 import util.SingleCollect;
+import util.Tuple;
 import visitor.relationInf.RelationInf;
 
 public class JsonString {
@@ -39,7 +40,7 @@ public class JsonString {
         }
     }
 
-    public static String JSONWriteRelation(Map<Integer, Map<Integer, Relation>> relationMap, String hiddenPath) throws Exception {
+    public static String JSONWriteRelation(Map<Integer, ArrayList<Tuple<Integer, Relation>>> relationMap, String hiddenPath) throws Exception {
 
         JSONObject obj=new JSONObject();//创建JSONObject对象
 
@@ -186,9 +187,11 @@ public class JsonString {
 
 
         for(int fromEntity:relationMap.keySet()) {
-            for(int toEntity:relationMap.get(fromEntity).keySet()) {
+            for(Tuple<Integer,Relation> toEntityObj:relationMap.get(fromEntity)) {
+                    int toEntity=toEntityObj.getL();
+
 //                for(Relation type : relationMap.get(fromEntity).get(toEntity)) {
-                    Relation type = relationMap.get(fromEntity).get(toEntity);
+                    Relation type = toEntityObj.getR();
                     JSONObject subObj=new JSONObject();//创建对象数组里的子对象
 
 //                    JSONObject srcObj = new JSONObject();
