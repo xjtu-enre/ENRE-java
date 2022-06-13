@@ -476,7 +476,7 @@ public class ProcessEntity {
         //methodEntity.setCodeSnippet(node.toString());
 
         if(node.isConstructor()){
-            methodEntity.setConstructor(true);
+            methodEntity.getMethodProperties().setConstructor(true);
             methodEntity.setRawType(methodQualifiedName);
         }else{
             if(node.getReturnType2() != null){

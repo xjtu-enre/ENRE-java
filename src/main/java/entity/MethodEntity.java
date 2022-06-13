@@ -2,6 +2,7 @@ package entity;
 
 import entity.properties.Block;
 import entity.properties.Location;
+import entity.properties.MethodProperties;
 import util.Tuple;
 
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ public class MethodEntity extends ScopeEntity{
     protected String returnType = null;
     protected String returnExpression = null;
     protected boolean isConstructor = false;
+
+    protected MethodProperties methodProperties = new MethodProperties();
 
     //record the id of blocks in method
     protected ArrayList<Block> blocks = new ArrayList<>();
@@ -97,6 +100,10 @@ public class MethodEntity extends ScopeEntity{
     public boolean isConstructor() {
         return isConstructor;
     }
+    public MethodProperties getMethodProperties(){
+        return this.methodProperties;
+    }
+
 
     public void addBlock (Block block){
         this.blocks.add(block);
@@ -152,7 +159,7 @@ public class MethodEntity extends ScopeEntity{
                 "parameters=" + parameters +
                 ", returnType='" + returnType + '\'' +
                 ", returnExpression='" + returnExpression + '\'' +
-                ", isConstructor=" + isConstructor +
+//                ", isConstructor=" + isConstructor +
                 ", location=" + location +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", simpleName='" + name + '\'' +

@@ -234,7 +234,7 @@ public class JsonString {
         /**
          * Output not match hidden
          */
-        processHidden.outputResult();
+//        processHidden.outputResult();
         return obj.toString();
     }
 
