@@ -6,6 +6,7 @@ import entity.PackageEntity;
 import entity.properties.Relation;
 import util.Configure;
 import util.SingleCollect;
+import util.Tuple;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -277,7 +278,7 @@ public class DependsString {
         dependsString.nodeNum = dependsString.variables.size();
 
         JsonMap jsonMap = new JsonMap();
-        Map<Integer, Map<Integer, Relation>> relationMap = jsonMap.getFinalRes();
+        Map<Integer, ArrayList<Tuple<Integer, Relation>>> relationMap = jsonMap.getFinalRes();
         for(int fromEntity:relationMap.keySet()) {
             if (singleCollect.getEntityById(fromEntity) instanceof PackageEntity){
                 continue;
@@ -289,7 +290,8 @@ public class DependsString {
             catch (IndexOutOfBoundsException e){
                 continue;
             }
-            for (int toEntity : relationMap.get(fromEntity).keySet()) {
+            for (Tuple<Integer,Relation> toEntityObj : relationMap.get(fromEntity)) {
+                int toEntity=toEntityObj.getL();
                 if (singleCollect.getEntityById(toEntity) instanceof PackageEntity){
                     continue;
                 }
@@ -314,7 +316,7 @@ public class DependsString {
 
                 if (currentCell != null){
 //                    for (String type : relationMap.get(fromEntity).get(toEntity)) {
-                    Relation type = relationMap.get(fromEntity).get(toEntity);
+                    Relation type = toEntityObj.getR();
                         DetailDTO detail = new DetailDTO(fromEntity, toEntity, type.getKind(), 0, 0);
                         currentCell.addValue(type.getKind());
                         currentCell.details.add(detail);
