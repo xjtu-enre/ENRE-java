@@ -1,6 +1,5 @@
 package visitor;
 
-import com.sun.xml.bind.api.RawAccessor;
 import entity.*;
 import entity.properties.Location;
 import entity.properties.ReflectSite;
@@ -20,6 +19,8 @@ public class EntityVisitor extends CKVisitor {
     private String fileFullPath = null;
     //current complication unit
     private CompilationUnit cu;
+    //current bin num, which means current project has multiple bins input
+    private int currentBin;
 
     private final ProcessEntity processEntity = new ProcessEntity();
     SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
@@ -32,9 +33,10 @@ public class EntityVisitor extends CKVisitor {
     private final Stack<Integer> blockStack = new Stack<Integer>();
 
 
-    public EntityVisitor (String fileFullPath, CompilationUnit compilationUnit){
+    public EntityVisitor (String fileFullPath, CompilationUnit compilationUnit, int currentBin){
         this.fileFullPath = fileFullPath;
         this.cu = compilationUnit;
+        this.currentBin = currentBin;
     }
 
     /**
@@ -48,7 +50,7 @@ public class EntityVisitor extends CKVisitor {
     @Override
     public boolean visit(ModuleDeclaration node){
         if(scopeStack.isEmpty()){
-            int fileId = processEntity.processFile(fileFullPath,-1);
+            int fileId = processEntity.processFile(fileFullPath,-1, currentBin);
             scopeStack.push(fileId);
         }
 
@@ -143,7 +145,7 @@ public class EntityVisitor extends CKVisitor {
         }else {
             parentId = fileId;
         }
-        int  typeId = processEntity.processType(node, parentId, this.cu);
+        int  typeId = processEntity.processType(node, parentId, this.cu, currentBin);
 
         if(singleCollect.getEntityById(parentId) instanceof TypeEntity){
             ((TypeEntity) singleCollect.getEntityById(parentId)).addInnerType(typeId);
@@ -179,7 +181,7 @@ public class EntityVisitor extends CKVisitor {
 
     @Override
     public boolean visit(AnonymousClassDeclaration node) {
-        int classId = processEntity.processAnonymous(node, scopeStack.peek(), cu, currentInstanceRawType);
+        int classId = processEntity.processAnonymous(node, scopeStack.peek(), cu, currentInstanceRawType, currentBin);
         scopeStack.push(classId);
         entityStack.push(classId);
         return super.visit(node);
@@ -205,7 +207,7 @@ public class EntityVisitor extends CKVisitor {
 
         int fileId = createAFile();
 
-        int enumId = processEntity.processEnum(node, scopeStack.peek(), cu);
+        int enumId = processEntity.processEnum(node, scopeStack.peek(), cu, currentBin);
 
         if(fileId == -1 && singleCollect.getEntityById(scopeStack.peek()) instanceof TypeEntity){
             ((TypeEntity) singleCollect.getEntityById(scopeStack.peek())).addInnerType(enumId);
@@ -225,7 +227,7 @@ public class EntityVisitor extends CKVisitor {
     @Override
     public boolean visit(EnumConstantDeclaration node) {
 
-        processEntity.processEnumConstant(node, scopeStack.peek(), cu);
+        processEntity.processEnumConstant(node, scopeStack.peek(), cu, currentBin);
         return super.visit(node);
     }
 
@@ -236,7 +238,7 @@ public class EntityVisitor extends CKVisitor {
             createAFile();
         }
 
-        int annotationId = processEntity.processAnnotation(node, scopeStack.peek(), cu);
+        int annotationId = processEntity.processAnnotation(node, scopeStack.peek(), cu, currentBin);
         scopeStack.push(annotationId);
         entityStack.push(annotationId);
 
@@ -322,7 +324,7 @@ public class EntityVisitor extends CKVisitor {
 
     @Override
     public boolean visit(AnnotationTypeMemberDeclaration node) {
-        int annotationMember = processEntity.processAnnotationMember(node, scopeStack.peek(), cu);
+        int annotationMember = processEntity.processAnnotationMember(node, scopeStack.peek(), cu, currentBin);
         scopeStack.push(annotationMember);
         entityStack.push(annotationMember);
         return super.visit(node);
@@ -348,7 +350,7 @@ public class EntityVisitor extends CKVisitor {
         if (scopeStack.isEmpty()){
             createAFile();
         }
-        int methodId = processEntity.processMethod(node, scopeStack.peek(), cu);
+        int methodId = processEntity.processMethod(node, scopeStack.peek(), cu, currentBin);
         scopeStack.push(methodId);
         entityStack.push(methodId);
 
@@ -419,7 +421,7 @@ public class EntityVisitor extends CKVisitor {
             for(Object o : node.modifiers()){
                 modifiers.add(o.toString());
             }
-            methodVarId.addAll(processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(),rawType, blockStack.peek(), -1, false, modifiers, cu));
+            methodVarId.addAll(processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(),rawType, blockStack.peek(), -1, false, modifiers, cu, currentBin));
         }
 
         //supplement method children's id
@@ -479,7 +481,7 @@ public class EntityVisitor extends CKVisitor {
         /**
          * change block id from type id to -1
          */
-        classVarId.addAll(processEntity.processVarDeclFragment(node.fragments(),typeId,rawType, -1,staticFlag, true, modifiers, cu));
+        classVarId.addAll(processEntity.processVarDeclFragment(node.fragments(),typeId,rawType, -1,staticFlag, true, modifiers, cu, currentBin));
 
         //supplement method children's id
         singleCollect.getEntityById(typeId).addChildrenIds(classVarId);
@@ -516,7 +518,8 @@ public class EntityVisitor extends CKVisitor {
             rawType = node.getType().toString();
 //        }
 
-        ArrayList<Integer> forVar = processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(), rawType, blockStack.peek(), -1, false, modifiers, cu);
+        ArrayList<Integer> forVar = processEntity.processVarDeclFragment(node.fragments(), scopeStack.peek(), rawType,
+                blockStack.peek(), -1, false, modifiers, cu, currentBin);
 
         //supplement method children's id
         singleCollect.getEntityById(scopeStack.peek()).addChildrenIds(forVar);
@@ -550,7 +553,7 @@ public class EntityVisitor extends CKVisitor {
             parType = node.getType().toString();
         }
         int methodId = scopeStack.peek();
-        parId = processEntity.processSingleVar(node.getName().getFullyQualifiedName(), methodId, parType);
+        parId = processEntity.processSingleVar(node.getName().getFullyQualifiedName(), methodId, parType, currentBin);
         entityStack.push(parId);
         singleCollect.getEntityById(parId).setLocation(ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength()));
         /**
@@ -991,12 +994,12 @@ public class EntityVisitor extends CKVisitor {
         int fileId;
         if(scopeStack.isEmpty()){
             //if current file do not have package declaration (in unknown pkg)
-            fileId = processEntity.processFile(fileFullPath,-1);
+            fileId = processEntity.processFile(fileFullPath,-1, currentBin);
             //add file id into the top of stack
             scopeStack.push(fileId);
         }else if(singleCollect.isPackage(scopeStack.peek())){
             //if current file is not created and has pkg declaration
-            fileId = processEntity.processFile(fileFullPath, scopeStack.peek());
+            fileId = processEntity.processFile(fileFullPath, scopeStack.peek(), currentBin);
             //add file id into the top of stack
             scopeStack.push(fileId);
         }else if(singleCollect.isFile(scopeStack.peek())){

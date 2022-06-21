@@ -172,6 +172,10 @@ public class JsonString {
                     entityObj.put("hidden", processHidden.checkHidden((MethodEntity)entity, parType));
                 }
             }
+            //bin num
+            if (entity.getBinNum() > 1){
+                entityObj.put("additionalBinNum", entity.getBinNum());
+            }
 
             subObjVariable.add(entityObj);
         }

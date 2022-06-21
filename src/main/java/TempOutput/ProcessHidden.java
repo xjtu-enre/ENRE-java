@@ -2,6 +2,7 @@ package TempOutput;
 
 import com.google.gson.stream.JsonReader;
 import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import entity.MethodEntity;
 import entity.TypeEntity;
 import entity.VariableEntity;
@@ -277,6 +278,8 @@ public class ProcessHidden {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (CsvValidationException e) {
+            throw new RuntimeException(e);
         }
     }
 

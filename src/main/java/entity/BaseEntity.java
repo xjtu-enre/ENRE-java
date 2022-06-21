@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import entity.properties.Location;
 import entity.properties.ReflectSite;
 import entity.properties.Relation;
-import util.Tuple;
 
 public class BaseEntity {
 
@@ -40,6 +39,8 @@ public class BaseEntity {
     protected boolean hidden = false;
 
     protected int maxTargetSdk = 0;
+
+    protected int binNum = -1;
 
     public String getQualifiedName() {
         return qualifiedName;
@@ -156,6 +157,14 @@ public class BaseEntity {
 //    public void setMaxTargetSdk(int maxTargetSdk) {
 //        this.maxTargetSdk = maxTargetSdk;
 //    }
+
+    public int getBinNum(){
+        return this.binNum;
+    }
+
+    public void setBinNum(int binNum){
+        this.binNum = binNum;
+    }
 
     public void addModifier (String modifier){
         this.modifiers.add(modifier);

@@ -30,7 +30,6 @@ client\TemplateWork.class
 entity\properties\Block.class
 entity\ScopeEntity.class
 visitor\deper\ImportBf.class
-yyInterface\Main.class
 formator\fxml\XCells.class
 visitor\deper\DepBackfill.class
 entity\PackageEntity.class
@@ -42,7 +41,6 @@ writer\DotUtil.class
 entity\properties\MethodProperties.class
 client\IdentifyEntities$1.class
 writer\DotWriter.class
-yyInterface\Impl.class
 entity\InterfaceEntity.class
 formator\Formator.class
 util\OsUtil.class

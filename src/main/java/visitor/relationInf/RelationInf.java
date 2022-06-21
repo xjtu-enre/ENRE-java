@@ -1,6 +1,5 @@
 package visitor.relationInf;
 
-import com.sun.xml.bind.v2.schemagen.xmlschema.Annotation;
 import entity.properties.Relation;
 import util.Configure;
 import util.Tuple;

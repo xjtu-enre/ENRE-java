@@ -1,0 +1,86 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.example:dependency_analysis_java:jar:1.0-SNAPSHOT
+[WARNING] 'dependencies.dependency.version' for org.jetbrains:annotations:jar is either LATEST or RELEASE (both of them are being deprecated) @ line 145, column 22
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 13, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-deploy-plugin/2.7/maven-deploy-plugin-2.7.pom
+Progress (1): 2.3/5.6 kBProgress (1): 5.1/5.6 kBProgress (1): 5.6 kB                        Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-deploy-plugin/2.7/maven-deploy-plugin-2.7.pom (5.6 kB at 8.4 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-deploy-plugin/2.7/maven-deploy-plugin-2.7.jar
+Progress (1): 2.3/27 kBProgress (1): 5.1/27 kBProgress (1): 7.9/27 kBProgress (1): 11/27 kB Progress (1): 14/27 kBProgress (1): 16/27 kBProgress (1): 19/27 kBProgress (1): 22/27 kBProgress (1): 25/27 kBProgress (1): 27 kB                      Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-deploy-plugin/2.7/maven-deploy-plugin-2.7.jar (27 kB at 28 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-site-plugin/3.3/maven-site-plugin-3.3.pom
+Progress (1): 2.3/21 kBProgress (1): 5.1/21 kBProgress (1): 7.9/21 kBProgress (1): 11/21 kB Progress (1): 14/21 kBProgress (1): 16/21 kBProgress (1): 19/21 kBProgress (1): 21 kB                      Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-site-plugin/3.3/maven-site-plugin-3.3.pom (21 kB at 25 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-site-plugin/3.3/maven-site-plugin-3.3.jar
+Progress (1): 2.3/124 kBProgress (1): 5.1/124 kBProgress (1): 7.9/124 kBProgress (1): 11/124 kB Progress (1): 14/124 kBProgress (1): 16/124 kBProgress (1): 19/124 kBProgress (1): 22/124 kBProgress (1): 25/124 kBProgress (1): 28/124 kBProgress (1): 30/124 kBProgress (1): 33/124 kBProgress (1): 36/124 kBProgress (1): 39/124 kBProgress (1): 42/124 kBProgress (1): 44/124 kBProgress (1): 47/124 kBProgress (1): 50/124 kBProgress (1): 53/124 kBProgress (1): 56/124 kBProgress (1): 58/124 kBProgress (1): 61/124 kBProgress (1): 64/124 kBProgress (1): 67/124 kBProgress (1): 70/124 kBProgress (1): 72/124 kBProgress (1): 75/124 kBProgress (1): 78/124 kBProgress (1): 81/124 kBProgress (1): 84/124 kBProgress (1): 86/124 kBProgress (1): 89/124 kBProgress (1): 92/124 kBProgress (1): 95/124 kBProgress (1): 98/124 kBProgress (1): 100/124 kBProgress (1): 103/124 kBProgress (1): 106/124 kBProgress (1): 109/124 kBProgress (1): 112/124 kBProgress (1): 114/124 kBProgress (1): 117/124 kBProgress (1): 120/124 kBProgress (1): 123/124 kBProgress (1): 124 kB                        Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-site-plugin/3.3/maven-site-plugin-3.3.jar (124 kB at 75 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-antrun-plugin/1.3/maven-antrun-plugin-1.3.pom
+Progress (1): 2.3/4.7 kBProgress (1): 4.7 kB                        Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-antrun-plugin/1.3/maven-antrun-plugin-1.3.pom (4.7 kB at 4.3 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-plugins/12/maven-plugins-12.pom
+Progress (1): 2.3/12 kBProgress (1): 5.1/12 kBProgress (1): 7.9/12 kBProgress (1): 11/12 kB Progress (1): 12 kB                      Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-plugins/12/maven-plugins-12.pom (12 kB at 29 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/maven-parent/9/maven-parent-9.pom
+Progress (1): 2.3/33 kBProgress (1): 5.1/33 kBProgress (1): 7.9/33 kBProgress (1): 11/33 kB Progress (1): 14/33 kBProgress (1): 16/33 kBProgress (1): 19/33 kBProgress (1): 22/33 kBProgress (1): 25/33 kBProgress (1): 28/33 kBProgress (1): 30/33 kBProgress (1): 33 kB                      Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/maven-parent/9/maven-parent-9.pom (33 kB at 114 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-antrun-plugin/1.3/maven-antrun-plugin-1.3.jar
+Progress (1): 2.3/24 kBProgress (1): 5.1/24 kBProgress (1): 7.9/24 kBProgress (1): 11/24 kB Progress (1): 14/24 kBProgress (1): 16/24 kBProgress (1): 19/24 kBProgress (1): 22/24 kBProgress (1): 24 kB                      Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-antrun-plugin/1.3/maven-antrun-plugin-1.3.jar (24 kB at 97 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-dependency-plugin/2.8/maven-dependency-plugin-2.8.pom
+Progress (1): 2.3/11 kBProgress (1): 5.1/11 kBProgress (1): 7.9/11 kBProgress (1): 11/11 kB Progress (1): 11 kB                      Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-dependency-plugin/2.8/maven-dependency-plugin-2.8.pom (11 kB at 55 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-dependency-plugin/2.8/maven-dependency-plugin-2.8.jar
+Progress (1): 2.3/153 kBProgress (1): 5.1/153 kBProgress (1): 7.9/153 kBProgress (1): 11/153 kB Progress (1): 14/153 kBProgress (1): 16/153 kBProgress (1): 19/153 kBProgress (1): 22/153 kBProgress (1): 25/153 kBProgress (1): 28/153 kBProgress (1): 30/153 kBProgress (1): 33/153 kBProgress (1): 36/153 kBProgress (1): 39/153 kBProgress (1): 42/153 kBProgress (1): 44/153 kBProgress (1): 47/153 kBProgress (1): 50/153 kBProgress (1): 53/153 kBProgress (1): 56/153 kBProgress (1): 58/153 kBProgress (1): 61/153 kBProgress (1): 64/153 kBProgress (1): 67/153 kBProgress (1): 70/153 kBProgress (1): 72/153 kBProgress (1): 75/153 kBProgress (1): 78/153 kBProgress (1): 81/153 kBProgress (1): 84/153 kBProgress (1): 86/153 kBProgress (1): 89/153 kBProgress (1): 92/153 kBProgress (1): 95/153 kBProgress (1): 98/153 kBProgress (1): 100/153 kBProgress (1): 103/153 kBProgress (1): 106/153 kBProgress (1): 109/153 kBProgress (1): 112/153 kBProgress (1): 114/153 kBProgress (1): 117/153 kBProgress (1): 120/153 kBProgress (1): 123/153 kBProgress (1): 126/153 kBProgress (1): 128/153 kBProgress (1): 131/153 kBProgress (1): 134/153 kBProgress (1): 137/153 kBProgress (1): 140/153 kBProgress (1): 142/153 kBProgress (1): 145/153 kBProgress (1): 148/153 kBProgress (1): 151/153 kBProgress (1): 153 kB                        Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/apache/maven/plugins/maven-dependency-plugin/2.8/maven-dependency-plugin-2.8.jar (153 kB at 464 kB/s)
+[INFO] 
+[INFO] ----------------< org.example:dependency_analysis_java >----------------
+[INFO] Building dependency_analysis_java 1.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.resources/maven-metadata.xml
+Progress (1): 925 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.resources/maven-metadata.xml (925 B at 2.8 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.expressions/maven-metadata.xml
+Progress (1): 783 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.expressions/maven-metadata.xml (783 B at 2.4 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.runtime/maven-metadata.xml
+Progress (1): 943 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.runtime/maven-metadata.xml (943 B at 2.9 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.osgi/maven-metadata.xml
+Progress (1): 1.0 kB                    Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.osgi/maven-metadata.xml (1.0 kB at 2.6 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.equinox.common/maven-metadata.xml
+Progress (1): 919 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.equinox.common/maven-metadata.xml (919 B at 2.6 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.jobs/maven-metadata.xml
+Progress (1): 982 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.jobs/maven-metadata.xml (982 B at 3.0 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.equinox.registry/maven-metadata.xml
+Progress (1): 885 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.equinox.registry/maven-metadata.xml (885 B at 2.7 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.equinox.preferences/maven-metadata.xml
+Progress (1): 849 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.equinox.preferences/maven-metadata.xml (849 B at 2.5 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/osgi/service/org.osgi.service.prefs/maven-metadata.xml
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/osgi/org.osgi.service.prefs/maven-metadata.xml
+Progress (1): 369 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/osgi/org.osgi.service.prefs/maven-metadata.xml (369 B at 760 B/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.contenttype/maven-metadata.xml
+Progress (1): 819 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.contenttype/maven-metadata.xml (819 B at 2.5 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.equinox.app/maven-metadata.xml
+Progress (1): 745 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.equinox.app/maven-metadata.xml (745 B at 1.8 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.filesystem/maven-metadata.xml
+Progress (1): 784 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.filesystem/maven-metadata.xml (784 B at 2.2 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.text/maven-metadata.xml
+Progress (1): 841 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.text/maven-metadata.xml (841 B at 2.0 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.commands/maven-metadata.xml
+Progress (1): 784 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.commands/maven-metadata.xml (784 B at 2.5 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/jdt/org.eclipse.jdt.core/maven-metadata.xml
+Progress (1): 1.3 kB                    Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/jdt/org.eclipse.jdt.core/maven-metadata.xml (1.3 kB at 3.1 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.debug.core/maven-metadata.xml
+Progress (1): 951 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.debug.core/maven-metadata.xml (951 B at 3.2 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.variables/maven-metadata.xml
+Progress (1): 717 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/platform/org.eclipse.core.variables/maven-metadata.xml (717 B at 1.7 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/jdt/org.eclipse.jdt.debug/maven-metadata.xml
+Progress (1): 976 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/eclipse/jdt/org.eclipse.jdt.debug/maven-metadata.xml (976 B at 3.0 kB/s)
+Downloading from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/jetbrains/annotations/maven-metadata.xml
+Progress (1): 779 B                   Downloaded from nexus-aliyun: http://maven.aliyun.com/nexus/content/groups/public/org/jetbrains/annotations/maven-metadata.xml (779 B at 1.9 kB/s)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  17.847 s
+[INFO] Finished at: 2022-06-20T19:56:21+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal on project dependency_analysis_java: Could not resolve dependencies for project org.example:dependency_analysis_java:jar:1.0-SNAPSHOT: Failed to collect dependencies at org.eclipse.jdt:org.eclipse.jdt.core:jar:3.30.0 -> org.eclipse.platform:org.eclipse.core.resources:jar:3.17.0 -> org.eclipse.platform:org.eclipse.core.expressions:jar:3.5.100 -> org.eclipse.platform:org.eclipse.core.runtime:jar:3.12.0 -> org.eclipse.platform:org.eclipse.equinox.preferences:jar:3.10.0 -> org.osgi.service:org.osgi.service.prefs:jar:[1.1.0,1.2.0): No versions available for org.osgi.service:org.osgi.service.prefs:jar:[1.1.0,1.2.0) within specified range -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException

@@ -122,7 +122,7 @@ public class ProcessEntity {
      * @param fileFullPath packageIndex
      * @return moduleId
      */
-    public int processFile(String fileFullPath, int packageIndex) {
+    public int processFile(String fileFullPath, int packageIndex, int currentBin) {
 
         int fileId = singleCollect.getCurrentIndex();
 
@@ -139,6 +139,7 @@ public class ProcessEntity {
 //            fileEntity.setHidden(true);
 //        }
 
+        fileEntity.setBinNum(currentBin);
         singleCollect.addEntity(fileEntity);
         singleCollect.addFileId(fileId);
 
@@ -159,7 +160,7 @@ public class ProcessEntity {
      * @param cu compilation unit
      * @return class id
      */
-    public int processType(TypeDeclaration node, int parentId, CompilationUnit cu){
+    public int processType(TypeDeclaration node, int parentId, CompilationUnit cu, int currentBin){
 
         int typeId = singleCollect.getCurrentIndex();
         String typeName = node.getName().getIdentifier();
@@ -201,6 +202,7 @@ public class ProcessEntity {
 //            if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
 //                interfaceEntity.setHidden(true);
 //            }
+            interfaceEntity.setBinNum(currentBin);
             singleCollect.addEntity(interfaceEntity);
         }else{
             ClassEntity classEntity = new ClassEntity(typeId, typeName, qualifiedName, parentId);
@@ -247,6 +249,7 @@ public class ProcessEntity {
 //            if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
 //                classEntity.setHidden(true);
 //            }
+            classEntity.setBinNum(currentBin);
             singleCollect.addEntity(classEntity);
         }
         //add file's children id
@@ -258,7 +261,7 @@ public class ProcessEntity {
         return typeId;
     }
 
-    public int processAnonymous(AnonymousClassDeclaration node, int parentId, CompilationUnit cu, String rawType){
+    public int processAnonymous(AnonymousClassDeclaration node, int parentId, CompilationUnit cu, String rawType, int currentBin){
         int classId = singleCollect.getCurrentIndex();
         String typeName = "Anonymous_Class";
         String qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName()+"."+typeName;
@@ -269,6 +272,7 @@ public class ProcessEntity {
 //        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
 //            classEntity.setHidden(true);
 //        }
+        classEntity.setBinNum(currentBin);
         singleCollect.addEntity(classEntity);
         singleCollect.getEntityById(parentId).addChildId(classId);
 
@@ -282,7 +286,7 @@ public class ProcessEntity {
      * @param cu
      * @return
      */
-    public int processEnum(EnumDeclaration node, int parentId, CompilationUnit cu){
+    public int processEnum(EnumDeclaration node, int parentId, CompilationUnit cu, int currentBin){
         int enumId = singleCollect.getCurrentIndex();
         String enumName = node.getName().getIdentifier();
         String qualifiedName;
@@ -304,6 +308,7 @@ public class ProcessEntity {
         EnumEntity enumEntity = new EnumEntity(enumId, enumName, qualifiedName, parentId);
         enumEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
         enumEntity.setRawType(qualifiedName);
+        enumEntity.setBinNum(currentBin);
 
         //interface, default id is -1
         if(!node.superInterfaceTypes().isEmpty()){
@@ -333,7 +338,7 @@ public class ProcessEntity {
      * @param parentId
      * @return
      */
-    public int processEnumConstant(EnumConstantDeclaration node, int parentId, CompilationUnit cu){
+    public int processEnumConstant(EnumConstantDeclaration node, int parentId, CompilationUnit cu, int currentBin){
         int constantId = singleCollect.getCurrentIndex();
         String constantName = node.getName().getIdentifier();
         String qualifiedName;
@@ -350,6 +355,8 @@ public class ProcessEntity {
         for(Object o : node.modifiers()) {
             enumConstantEntity.addModifier(o.toString());
         }
+
+        enumConstantEntity.setBinNum(currentBin);
 
 //        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
 //            enumConstantEntity.setHidden(true);
@@ -372,7 +379,7 @@ public class ProcessEntity {
      * @param cu
      * @return
      */
-    public int processAnnotation(AnnotationTypeDeclaration node, int parentId, CompilationUnit cu){
+    public int processAnnotation(AnnotationTypeDeclaration node, int parentId, CompilationUnit cu, int currentBin){
         int annotationId = singleCollect.getCurrentIndex();
         String annotationName = node.getName().getIdentifier();
         // if parent is file
@@ -394,6 +401,7 @@ public class ProcessEntity {
         }
 
         annotationEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
+        annotationEntity.setBinNum(currentBin);
 
 //        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
 //            annotationEntity.setHidden(true);
@@ -412,7 +420,7 @@ public class ProcessEntity {
         return annotationId;
     }
 
-    public int processAnnotationMember(AnnotationTypeMemberDeclaration node, int parentId, CompilationUnit cu){
+    public int processAnnotationMember(AnnotationTypeMemberDeclaration node, int parentId, CompilationUnit cu, int currentBin){
         int memberId = singleCollect.getCurrentIndex();
         String memberName = node.getName().getIdentifier();
         String qualifiedName;
@@ -439,6 +447,8 @@ public class ProcessEntity {
             annotationTypeMember.setDefault_value(node.getDefault().toString());
         }
 
+        annotationTypeMember.setBinNum(currentBin);
+
 //        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
 //            annotationTypeMember.setHidden(true);
 //        }
@@ -462,7 +472,7 @@ public class ProcessEntity {
      * @param cu compilation unit
      * @return method id
      */
-    public int processMethod(MethodDeclaration node,int parentTypeId, CompilationUnit cu){
+    public int processMethod(MethodDeclaration node,int parentTypeId, CompilationUnit cu, int currentBin){
 
         int methodId = singleCollect.getCurrentIndex();
         String methodName = node.getName().getIdentifier();
@@ -488,6 +498,7 @@ public class ProcessEntity {
                 }
             }
         }
+        methodEntity.setBinNum(currentBin);
 
 //        if (getHidden() || singleCollect.getEntityById(parentTypeId).getHidden()){
 //            methodEntity.setHidden(true);
@@ -519,14 +530,15 @@ public class ProcessEntity {
      * @param rawType the type of all of these var
      * @return ArrayList of vars' ids
      */
-    public ArrayList<Integer> processVarDeclFragment(List<VariableDeclarationFragment> fragment, int parentId, String rawType, int blockId, int staticFlag, boolean globalFlag, ArrayList<String> modifiers, CompilationUnit cu){
+    public ArrayList<Integer> processVarDeclFragment(List<VariableDeclarationFragment> fragment, int parentId, String rawType, int blockId,
+                                                     int staticFlag, boolean globalFlag, ArrayList<String> modifiers, CompilationUnit cu, int currentBin){
 
         ArrayList<Integer> variableIds = new ArrayList<Integer>();
         ArrayList<VariableEntity> vars = new ArrayList<>();
 
         //iterate the fragment
         for(VariableDeclarationFragment frag : fragment){
-            vars.add(processVarDeclFragment(frag, parentId, rawType, blockId, staticFlag, globalFlag, modifiers, cu));
+            vars.add(processVarDeclFragment(frag, parentId, rawType, blockId, staticFlag, globalFlag, modifiers, cu, currentBin));
         }
 
         for (VariableEntity var : vars){
@@ -536,7 +548,7 @@ public class ProcessEntity {
     }
 
     public VariableEntity processVarDeclFragment(VariableDeclarationFragment frag, int parentId, String varType, int blockId,
-                                      int staticFlag, boolean globalFlag, ArrayList<String> modifiers, CompilationUnit cu){
+                                      int staticFlag, boolean globalFlag, ArrayList<String> modifiers, CompilationUnit cu, int currentBin){
         String varName = frag.getName().getIdentifier();
         int varId = singleCollect.getCurrentIndex();
         VariableEntity varEntity = new VariableEntity(varId,varName,varType);
@@ -546,6 +558,7 @@ public class ProcessEntity {
         varEntity.addModifiers(modifiers);
         varEntity.setGlobal(globalFlag);
         varEntity.setLocation(supplement_location(cu, frag.getStartPosition(), frag.getLength()));
+        varEntity.setBinNum(currentBin);
 
         //set init
         if(frag.getInitializer() != null){
@@ -583,13 +596,14 @@ public class ProcessEntity {
      * @param parType the type of parameter
      * @return its id
      */
-    public int processSingleVar (String name, int parentMethodId, String parType){
+    public int processSingleVar (String name, int parentMethodId, String parType, int currentBin){
 
         int parId = singleCollect.getCurrentIndex();
 
         VariableEntity parameterEntity = new VariableEntity(parId,name,parType);
         parameterEntity.setQualifiedName(singleCollect.getEntityById(parentMethodId).getQualifiedName()+"."+name);
         parameterEntity.setParentId(parentMethodId);
+        parameterEntity.setBinNum(currentBin);
 
 //        if (getHidden() || singleCollect.getEntityById(parentMethodId).getHidden()){
 //            parameterEntity.setHidden(true);
