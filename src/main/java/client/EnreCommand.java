@@ -23,6 +23,8 @@ public class EnreCommand {
     private String aidl;
     @Option(names = {"-hd", "--hidden"},  description = "The path of hiddenapi-flag.csv")
     private String hidden;
+    @Option(names = {"-o", "--output"},  description = "The output file name, default is projectName-out")
+    private String outputFile;
     @Option(names = {"-h","--help"}, usageHelp = true, description = "display this help and exit")
     boolean help;
 
@@ -71,6 +73,14 @@ public class EnreCommand {
 
     public String getHidden() {
         return hidden;
+    }
+
+    public String getOutputFile() {
+        return outputFile;
+    }
+
+    public void setOutputFile(String outputFile) {
+        this.outputFile = outputFile;
     }
 
     public boolean isHelp() {
