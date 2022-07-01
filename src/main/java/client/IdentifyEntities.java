@@ -51,7 +51,7 @@ public class IdentifyEntities {
     }
 
     public String getProject_path() {
-        return project_path;
+        return PathUtil.unifyPath(this.project_path);
     }
 
     public void setProject_path(String project_path) {
@@ -78,7 +78,7 @@ public class IdentifyEntities {
 
         HashMap<String, ArrayList<String>> checkBin = new HashMap<>();
 //        ArrayList<String> whole_file_list = current.getFileNameList();
-        checkBin.put(PathUtil.unifyPath(current.getProjectPath()), current.getFileNameList());
+        checkBin.put(current.getProjectPath()+current.getCurrentProjectName(), current.getFileNameList());
 
         if (!this.getAdditional_path().isEmpty()){
 //            int binNum = 2;
@@ -90,7 +90,7 @@ public class IdentifyEntities {
                     addition = new FileUtil(additionPath);
                 }
 //                whole_file_list.addAll(addition.getFileNameList());
-                checkBin.put(PathUtil.unifyPath(addition.getProjectPath()) , addition.getFileNameList());
+                checkBin.put(addition.getProjectPath()+addition.getCurrentProjectName() , addition.getFileNameList());
 //                binNum++;
             }
         }

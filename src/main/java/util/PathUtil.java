@@ -41,6 +41,9 @@ public class PathUtil {
             String[] components = path.split("\\\\");
             return String.join("/", components);
         }
+        if (path.contains("//")){
+            return path.replace("//", "/");
+        }
         return path;
     }
 
