@@ -40,7 +40,7 @@ public class BaseEntity {
 
     protected int maxTargetSdk = 0;
 
-    protected int binNum = -1;
+    protected String binPath = null;
 
     public String getQualifiedName() {
         return qualifiedName;
@@ -158,12 +158,12 @@ public class BaseEntity {
 //        this.maxTargetSdk = maxTargetSdk;
 //    }
 
-    public int getBinNum(){
-        return this.binNum;
+    public String getBinPath(){
+        return this.binPath;
     }
 
-    public void setBinNum(int binNum){
-        this.binNum = binNum;
+    public void setBinNum(String binNum){
+        this.binPath = binNum;
     }
 
     public void addModifier (String modifier){

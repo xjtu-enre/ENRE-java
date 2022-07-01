@@ -6,6 +6,7 @@ import entity.*;
 import entity.properties.Relation;
 import org.json.JSONObject;
 
+import util.PathUtil;
 import util.SingleCollect;
 import util.Tuple;
 import visitor.relationInf.RelationInf;
@@ -172,9 +173,9 @@ public class JsonString {
                     entityObj.put("hidden", processHidden.checkHidden((MethodEntity)entity, parType));
                 }
             }
-            //bin num
-            if (entity.getBinNum() > 1){
-                entityObj.put("additionalBinNum", entity.getBinNum());
+            //bin path
+            if (entity.getBinPath()!= null){
+                entityObj.put("binPath", entity.getBinPath());
             }
 
             subObjVariable.add(entityObj);

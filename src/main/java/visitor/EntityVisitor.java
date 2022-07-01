@@ -20,7 +20,7 @@ public class EntityVisitor extends CKVisitor {
     //current complication unit
     private CompilationUnit cu;
     //current bin num, which means current project has multiple bins input
-    private int currentBin;
+    private String currentBin;
 
     private final ProcessEntity processEntity = new ProcessEntity();
     SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
@@ -33,7 +33,7 @@ public class EntityVisitor extends CKVisitor {
     private final Stack<Integer> blockStack = new Stack<Integer>();
 
 
-    public EntityVisitor (String fileFullPath, CompilationUnit compilationUnit, int currentBin){
+    public EntityVisitor (String fileFullPath, CompilationUnit compilationUnit, String currentBin){
         this.fileFullPath = fileFullPath;
         this.cu = compilationUnit;
         this.currentBin = currentBin;

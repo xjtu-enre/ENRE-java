@@ -76,12 +76,12 @@ public class IdentifyEntities {
         }
 
 
-        HashMap<Integer, ArrayList<String>> checkBin = new HashMap<>();
+        HashMap<String, ArrayList<String>> checkBin = new HashMap<>();
 //        ArrayList<String> whole_file_list = current.getFileNameList();
-        checkBin.put(1, current.getFileNameList());
+        checkBin.put(PathUtil.unifyPath(current.getProjectPath()), current.getFileNameList());
 
         if (!this.getAdditional_path().isEmpty()){
-            int binNum = 2;
+//            int binNum = 2;
             for (String additionPath: this.getAdditional_path()){
                 FileUtil addition;
                 if(this.getAidl_path() != null){
@@ -90,13 +90,13 @@ public class IdentifyEntities {
                     addition = new FileUtil(additionPath);
                 }
 //                whole_file_list.addAll(addition.getFileNameList());
-                checkBin.put(binNum, addition.getFileNameList());
-                binNum++;
+                checkBin.put(PathUtil.unifyPath(addition.getProjectPath()) , addition.getFileNameList());
+//                binNum++;
             }
         }
 
         //set the version of java
-        ASTParser parser = ASTParser.newParser(AST.JLS14);
+        ASTParser parser = ASTParser.newParser(AST.JLS17);
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
 
         Map<String, String> options = JavaCore.getOptions();
@@ -114,8 +114,8 @@ public class IdentifyEntities {
 
         parser.setUnitName(current.getCurrentProjectName());
         ArrayList<String> whole_file_list = new ArrayList<>();
-        for (int binNum: checkBin.keySet()){
-            whole_file_list.addAll(checkBin.get(binNum));
+        for (String binPath: checkBin.keySet()){
+            whole_file_list.addAll(checkBin.get(binPath));
         }
 
         final ArrayList<CompilationUnitPair> pairs = new ArrayList<CompilationUnitPair>(whole_file_list.size());
@@ -147,14 +147,14 @@ public class IdentifyEntities {
 //                if("src/main/java/helloJDT/LauncherAccessibilityDelegate.java".equals(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name))){
 //                    pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
 //                }
-                int fileBinNum = 1;
-                for (int currentBinNum: checkBin.keySet()){
-                    if (checkBin.get(currentBinNum).contains(PathUtil.unifyPath(pair.source))){
-                        fileBinNum = currentBinNum;
+                String fileBin = null;
+                for (String currentBinPath: checkBin.keySet()){
+                    if (checkBin.get(currentBinPath).contains(PathUtil.unifyPath(pair.source))){
+                        fileBin = currentBinPath;
                         break;
                     }
                 }
-                pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast, fileBinNum));
+                pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast, fileBin));
 //                System.out.println(fileBinNum);
             }
             catch (EmptyStackException e){
