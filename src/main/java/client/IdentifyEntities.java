@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.dom.FileASTRequestor;
 import util.CompilationUnitPair;
 import util.FileUtil;
 import util.PathUtil;
+import util.Tuple;
 import visitor.EntityVisitor;
 
 import java.util.ArrayList;
@@ -76,12 +77,12 @@ public class IdentifyEntities {
         }
 
 
-        HashMap<String, ArrayList<String>> checkBin = new HashMap<>();
+        HashMap<Tuple<String, Integer>, ArrayList<String>> checkBin = new HashMap<>();
 //        ArrayList<String> whole_file_list = current.getFileNameList();
-        checkBin.put(current.getProjectPath()+current.getCurrentProjectName(), current.getFileNameList());
+        checkBin.put(new Tuple<>(current.getProjectPath()+current.getCurrentProjectName(), 1), current.getFileNameList());
 
         if (!this.getAdditional_path().isEmpty()){
-//            int binNum = 2;
+            int binNum = 2;
             for (String additionPath: this.getAdditional_path()){
                 FileUtil addition;
                 if(this.getAidl_path() != null){
@@ -90,8 +91,8 @@ public class IdentifyEntities {
                     addition = new FileUtil(additionPath);
                 }
 //                whole_file_list.addAll(addition.getFileNameList());
-                checkBin.put(addition.getProjectPath()+addition.getCurrentProjectName() , addition.getFileNameList());
-//                binNum++;
+                checkBin.put(new Tuple<>(addition.getProjectPath()+addition.getCurrentProjectName(), binNum) , addition.getFileNameList());
+                binNum++;
             }
         }
 
@@ -114,7 +115,7 @@ public class IdentifyEntities {
 
         parser.setUnitName(current.getCurrentProjectName());
         ArrayList<String> whole_file_list = new ArrayList<>();
-        for (String binPath: checkBin.keySet()){
+        for (Tuple<String, Integer> binPath: checkBin.keySet()){
             whole_file_list.addAll(checkBin.get(binPath));
         }
 
@@ -147,8 +148,8 @@ public class IdentifyEntities {
 //                if("src/main/java/helloJDT/LauncherAccessibilityDelegate.java".equals(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name))){
 //                    pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
 //                }
-                String fileBin = null;
-                for (String currentBinPath: checkBin.keySet()){
+                Tuple<String, Integer> fileBin = null;
+                for (Tuple<String, Integer> currentBinPath: checkBin.keySet()){
                     if (checkBin.get(currentBinPath).contains(PathUtil.unifyPath(pair.source))){
                         fileBin = currentBinPath;
                         break;

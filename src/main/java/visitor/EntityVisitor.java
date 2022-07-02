@@ -7,6 +7,7 @@ import org.eclipse.jdt.core.dom.*;
 import util.Configure;
 import util.PathUtil;
 import util.SingleCollect;
+import util.Tuple;
 
 import java.sql.Ref;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class EntityVisitor extends CKVisitor {
     //current complication unit
     private CompilationUnit cu;
     //current bin num, which means current project has multiple bins input
-    private String currentBin;
+    private Tuple<String, Integer> currentBin;
 
     private final ProcessEntity processEntity = new ProcessEntity();
     SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
@@ -33,7 +34,7 @@ public class EntityVisitor extends CKVisitor {
     private final Stack<Integer> blockStack = new Stack<Integer>();
 
 
-    public EntityVisitor (String fileFullPath, CompilationUnit compilationUnit, String currentBin){
+    public EntityVisitor (String fileFullPath, CompilationUnit compilationUnit, Tuple<String, Integer> currentBin){
         this.fileFullPath = fileFullPath;
         this.cu = compilationUnit;
         this.currentBin = currentBin;

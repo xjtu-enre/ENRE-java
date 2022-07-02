@@ -175,7 +175,10 @@ public class JsonString {
             }
             //bin path
             if (entity.getBinPath()!= null){
-                entityObj.put("binPath", entity.getBinPath());
+                JSONObject binObj = new JSONObject();
+                binObj.put("binPath", entity.getBinPath().getL());
+                binObj.put("binNum", entity.getBinPath().getR());
+                entityObj.accumulate("additionalBin", binObj);
             }
 
             subObjVariable.add(entityObj);

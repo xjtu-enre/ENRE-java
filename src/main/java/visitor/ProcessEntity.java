@@ -122,7 +122,7 @@ public class ProcessEntity {
      * @param fileFullPath packageIndex
      * @return moduleId
      */
-    public int processFile(String fileFullPath, int packageIndex, String currentBin) {
+    public int processFile(String fileFullPath, int packageIndex, Tuple<String, Integer> currentBin) {
 
         int fileId = singleCollect.getCurrentIndex();
 
@@ -160,7 +160,7 @@ public class ProcessEntity {
      * @param cu compilation unit
      * @return class id
      */
-    public int processType(TypeDeclaration node, int parentId, CompilationUnit cu, String currentBin){
+    public int processType(TypeDeclaration node, int parentId, CompilationUnit cu, Tuple<String, Integer> currentBin){
 
         int typeId = singleCollect.getCurrentIndex();
         String typeName = node.getName().getIdentifier();
@@ -261,7 +261,7 @@ public class ProcessEntity {
         return typeId;
     }
 
-    public int processAnonymous(AnonymousClassDeclaration node, int parentId, CompilationUnit cu, String rawType, String currentBin){
+    public int processAnonymous(AnonymousClassDeclaration node, int parentId, CompilationUnit cu, String rawType, Tuple<String, Integer> currentBin){
         int classId = singleCollect.getCurrentIndex();
         String typeName = "Anonymous_Class";
         String qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName()+"."+typeName;
@@ -286,7 +286,7 @@ public class ProcessEntity {
      * @param cu
      * @return
      */
-    public int processEnum(EnumDeclaration node, int parentId, CompilationUnit cu, String currentBin){
+    public int processEnum(EnumDeclaration node, int parentId, CompilationUnit cu, Tuple<String, Integer> currentBin){
         int enumId = singleCollect.getCurrentIndex();
         String enumName = node.getName().getIdentifier();
         String qualifiedName;
@@ -338,7 +338,7 @@ public class ProcessEntity {
      * @param parentId
      * @return
      */
-    public int processEnumConstant(EnumConstantDeclaration node, int parentId, CompilationUnit cu, String currentBin){
+    public int processEnumConstant(EnumConstantDeclaration node, int parentId, CompilationUnit cu, Tuple<String, Integer> currentBin){
         int constantId = singleCollect.getCurrentIndex();
         String constantName = node.getName().getIdentifier();
         String qualifiedName;
@@ -379,7 +379,7 @@ public class ProcessEntity {
      * @param cu
      * @return
      */
-    public int processAnnotation(AnnotationTypeDeclaration node, int parentId, CompilationUnit cu, String currentBin){
+    public int processAnnotation(AnnotationTypeDeclaration node, int parentId, CompilationUnit cu, Tuple<String, Integer> currentBin){
         int annotationId = singleCollect.getCurrentIndex();
         String annotationName = node.getName().getIdentifier();
         // if parent is file
@@ -420,7 +420,7 @@ public class ProcessEntity {
         return annotationId;
     }
 
-    public int processAnnotationMember(AnnotationTypeMemberDeclaration node, int parentId, CompilationUnit cu, String currentBin){
+    public int processAnnotationMember(AnnotationTypeMemberDeclaration node, int parentId, CompilationUnit cu, Tuple<String, Integer> currentBin){
         int memberId = singleCollect.getCurrentIndex();
         String memberName = node.getName().getIdentifier();
         String qualifiedName;
@@ -472,7 +472,7 @@ public class ProcessEntity {
      * @param cu compilation unit
      * @return method id
      */
-    public int processMethod(MethodDeclaration node,int parentTypeId, CompilationUnit cu, String currentBin){
+    public int processMethod(MethodDeclaration node,int parentTypeId, CompilationUnit cu, Tuple<String, Integer> currentBin){
 
         int methodId = singleCollect.getCurrentIndex();
         String methodName = node.getName().getIdentifier();
@@ -531,7 +531,7 @@ public class ProcessEntity {
      * @return ArrayList of vars' ids
      */
     public ArrayList<Integer> processVarDeclFragment(List<VariableDeclarationFragment> fragment, int parentId, String rawType, int blockId,
-                                                     int staticFlag, boolean globalFlag, ArrayList<String> modifiers, CompilationUnit cu, String currentBin){
+                                                     int staticFlag, boolean globalFlag, ArrayList<String> modifiers, CompilationUnit cu, Tuple<String, Integer> currentBin){
 
         ArrayList<Integer> variableIds = new ArrayList<Integer>();
         ArrayList<VariableEntity> vars = new ArrayList<>();
@@ -548,7 +548,7 @@ public class ProcessEntity {
     }
 
     public VariableEntity processVarDeclFragment(VariableDeclarationFragment frag, int parentId, String varType, int blockId,
-                                      int staticFlag, boolean globalFlag, ArrayList<String> modifiers, CompilationUnit cu, String currentBin){
+                                      int staticFlag, boolean globalFlag, ArrayList<String> modifiers, CompilationUnit cu, Tuple<String, Integer> currentBin){
         String varName = frag.getName().getIdentifier();
         int varId = singleCollect.getCurrentIndex();
         VariableEntity varEntity = new VariableEntity(varId,varName,varType);
@@ -596,7 +596,7 @@ public class ProcessEntity {
      * @param parType the type of parameter
      * @return its id
      */
-    public int processSingleVar (String name, int parentMethodId, String parType, String currentBin){
+    public int processSingleVar (String name, int parentMethodId, String parType, Tuple<String, Integer> currentBin){
 
         int parId = singleCollect.getCurrentIndex();
 
