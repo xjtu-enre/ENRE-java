@@ -76,11 +76,11 @@ public class JsonString {
         }
         obj.put("relationNum", subRelations);
 
-        JSONObject subCKIndices = new JSONObject();
-        for (String index : singleCollect.getCkIndices().keySet()){
-            subCKIndices.put(index, singleCollect.getCk(index));
-        }
-        obj.put("CKIndices", subCKIndices);
+//        JSONObject subCKIndices = new JSONObject();
+//        for (String index : singleCollect.getCkIndices().keySet()){
+//            subCKIndices.put(index, singleCollect.getCk(index));
+//        }
+//        obj.put("CKIndices", subCKIndices);
 
         List<JSONObject> subObjVariable=new ArrayList<JSONObject>();
 
@@ -184,12 +184,12 @@ public class JsonString {
             subObjVariable.add(entityObj);
         }
 
-        for (ExternalEntity externalEntity : singleCollect.getExternalEntities()) {
-            JSONObject external = new JSONObject();
-            external.put("qualifiedName", externalEntity.getQualifiedName());
-            external.put("external", true);
-            subObjVariable.add(external);
-        }
+//        for (ExternalEntity externalEntity : singleCollect.getExternalEntities()) {
+//            JSONObject external = new JSONObject();
+//            external.put("qualifiedName", externalEntity.getQualifiedName());
+//            external.put("external", true);
+//            subObjVariable.add(external);
+//        }
 
         obj.put("variables",subObjVariable);
 
@@ -200,6 +200,9 @@ public class JsonString {
 
 //                for(Relation type : relationMap.get(fromEntity).get(toEntity)) {
                     Relation type = toEntityObj.getR();
+                    if(type.getKind().contains("by")){
+                        continue;
+                    }
                     JSONObject subObj=new JSONObject();//创建对象数组里的子对象
 
 //                    JSONObject srcObj = new JSONObject();
