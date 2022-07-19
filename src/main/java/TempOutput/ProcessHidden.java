@@ -55,6 +55,8 @@ public class ProcessHidden {
         String originalSignature = null;
         boolean isMatch = false;
 
+        String kind = "";
+
         public String getQualifiedName() {
             return qualifiedName;
         }
@@ -105,6 +107,14 @@ public class ProcessHidden {
 
         public void setMatch(boolean match) {
             isMatch = match;
+        }
+
+        public void setKind(String kind){
+            this.kind = kind;
+        }
+
+        public String getKind() {
+            return kind;
         }
 
         @Override
@@ -341,12 +351,14 @@ public class ProcessHidden {
         if (this.result.containsKey(entity.getQualifiedName())){
             if (this.result.get(entity.getQualifiedName()).size() == 1){
                 this.result.get(entity.getQualifiedName()).get(0).setMatch(true);
+                this.result.get(entity.getQualifiedName()).get(0).setKind("Type");
                 return refactorHidden(this.result.get(entity.getQualifiedName()).get(0).getHiddenApi());
             }
             else {
                 for (HiddenEntity hiddenEntity: this.result.get(entity.getQualifiedName())){
                     if (hiddenEntity.getOriginalSignature().contains("<clinit>")){
                         hiddenEntity.setMatch(true);
+                        hiddenEntity.setKind("Type");
                         return refactorHidden(hiddenEntity.getHiddenApi());
                     }
                 }
@@ -359,6 +371,7 @@ public class ProcessHidden {
         if (this.result.containsKey(entity.getQualifiedName())){
             if (this.result.get(entity.getQualifiedName()).size() == 1){
                 this.result.get(entity.getQualifiedName()).get(0).setMatch(true);
+                this.result.get(entity.getQualifiedName()).get(0).setKind("Method");
                 return refactorHidden(this.result.get(entity.getQualifiedName()).get(0).getHiddenApi());
             }
             else {
@@ -367,11 +380,13 @@ public class ProcessHidden {
                         if (entity.isConstructor()){
                             if (!hiddenEntity.getParameter().isEmpty() && comparePara(hiddenEntity.getParameter(), parType.split(" "))){
                                 hiddenEntity.setMatch(true);
+                                hiddenEntity.setKind("Method");
                                 return refactorHidden(hiddenEntity.getHiddenApi());
                             }
                         } else if (entity.getRawType().equals(hiddenEntity.getRawType())){
                             if (!hiddenEntity.getParameter().isEmpty() && comparePara(hiddenEntity.getParameter(), parType.split(" "))){
                                 hiddenEntity.setMatch(true);
+                                hiddenEntity.setKind("Method");
                                 return refactorHidden(hiddenEntity.getHiddenApi());
                             }
                         }
@@ -396,6 +411,7 @@ public class ProcessHidden {
             for (HiddenEntity hiddenEntity: this.result.get(entity.getQualifiedName())){
                 if (entity.getRawType().equals(hiddenEntity.getRawType())){
                     hiddenEntity.setMatch(true);
+                    hiddenEntity.setKind("Field");
                     return refactorHidden(hiddenEntity.getHiddenApi());
                 }
             }
@@ -426,7 +442,7 @@ public class ProcessHidden {
         fileOs = new FileOutputStream(fileName);
         out = new OutputStreamWriter(fileOs, "GBK");
         //字符数组是头行
-        CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader("OriginalSignature", "processName", "processRawType", "processParameter").withQuote(null));
+        CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader("OriginalSignature", "processName", "processRawType", "processParameter", "kind").withQuote(null));
         List<Object> objects = new ArrayList<>();
         for (ArrayList<HiddenEntity> hiddenEntities : this.getResult().values()) {
             for (HiddenEntity entity : hiddenEntities){
@@ -435,6 +451,7 @@ public class ProcessHidden {
                     objects.add(entity.getQualifiedName());
                     objects.add(entity.getRawType());
                     objects.add(entity.getParameter());
+                    objects.add(entity.getKind());
                     //打印一行
                     printer.printRecord(objects);
                     //打印完后注意将数组clear掉
