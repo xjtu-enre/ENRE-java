@@ -261,14 +261,14 @@ public class ProcessEntity {
         return typeId;
     }
 
-    public int processAnonymous(AnonymousClassDeclaration node, int parentId, CompilationUnit cu, String rawType, Tuple<String, Integer> currentBin){
+    public int processAnonymous(AnonymousClassDeclaration node, int parentId, CompilationUnit cu, String rawType, Tuple<String, Integer> currentBin, int rank){
         int classId = singleCollect.getCurrentIndex();
         String typeName = "Anonymous_Class";
         String qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName()+"."+typeName;
         ClassEntity classEntity = new ClassEntity(classId, typeName, qualifiedName, parentId);
         classEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
         classEntity.setRawType(rawType);
-
+        classEntity.setAnonymousRank(rank);
 //        if (getHidden() || singleCollect.getEntityById(parentId).getHidden()){
 //            classEntity.setHidden(true);
 //        }
@@ -486,7 +486,7 @@ public class ProcessEntity {
         //methodEntity.setCodeSnippet(node.toString());
 
         if(node.isConstructor()){
-            methodEntity.getMethodProperties().setConstructor(true);
+            methodEntity.setConstructor(true);
             methodEntity.setRawType(methodQualifiedName);
         }else{
             if(node.getReturnType2() != null){

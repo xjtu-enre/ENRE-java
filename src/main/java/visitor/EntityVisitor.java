@@ -33,11 +33,22 @@ public class EntityVisitor extends CKVisitor {
     //block stack
     private final Stack<Integer> blockStack = new Stack<Integer>();
 
+    //anonymous class number
+    private int anonymousCount = 0;
+
 
     public EntityVisitor (String fileFullPath, CompilationUnit compilationUnit, Tuple<String, Integer> currentBin){
         this.fileFullPath = fileFullPath;
         this.cu = compilationUnit;
         this.currentBin = currentBin;
+    }
+
+    private void updateAnonyCount(){
+        this.anonymousCount++;
+    }
+
+    private int getAnonymousCount(){
+        return this.anonymousCount;
     }
 
     /**
@@ -182,7 +193,14 @@ public class EntityVisitor extends CKVisitor {
 
     @Override
     public boolean visit(AnonymousClassDeclaration node) {
-        int classId = processEntity.processAnonymous(node, scopeStack.peek(), cu, currentInstanceRawType, currentBin);
+        updateAnonyCount();
+        int classId = processEntity.processAnonymous(node, scopeStack.peek(), cu, currentInstanceRawType, currentBin, getAnonymousCount());
+
+        //bindVar
+        if (singleCollect.getEntityById(classId) instanceof ClassEntity){
+            ((ClassEntity) singleCollect.getEntityById(classId)).setAnonymousBindVar(entityStack.peek());
+        }
+
         scopeStack.push(classId);
         entityStack.push(classId);
         return super.visit(node);

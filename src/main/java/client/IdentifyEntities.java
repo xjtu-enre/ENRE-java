@@ -1,5 +1,6 @@
 package client;
 
+import TempOutput.ProcessHidden;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -118,6 +119,9 @@ public class IdentifyEntities {
         for (Tuple<String, Integer> binPath: checkBin.keySet()){
             whole_file_list.addAll(checkBin.get(binPath));
         }
+
+        ProcessHidden processHidden = ProcessHidden.getProcessHiddeninstance();
+        processHidden.setWholeFileList(whole_file_list);
 
         final ArrayList<CompilationUnitPair> pairs = new ArrayList<CompilationUnitPair>(whole_file_list.size());
 

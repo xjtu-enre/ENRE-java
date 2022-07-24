@@ -8,6 +8,11 @@ public class ClassEntity extends TypeEntity{
     protected String superClassName;
     protected int superClassId = -1;
 
+    //mark whether the current class is anonymous, if it's not, the value will be 0, otherwise the value will be the order of anonymous
+    protected int anonymousRank = 0;
+
+    protected int anonymousBindVar = -1;
+
     protected HashMap<String, Integer> staticMap = new HashMap<>();
 
     public ClassEntity(int id, String name){
@@ -54,6 +59,21 @@ public class ClassEntity extends TypeEntity{
         this.staticMap.put(name, id);
     }
 
+    public void setAnonymousRank(int rank){
+        this.anonymousRank = rank;
+    }
+
+    public int getAnonymousRank(){
+        return this.anonymousRank;
+    }
+
+    public int getAnonymousBindVar(){
+        return this.anonymousBindVar;
+    }
+
+    public void setAnonymousBindVar(int bindVar){
+        this.anonymousBindVar = bindVar;
+    }
 
     @Override
     public String toString() {

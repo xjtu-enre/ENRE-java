@@ -6,7 +6,6 @@ import entity.*;
 import entity.properties.Relation;
 import org.json.JSONObject;
 
-import util.PathUtil;
 import util.SingleCollect;
 import util.Tuple;
 import visitor.relationInf.RelationInf;
@@ -48,8 +47,8 @@ public class JsonString {
         SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
         ProcessHidden processHidden = ProcessHidden.getProcessHiddeninstance();
         if (hiddenPath != null){
-            processHidden.convertCSV(hiddenPath);
-//            System.out.println(processHidden.getResult());
+            processHidden.convertCSV2DB(hiddenPath);
+//            processHidden.outputConvertInfo("base-enre-out/hidden_convert.csv");
         }
 
         obj.put("schemaVersion","1");
@@ -142,6 +141,10 @@ public class JsonString {
                 }
                 if (!((TypeEntity) entity).getInnerType().isEmpty()){
                     entityObj.put("innerType", ((TypeEntity) entity).getInnerType());
+                }
+                if (entity instanceof ClassEntity && ((ClassEntity) entity).getAnonymousRank() != 0){
+                    entityObj.put("anonymousRank", ((ClassEntity) entity).getAnonymousRank());
+                    entityObj.put("anonymousBindVar", ((ClassEntity) entity).getAnonymousBindVar());
                 }
             }
             //location
@@ -248,7 +251,9 @@ public class JsonString {
         /**
          * Output not match hidden
          */
-        processHidden.outputResult();
+//        if (hiddenPath != null) {
+//            processHidden.outputResult();
+//        }
         return obj.toString();
     }
 

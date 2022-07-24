@@ -15,7 +15,7 @@ public class MethodEntity extends ScopeEntity{
     protected String returnExpression = null;
     protected boolean isConstructor = false;
 
-    protected MethodProperties methodProperties = new MethodProperties();
+//    protected MethodProperties methodProperties = new MethodProperties();
 
     //record the id of blocks in method
     protected ArrayList<Block> blocks = new ArrayList<>();
@@ -100,9 +100,10 @@ public class MethodEntity extends ScopeEntity{
     public boolean isConstructor() {
         return isConstructor;
     }
-    public MethodProperties getMethodProperties(){
-        return this.methodProperties;
-    }
+
+//    public MethodProperties getMethodProperties(){
+//        return this.methodProperties;
+//    }
 
 
     public void addBlock (Block block){
