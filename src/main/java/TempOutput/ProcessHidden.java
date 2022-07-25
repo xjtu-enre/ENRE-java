@@ -298,6 +298,7 @@ public class ProcessHidden {
                                 String methodName = process_method(e.split("->", 2)[1]).getLeft();
                                 ArrayList<String> parameter = process_method(e.split("->", 2)[1]).getMiddle();
                                 String returnType = process_method(e.split("->", 2)[1]).getRight();
+                                entity.setKind("Method");
                                 if (methodName.equals("Constructor")){
                                     String[] temp = classQualifiedName.split("\\.");
                                     methodName = temp[temp.length - 1];
@@ -305,6 +306,7 @@ public class ProcessHidden {
                                 String entityQualifiedName = classQualifiedName+"."+methodName;
                                 if (methodName.equals("Class_Constructor")){
                                     entityQualifiedName = classQualifiedName;
+                                    entity.setKind("Type");
                                 }
                                 entity.setQualifiedName(entityQualifiedName);
                                 entity.setParameter(parameter);
@@ -314,6 +316,7 @@ public class ProcessHidden {
                                 String fieldType = process_field(e.split("->", 2)[1]).getR();
                                 entity.setRawType(fieldType);
                                 entity.setQualifiedName(classQualifiedName+"."+fieldName);
+                                entity.setKind("Field");
                             }
                         }else {
                             if (entity != null && entity.qualifiedName != null){
@@ -394,14 +397,14 @@ public class ProcessHidden {
         if (this.result.containsKey(qualifiedName)){
             if (this.result.get(qualifiedName).size() == 1){
                 this.result.get(qualifiedName).get(0).setMatch(true);
-                this.result.get(qualifiedName).get(0).setKind("Type");
+//                this.result.get(qualifiedName).get(0).setKind("Type");
                 return refactorHidden(this.result.get(qualifiedName).get(0).getHiddenApi());
             }
             else {
                 for (HiddenEntity hiddenEntity: this.result.get(qualifiedName)){
                     if (hiddenEntity.getOriginalSignature().contains("<clinit>")){
                         hiddenEntity.setMatch(true);
-                        hiddenEntity.setKind("Type");
+//                        hiddenEntity.setKind("Type");
                         return refactorHidden(hiddenEntity.getHiddenApi());
                     }
                 }
@@ -419,7 +422,7 @@ public class ProcessHidden {
         if (this.result.containsKey(qualifiedName)){
             if (this.result.get(qualifiedName).size() == 1){
                 this.result.get(qualifiedName).get(0).setMatch(true);
-                this.result.get(qualifiedName).get(0).setKind("Method");
+//                this.result.get(qualifiedName).get(0).setKind("Method");
                 return refactorHidden(this.result.get(qualifiedName).get(0).getHiddenApi());
             }
             else {
@@ -428,13 +431,13 @@ public class ProcessHidden {
                         if (entity.isConstructor()){
                             if (comparePara(hiddenEntity.getParameter(), parType.split(" "))){
                                 hiddenEntity.setMatch(true);
-                                hiddenEntity.setKind("Method");
+//                                hiddenEntity.setKind("Method");
                                 return refactorHidden(hiddenEntity.getHiddenApi());
                             }
                         } else if (JsonString.processRawType(entity.getRawType()).contains(hiddenEntity.getRawType())){
                             if (comparePara(hiddenEntity.getParameter(), parType.split(" "))){
                                 hiddenEntity.setMatch(true);
-                                hiddenEntity.setKind("Method");
+//                                hiddenEntity.setKind("Method");
                                 return refactorHidden(hiddenEntity.getHiddenApi());
                             }
                         }
@@ -464,7 +467,7 @@ public class ProcessHidden {
             for (HiddenEntity hiddenEntity: this.result.get(qualifiedName)){
                 if (JsonString.processRawType(entity.getRawType()).contains(hiddenEntity.getRawType())){
                     hiddenEntity.setMatch(true);
-                    hiddenEntity.setKind("Field");
+//                    hiddenEntity.setKind("Field");
                     return refactorHidden(hiddenEntity.getHiddenApi());
                 }
             }
@@ -508,7 +511,7 @@ public class ProcessHidden {
         fileOs = new FileOutputStream(fileName);
         out = new OutputStreamWriter(fileOs, "GBK");
         //字符数组是头行
-        CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader( "inBase", "OriginalSignature", "processName", "processRawType", "processParameter").withQuote(null));
+        CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader( "inBase", "Type", "OriginalSignature", "processName", "processRawType", "processParameter").withQuote(null));
         List<Object> objects = new ArrayList<>();
         for (ArrayList<HiddenEntity> hiddenEntities : this.getResult().values()) {
             for (HiddenEntity entity : hiddenEntities){
@@ -521,6 +524,7 @@ public class ProcessHidden {
                         && !entity.getOriginalSignature().startsWith("Llibcore/") && !entity.getOriginalSignature().startsWith("Lorg/")
                         && !entity.getOriginalSignature().startsWith("Lsun/") && !entity.getOriginalSignature().startsWith("Landroid/Manifest$")){
                     objects.add(checkBaseHidden(entity.getOriginalSignature()));
+                    objects.add(entity.getKind());
                     objects.add(entity.getOriginalSignature());
                     objects.add(entity.getQualifiedName());
                     objects.add(entity.getRawType());
@@ -535,23 +539,6 @@ public class ProcessHidden {
         }
         out.flush();
 
-//        JSONObject obj=new JSONObject();
-//        List<JSONObject> subCategories = new ArrayList<>();
-//        for (ArrayList<HiddenEntity> hiddenEntities: this.getResult().values()){
-//            for (HiddenEntity hidden : hiddenEntities){
-//                if (!hidden.isMatch){
-//                    JSONObject current = new JSONObject();
-//                    current.put("signature", hidden.getOriginalSignature());
-//                    current.put("qualifiedName", hidden.getQualifiedName());
-//                    current.put("rawType", hidden.getRawType());
-//                    current.put("parameter", hidden.getParameter());
-//                    current.put("hiddenApi", hidden.getHiddenApi());
-//                    subCategories.add(current);
-//                }
-//            }
-//        }
-//        obj.accumulate("NotMatch", subCategories);
-//        return obj.toString();
     }
 
     public void checkMatch(String qualifiedName, String rawType, String parameterType){
@@ -584,11 +571,12 @@ public class ProcessHidden {
         fileOs = new FileOutputStream(outputFilePath);
         out = new OutputStreamWriter(fileOs, "GBK");
         //字符数组是头行
-        CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader("isBase", "OriginalSignature", "processName", "processRawType", "processParameter").withQuote(null));
+        CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader("isBase", "Kind","OriginalSignature", "processName", "processRawType", "processParameter").withQuote(null));
         List<Object> objects = new ArrayList<>();
         for (ArrayList<HiddenEntity> hiddenEntities : this.getResult().values()) {
             for (HiddenEntity entity : hiddenEntities){
                 objects.add(checkBaseHidden(entity.getOriginalSignature()));
+                objects.add(entity.getKind());
                 objects.add(entity.getOriginalSignature());
                 objects.add(entity.getQualifiedName());
                 objects.add(entity.getRawType());

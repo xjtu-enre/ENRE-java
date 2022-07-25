@@ -9,7 +9,6 @@ import util.PathUtil;
 import util.SingleCollect;
 import util.Tuple;
 
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -212,6 +211,7 @@ public class EntityVisitor extends CKVisitor {
         if(!scopeStack.isEmpty()){
             scopeStack.pop();
         }
+        entityStack.pop();
         super.endVisit(node);
     }
 
@@ -386,6 +386,8 @@ public class EntityVisitor extends CKVisitor {
         //pop entity stack
         scopeStack.pop();
 
+        entityStack.pop();
+
         //pop block stack
         blockStack.pop();
 
@@ -393,8 +395,26 @@ public class EntityVisitor extends CKVisitor {
 
     @Override
     public boolean visit(Block node) {
-        if (blockStack.isEmpty()){
+        if (isIf){
+            int localBlockId = createABlock(Configure.LOCAL_BLOCK_IF);
+            blockStack.push(localBlockId);
+        } else if (isEnhancedFor) {
+            int localBlockId = createABlock(Configure.LOCAL_BLOCK_ENHANCED_FOR);
+            blockStack.push(localBlockId);
+        } else if (isFor) {
+            int localBlockId = createABlock(Configure.LOCAL_BLOCK_FOR);
+            blockStack.push(localBlockId);
+        } else if (isCatch){
+            int localBlockId = createABlock(Configure.LOCAL_BLOCK_CATCH);
+            blockStack.push(localBlockId);
+        } else if (isLambda) {
+            int localBlockId = createABlock(Configure.LAMBDA_BLOCK);
+            blockStack.push(localBlockId);
+        } else if (blockStack.isEmpty()){
             int localBlockId = createABlock(Configure.LOCAL_BLOCK_STATIC);
+            blockStack.push(localBlockId);
+        } else {
+            int localBlockId = createABlock(Configure.LOCAL_BLOCK_UNNAMED_BLOCK);
             blockStack.push(localBlockId);
         }
         return super.visit(node);
@@ -403,9 +423,9 @@ public class EntityVisitor extends CKVisitor {
     @Override
     public void endVisit(Block node) {
         //pop block stack
-        if (!blockStack.isEmpty() && blockStack.peek() == -1){
+//        if (!blockStack.isEmpty() && blockStack.peek() == -1){
             blockStack.pop();
-        }
+//        }
         super.endVisit(node);
     }
 
@@ -429,10 +449,10 @@ public class EntityVisitor extends CKVisitor {
 
         if(blockStack.isEmpty()){
             /**
-             * static initial
+             * 1. static initial(finish)
+             * 2. lambda expression contains if block
              */
-//            System.out.println(node.toString());
-//            System.out.println(fileFullPath);
+            System.out.println("Variable declaration in an empty block !!");
         }else{
 //            System.out.println(blockStackForMethod.peek());
 //            int currentBlock = blockStackForMethod.peek();
@@ -832,14 +852,20 @@ public class EntityVisitor extends CKVisitor {
         super.endVisit(node);
     }
 
+    boolean isFor = false;
+    boolean isEnhancedFor = false;
+    boolean isCatch = false;
+    boolean isIf = false;
+
     @Override
     public boolean visit(ForStatement node){
-        if(scopeStack.peek() != -1){
-            if(singleCollect.isMethod(scopeStack.peek())){
-                int localBlockId = createABlock(Configure.LOCAL_BLOCK_FOR);
-                blockStack.push(localBlockId);
-            }
-        }
+//        if(scopeStack.peek() != -1){
+//            if(singleCollect.isMethod(scopeStack.peek())){
+//                int localBlockId = createABlock(Configure.LOCAL_BLOCK_FOR);
+//                blockStack.push(localBlockId);
+//            }
+//        }
+        isFor = true;
 
         //CK
         singleCollect.addCk(Configure.LOOPS, 1);
@@ -849,23 +875,21 @@ public class EntityVisitor extends CKVisitor {
 
     @Override
     public void endVisit(ForStatement node){
-        if(scopeStack.peek() != -1 && !blockStack.isEmpty()) {
-            blockStack.pop();
-        }
+//        if(scopeStack.peek() != -1 && !blockStack.isEmpty()) {
+//            blockStack.pop();
+//        }
+        isFor = false;
     }
 
     @Override
     public boolean visit(EnhancedForStatement node){
-        if(scopeStack.peek() != -1){
-            /**
-             * static initial
-             */
-            if(singleCollect.isMethod(scopeStack.peek())){
-                int localBlockId = createABlock(Configure.LOCAL_BLOCK_ENHANCED_FOR);
-                blockStack.push(localBlockId);
-            }
-        }
-
+//        if(scopeStack.peek() != -1){
+//            if(singleCollect.isMethod(scopeStack.peek())){
+//                int localBlockId = createABlock(Configure.LOCAL_BLOCK_ENHANCED_FOR);
+//                blockStack.push(localBlockId);
+//            }
+//        }
+        isEnhancedFor = true;
         //CK
         singleCollect.addCk(Configure.LOOPS, 1);
 
@@ -874,46 +898,51 @@ public class EntityVisitor extends CKVisitor {
 
     @Override
     public void endVisit(EnhancedForStatement node){
-        if(scopeStack.peek() != -1 && !blockStack.isEmpty()) {
-            blockStack.pop();
-        }
+//        if(scopeStack.peek() != -1 && !blockStack.isEmpty()) {
+//            blockStack.pop();
+//        }
+        isEnhancedFor = false;
     }
 
     @Override
     public boolean visit(CatchClause node) {
-        if(scopeStack.peek() != -1){
-            if(singleCollect.isMethod(scopeStack.peek())){
-                int localBlockId = createABlock(Configure.LOCAL_BLOCK_CATCH);
-                blockStack.push(localBlockId);
-            }
-        }
+//        if(scopeStack.peek() != -1){
+//            if(singleCollect.isMethod(scopeStack.peek())){
+//                int localBlockId = createABlock(Configure.LOCAL_BLOCK_CATCH);
+//                blockStack.push(localBlockId);
+//            }
+//        }
+        isCatch = true;
         return super.visit(node);
     }
 
     @Override
     public void endVisit(CatchClause node) {
-        if(scopeStack.peek() != -1 && !blockStack.isEmpty()) {
-            blockStack.pop();
-        }
+//        if(scopeStack.peek() != -1 && !blockStack.isEmpty()) {
+//            blockStack.pop();
+//        }
+        isCatch = false;
         super.endVisit(node);
     }
 
     @Override
     public boolean visit(IfStatement node) {
-        if(scopeStack.peek() != -1){
-            if(singleCollect.isMethod(scopeStack.peek())){
-                int localBlockId = createABlock(Configure.LOCAL_BLOCK_IF);
-                blockStack.push(localBlockId);
-            }
-        }
+//        if(scopeStack.peek() != -1){
+//            if(singleCollect.isMethod(scopeStack.peek())){
+//                int localBlockId = createABlock(Configure.LOCAL_BLOCK_IF);
+//                blockStack.push(localBlockId);
+//            }
+//        }
+        isIf = true;
         return super.visit(node);
     }
 
     @Override
     public void endVisit(IfStatement node){
-        if(scopeStack.peek() != -1 && !blockStack.isEmpty()) {
-            blockStack.pop();
-        }
+//        if(scopeStack.peek() != -1 && !blockStack.isEmpty()) {
+//            blockStack.pop();
+//        }
+        isIf = false;
     }
 
     @Override
@@ -996,10 +1025,22 @@ public class EntityVisitor extends CKVisitor {
         return super.visit(node);
     }
 
+    boolean isLambda = false;
     @Override
     public boolean visit(LambdaExpression node){
-
+//        if (blockStack.isEmpty()){
+//            int localBlockId = createABlock(Configure.Lambda_BLOCK);
+//            blockStack.push(localBlockId);
+//        }
+        isLambda = true;
         return super.visit(node);
+    }
+    @Override
+    public void endVisit(LambdaExpression node){
+//        if (!blockStack.isEmpty() && blockStack.peek() == -1){
+//            blockStack.pop();
+//        }
+        isLambda = false;
     }
 
 

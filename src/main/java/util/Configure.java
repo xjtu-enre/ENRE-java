@@ -1,7 +1,5 @@
 package util;
 
-import java.io.File;
-
 public class Configure {
 
     private Configure() {}
@@ -130,6 +128,7 @@ public class Configure {
     public static final String LOCAL_BLOCK_SWITCH_CASE_CLAUSE = "SwitchCaseClauseBlock"; //include default
     public static final String LOCAL_BLOCK_TRY = "TryBlock";
     public static final String LOCAL_BLOCK_CATCH = "CatchBlock";
+    public static final String LAMBDA_BLOCK = "LambdaBlock";
 
     //kinds of annotation target type
     public static final String ANNOTATION_TYPE = "Another annotation";

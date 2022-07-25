@@ -538,7 +538,7 @@ public class ProcessEntity {
 
         //iterate the fragment
         for(VariableDeclarationFragment frag : fragment){
-            vars.add(processVarDeclFragment(frag, parentId, rawType, blockId, staticFlag, globalFlag, modifiers, cu, currentBin));
+            vars.add(processVarFragment(frag, parentId, rawType, blockId, staticFlag, globalFlag, modifiers, cu, currentBin));
         }
 
         for (VariableEntity var : vars){
@@ -547,7 +547,7 @@ public class ProcessEntity {
         return variableIds;
     }
 
-    public VariableEntity processVarDeclFragment(VariableDeclarationFragment frag, int parentId, String varType, int blockId,
+    public VariableEntity processVarFragment(VariableDeclarationFragment frag, int parentId, String varType, int blockId,
                                       int staticFlag, boolean globalFlag, ArrayList<String> modifiers, CompilationUnit cu, Tuple<String, Integer> currentBin){
         String varName = frag.getName().getIdentifier();
         int varId = singleCollect.getCurrentIndex();
