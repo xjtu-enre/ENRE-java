@@ -16,7 +16,7 @@ public class OverrideBf extends DepBackfill{
                     for(int childId: entity.getChildrenIds()){
                         int overrideMeth = checkOverride(childId, superMeths);
                         if (overrideMeth != -1){
-                            saveRelation( childId, overrideMeth, Configure.RELATION_OVERRIDE, Configure.RELATION_OVERRIDE_BY);
+                            saveRelation(childId, overrideMeth, Configure.RELATION_OVERRIDE, Configure.RELATION_OVERRIDE_BY, singleCollect.getEntityById(childId).getLocation());
                         }
                     }
                 }
@@ -28,7 +28,7 @@ public class OverrideBf extends DepBackfill{
                         for(int childId: entity.getChildrenIds()){
                             int overrideMeth = checkOverride(childId, superMeths);
                             if (overrideMeth != -1){
-                                saveRelation( childId, overrideMeth, Configure.RELATION_OVERRIDE, Configure.RELATION_OVERRIDE_BY);
+                                saveRelation( childId, overrideMeth, Configure.RELATION_OVERRIDE, Configure.RELATION_OVERRIDE_BY, singleCollect.getEntityById(childId).getLocation());
                             }
                         }
                     }

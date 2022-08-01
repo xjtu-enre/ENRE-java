@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class ScopeEntity extends BaseEntity{
 
 
-    protected ArrayList<String> casType = new ArrayList<>();
+    protected ArrayList<Tuple<String, Location>> casType = new ArrayList<>();
 
     //record the declared class's qualified name of called method and its name
     //like declared class-called method
@@ -21,11 +21,11 @@ public class ScopeEntity extends BaseEntity{
     protected HashMap<String, Integer> name2Id = new HashMap<>();
     protected HashMap<String, String> name2Role = new HashMap<>();
 
-    public void addCastype (String castype){
-        this.casType.add(castype);
+    public void addCastype (String castype, Location loc){
+        this.casType.add(new Tuple<>(castype, loc));
     }
 
-    public ArrayList<String> getCasType(){
+    public ArrayList<Tuple<String, Location>> getCasType(){
         return this.casType;
     }
 

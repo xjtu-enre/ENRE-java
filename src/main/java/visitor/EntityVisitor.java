@@ -280,7 +280,8 @@ public class EntityVisitor extends CKVisitor {
         }
 
         String annotationName = node.getTypeName().toString();
-        singleCollect.getEntityById(entityStack.peek()).addAnnotation(annotationName);
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
+        singleCollect.getEntityById(entityStack.peek()).addAnnotation(annotationName, loc);
 
         return super.visit(node);
     }
@@ -302,7 +303,8 @@ public class EntityVisitor extends CKVisitor {
 
         //add current entities' annotation
         String annotationName = node.getTypeName().toString();
-        singleCollect.getEntityById(entityStack.peek()).addAnnotation(annotationName);
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
+        singleCollect.getEntityById(entityStack.peek()).addAnnotation(annotationName, loc);
 
         //check hidden
 //        if ("UnsupportedAppUsage".equals(annotationName)){
@@ -316,7 +318,8 @@ public class EntityVisitor extends CKVisitor {
     public boolean visit(NormalAnnotation node) {
 
         String annotationName = node.getTypeName().toString();
-        singleCollect.getEntityById(entityStack.peek()).addAnnotation(annotationName);
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
+        singleCollect.getEntityById(entityStack.peek()).addAnnotation(annotationName, loc);
 
         //check hidden
 //        if ("UnsupportedAppUsage".equals(annotationName)){
@@ -705,17 +708,22 @@ public class EntityVisitor extends CKVisitor {
         switch (declaringTypeQualifiedName){
             case "java.lang.Class" :
                 if(methodName.equals("forName") && arguments.size() == 1){
-                    singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(arguments.get(0).toString().replace("\"", ""),
-                            getCurrentLeftSideVar()));
+                    ReflectSite ref = new ReflectSite(arguments.get(0).toString().replace("\"", ""), getCurrentLeftSideVar());
+                    ref.setLocation(loc);
+                    singleCollect.getEntityById(scopeStack.peek()).addReflect(ref);
                 }
                 if(methodName.equals("getMethod") || methodName.equals("getDeclaredMethod")){
                     String refMethName = args[0].replace("\"", "").substring(1);
-                    singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(refMethName, args, getCurrentLeftSideVar(), bindVar));
+                    ReflectSite ref = new ReflectSite(refMethName, args, getCurrentLeftSideVar(), bindVar);
+                    ref.setLocation(loc);
+                    singleCollect.getEntityById(scopeStack.peek()).addReflect(ref);
                 }
                 break;
             case "java.lang.Object" :
                 if (methodName.equals("getClass") && bindVar != -1){
-                    singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(singleCollect.getEntityById(bindVar).getRawType(), getCurrentLeftSideVar()));
+                    ReflectSite ref = new ReflectSite(singleCollect.getEntityById(bindVar).getRawType(), getCurrentLeftSideVar());
+                    ref.setLocation(loc);
+                    singleCollect.getEntityById(scopeStack.peek()).addReflect(ref);
                 }
                 break;
             case "java.lang.reflect.Method" :
@@ -732,8 +740,8 @@ public class EntityVisitor extends CKVisitor {
                         break;
                     case "invoke":
                         for (ReflectSite reflectSite : singleCollect.getEntityById(scopeStack.peek()).getReflects()){
-                            if (reflectSite.getImplementVar() == bindVar && reflectSite.getKind().equals(Configure.REFLECT_METHOD) && reflectSite.getInvoke() == null){
-                                reflectSite.setInvoke(loc);
+                            if (reflectSite.getImplementVar() == bindVar && reflectSite.getKind().equals(Configure.REFLECT_METHOD) && reflectSite.getLocation() == null){
+                                reflectSite.setLocation(loc);
                                 break;
                             }
                         }
@@ -746,7 +754,9 @@ public class EntityVisitor extends CKVisitor {
             if ("java.lang.Class".equals(kind)){
                 if(methodName.equals("getMethod") || methodName.equals("getDeclaredMethod")){
                     String refMethName = args[0].replace("\"", "").substring(1);
-                    singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(refMethName, args, declaringClass, getCurrentLeftSideVar()));
+                    ReflectSite ref = new ReflectSite(refMethName, args, declaringClass, getCurrentLeftSideVar());
+                    ref.setLocation(loc);
+                    singleCollect.getEntityById(scopeStack.peek()).addReflect(ref);
                 }
             }
         }
@@ -770,12 +780,15 @@ public class EntityVisitor extends CKVisitor {
     @Override
     public boolean visit(TypeLiteral node) {
         String type;
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
         try {
             type = node.getType().resolveBinding().getQualifiedName();
         }catch (NullPointerException e){
             type = node.getType().toString();
         }
-        singleCollect.getEntityById(scopeStack.peek()).addReflect(new ReflectSite(type, getCurrentLeftSideVar()));
+        ReflectSite ref = new ReflectSite(type, getCurrentLeftSideVar());
+        ref.setLocation(loc);
+        singleCollect.getEntityById(scopeStack.peek()).addReflect(ref);
         return super.visit(node);
     }
 
@@ -805,6 +818,7 @@ public class EntityVisitor extends CKVisitor {
     @Override
     public boolean visit(Assignment node){
         isAssignment = true;
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
         //for a local var
         if(singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity){
             int methodId = scopeStack.peek();
@@ -821,10 +835,10 @@ public class EntityVisitor extends CKVisitor {
                         if (((VariableEntity)singleCollect.getEntityById(varId)).getValue() == null){
                             ((VariableEntity)singleCollect.getEntityById(varId)).setSetBy(methodId);
                             ((VariableEntity)singleCollect.getEntityById(varId)).setValue(node.getRightHandSide().toString());
-                            ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "set");
+                            ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "set", loc);
                         }
                         else {
-                            ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "modify");
+                            ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "modify", loc);
                         }
                     }
                 }
@@ -947,8 +961,9 @@ public class EntityVisitor extends CKVisitor {
 
     @Override
     public boolean visit(CastExpression node){
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
         if(scopeStack.peek() != -1 && !scopeStack.isEmpty() && (singleCollect.getEntityById(scopeStack.peek()) instanceof ScopeEntity)){
-            ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCastype(node.getType().toString());
+            ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCastype(node.getType().toString(), loc);
         }
         return super.visit(node);
     }
@@ -1011,13 +1026,14 @@ public class EntityVisitor extends CKVisitor {
     @Override
     public boolean visit(SimpleName node) {
         String varName = node.getIdentifier();
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
 
         if (!scopeStack.isEmpty() && (singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity) && !isQualifiedName && !isParameterDeclaration){
             processVarInMethod(varName, scopeStack.peek());
             int methodId = scopeStack.peek();
             if(!((MethodEntity)singleCollect.getEntityById(methodId)).getName2Usage().containsKey(varName) &&
                     ((MethodEntity)singleCollect.getEntityById(methodId)).getName2Id().containsKey(varName)) {
-                ((MethodEntity) singleCollect.getEntityById(methodId)).addName2Usage(varName, "use");
+                ((MethodEntity) singleCollect.getEntityById(methodId)).addName2Usage(varName, "use", loc);
             }
         }
 

@@ -10,11 +10,11 @@ public class ContainDefineBf extends DepBackfill{
         for(BaseEntity entity : singleCollect.getEntities()){
             if((entity instanceof PackageEntity || entity instanceof FileEntity) && !entity.getChildrenIds().isEmpty()) {
                 for(int id : entity.getChildrenIds()){
-                    saveRelation(entity.getId(), id, Configure.RELATION_CONTAIN, Configure.RELATION_CONTAINED_BY);
+                    saveRelation(entity.getId(), id, Configure.RELATION_CONTAIN, Configure.RELATION_CONTAINED_BY, singleCollect.getEntityById(id).getLocation());
                 }
             }else if((entity instanceof TypeEntity || entity instanceof MethodEntity) && !entity.getChildrenIds().isEmpty()){
                 for(int id :entity.getChildrenIds()){
-                    saveRelation(entity.getId(), id, Configure.RELATION_DEFINE, Configure.RELATION_DEFINED_BY);
+                    saveRelation(entity.getId(), id, Configure.RELATION_DEFINE, Configure.RELATION_DEFINED_BY, singleCollect.getEntityById(id).getLocation());
                 }
             }
         }

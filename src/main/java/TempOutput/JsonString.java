@@ -240,7 +240,15 @@ public class JsonString {
                         } catch (NullPointerException e){
                             reObj.put("invoke", true);
                         }
+                    } else {
+                        JSONObject locObj = new JSONObject();
+                        locObj.put("startLine", type.getLocation().getStartLine());
+                        locObj.put("endLine", type.getLocation().getEndLine());
+                        locObj.put("startColumn", type.getLocation().getStartColumn());
+                        locObj.put("endColumn", type.getLocation().getEndColumn());
+                        reObj.accumulate("loc", locObj);
                     }
+
                     subObj.accumulate("values",reObj);
                     obj.accumulate("cells",subObj);
 

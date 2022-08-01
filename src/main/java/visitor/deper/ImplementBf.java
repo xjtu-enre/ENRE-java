@@ -36,7 +36,7 @@ public class ImplementBf extends DepBackfill{
 //                    }
                     ((ClassEntity) entity).getInterfaces().replace(interfaceName, interfaceId);
                     if(interfaceId != -1){
-                       saveRelation(entity.getId(), interfaceId, Configure.RELATION_IMPLEMENT, Configure.RELATION_IMPLEMENTED_BY);
+                       saveRelation(entity.getId(), interfaceId, Configure.RELATION_IMPLEMENT, Configure.RELATION_IMPLEMENTED_BY, entity.getLocation());
                     }
                 }
             }
@@ -58,7 +58,7 @@ public class ImplementBf extends DepBackfill{
 //                    }
                     if(interfaceId != -1){
                         ((EnumEntity) entity).getInterfaces().replace(interfaceName, interfaceId);
-                        saveRelation(entity.getId(), interfaceId, Configure.RELATION_IMPLEMENT, Configure.RELATION_IMPLEMENTED_BY);
+                        saveRelation(entity.getId(), interfaceId, Configure.RELATION_IMPLEMENT, Configure.RELATION_IMPLEMENTED_BY, entity.getLocation());
                     }
                 }
             }

@@ -1,7 +1,6 @@
 package visitor.deper;
 
 import entity.BaseEntity;
-import entity.ClassEntity;
 import entity.TypeEntity;
 import entity.properties.ReflectSite;
 import util.Configure;
@@ -22,7 +21,7 @@ public class ReflectBf extends DepBackfill{
                         if(singleCollect.getCreatedType().containsKey(reflect.getReflectObj())){
                             reflectClass = singleCollect.getCreatedType().get(reflect.getReflectObj());
                             reflect.setReflectObjId(reflectClass);
-                            saveRelation(entity.getId(), reflectClass, Configure.RELATION_REFLECT, Configure.RELATION_REFLECTED_BY);
+                            saveRelation(entity.getId(), reflectClass, Configure.RELATION_REFLECT, Configure.RELATION_REFLECTED_BY, reflect.getLocation());
                         }
                     }
                     //getMethod reflect method
@@ -49,7 +48,7 @@ public class ReflectBf extends DepBackfill{
                                     }
                                 }
                                 if(reflectId != -1){
-                                    saveRelation(entity.getId(), reflectId, Configure.RELATION_REFLECT, Configure.RELATION_REFLECTED_BY, reflect.getInvoke(), reflect.getModifyAccessible(), true);
+                                    saveRelation(entity.getId(), reflectId, Configure.RELATION_REFLECT, Configure.RELATION_REFLECTED_BY, reflect.getLocation(), reflect.getModifyAccessible(), true);
                                 }
                             } catch (ClassCastException e){
                                 //Reflect not type

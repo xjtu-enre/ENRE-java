@@ -26,7 +26,7 @@ public class MethodEntity extends ScopeEntity{
     //record var information
     protected HashMap<String, Integer> name2Id = new HashMap<>();
     protected HashMap<String, String> name2Role = new HashMap<>();
-    protected HashMap<String, ArrayList<String>> name2Usage = new HashMap<>();
+    protected HashMap<String, ArrayList<Tuple<String, Location>>> name2Usage = new HashMap<>();
 
     public MethodEntity(int methodId, String methodName){
         this.id = methodId;
@@ -140,16 +140,16 @@ public class MethodEntity extends ScopeEntity{
         }
     }
 
-    public HashMap<String, ArrayList<String>> getName2Usage() {
+    public HashMap<String, ArrayList<Tuple<String, Location>>> getName2Usage() {
         return name2Usage;
     }
 
-    public void addName2Usage(String name, String usage){
+    public void addName2Usage(String name, String usage, Location loc){
         if (!name2Usage.containsKey(name)) {
-            name2Usage.put(name, new ArrayList<String>());
+            name2Usage.put(name, new ArrayList<Tuple<String, Location>>());
         }
         if(!name2Usage.get(name).contains(usage)) {
-            name2Usage.get(name).add(usage);
+            name2Usage.get(name).add(new Tuple<String, Location>(name, loc));
         }
     }
 

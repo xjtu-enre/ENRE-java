@@ -16,7 +16,7 @@ public class ParametersBf extends DepBackfill{
                 ArrayList<Integer> paras = ((MethodEntity) entity).getParameters();
                 if(!paras.isEmpty()){
                     for(Integer para :paras){
-                        saveRelation(entity.getId(),para,Configure.RELATION_PARAMETER,Configure.RELATION_PARAMETERED_BY);
+                        saveRelation(entity.getId(),para,Configure.RELATION_PARAMETER,Configure.RELATION_PARAMETERED_BY, singleCollect.getEntityById(para).getLocation());
                     }
                 }
             }

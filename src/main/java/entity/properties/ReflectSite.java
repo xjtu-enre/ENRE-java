@@ -23,7 +23,7 @@ public class ReflectSite {
     int bindVar;
 
     boolean modifyAccessible;
-    Location invoke;
+    Location location;
 
     public ReflectSite(String classQualifiedName, int implementVar){
         this.reflectObj = classQualifiedName;
@@ -103,12 +103,12 @@ public class ReflectSite {
         this.modifyAccessible = setAccessible;
     }
 
-    public Location getInvoke() {
-        return invoke;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setInvoke(Location invoke) {
-        this.invoke = invoke;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public void setDeclaredClass(String declaredClass){

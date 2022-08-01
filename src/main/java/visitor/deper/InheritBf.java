@@ -31,7 +31,7 @@ public class InheritBf extends DepBackfill{
 //                }
                 ((ClassEntity) entity).setSuperClassId(superId);
                 if(superId != -1){
-                    saveRelation(entity.getId(), superId, Configure.RELATION_INHERIT, Configure.RELATION_INHERITED_BY);
+                    saveRelation(entity.getId(), superId, Configure.RELATION_INHERIT, Configure.RELATION_INHERITED_BY, entity.getLocation());
                 }
             }
             else if(entity instanceof InterfaceEntity && ((InterfaceEntity) entity).getExtendsNames().size()!=0){
@@ -58,7 +58,7 @@ public class InheritBf extends DepBackfill{
                ((InterfaceEntity) entity).addExtendsIds(extendsIds);
                 for(int id : extendsIds){
                     if(id != -1){
-                        saveRelation(entity.getId(), id, Configure.RELATION_INHERIT, Configure.RELATION_INHERITED_BY);
+                        saveRelation(entity.getId(), id, Configure.RELATION_INHERIT, Configure.RELATION_INHERITED_BY, entity.getLocation());
                     }
                 }
             }

@@ -19,7 +19,7 @@ public class BaseEntity {
     protected ArrayList<Relation> relation = new ArrayList<>();
     protected Location location = new Location();
 
-    protected ArrayList<String> annotations = new ArrayList<>();
+    protected ArrayList<Tuple<String, Location>> annotations = new ArrayList<>();
 
     protected ArrayList<ReflectSite> reflects = new ArrayList<>();
 
@@ -127,11 +127,11 @@ public class BaseEntity {
         this.location = location;
     }
 
-    public void addAnnotation(String annotation){
-        this.annotations.add(annotation);
+    public void addAnnotation(String annotation, Location loc){
+        this.annotations.add(new Tuple<>(annotation, loc));
     }
 
-    public ArrayList<String> getAnnotations(){
+    public ArrayList<Tuple<String, Location>> getAnnotations(){
         return this.annotations;
     }
 
