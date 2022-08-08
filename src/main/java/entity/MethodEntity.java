@@ -146,11 +146,9 @@ public class MethodEntity extends ScopeEntity{
 
     public void addName2Usage(String name, String usage, Location loc){
         if (!name2Usage.containsKey(name)) {
-            name2Usage.put(name, new ArrayList<Tuple<String, Location>>());
+            name2Usage.put(name, new ArrayList<>());
         }
-        if(!name2Usage.get(name).contains(usage)) {
-            name2Usage.get(name).add(new Tuple<String, Location>(name, loc));
-        }
+        name2Usage.get(name).add(new Tuple<>(usage, loc));
     }
 
 
