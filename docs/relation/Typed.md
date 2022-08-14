@@ -1,14 +1,14 @@
-# Dependency: Typed
+## Dependency: Typed
 
 A variable's type is one of the (self-defined) Class or other types.
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name: Typed
 ```
 
-### Syntax:
+#### Syntax: Typed Definitions
 
 ```text
 VariableDeclarationStatement:
@@ -20,12 +20,12 @@ FieldDeclaration:
          { , VariableDeclarationFragment } ;
 ```
 
-#### Examples:
+##### Examples
 
-* Variable Declaration Statement
+###### Variable Declaration Statement
 
 ```java
-//Foo.java
+//// Foo.java
 public class Foo {
     public Hello getHello() {
         Hello hello = new Hello();
@@ -42,31 +42,31 @@ name: Type A Var
 entity:
     items:
         -   name: Hello
-            category : Class
+            type : Class
+            loc: 7:7
         -   name: Foo
-            category : Class
+            type : Class
+            loc: 1:14
         -   name: getHello
-            category : Method
-            qualifiedName: Foo.getHello
+            type : Method
+            qualified: Foo.getHello
+            loc: 2:18
         -   name: hello
-            category : Variable
-            qualifiedName: Foo.getHello.hello
+            type : Variable
+            qualified: Foo.getHello.hello
+            loc: 3:15
 relation:
     items:
-        -   src: file0/hello
-            dest: file0/Hello
-            category: Typed
-            r:
-                d: x
-                e: .
-                s: x
-                u: .
+        -   from: Variable:'hello'
+            to: Class:'Hello'
+            type: Typed
+            loc: file0:3:15
 ```
 
-* Field Declaration
+###### Field Declaration
 
 ```java
-//Foo.java
+//// Foo.java
 public class Foo{
     Hello hello = new Hello();
 }
@@ -81,20 +81,19 @@ name: Type A Field
 entity:
     items:
         -   name: Hello
-            category : Class
+            type : Class
+            loc: 5:14
         -   name: Foo
-            category : Class
+            type : Class
+            loc: 1:14
         -   name: hello
-            category : Variable
-            qualifiedName: Foo.hello
+            type : Variable
+            qualified: Foo.hello
+            loc: 2:11
 relation:
     items:
-        -   src: file0/hello
-            dest: file0/Hello
-            category: Typed
-            r:
-                d: x
-                e: .
-                s: x
-                u: .
+        -   from: Variable:'hello'
+            to: Class:'Hello'
+            type: Typed
+            loc: file0:2:11
 ```

@@ -1,14 +1,14 @@
-# Entity: Annotation Member
+## Entity: Annotation Member
 
-`Annotation Member` looks a lot like a method, which provides extra actions about this annotation.
+ A `Annotation Member` looks a lot like a method, which provides extra actions about this annotation.
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name: Annotation Member
 ```
 
-### Syntax: AnnotationMember Definitions
+#### Syntax: AnnotationMember Definitions
 
 ```text
 AnnotationTypeMemberDeclaration:
@@ -16,9 +16,9 @@ AnnotationTypeMemberDeclaration:
        Type Identifier ( ) [ default Expression ] ;
 ```
 
-#### Examples:
+##### Examples
 
-* Annotation member declaration
+###### Annotation member declaration
 
 ```java
 @interface Foo {
@@ -30,15 +30,12 @@ AnnotationTypeMemberDeclaration:
 ```yaml
 name: Annotation Member Declaration
 entity:
-    filter: Annotation Member
-    r:
-        d: Function
-        e: .
-        s: Field
-        u: Abstract Method
+    type: Annotation Member
     items:
         -   name: bar
-            qualifiedName: Foo.bar
+            qualified: Foo.bar
+            loc: 2:11
         -   name: baz
-            qualifiedName: Foo.baz
+            qualified: Foo.baz
+            loc: 3:8
 ```

@@ -1,13 +1,13 @@
-# Entity: Method
+## Entity: Method
 
 `Method` is an entity inside the `class` to perform specific activity.
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name: Method
 ```
-### Syntax: Method Definitions
+#### Syntax: Method Definitions
 
 ```text
 MethodDeclaration:
@@ -32,9 +32,9 @@ CompactConstructorDeclaration:
         ( Block | ; )
 ```
 
-#### Examples:
+##### Examples
 
-* Method declaration
+###### Method declaration
 
 ```java
 class Person {
@@ -53,15 +53,12 @@ class Person {
 ```yaml
 name: Method Declaration
 entity:
-    filter: Method
-    r:
-        d: Function
-        e: .
-        s: .
-        u: .
+    type: Method
     items:
         -   name: getName
-            qualifiedName: helloJDT.pkg.test.Person.getName
+            qualified: helloJDT.pkg.test.Person.getName
+            loc: 4:19
         -   name: setName
-            qualifiedName: helloJDT.pkg.test.Person.setName
+            qualified: helloJDT.pkg.test.Person.setName
+            loc: 8:17
 ```

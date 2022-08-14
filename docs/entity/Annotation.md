@@ -1,13 +1,13 @@
-# Entity: Annotation
+## Entity: Annotation
 
 `Annotations`, a form of metadata, provide data about a program that is not part of the program itself. Annotations have no direct effect on the operation of the code they annotate.
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name: Annotation
 ```
-### Syntax: Annotation Definitions
+#### Syntax: Annotation Definitions
 
 ```text
 AnnotationTypeDeclaration:
@@ -21,9 +21,9 @@ AnnotationTypeDeclaration:
        AnnotationTypeDeclaration
 ```
 
-#### Examples:
+##### Examples
 
-* Annotation declared in default package
+###### Annotation declared in default package
 
 ```java
 @interface Foo {
@@ -34,18 +34,14 @@ AnnotationTypeDeclaration:
 ```yaml
 name: Annotation In Default Package
 entity:
-    filter: Annotation
-    r:
-        d: Type
-        e: .
-        s: .
-        u: xInterface
+    type: Annotation
     items:
         -   name: Foo
-            qualifiedName: Foo
+            qualified: Foo
+            loc: 1:12
 ```
 
-* Annotation declared in explicitly named package
+###### Annotation declared in explicitly named package
 
 ```java
 package foo;
@@ -58,13 +54,9 @@ package foo;
 ```yaml
 name: Annotation In Named Package
 entity:
-    filter: Annotation
+    type: Annotation
     items:
         -   name: Bar
-            qualifiedName: foo.Bar
-            r:
-                d: Type
-                e: .
-                s: .
-                u: .
+            qualified: foo.Bar
+            loc: 3:12
 ```

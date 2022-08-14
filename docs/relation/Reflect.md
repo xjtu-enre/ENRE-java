@@ -1,11 +1,11 @@
-# Dependency: Reflect
+## Dependency: Reflect
 `Reflection` is commonly used by programs which require the ability to examine or modify the runtime behavior of applications running in the Java virtual machine. This is a relatively advanced feature and should be used only by developers who have a strong grasp of the fundamentals of the language. With that caveat in mind, reflection is a powerful technique and can enable applications to perform operations which would otherwise be impossible.
-## Supported pattern
+### Supported Patterns
 ```yaml
 name : Reflect
 ```
-### Syntax : 
-```txt
+#### Syntax: Reflect Definitions
+```text
 Retrieving Class Objects:  
     Object.getClass()
     The .class Syntax
@@ -18,11 +18,11 @@ Obtaining Method Type Information:
 invoke a method:
     method.invoke()
 ```
-### Examples : 
+##### Examples
 
-* Obtaining Method
+###### Obtaining Method
 ```java
-//Person.java
+//// Person.java
 public class Person {
         private String name;
         private int age;
@@ -61,7 +61,7 @@ public class Person {
     }
 ```
 ```java
-//ReflectDemo.java
+//// ReflectDemo.java
 import java.lang.reflect.Method;
 import Person;
 
@@ -87,34 +87,39 @@ name: Obtaining Method
 entity:
     items:
         -   name: Person
-            category: Class
+            type: Class
+            loc: file0:1:14
         -   name: fun
-            qualifiedName: Person.fun
-            category: Method
+            qualified: Person.fun
+            type: Method
+            loc: file0:29:21
+        -   name: fun
+            qualified: Person.fun
+            type: Method
+            loc: file0:33:21
         -   name: ReflectDemo
-            category: Class
+            type: Class
+            loc: file1:4:14
         -   name: main
-            qualifiedName: ReflectDemo.main
-            category: Method
+            qualified: ReflectDemo.main
+            type: Method
+            loc: file1:6:24
 relation:
-    r:
-        d: x
-        e: .
-        s: x
-        u: x
     items:
-        -   src: file1/Method[0]
-            dest: file0/"fun"[0]
-            category: Reflect
-        -   src: file1/Method[0]
-            dest: file0/"fun"[1]
-            category: Reflect
+        -   from: Method:'method'
+            to: Method:'fun'[@loc=file0:29:21]
+            type: Reflect
+            loc: file1:12:22
+        -   from: Method:'method'
+            to: Method:'fun'[@loc=file0:33:21]
+            type: Reflect
+            loc: file1:10:29
 ```
 
-* Retrieving Class Objects (Class.forName())
+###### Retrieving Class Objects (Class.forName())
 
 ```java
-//Reflect.java
+//// Reflect.java
 package helloJDT.pkg;
 
 public class Reflect {
@@ -139,30 +144,29 @@ name: Retrieving Class Objects (Class.forName())
 entity:
     items:
         -   name: pkg
-            category: Package
-            qualifiedName: helloJDT.pkg
+            type: Package
+            qualified: helloJDT.pkg
+            loc: 1:9
         -   name: Reflect
-            qualifiedName: helloJDT.pkg.Reflect
-            category: Class
+            qualified: helloJDT.pkg.Reflect
+            type: Class
+            loc: 3:14
         -   name: main
-            qualifiedName: helloJDT.pkg.Reflect.main
-            category: Method
+            qualified: helloJDT.pkg.Reflect.main
+            type: Method
+            loc: 5:25
 relation:
-    r:
-        d: x
-        e: .
-        s: x
-        u: x
     items:
-        -   src: file0/Method[0]
-            dest: file0/Class[0]
-            category: Reflect
+        -   from: Method:'main'
+            to: Class:'Reflect'
+            type: Reflect
+            loc: file0:8:34
 ```
 
-* Retrieving Class Objects (The .class Syntax)
+###### Retrieving Class Objects (The .class Syntax)
 
 ```java
-//Person.java
+//// Person.java
 public class Person {
                private String name;
                private int age;
@@ -202,7 +206,7 @@ public class Person {
 ```
 
 ```java
-//ReflectDemo.java
+//// ReflectDemo.java
 import java.lang.reflect.Method;
 
 public class ReflectDemo {
@@ -228,31 +232,35 @@ name: Retrieving Class Objects (The .class Syntax)
 entity:
     items:
         -   name: Person
-            category: Class
+            type: Class
+            loc: file0:1:14
         -   name: fun
-            qualifiedName: Person.fun
-            category: Method
+            qualified: Person.fun
+            type: Method
+            loc: file0:29:28
+        -   name: fun
+            qualified: Person.fun
+            type: Method
+            loc: file0:33:28
         -   name: ReflectDemo
-            category: Class
+            type: Class
+            loc: file1:3:14
         -   name: main
-            qualifiedName: ReflectDemo.main
-            category: Method
+            qualified: ReflectDemo.main
+            type: Method
+            loc: file1:5:24
 relation:
-    r:
-        d: x
-        e: .
-        s: x
-        u: x
     items:
-        -   src: file1/Method[0]
-            dest: file0/Class[0]
-            category: Reflect
+        -   from: Method:'main'
+            to: Class:'Person'
+            type: Reflect
+            loc: file1:8:17
 ```
 
-* Retrieving Class Objects (Object.getClass())
+###### Retrieving Class Objects (Object.getClass())
 
 ```java
-//Person.java
+//// Person.java
 public class Person {
         private String name;
         private int age;
@@ -291,7 +299,7 @@ public class Person {
     }
 ```
 ```java
-//ReflectDemo.java
+//// ReflectDemo.java
 import java.lang.reflect.Method;
 import Person;
 
@@ -317,23 +325,27 @@ name: Retrieving Class Objects (Object.getClass())
 entity:
     items:
         -   name: Person
-            category: Class
+            type: Class
+            loc: file0:1:14
         -   name: fun
-            qualifiedName: Person.fun
-            category: Method
+            qualified: Person.fun
+            type: Method
+            loc: file0:29:21
+        -   name: fun
+            qualified: Person.fun
+            loc: file0:33:21
+            type: Method
         -   name: ReflectDemo
-            category: Class
+            type: Class
+            loc: file1:4:14
         -   name: main
-            qualifiedName: ReflectDemo.main
-            category: Method
+            qualified: ReflectDemo.main
+            type: Method
+            loc: file1:6:24
 relation:
-    r:
-        d: x
-        e: .
-        s: x
-        u: x
     items:
-        -   src: file1/Method[0]
-            dest: file0/Class[0]
-            category: Reflect
+        -   from: Method:'main'
+            to: Class:'Person'
+            type: Reflect
+            loc: file1:9:23
 ```

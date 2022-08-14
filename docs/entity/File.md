@@ -1,25 +1,25 @@
-# Entity : File
+## Entity : File
 
 The `.java` files which save the whole java information
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name: File
 ```
 
-### Syntax: Null
+#### Syntax: Null
 
 ```text
 While you create a type, first you need to create a file.
 ```
 
-#### Examples:
+##### Examples
 
-* Create A File
+###### Create A File
 
 ```java
-//Foo.java
+//// Foo.java
 package hello;
 
 public class Foo{
@@ -34,13 +34,9 @@ class Bar{
 ```yaml
 name: File Created
 entity:
-    filter: File
-    r:
-        d: .
-        e: .
-        s: .
-        u: .
+    type: File
     items:
         -   name: Foo.java
-            qualifiedName : hello.Foo.java
+            qualified: hello.Foo.java
+            loc: file0
 ```

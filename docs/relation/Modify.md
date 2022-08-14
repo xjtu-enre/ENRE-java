@@ -1,14 +1,14 @@
-# Dependency: Modify
+## Dependency: Modify
 
 A variable, which is read and write at the same time, is recognized as modified (Otherwise may only Use or Set).
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name: Modify
 ```
 
-### Syntax: 
+#### Syntax: Modify Definitions
 
 ```text
 Assignment:
@@ -16,12 +16,12 @@ Assignment:
     var += / -= / *= / /= / ...
 ```
 
-#### Examples:
+##### Examples
 
-* Modify a field
+###### Modify a field
 
 ```java
-// Foo.java
+//// Foo.java
 public class Foo {
     int foo = 0;
     
@@ -36,29 +36,28 @@ name: Modify Field
 entity:
     items:
         -   name: Foo
-            category : Class
+            type : Class
+            loc: 1:14
         -   name: foo
-            category : Variable
-            qualifiedName: Foo.foo
+            type : Variable
+            qualified: Foo.foo
+            loc: 2:9
         -   name: counting
-            category : Method
-            qualifiedName: Foo.counting
+            type : Method
+            qualified: Foo.counting
+            loc: 4:17
 relation:
     items:
-        -   src: file0/counting
-            dest: file0/foo
-            category: Modify
-            r:
-                d: x/weak/Use
-                e: xUseVar
-                s: o/weak/Use
-                u: .
+        -   from: Method:'counting'
+            to: Variable:'foo'
+            type: Modify
+            loc: file0:5:9
 ```
 
-* Modify Local Var
+###### Modify Local Var
 
 ```java
-//Foo.java
+//// Foo.java
 public class Foo {
     public int counting(int i) {
         int j = i % 2;              // <--- Set
@@ -75,21 +74,20 @@ name: Modify Local Var
 entity:
     items:
         -   name: Foo
-            category : Class
+            type : Class
+            loc: 1:14
         -   name: j
-            category : Variable
-            qualifiedName: Foo.counting.j
+            type : Variable
+            qualified: Foo.counting.j
+            loc: 3:13
         -   name: counting
-            category : Method
-            qualifiedName: Foo.counting
+            type : Method
+            qualified: Foo.counting
+            loc: 2:16
 relation:
     items:
-        -   src: file0/counting
-            dest: file0/j
-            category: Modify
-            r:
-                d: o/weak/Use
-                e: x
-                s: x
-                u: .
+        -   from: Method:'counting'
+            to: Variable:'j'
+            type: Modify
+            loc: file0:3:13
 ```

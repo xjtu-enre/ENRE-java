@@ -1,14 +1,14 @@
-# Dependency: Annotate
+## Dependency: Annotate
 
 A self-defined annotation annotate different kinds of entities.
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name: Annotate
 ```
 
-### Syntax: 
+#### Syntax: Annotate Definitions
 
 ```text
 MarkerAnnotation:
@@ -21,12 +21,12 @@ SingleMemberAnnotation:
    @ TypeName ( Expression  )
 ```
 
-#### Examples:
+##### Examples
 
-* Marker annotation
+###### Marker annotation
 
 ```java
-// MailController.java
+//// MailController.java
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -47,27 +47,25 @@ name: Marker Annotation
 entity:
     items:
         -   name: testMail
-            category : Method
-            qualifiedName: MailController.testMail
+            qualified: MailController.testMail
+            loc: 10:17
+            type: Method
             modifiers: public
         -   name: DisableOnCondition
-            category : Annotation
+            loc: 4:12
+            type: Annotation
 relation:
     items:
-        -   src: file0/DisableOnCondition
-            dest: file0/testMail
-            category: Annotate
-            r:
-                d: Annotation
-                e: .
-                s: Annotation Use
-                u: x
+        -   from: Annotation:'DisableOnCondition'
+            to: Method:'testMail'
+            loc: file0:11:17
+            type: Annotate
 ```
 
-* Normal annotation
+###### Normal annotation
 
 ```java
-// MailController.java
+//// MailController.java
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -89,27 +87,25 @@ name: Normal Annotation
 entity:
     items:
         -   name: testMail
-            category : Method
-            qualifiedName: MailController.testMail
+            qualified: MailController.testMail
+            loc: 11:17
+            type: Method
             modifiers: public
         -   name: DisableOnCondition
-            category : Annotation
+            loc: 4:12
+            type: Annotation
 relation: 
     items:
-        -   src: file0/DisableOnCondition
-            dest: file0/testMail
-            category: Annotate
-            r:
-                d: Annotation
-                e: .
-                s: Annotation Use
-                u: x
+        -   from: Annotation:'DisableOnCondition'
+            to: Method:'testMail'
+            loc: file0:12:17
+            type: Annotate
 ```
 
-* Single member annotation
+###### Single member annotation
 
 ```java
-// MailController.java
+//// MailController.java
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -130,19 +126,17 @@ name: Single Member Annotation
 entity:
     items:
         -   name: testMail
-            category : Method
-            qualifiedName: MailController.testMail
+            qualified: MailController.testMail
+            loc: 10:17
+            type: Method
             modifiers: public
         -   name: DisableOnCondition
-            category : Annotation
+            loc: 4:12
+            type: Annotation
 relation:
     items:
-        -   src: file0/DisableOnCondition
-            dest: file0/testMail
-            category: Annotate
-            r:
-                d: Annotation
-                e: .
-                s: Annotation Use
-                u: x
+        -   from: Annotation:'DisableOnCondition'
+            to: Method:'testMail'
+            loc: file0:11:17
+            type: Annotate
 ```

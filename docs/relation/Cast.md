@@ -1,26 +1,26 @@
-# Dependency: Cast
+## Dependency: Cast
 
 An entity casts another (self-defined) type to a variable in its scope.
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name: Cast
 ```
 
-### Syntax: 
+#### Syntax: Cast Difinations
 
 ```text
 CastExpression:
     ( Type ) Expression
 ```
 
-#### Examples:
+##### Examples
 
-* Cast expression
+###### Cast expression
 
 ```java
-// Foo.java
+//// Foo.java
 public class Foo{
     public void foo(Object barLike){
         Bar mBar = (Bar)barLike;
@@ -37,18 +37,16 @@ name: Cast Expression
 entity:
     items:
         -   name: Bar
-            category : Class
+            type: Class
+            loc: 7:7
         -   name: foo
-            category : Method
-            qualifiedName: Foo.foo
+            type: Method
+            qualified: Foo.foo
+            loc: 2:17
 relation:
     items:
-        -   src: file0/foo
-            dest: file0/Bar
-            category: Cast
-            r:
-                d: .
-                e: .
-                s: o/Weak/Type Use
-                u: Use Cast
+        -   from: Method:'foo'
+            to: Class:'Bar'
+            type: Cast
+            loc: file0:3:9
 ```

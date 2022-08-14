@@ -1,13 +1,13 @@
-# Dependency: Override
+## Dependency: Override
 
 A type override its super class method, which has the same name, return and parameter type of super class's method.
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name: Override
 ```
-### Syntax:
+#### Syntax: Override Definitions
 
 ```text
 Override:
@@ -15,19 +15,19 @@ Override:
     public Class extends SuperClass { void method() }
 ```
 
-#### Examples:
+##### Examples
 
-* Override Superclass Method
+###### Override Superclass Method
 
 ```java
-// AbstractException.java
+//// AbstractException.java
 public abstract class AbstractException {
     public abstract String getStatus();
 }
 ```
 
 ```java
-// AuthenticationException.java
+//// AuthenticationException.java
 import AbstractException;
 public class AuthenticationException extends AbstractException {
     @Override
@@ -42,48 +42,49 @@ name: Override Superclass Method
 entity:
     items:
         -   name: AbstractException
-            category : Class
+            type : Class
             modifiers: public abstract
+            loc: file0:1:23
             File: AbstractException.java
         -   name: AuthenticationException
-            category : Class
-            qualifiedName: AuthenticationException
+            type : Class
+            qualified: AuthenticationException
+            loc: file1:1:14
             modifiers: public
             File: AuthenticationException.java
         -   name: getStatus
-            category : Method
-            qualifiedName: AbstractException.getStatus
+            type : Method
+            qualified: AbstractException.getStatus
+            loc: file0:2:28
             File: AbstractException.java
         -   name: getStatus
-            category : Method
-            qualifiedName: AuthenticationException.getStatus
+            type : Method
+            qualified: AuthenticationException.getStatus
+            loc: file1:4:19
             File: AuthenticationException.java 
 relation:
     items:
-        -   src: file1/getStatus
-            dest: file0/getStatus
-            category: Override
-            r:
-                d: x
-                e: .
-                s: .
-                u: .
+        -   from: Method:'getStatus'
+            to: Method:'getStatus'
+            type: Override
+            loc: file1:4:19
 ```
 
-* NOT overriding parent's method
+###### NOT overriding parent's method
 
 `Override` is forcefully conform to some conditions to be performed, i.e. the method signature has to be as equal or a sub-signature.
 
 ```java
-// Foo.java
+//// Foo.java
 public class Foo {
     public void doThings() {}
     public Foo doNeatThings() {}
     public int failed() {}
+}
 ```
 
 ```java
-// Bar.java
+//// Bar.java
 import Foo;
 
 public class Bar extends Foo {
@@ -100,46 +101,42 @@ name: The Condition Of Overriding
 entity:
     items:
         -   name: Foo
-            category: Class
+            type: Class
+            loc: file0:1:14
         -   name: doThings
-            category: Method
+            type: Method
+            loc: file0:2:17
         -   name: doNeatThings
-            category: Method
+            type: Method
+            loc: file0:3:16
         -   name: failed
-            category: Method
+            type: Method
+            loc: file0:4:16
         -   name: Bar
-            category: Class
+            type: Class
+            loc: file1:3:14
         -   name: doThings
-            category: Method
+            type: Method
+            loc: file1:4:17
         -   name: doNeatThings
-            category: Method
+            type: Method
+            loc: file1:6:16
         -   name: failed
-            category: Method
+            type: Method
+            loc: file1:8:17
 relation:
     items:
-        -   src: file1/doThings
-            dest: file0/doThings
-            category: Override
-            r:
-                d: x
-                e: .
-                s: .
-                u: .
-        -   src: file1/doNeatThings
-            dest: file0/doNeatThings
-            category: Override
-            r:
-                d: x
-                e: x
-                s: .
-                u: .
-        -   src: file1/failed
-            dest: file0/failed
-            category: Override
+        -   from: Method:'doThings'
+            to: Method:'doThings'
+            type: Override
+            loc: file1:4:17
+        -   from: Method:'doNeatThings'
+            to: Method:'doNeatThings'
+            type: Override
+            loc: file1:6:16
+        -   from: Method:'failed'
+            to: Method:'failed'
+            type: Override
+            loc: file1:8:17
             negative: true
-            r:
-                d: x!
-                e: x
-                s: .
-                u: .
 ```

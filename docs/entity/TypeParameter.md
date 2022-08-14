@@ -1,26 +1,26 @@
-# Entity: TypeParameter
+## Entity: TypeParameter
 
 A `type parameter entity' is a container which stores type in generics.
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name: TypeParameter
 ```
 
-### Syntax: Variable Definitions
+#### Syntax: Variable Definitions
 
 ```text
 TypeParameter:
     { ExtendedModifier } Identifier [ extends Type { & Type } ]
 ```
 
-#### Examples:
+##### Examples
 
-* Generic class declaration 
+###### Generic class declaration 
 
 ```java
-// Foo.java
+//// Foo.java
 public abstract class Foo<K, V>{
     /* ... */
 }
@@ -29,15 +29,12 @@ public abstract class Foo<K, V>{
 ```yaml
 name: Generic Class Declaration 
 entity:
-    filter: TypeParameter
-    r:
-        d: x
-        e: x
-        s: Type Parameter
-        u: TypeVariable
+    type: TypeParameter
     items:
-        -   name : K
-            qualifiedName : Foo.K
+        -   name: K
+            qualified: Foo.K
+            loc: 1:27
         -   name : V
-            qualifiedName : Foo.V
+            qualified: Foo.V
+            loc: 1:30
 ```

@@ -1,14 +1,14 @@
-# Entity: Enum
+## Entity: Enum
 
 An `enum type` is a special data type that enables for a variable to be a set of predefined constants. The variable must be equal to one of the values that have been predefined for it.
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name: Enum
 ```
 
-### Syntax: Enum Definitions
+#### Syntax: Enum Definitions
 
 ```text
 EnumDeclaration:
@@ -20,9 +20,9 @@ EnumDeclaration:
          }
 ```
 
-#### Examples:
+##### Examples
 
-* Enum declared in default package
+###### Enum declared in default package
 
 ```java
 enum Foo {
@@ -33,18 +33,14 @@ enum Foo {
 ```yaml
 name: Enum Declared In Default Package
 entity:
-    filter: Enum
-    r:
-        d: Type
-        e: .
-        s: .
-        u: .
+    type: Enum
     items:
         -   name: Foo
-            qualifiedName: Foo
+            qualified: Foo
+            loc: 1:6
 ```
 
-* Enum declared in named package
+###### Enum declared in named package
 
 ```java
 package foo;
@@ -57,13 +53,9 @@ enum Bar {
 ```yaml
 name: Enum Declared In Named Package
 entity:
-    filter: Enum
-    r:
-        d: Type
-        e: .
-        s: .
-        u: .
+    type: Enum
     items:
         -   name: Bar
-            qualifiedName: foo.Bar
+            qualified: foo.Bar
+            loc: 3:6
 ```

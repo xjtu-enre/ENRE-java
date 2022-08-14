@@ -1,14 +1,14 @@
-# Entity : Class
+## Entity : Class
 
 A class is a blueprint or prototype from which objects are created,it models the state and behavior of a real-world object.
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name : Class
 ```
 
-### Syntax: Class Definitions
+#### Syntax: Class Definitions
 
 ```text
 Class Declaration:
@@ -22,9 +22,9 @@ AnonymousClassDeclaration:
       { ClassBodyDeclaration }
 ```
 
-#### Examples:
+##### Examples
 
-* Class declaration
+###### Class declaration
 
 ```java
 class Foo{
@@ -35,18 +35,14 @@ class Foo{
 ```yaml
 name: Class Declaration
 entity:
-    filter: Class
-    r:
-        d: Type
-        e: .
-        s: .
-        u: .
+    type: Class
     items:
         -   name: Foo
-            qualifiedName : Foo
+            qualified : Foo
+            loc: 1:7
 ```
 
-* Nested class declaration
+###### Nested class declaration
 
 ```java
 class Foo {
@@ -59,20 +55,17 @@ class Foo {
 ```yaml
 name: Nested Class Declaration
 entity:
-    filter: Class
-    r:
-        d: Type
-        e: .
-        s: .
-        u: .
+    type: Class
     items:
         -   name: Foo
-            qualifiedName : Foo
+            qualified : Foo
+            loc: 1:7
         -   name: Nested
-            qualifiedName : Foo.Nested
+            qualified : Foo.Nested
+            loc: 2:11
 ```
 
-* Anonymous class declaration
+###### Anonymous class declaration
 
 ```java
 class Foo {
@@ -106,16 +99,13 @@ class Foo {
 ```yaml
 name: Anonymous Class Declaration
 entity:
-    filter: Class
-    r:
-        d: r/Create
-        e: .
-        s: .
-        u: .
+    type: Class
     items:
-        -   name: <Anonymous type="Class">
-            qualifiedName : Foo.doThings.<Anonymous type="Class">
-        -   name: <Anonymous type="Class">
-            qualifiedName : Foo.doThings.<Anonymous type="Class">
+        -   name: <Anonymous as="Class">
+            qualified: Foo.doThings.<Anonymous as="Class">
+            loc: 13:13
+        -   name: <Anonymous as="Class">
+            qualified: Foo.doThings.<Anonymous as="Class">
+            loc: 19:13
 
 ```

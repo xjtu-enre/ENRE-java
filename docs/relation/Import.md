@@ -1,25 +1,25 @@
-# Dependency: Import
+## Dependency: Import
 A file imports other class, enum or package, or static imports method or var.
-## Supported pattern
+### Supported Patterns
 ```yaml
 name : Import
 ```
-### Syntax : 
-```yaml
+#### Syntax: Import Definitions
+```text
 ImportDeclaration:
     import [ static ] Name [ . * ] ;
 ```
-### Examples : 
-- Import declaration (unknown package)
+##### Examples
+###### Import declaration (unknown package)
 ```java
-//Foo.java
+//// Foo.java
 class Foo {
     public void doThings(){}
     public int failed(){}
 }
 ```
 ```java
-//Bar.java
+//// Bar.java
 import Foo;
 
 class Bar extends Foo { 
@@ -36,30 +36,26 @@ name: Import Class From Default Class
 entity:
     items:
         -   name: Foo
-            category : Class
-            loc: file1/[ 2, 0, 5, 0 ]
+            type : Class
+            loc: file0:1:7
             rawType: Foo
-            qualifiedName: Foo
+            qualified: Foo
         -   name: Bar
-            category : Class
-            loc: file2/[ 2, 0, 8, 0 ]
+            type : Class
+            loc: file1:3:7
             rawType: Bar
-            qualifiedName: Bar
+            qualified: Bar
 relation:
-    negative: true
     items:
-        -   src: file1
-            dest: file0/Class[0]
-            category: import
-            r:
-                d: x
-                e: x
-                s: x
-                u: .
+        -   from: File:'file0'
+            to: Class:'Bar'
+            type: import
+            loc: file1
+            negative: true
 ```
-- Import class (known package)
+###### Import class (known package)
 ```java
-//test_pkg2/Hello.java
+//// test_pkg2/Hello.java
 package test_package2;
 
 import test_package1.Name;
@@ -73,7 +69,7 @@ public class Hello {
 }
 ```
 ```java
-//test_pkg1/Name.java
+//// test_pkg1/Name.java
 package test_pkg1;
 
 public class Name {
@@ -87,27 +83,24 @@ name: Import Class From Explicit Package
 entity:
     items:
         -   name: Name
-            category : Class
-            loc: file1/[ 4, 0, 8, 0 ]
+            type : Class
+            loc: file1:3:14
             rawType: test_package1.Name
-            qualifiedName: test_package1.Name
+            qualified: test_package1.Name
         -   name: Hello.java
-            category : File
-            qualifiedName: test_package2.Hello.java
+            type : File
+            qualified: test_package2.Hello.java
+            loc: file0
 relation:
     items:
-        -   src: file0
-            dest: file1/Class[0]
-            category: import
-            r:
-                d: .
-                e: .
-                s: .
-                u: .
+        -   from: File:'file0'
+            to: Class:'Name'
+            type: import
+            loc: file0:3:8
 ```
-- Import Static Var
+###### Import Static Var
 ```java
-// Foo.java
+//// Foo.java
 class Foo {
     public static final String MSG = "msg";
 
@@ -116,7 +109,7 @@ class Foo {
 }
 ```
 ```java
-//Bar.java
+//// Bar.java
 import Foo.MSG;
 import Foo;
 
@@ -133,33 +126,30 @@ name: Import Static Var
 entity:
     items:
         -   name: Foo
-            category : Class
-            loc: file0/[ 2, 0, 7, 0 ]
+            type : Class
+            loc: file0:1:7
             rawType: Foo
-            qualifiedName: Foo
+            qualified: Foo
         -   name: MSG
-            category : Variable
+            type : Variable
             rawType: String
-            qualifiedName: Foo.MSG
+            qualified: Foo.MSG
+            loc: file0:2:32
         -   name: Bar
-            category : Class
-            loc: file1/[ 2, 0, 11, 0 ]
+            type : Class
+            loc: file1:4:7
             rawType: Bar
-            qualifiedName: Bar
+            qualified: Bar
 relation:
     items:
-        -   src: file1
-            dest: file0/Variable[0]
-            category: import
-            r:
-                d: .
-                e: .
-                s: .
-                u: .
+        -   from: File:'file1'
+            to: Variable:'MSG'
+            type: import
+            loc: file1:7:28
 ```
-- Import On Demand
+###### Import On Demand
 ```java
-//helloJDT/pkg/JDTpkg_2.java
+//// helloJDT/pkg/JDTpkg_2.java
 package helloJDT.pkg;
 
 interface JDTpkg_2 {
@@ -167,7 +157,7 @@ interface JDTpkg_2 {
 }
 ```
 ```java
-//helloJDT/HelloJDT.java
+//// helloJDT/HelloJDT.java
 package helloJDT;
 
 import helloJDT.pkg.*;
@@ -195,25 +185,23 @@ name: Import on demand
 entity:
     items:
         -   name: HelloJDT.java
-            category : File
-            qualifiedName: helloJDT.HelloJDT.java
+            type : File
+            qualified: helloJDT.HelloJDT.java
+            loc: file1
         -   name: helloJDT.pkg
-            category : Package
-            qualifiedName: helloJDT.pkg
+            type : Package
+            qualified: helloJDT.pkg
+            loc: file0:1:9
 relation:
     items:
-        -   src: file0
-            dest: helloJDT.pkg
-            category: import
-            r:
-                d: x
-                e: .
-                s: .
-                u: .
+        -   from: File:'file0'
+            to: Package:'helloJDT.pkg'
+            type: import
+            loc: file1:3:8
 ```
-- Import Enum
+###### Import Enum
 ```java
-//BasePostMinimalDTO.java
+//// BasePostMinimalDTO.java
 import PostStatus;
 
 public class BasePostMinimalDTO  {
@@ -234,7 +222,7 @@ public class BasePostMinimalDTO  {
 }
 ```
 ```java
-//PostStatus.java
+//// PostStatus.java
 public enum PostStatus {
 
     /**
@@ -275,33 +263,31 @@ name: Import enum
 entity:
     items:
         -   name: BasePostMinimalDTO.java
-            category : File
-            qualifiedName: BasePostMinimalDTO.java
+            type : File
+            qualified: BasePostMinimalDTO.java
+            loc: file0
         -   name: PostStatus
-            category : Enum
-            qualifiedName: PostStatus
+            type : Enum
+            qualified: PostStatus
+            loc: file1:1:13
             rawType: PostStatus
             modifiers: public
 relation:
     items:
-        -   src: file0
-            dest: file1/Enum[0]
-            category: import
-            r:
-                d: .
-                e: .
-                s: .
-                u: .
+        -   from: File:'file0'
+            to: Enum:'PostStatus'
+            type: import
+            loc: file0:1:8
 ```
-- Import Annotation
+###### Import Annotation
 ```java
-//CacheParam.java
+//// CacheParam.java
 public @interface CacheParam {
 
 }
 ```
 ```java
-//JournalController.java
+//// JournalController.java
 import CacheParam;
 
 public class JournalController {
@@ -316,20 +302,18 @@ name: Import annotation
 entity:
     items:
         -   name: JournalController.java
-            category : File
+            type : File
+            loc: file1
         -   name: CacheParam
-            category : Annotation
-            qualifiedName: CacheParam
+            type : Annotation
+            qualified: CacheParam
+            loc: file0:1:19
             rawType: CacheParam
             modifiers: public
 relation:
     items:
-        -   src: file1
-            dest: file0/Annotation[0]
-            category: import
-            r:
-                d: .
-                e: .
-                s: .
-                u: .
+        -   from: File:'file1'
+            to: Annotation:'CacheParam'
+            type: import
+            loc: file1:1:8
 ```

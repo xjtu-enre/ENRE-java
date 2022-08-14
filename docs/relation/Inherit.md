@@ -1,14 +1,14 @@
-# Dependency: Inherit
+## Dependency: Inherit
 
 A class extends one super (abstract) class, or an interface extends single or multiple super interfaces.
 
-## Supported pattern
+### Supported Patterns
 
 ```yaml
 name: Inherit
 ```
 
-### Syntax: 
+#### Syntax: Inherit Definitions
 
 ```text
 Class Declaration:
@@ -20,12 +20,12 @@ Class Declaration:
                         { { ClassBodyDeclaration | ; } }
 ```
 
-#### Examples: 
+##### Examples
 
-* Class extends one super class
+###### Class extends one super class
 
 ```java
-// Foo.java
+//// Foo.java
 class Bar {
     /* ... */
 }
@@ -40,28 +40,26 @@ name: Class Extends Class
 entity:
     items:
         -   name: Foo
-            category : Class
-            qualifiedName: Foo
+            type : Class
+            qualified: Foo
+            loc: 5:14
             modifiers: public
         -   name: Bar
-            category : Class
-            qualifiedName: Bar
+            type : Class
+            qualified: Bar
+            loc: 1:7
 relation:
-    r:
-        d: .
-        e: .
-        s: Inheritance
-        u: Extend Couple
     items:
-        -   src: file0/Foo
-            dest: file0/Bar
-            category: Inherit
+        -   from: Class:'Foo'
+            to: Class:'Bar'
+            type: Inherit
+            loc: file0:5:26
 ```
 
-* Class extends one parameterized type
+###### Class extends one parameterized type
 
 ```java
-// Foo.java
+//// Foo.java
 class Bar<K, V> {
     /* ... */
 }
@@ -76,27 +74,25 @@ name: Class Extends Class With Generics
 entity:
     items:
         -   name: Foo
-            category : Class
-            qualifiedName: Foo
+            type : Class
+            qualified: Foo
+            loc: 5:14
         -   name: Bar
-            category : Class
-            qualifiedName: Bar
+            type : Class
+            qualified: Bar
+            loc: 1:7
 relation:
-    r:
-        d: .
-        e: .
-        s: Inheritance
-        u: Extend Couple
     items:
-        -   src: file0/Foo
-            dest: file0/Bar
-            category: Inherit
+        -   from: Class:'Foo'
+            to: Class:'Bar'
+            type: Inherit
+            loc: file0:5:26
 ```
 
-* Interface extends one super interface
+###### Interface extends one super interface
 
 ```java
-// Foo.java
+//// Foo.java
 interface Bar<T> {
     /* ... */
 }
@@ -111,28 +107,26 @@ name: Interface Extends Interface
 entity:
     items:
         -   name: Foo
-            category : Interface
-            qualifiedName: Foo
+            type : Interface
+            qualified: Foo
+            loc: 5:18
             modifiers: public
         -   name: Bar
-            category : Interface
-            qualifiedName: Bar
+            type : Interface
+            qualified: Bar
+            loc: 1:11
 relation:
-    r:
-        d: .
-        e: .
-        s: Inheritance
-        u: Extend Couple
     items:
-        -   src: file0/Foo
-            dest: file0/Bar
-            category: Inherit
+        -   from: Interface:'Foo'
+            to: Interface:'Bar'
+            type: Inherit
+            loc: file0:5:30
 ```
 
-* Interface extends multiple super interfaces
+###### Interface extends multiple super interfaces
 
 ```java
-// Foo.java
+//// Foo.java
 interface Bar<T> {
     /* ... */
 }
@@ -151,23 +145,23 @@ name: Interface Extends Multiple Interfaces
 entity:
     items:
         -   name: Foo
-            category : Interface
+            type : Interface
+            loc: 9:18
             modifiers: public
         -   name: Bar
-            category : Interface
+            type : Interface
+            loc: 1:11
         -   name: Baz
-            category : Interface
+            type : Interface
+            loc: 5:11
 relation:
-    r:
-        d: .
-        e: .
-        s: Inheritance
-        u: Extend Couple
     items:
-        -   src: file0/Foo
-            dest: file0/Bar
-            category: Inherit
-        -   src: file0/Foo
-            dest: file0/Bar
-            category: Inherit
+        -   from: Interface:'Foo'
+            to: Interface:'Bar'
+            type: Inherit
+            loc: 9:30
+        -   from: Interface:'Foo'
+            to: Interface:'Bar'
+            type: Inherit
+            loc: file0:9:43
 ```
