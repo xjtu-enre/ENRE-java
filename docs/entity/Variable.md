@@ -8,7 +8,7 @@ A `variable entity' is a container which stores values.
 name: Variable
 ```
 
-#### Syntax: Variable Definitions
+#### Syntax: Global Variable Definitions
 
 ```text
  VariableDeclarationExpression:
@@ -51,6 +51,53 @@ entity:
             loc: 2:16
             global: true
 ```
+
+###### Variable Declaration Statement (single var)
+
+```java
+class Foo {
+    public String getHello() {
+        String a = "hello";
+        return a;
+    }
+}
+```
+
+```yaml
+name: Variable Declaration Statement
+entity:
+    type: Variable
+    extra: true
+    items:
+        -   name: a
+            qualified: Foo.getHello.a
+            loc: 3:16
+            global: false
+```
+
+#### Syntax: Non-global Variable Definitions
+
+```text
+ VariableDeclarationExpression:
+    { ExtendedModifier } Type VariableDeclarationFragment
+         { , VariableDeclarationFragment }
+
+ VariableDeclarationStatement:
+    { ExtendedModifier } Type VariableDeclarationFragment
+        { , VariableDeclarationFragment } ;
+
+ FieldDeclaration:
+    [Javadoc] { ExtendedModifier } Type VariableDeclarationFragment
+         { , VariableDeclarationFragment } ;
+
+ VariableDeclarationFragment:
+    Identifier { Dimension } [ = Expression ]
+
+ SingleVariableDeclaration:
+    { ExtendedModifier } Type {Annotation} [ ... ] Identifier { Dimension } [ = Expression ]
+```
+
+##### Examples
 
 ###### Variable Declaration Statement (single var)
 

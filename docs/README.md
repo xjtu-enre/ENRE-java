@@ -7,6 +7,7 @@ ENRE (ENtity Relationship Extractor) is a tool for extraction of code entity dep
 | [File](entity/File.md)        | The .java files which save the whole java information |
 | [Class](entity/Class.md)       | Like a constructor of objects                         |
 | [Enum](entity/Enum.md)        | Like a class only included fixed constants            |
+| [EnumConstant](entity/EnumConstant.md)        | A set of predefined constants defined in enum            |
 | [Annotation](entity/Annotation.md)  | To get program information while running through it   |
 | [AnnotationMember](entity/AnnotationMember.md)| Like a method, which provides extra actions about this annotation|
 | [Interface](entity/Interface.md)   | A way to achieve Abstract in Java                     |

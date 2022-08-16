@@ -38,3 +38,21 @@ entity:
             qualified: Foo.V
             loc: 1:30
 ```
+###### Generic class declaration 
+
+```java
+//// Foo.java
+public interface Foo<T> {
+    /* ... */
+}
+```
+
+```yaml
+name: Generic Interface Declaration 
+entity:
+    type: TypeParameter
+    items:
+        -   name: T
+            qualified: Foo.T
+            loc: 1:22
+```

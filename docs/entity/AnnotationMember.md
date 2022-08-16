@@ -1,11 +1,11 @@
-## Entity: Annotation Member
+## Entity: AnnotationMember
 
- A `Annotation Member` looks a lot like a method, which provides extra actions about this annotation.
+ A `AnnotationMember` looks a lot like a method, which provides extra actions about this annotation.
 
 ### Supported Patterns
 
 ```yaml
-name: Annotation Member
+name: AnnotationMember
 ```
 
 #### Syntax: AnnotationMember Definitions
@@ -18,7 +18,7 @@ AnnotationTypeMemberDeclaration:
 
 ##### Examples
 
-###### Annotation member declaration
+###### Annotationmember declaration
 
 ```java
 @interface Foo {
@@ -28,9 +28,9 @@ AnnotationTypeMemberDeclaration:
 ```
 
 ```yaml
-name: Annotation Member Declaration
+name: AnnotationMember Declaration
 entity:
-    type: Annotation Member
+    type: AnnotationMember
     items:
         -   name: bar
             qualified: Foo.bar
