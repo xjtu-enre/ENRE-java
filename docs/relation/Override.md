@@ -64,8 +64,8 @@ entity:
             File: AuthenticationException.java 
 relation:
     items:
-        -   from: Method:'getStatus'
-            to: Method:'getStatus'
+        -   from: Method:'AuthenticationException.getStatus'
+            to: Method:'AbstractException.getStatus'
             type: Override
             loc: file1:4:19
 ```
@@ -126,16 +126,16 @@ entity:
             loc: file1:8:17
 relation:
     items:
-        -   from: Method:'doThings'
-            to: Method:'doThings'
+        -   from: Method:'Bar.doThings'
+            to: Method:'Foo.doThings'
             type: Override
             loc: file1:4:17
-        -   from: Method:'doNeatThings'
-            to: Method:'doNeatThings'
+        -   from: Method:'Bar.doNeatThings'
+            to: Method:'Foo.doNeatThings'
             type: Override
             loc: file1:6:16
-        -   from: Method:'failed'
-            to: Method:'failed'
+        -   from: Method:'Bar.failed'
+            to: Method:'Foo.failed'
             type: Override
             loc: file1:8:17
             negative: true
