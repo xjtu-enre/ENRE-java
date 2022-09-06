@@ -23,7 +23,7 @@ public class RelationInf extends RelationInterface {
         int annotationMemberCount = 0;
         int methodCount = 0;
         int varCount = 0;
-
+        int typeParCount = 0;
 
         for(BaseEntity entity : singleCollect.getEntities()) {
             if(entity instanceof PackageEntity) {
@@ -53,6 +53,9 @@ public class RelationInf extends RelationInterface {
             else if(entity instanceof VariableEntity){
                 varCount ++;
             }
+            else if(entity instanceof TypeParameterEntity){
+                typeParCount ++;
+            }
 
         }
         String str = Configure.NULL_STRING;
@@ -64,7 +67,8 @@ public class RelationInf extends RelationInterface {
         str += ("Annotation: " + annotationCount + "\n");
         str += ("Annotation Member: " + annotationMemberCount + "\n");
         str += ("Method: " + methodCount + "\n");
-        str += ("variable: " + varCount + "\n");
+        str += ("Variable: " + varCount + "\n");
+        str += ("TypeParameter: " + typeParCount + "\n");
         return str;
     }
 

@@ -102,7 +102,7 @@ public class IdentifyEntities {
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
 
         Map<String, String> options = JavaCore.getOptions();
-        JavaCore.setComplianceOptions(JavaCore.VERSION_11, options);
+        JavaCore.setComplianceOptions(JavaCore.VERSION_17, options);
         parser.setCompilerOptions(options);
         parser.setResolveBindings(true);
         parser.setBindingsRecovery(true);

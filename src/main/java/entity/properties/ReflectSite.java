@@ -47,6 +47,13 @@ public class ReflectSite {
         this.bindVar = bindVar;
     }
 
+    public ReflectSite(String fieldName, int implementVar, int bindVar){
+        this.reflectObj = fieldName;
+        this.kind = Configure.REFLECT_FIELD;
+        this.bindVar = bindVar;
+        this.implementVar = implementVar;
+    }
+
     public void setBindVar(int id){
         this.bindVar = id;
     }

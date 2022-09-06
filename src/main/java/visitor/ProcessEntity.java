@@ -490,11 +490,10 @@ public class ProcessEntity {
             methodEntity.setRawType(methodQualifiedName);
         }else{
             if(node.getReturnType2() != null){
-                methodEntity.setReturnType(node.getReturnType2().toString());
                 try {
                     methodEntity.setRawType(node.getReturnType2().resolveBinding().getQualifiedName());
                 }catch (NullPointerException e){
-
+                    methodEntity.setReturnType(node.getReturnType2().toString());
                 }
             }
         }
@@ -612,6 +611,20 @@ public class ProcessEntity {
         singleCollect.addEntity(parameterEntity);
 
         return parId;
+    }
+
+    public int processTypeParameter(String name, int parentClassId, String parType, Tuple<String, Integer> currentBin){
+
+        int tParId = singleCollect.getCurrentIndex();
+
+        TypeParameterEntity parameterEntity = new TypeParameterEntity(tParId,name,parType);
+        parameterEntity.setQualifiedName(singleCollect.getEntityById(parentClassId).getQualifiedName()+"."+name);
+        parameterEntity.setParentId(parentClassId);
+        parameterEntity.setBinNum(currentBin);
+
+        singleCollect.addEntity(parameterEntity);
+
+        return tParId;
     }
 
     /**

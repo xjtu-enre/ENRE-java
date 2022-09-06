@@ -37,9 +37,9 @@ public class ReflectBf extends DepBackfill{
                                 reflectMeth.addPara(args[i].split("\\.")[0]);
                             }
                         }
-                        if (findReflectMethodClass(entity.getReflects(), reflect.getBindVar()) != -1){
+                        if (findReflectBindClass(entity.getReflects(), reflect.getBindVar()) != -1){
                             try{
-                                HashMap<OverrideBf.innerMeth, Integer> reflectMeths = getInnerMeth((TypeEntity) singleCollect.getEntityById(findReflectMethodClass(entity.getReflects(), reflect.getBindVar())));
+                                HashMap<OverrideBf.innerMeth, Integer> reflectMeths = getInnerMeth((TypeEntity) singleCollect.getEntityById(findReflectBindClass(entity.getReflects(), reflect.getBindVar())));
                                 int reflectId = -1;
                                 for (OverrideBf.innerMeth classMeth : reflectMeths.keySet()){
                                     if (reflectMeth.getName().equals(classMeth.getName()) && classMeth.comparePara(reflectMeth.para)){
@@ -56,12 +56,36 @@ public class ReflectBf extends DepBackfill{
 
                         }
                     }
+                    //getField reflect field
+                    else if (reflect.getKind().equals(Configure.REFLECT_FIELD)){
+                        String refFieldName = reflect.getReflectObj();
+                        if (findReflectBindClass(entity.getReflects(), reflect.getBindVar()) != -1){
+                            try{
+                                int reflectId = -1;
+                                int bindClassId = findReflectBindClass(entity.getReflects(), reflect.getBindVar());
+                                if (bindClassId != -1){
+                                    for (int fieldId : singleCollect.getEntityById(bindClassId).getChildrenIds()){
+                                        if (singleCollect.isVariable(fieldId) && singleCollect.getEntityById(fieldId).getName().equals(refFieldName)){
+                                            reflectId = fieldId;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(reflectId != -1){
+                                    saveRelation(entity.getId(), reflectId, Configure.RELATION_REFLECT, Configure.RELATION_REFLECTED_BY, reflect.getLocation(), reflect.getModifyAccessible(), true);
+                                }
+                            } catch (ClassCastException e){
+                                //Reflect not type
+                            }
+
+                        }
+                    }
                 }
             }
         }
     }
 
-    public int findReflectMethodClass(ArrayList<ReflectSite> reflectSites, int refBindVar){
+    public int findReflectBindClass(ArrayList<ReflectSite> reflectSites, int refBindVar){
         for (ReflectSite reflectSite : reflectSites){
             if (reflectSite.getKind().equals(Configure.REFLECT_CLASS) && reflectSite.getImplementVar() == refBindVar){
                 return reflectSite.getReflectObjId();

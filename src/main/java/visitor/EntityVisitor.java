@@ -4,6 +4,7 @@ import entity.*;
 import entity.properties.Location;
 import entity.properties.ReflectSite;
 import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.TypeParameter;
 import util.Configure;
 import util.PathUtil;
 import util.SingleCollect;
@@ -624,6 +625,35 @@ public class EntityVisitor extends CKVisitor {
         super.endVisit(node);
     }
 
+    boolean isTypeParameterDeclaration;
+
+    @Override
+    public boolean visit(TypeParameter node) {
+        isTypeParameterDeclaration = true;
+        int tParId;
+
+        //get the parameter's type
+        String tParType;
+        try {
+            tParType = node.resolveBinding().getDeclaringClass().getQualifiedName();
+        } catch (NullPointerException e){
+            tParType = node.getName().getIdentifier();
+        }
+        int classId = scopeStack.peek();
+        tParId = processEntity.processTypeParameter(node.getName().getFullyQualifiedName(), classId, tParType, currentBin);
+        entityStack.push(tParId);
+        singleCollect.getEntityById(tParId).setLocation(ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength()));
+
+        return super.visit(node);
+    }
+
+    @Override
+    public void endVisit(TypeParameter node) {
+        isTypeParameterDeclaration = false;
+        entityStack.pop();
+        super.endVisit(node);
+    }
+
     /**
      * Visit a return statement node
      * @param node
@@ -715,6 +745,12 @@ public class EntityVisitor extends CKVisitor {
                 if(methodName.equals("getMethod") || methodName.equals("getDeclaredMethod")){
                     String refMethName = args[0].replace("\"", "").substring(1);
                     ReflectSite ref = new ReflectSite(refMethName, args, getCurrentLeftSideVar(), bindVar);
+                    ref.setLocation(loc);
+                    singleCollect.getEntityById(scopeStack.peek()).addReflect(ref);
+                }
+                if (methodName.equals("getField") || methodName.equals("getDeclaredField")){
+                    String refFieldName = args[0].replace("\"", "").substring(1);
+                    ReflectSite ref = new ReflectSite(refFieldName, getCurrentLeftSideVar(), bindVar);
                     ref.setLocation(loc);
                     singleCollect.getEntityById(scopeStack.peek()).addReflect(ref);
                 }
@@ -1028,7 +1064,7 @@ public class EntityVisitor extends CKVisitor {
         String varName = node.getIdentifier();
         Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
 
-        if (!scopeStack.isEmpty() && (singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity) && !isQualifiedName && !isParameterDeclaration){
+        if (!scopeStack.isEmpty() && (singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity) && !isQualifiedName && !isParameterDeclaration && !isTypeParameterDeclaration){
             processVarInMethod(varName, scopeStack.peek());
             int methodId = scopeStack.peek();
             if(!((MethodEntity)singleCollect.getEntityById(methodId)).getName2Usage().containsKey(varName) &&
