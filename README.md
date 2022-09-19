@@ -1,42 +1,27 @@
 # ENRE-Java
 ENRE (ENtity Relationship Extractor) is a tool for extraction of code entity dependencies or relationships from source code. 
-## Entity Categories
-| Entity Type | Description                                           |
-| ----------- | ----------------------------------------------------- |
-| [Package](entity/Package.md)     | Collect related Files                                 |
-| [File](entity/File.md)        | The .java files which save the whole java information |
-| [Class](entity/Class.md)       | Like a constructor of objects                         |
-| [Enum](entity/Enum.md)        | Like a class only included fixed constants            |
-| [EnumConstant](entity/EnumConstant.md)        | A set of predefined constants defined in enum            |
-| [Annotation](entity/Annotation.md)  | To get program information while running through it   |
-| [AnnotationMember](entity/AnnotationMember.md)| Like a method, which provides extra actions about this annotation|
-| [Interface](entity/Interface.md)   | A way to achieve Abstract in Java                     |
-| [Method](entity/Method.md)      | To perform specific activity                          |
-| [Module](entity/Module.md)      | A closely related set of packages and resources and a new module descriptor file|
-| [Record](entity/Record.md)      | A restricted kind of class that defines a simple aggregate of values|
-| [TypeParameter](entity/TypeParameter.md)| A container which stores type in generics            |
-| [Variable](entity/Variable.md)    | A container which stores values                       |
 
-## Relation Categories
+## Features
 
-| Dependency type | Description                                                  |
-| --------------- | ------------------------------------------------------------ |
-| [Import](relation/Import.md)          | A file imports other class, enum or package, or static imports method or var |
-| [Inherit](relation/Inherit.md)         | A class inherits the other class                             |
-| [Implement](relation/Implement.md)       | A class implement an interface                               |
-| [Contain](relation/Contain.md)         | A package contains files, a file contain classes, enums and other types, etc |
-| [Call](relation/Call.md)            | A method calls other methods                                 |
-| [Parameter](relation/Parameter.md)       | A method needs parameters to use                             |
-| [Typed](relation/Typed.md)           | A variable's type is one of the (self-defined) Class or other types                        |
-| [UseVar](relation/UseVar.md)          | An entity uses a var in its scope, which could be a local var, a field or a parameter     |
-| [Set](relation/Set.md)             | A method set some variables                                  |
-| [Modify](relation/Modify.md)          | A method modify variables which have been set                |
-| [Annotate](relation/Annotate.md)        | A annotation annotate entities                               |
-| [Cast](relation/Cast.md)            | A method cast another type to a variable                     |
-| [Override](relation/Override.md)        | A method which has the same name, return type and parameter type of the super method |
-| [Reflect](relation/Reflect.md)         | A entity which call Class.forname("...") method to get a specific type. |
-| [Define](relation/Define.md)          | A type define fields or methods, a method defines variables. |
+* Conforms to the latest Java progremming language specification of Oracle.
 
+* Support for multirepo projects, the prerequisite is that these repos have the same package name management.
+
+* Support for non-SDK restriction level matching of Android projects.
+
+* Highly standardized, documentations are comprehensive and publicly available.
+
+* Supports multiple usage patterns, including CLI and programmatic interfaces.
+
+## Supported Language
+
+|  Language  | Maximum Version |
+|:----------:|:---------------:|
+|    Java    |       17        |
+
+## Documentation
+
+Specifications on which kinds of entities and relations can be captured and any other details can be found in [docs](docs/README.md).
 
 ## Usage
 
@@ -61,8 +46,8 @@ java -jar <executable> <lang> <dir> <project-name>
 The detailed information of the parameter and option of the command is:
 
 ```text
-Usage: enre_java [-h] [-a=<aidl>] [-hd=<hidden>] [-d=<dir>]... <lang> <src>
-                 <projectName>
+Usage: enre_java [-h] [-a=<aidl>] [-hd=<hidden>] [-o=<outputFile>]
+                 [-d=<dir>]... <lang> <src> <projectName>
       <lang>          The lanauge of project files: []
       <src>           The directory to be analyzed
       <projectName>   The analyzed project file name
@@ -72,7 +57,10 @@ Usage: enre_java [-h] [-a=<aidl>] [-hd=<hidden>] [-d=<dir>]... <lang> <src>
                         original file
   -d, --dir=<dir>     The additional directories to be analyzed
   -h, --help          display this help and exit
-  -hd, --hidden=<hidden> The path of hiddenapi=flag.csv
+      -hd, --hidden=<hidden>
+                      The path of hiddenapi-flag.csv
+  -o, --output=<outputFile>
+                      The output file name, default is projectName-out
 ```
 
 To increase the memory heap, you can add -Xmx before -jar, like: 
