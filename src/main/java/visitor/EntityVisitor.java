@@ -612,6 +612,7 @@ public class EntityVisitor extends CKVisitor {
                 singleCollect.getEntityById(methodId).addChildId(methodId);
             } else {
                 ((MethodEntity) singleCollect.getEntityById(methodId)).addParameter(parId);
+                ((MethodEntity) singleCollect.getEntityById(methodId)).addParameterType(parType);
             }
         }
 
@@ -717,11 +718,17 @@ public class EntityVisitor extends CKVisitor {
             ITypeBinding declaringClass = methodBinding.getDeclaringClass();
             String declaringTypeQualifiedName = declaringClass.getQualifiedName();
 
+            ArrayList<String> parTypes = new ArrayList<>();
+            ITypeBinding[] calledMethParTypes = methodBinding.getParameterTypes();
+            for (ITypeBinding parType : calledMethParTypes){
+                parTypes.add(parType.getQualifiedName());
+            }
+
             if(singleCollect.getEntityById(scopeStack.peek()) instanceof ScopeEntity){
                 if (bindVar != -1){
-                    ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, loc, bindVar);
+                    ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, loc, bindVar, parTypes);
                 } else {
-                    ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, loc, bindVarName);
+                    ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, loc, bindVarName, parTypes);
                 }
 
             }

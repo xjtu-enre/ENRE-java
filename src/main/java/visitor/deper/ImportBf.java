@@ -22,12 +22,13 @@ public class ImportBf extends DepBackfill {
                             ((PackageEntity) singleCollect.getEntityById(tmpId)).addImportBy(entity.getId());
                         }
                         saveRelation(entity.getId(),tmpId, Configure.RELATION_IMPORT,Configure.RELATION_IMPORTED_BY, pkg.getR());
+                    } else {
+                        /*
+                         * External pkg
+                         */
+                        ExternalEntity externalEntity = new ExternalEntity(singleCollect.getCurrentIndex(), entity.getId(), pkg.getL());
+                        singleCollect.addEntity(externalEntity);
                     }
-                    /*
-                     * External pkg
-                     */
-                    ExternalEntity externalEntity = new ExternalEntity(singleCollect.getCurrentIndex(), entity.getId(), pkg.getL());
-                    singleCollect.addEntity(externalEntity);
                 }
 
                 //import class or annotation
@@ -39,12 +40,17 @@ public class ImportBf extends DepBackfill {
                             ((TypeEntity) singleCollect.getEntityById(tmpId)).addImportedBy(entity.getId());
                         }
                         saveRelation(entity.getId(),tmpId, Configure.RELATION_IMPORT,Configure.RELATION_IMPORTED_BY, file.getR());
+                    } else {
+                        /*
+                         * External class or annotation
+                         */
+                        ExternalEntity externalEntity = new ExternalEntity(singleCollect.getCurrentIndex(), entity.getId(), file.getL());
+                        singleCollect.addEntity(externalEntity);
+//                        if (file.getL().equals("test_package1.Name")) {
+//                            System.out.println("ATTENTION");
+//                            System.out.println(((FileEntity) entity).getFullPath());
+//                        }
                     }
-                    /*
-                     * External class or annotation
-                     */
-                    ExternalEntity externalEntity = new ExternalEntity(singleCollect.getCurrentIndex(), entity.getId(), file.getL());
-                    singleCollect.addEntity(externalEntity);
                 }
 
                 //import static method or var
@@ -75,7 +81,7 @@ public class ImportBf extends DepBackfill {
                              */
                             ExternalEntity externalEntity = new ExternalEntity(singleCollect.getCurrentIndex(), entity.getId(), MethOrVar.getL());
                             singleCollect.addEntity(externalEntity);
-                            //System.out.println(MethOrVar);
+//                            System.out.println(MethOrVar);
                         } else {
                             saveRelation(entity.getId(),tmpId, Configure.RELATION_IMPORT,Configure.RELATION_IMPORTED_BY, MethOrVar.getR());
                         }

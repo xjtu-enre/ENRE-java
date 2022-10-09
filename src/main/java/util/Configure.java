@@ -39,6 +39,7 @@ public class Configure {
     public static final String BASIC_ENTITY_ENUM = "Enum";
     public static final String BASIC_ENTITY_ENUM_CONSTANT = "Enum Constant";
     public static final String BASIC_ENTITY_ANNOTATION_MEMBER = "Annotation Member";
+    public static final String BASIC_ENTITY_TYPE_PARAMETER = "Type Parameter";
 
 
     public static final String IMPLICIT_DEPENDENCY = "Implicit";

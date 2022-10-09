@@ -69,6 +69,9 @@ public class TemplateWork {
 
         String[] additionDir = app.getDir();
 
+        //Get the external
+        String externalPath = app.getExternal();
+
         config(lang, inputDir, projectName);
         String outputFile = configure.getAnalyzedProjectName()+ "-out";
         if (app.getOutputFile() != null){

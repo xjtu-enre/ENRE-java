@@ -29,12 +29,12 @@ public class ScopeEntity extends BaseEntity{
         return this.casType;
     }
 
-    public void addCall(String className, String methodName, Location loc, int bindVar){
-        this.call.add(new CallSite(className, methodName, bindVar, loc));
+    public void addCall(String className, String methodName, Location loc, int bindVar, ArrayList<String> parTypes){
+        this.call.add(new CallSite(className, methodName, bindVar, loc, parTypes));
     }
 
-    public void addCall(String className, String methodName, Location loc, String bindVarName){
-        this.call.add(new CallSite(className, methodName, bindVarName, loc));
+    public void addCall(String className, String methodName, Location loc, String bindVarName, ArrayList<String> parTypes){
+        this.call.add(new CallSite(className, methodName, bindVarName, loc, parTypes));
     }
 
     public  ArrayList<CallSite> getCall() {

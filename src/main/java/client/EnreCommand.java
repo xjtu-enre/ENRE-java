@@ -25,8 +25,10 @@ public class EnreCommand {
     private String hidden;
     @Option(names = {"-o", "--output"},  description = "The output file name, default is projectName-out")
     private String outputFile;
-    @Option(names = {"-h","--help"}, usageHelp = true, description = "display this help and exit")
-    boolean help;
+    @Option(names = {"-h","--help"}, usageHelp = true, description = "Display this help and exit")
+    public boolean help;
+    @Option(names = {"-e","--external"}, description = "The third party APIs which need to identify")
+    private String external;
 
     public EnreCommand() {
     }
@@ -85,6 +87,14 @@ public class EnreCommand {
 
     public boolean isHelp() {
         return help;
+    }
+
+    public void setExternal(String external) {
+        this.external = external;
+    }
+
+    public String getExternal() {
+        return external;
     }
 
 }

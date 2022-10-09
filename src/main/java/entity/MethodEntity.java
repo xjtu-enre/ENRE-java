@@ -11,6 +11,8 @@ import java.util.HashMap;
 public class MethodEntity extends ScopeEntity{
 
     protected ArrayList<Integer> parameters = new ArrayList<Integer>();
+
+    protected ArrayList<String> parameterTypes = new ArrayList<>();
     protected String returnType = null;
     protected String returnExpression = null;
     protected boolean isConstructor = false;
@@ -75,6 +77,14 @@ public class MethodEntity extends ScopeEntity{
 
     public void addParameter(int parameterId) {
         parameters.add(parameterId);
+    }
+
+    public void addParameterType(String type){
+        this.parameterTypes.add(type);
+    }
+
+    public ArrayList<String> getParameterTypes(){
+        return this.parameterTypes;
     }
 
     public void setReturnType(String type){

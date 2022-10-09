@@ -187,12 +187,12 @@ public class JsonString {
             subObjVariable.add(entityObj);
         }
 
-//        for (ExternalEntity externalEntity : singleCollect.getExternalEntities()) {
-//            JSONObject external = new JSONObject();
-//            external.put("qualifiedName", externalEntity.getQualifiedName());
-//            external.put("external", true);
-//            subObjVariable.add(external);
-//        }
+        for (ExternalEntity externalEntity : singleCollect.getExternalEntities()) {
+            JSONObject external = new JSONObject();
+            external.put("qualifiedName", externalEntity.getQualifiedName());
+            external.put("external", true);
+            subObjVariable.add(external);
+        }
 
         obj.put("variables",subObjVariable);
 

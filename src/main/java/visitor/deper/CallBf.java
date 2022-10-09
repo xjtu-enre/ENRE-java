@@ -6,6 +6,10 @@ import entity.properties.Location;
 import util.Configure;
 import util.Tuple;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class CallBf extends DepBackfill{
 
     @Override
@@ -15,7 +19,7 @@ public class CallBf extends DepBackfill{
                 //call
                 if(!((ScopeEntity) entity).getCall().isEmpty()){
                     for(CallSite className2method : ((ScopeEntity) entity).getCall()){
-                        int id = findMethodByType(className2method.getDeclaringTypeQualifiedName(), className2method.getCallMethodName());
+                        int id = findMethodByType(className2method.getDeclaringTypeQualifiedName(), className2method.getCallMethodName(), className2method.getParTypes());
                         if (className2method.getBindVar() == -1 && !className2method.getBindVarName().equals("") && entity instanceof MethodEntity){
                             ((MethodEntity) entity).getCall().get(((MethodEntity) entity).getCall().indexOf(className2method)).setBindVar(findBindVar(entity.getId(), className2method.getBindVarName()));
                         }
@@ -56,7 +60,7 @@ public class CallBf extends DepBackfill{
         return methodId;
     }
 
-    public int findMethodByType(String classQualifiedName, String methodName){
+    public int findMethodByType(String classQualifiedName, String methodName, ArrayList<String> paraTypes){
         int declaredClassId = -1;
 //        String classQualifiedName = classQualifiedName2method.split("-")[0];
 //        String methodName = classQualifiedName2method.split("-")[1];
@@ -65,8 +69,11 @@ public class CallBf extends DepBackfill{
         }
         if(declaredClassId != -1){
             for(int id : singleCollect.getEntityById(declaredClassId).getChildrenIds()){
-                if(singleCollect.getEntityById(id).getName().equals(methodName)){
-                    return id;
+                if (singleCollect.getEntityById(id) instanceof MethodEntity){
+                    if(singleCollect.getEntityById(id).getName().equals(methodName)
+                            && comparePara(((MethodEntity) singleCollect.getEntityById(id)).getParameterTypes(), paraTypes)){
+                        return id;
+                    }
                 }
             }
         }
@@ -82,6 +89,55 @@ public class CallBf extends DepBackfill{
         }
         return -1;
     }
+
+    public static boolean comparePara(ArrayList<String> methParas, ArrayList<String> calledParas){
+        if (methParas.size() == 0 && calledParas.size() == 0){
+            return true;
+        }
+        else if (methParas.size() == calledParas.size()){
+            boolean flag = false;
+//                System.out.println(para);
+//                System.out.println(this.para);
+            for (String s : calledParas) {
+                for (String value : methParas) {
+                    if (s.contains(value)) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("Integer") && value.equals("int")) || (value.equals("Integer") && s.equals("int"))){
+                        flag = true;
+                        break;
+                    } else if ((s.equals("Boolean") && value.equals("boolean")) || (value.equals("Boolean") && s.equals("boolean"))) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("Long") && value.equals("long")) || (value.equals("Long") && s.equals("long"))) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("Byte") && value.equals("byte")) || (value.equals("Byte") && s.equals("byte"))) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("Character") && value.equals("char")) || (value.equals("Character") && s.equals("char"))) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("double") && value.equals("Double")) || (value.equals("double") && s.equals("Double"))) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("float") && value.equals("Float")) || (value.equals("float") && s.equals("Float"))) {
+                        flag = true;
+                        break;
+                    } else if ((s.equals("short") && value.equals("Short")) || (value.equals("short") && s.equals("Short"))) {
+                        flag = true;
+                        break;
+                    } else {
+                        flag = false;
+                    }
+                }
+            }
+            return flag;
+        }else {
+            return false;
+        }
+    }
+
 
 
 }

@@ -1,5 +1,7 @@
 package entity.properties;
 
+import java.util.ArrayList;
+
 public class CallSite {
 
     private String declaringTypeQualifiedName;
@@ -9,24 +11,28 @@ public class CallSite {
     private String bindVarName = null;
     private Location location;
 
-    public CallSite(String declaringTypeQualifiedName, String callMethodName, Location location) {
-        this.declaringTypeQualifiedName = declaringTypeQualifiedName;
-        this.callMethodName = callMethodName;
-        this.location = location;
-    }
+    private ArrayList<String> parTypes;
 
-    public CallSite(String declaringTypeQualifiedName, String callMethodName, int bindVar, Location location) {
+//    public CallSite(String declaringTypeQualifiedName, String callMethodName, Location location) {
+//        this.declaringTypeQualifiedName = declaringTypeQualifiedName;
+//        this.callMethodName = callMethodName;
+//        this.location = location;
+//    }
+
+    public CallSite(String declaringTypeQualifiedName, String callMethodName, int bindVar, Location location, ArrayList<String> parTypes) {
         this.declaringTypeQualifiedName = declaringTypeQualifiedName;
         this.callMethodName = callMethodName;
         this.bindVar = bindVar;
         this.location = location;
+        this.parTypes = parTypes;
     }
 
-    public CallSite(String declaringTypeQualifiedName, String callMethodName, String bindVarName, Location location) {
+    public CallSite(String declaringTypeQualifiedName, String callMethodName, String bindVarName, Location location, ArrayList<String> parTypes) {
         this.declaringTypeQualifiedName = declaringTypeQualifiedName;
         this.callMethodName = callMethodName;
         this.bindVarName = bindVarName;
         this.location = location;
+        this.parTypes = parTypes;
     }
 
     public String getDeclaringTypeQualifiedName() {
@@ -67,5 +73,11 @@ public class CallSite {
 
     public void setBindVarName(String bindVarName) {
         this.bindVarName = bindVarName;
+    }
+
+    public void addParType(String parType){this.parTypes.add(parType);}
+
+    public ArrayList<String> getParTypes() {
+        return parTypes;
     }
 }

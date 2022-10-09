@@ -195,6 +195,13 @@ public class SingleCollect {
         return singleCollectInstance.getEntityById(id) instanceof AnnotationTypeMember;
     }
 
+    public boolean isTypeParameter (int id){
+        if(id == -1){
+            return false;
+        }
+        return singleCollectInstance.getEntityById(id) instanceof TypeParameterEntity;
+    }
+
     public String getEntityType(int id){
         String type = "Unknown";
         if(isPackage(id))
@@ -220,6 +227,8 @@ public class SingleCollect {
             type = Configure.BASIC_ENTITY_ANNOTATION_MEMBER;
         else if (isVariable(id))
             type = Configure.BASIC_ENTITY_VARIABLE;
+        else if (isTypeParameter(id))
+            type = Configure.BASIC_ENTITY_TYPE_PARAMETER;
         return type;
     }
 
