@@ -20,6 +20,7 @@ Package Declaration:
 ###### Package declaration (Single)
 
 ```java
+//// foo/Main.java
 package foo;
 ```
 
@@ -36,6 +37,7 @@ entity:
 ###### Package declaration (Multiple)
 
 ```java
+//// foo/bar/Main.java
 package foo.bar;
 ```
 

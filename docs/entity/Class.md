@@ -103,9 +103,9 @@ entity:
     items:
         -   name: <Anonymous as="Class">
             qualified: Foo.doThings.<Anonymous as="Class">
-            loc: 13:13:0
+            loc: 13:13
         -   name: <Anonymous as="Class">
             qualified: Foo.doThings.<Anonymous as="Class">
-            loc: 19:13:0
+            loc: 19:13
 
 ```
