@@ -328,6 +328,8 @@ public class ProcessEntity {
         singleCollect.addEntity(enumEntity);
         //add parent's children Id
         singleCollect.getEntityById(parentId).addChildId(enumId);
+        //add created type
+        singleCollect.addCreatedType(enumId, qualifiedName);
 
         return enumId;
     }
@@ -415,7 +417,7 @@ public class ProcessEntity {
         //add parent's children Id
         singleCollect.getEntityById(parentId).addChildId(annotationId);
 
-        singleCollect.addCreatedAnt(annotationId, annotationName);
+        singleCollect.addCreatedAnt(annotationId, qualifiedName);
 
         return annotationId;
     }

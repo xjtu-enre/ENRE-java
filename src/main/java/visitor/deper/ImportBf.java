@@ -46,7 +46,7 @@ public class ImportBf extends DepBackfill {
                          */
                         ExternalEntity externalEntity = new ExternalEntity(singleCollect.getCurrentIndex(), entity.getId(), file.getL());
                         singleCollect.addEntity(externalEntity);
-//                        if (file.getL().equals("test_package1.Name")) {
+//                        if (file.getL().equals("helloJDT.ClassPreamble")) {
 //                            System.out.println("ATTENTION");
 //                            System.out.println(((FileEntity) entity).getFullPath());
 //                        }

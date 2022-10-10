@@ -29,6 +29,7 @@ util\Triple.class
 client\TemplateWork.class
 entity\properties\Block.class
 entity\ScopeEntity.class
+entity\TypeParameterEntity.class
 visitor\deper\ImportBf.class
 formator\fxml\XCells.class
 visitor\deper\DepBackfill.class
