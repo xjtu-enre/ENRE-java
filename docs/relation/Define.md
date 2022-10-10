@@ -179,7 +179,7 @@ entity:
             rawType: String
 relation: 
     items:
-        -   from: Method:'laudry'
+        -   from: Method:'laundry'
             to: Variable:'clothes'
             type: Define
             loc: file0:9:16

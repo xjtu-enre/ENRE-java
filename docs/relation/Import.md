@@ -109,10 +109,9 @@ class Foo {
 ```
 ```java
 //// Bar.java
-import Foo.MSG;
-import Foo;
+import static Foo.MSG;
 
-class Bar extends Foo { 
+class Bar{ 
     // Overriding Foo.doThings
     public void doThings(){
         System.out.println(MSG);
