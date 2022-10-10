@@ -1,13 +1,13 @@
-## Entity: EnumConstant
+## Entity: Enum Constant
 
-An `EnumConstant` is a set of predefined constants defined in enum.
+An `Enum Constant` is a set of predefined constants defined in enum.
 
 ### Supported Patterns
 
 ```yaml
-name: EnumConstant
+name: Enum Constant
 ```
-#### Syntax: EnumConstant Definitions
+#### Syntax: Enum Constant Definitions
 
 ```text
 EnumConstantDeclaration:
@@ -18,7 +18,7 @@ EnumConstantDeclaration:
 
 ##### Examples
 
-###### Simple enumconstant declaration
+###### Simple enum constant declaration
 
 ```java
 enum Foo {
@@ -27,9 +27,9 @@ enum Foo {
 ```
 
 ```yaml
-name: Simple EnumConstant
+name: Simple Enum Constant
 entity:
-    type: EnumConstant
+    type: Enum Constant
     items:
         -   name: BAR
             qualified: Foo.BAR
@@ -57,9 +57,9 @@ enum Planet {
 ```
 
 ```yaml
-name: EnumConstant With Methods
+name: Enum Constant With Methods
 entity:
-    type: EnumConstant
+    type: Enum Constant
     items:
         -   name: MERCURY
             qualified: Planet.MERCURY

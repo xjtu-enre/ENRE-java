@@ -47,18 +47,17 @@ entity:
             qualified: Bar
 relation:
     items:
-        -   from: File:'file0'
-            to: Class:'Bar'
+        -   from: File:'Bar.java'
+            to: Class:'Foo'
             type: import
-            loc: file1
-            negative: true
+            loc: file1:1:8
 ```
 ###### Import class (known package)
 ```java
 //// test_pkg2/Hello.java
-package test_package2;
+package test_pkg2;
 
-import test_package1.Name;
+import test_pkg1.Name;
 
 public class Hello {
     public static void main(String[] args){
@@ -85,15 +84,15 @@ entity:
         -   name: Name
             type : Class
             loc: file1:3:14
-            rawType: test_package1.Name
-            qualified: test_package1.Name
+            rawType: test_pkg1.Name
+            qualified: test_pkg1.Name
         -   name: Hello.java
             type : File
-            qualified: test_package2.Hello.java
+            qualified: test_pkg2.Hello.java
             loc: file0
 relation:
     items:
-        -   from: File:'file0'
+        -   from: File:'Hello.java'
             to: Class:'Name'
             type: import
             loc: file0:3:8
@@ -142,7 +141,7 @@ entity:
             qualified: Bar
 relation:
     items:
-        -   from: File:'file1'
+        -   from: File:'Bar.java'
             to: Variable:'MSG'
             type: import
             loc: file1:7:28
@@ -194,7 +193,7 @@ entity:
             loc: file0:1:9
 relation:
     items:
-        -   from: File:'file0'
+        -   from: File:'HelloJDT.java'
             to: Package:'helloJDT.pkg'
             type: import
             loc: file1:3:8
@@ -274,7 +273,7 @@ entity:
             modifiers: public
 relation:
     items:
-        -   from: File:'file0'
+        -   from: File:'BasePostMinimalDTO.java'
             to: Enum:'PostStatus'
             type: import
             loc: file0:1:8
@@ -312,7 +311,7 @@ entity:
             modifiers: public
 relation:
     items:
-        -   from: File:'file1'
+        -   from: File:'JournalController.java'
             to: Annotation:'CacheParam'
             type: import
             loc: file1:1:8

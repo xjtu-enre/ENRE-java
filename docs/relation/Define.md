@@ -185,7 +185,7 @@ relation:
             loc: file0:9:16
 ```
 
-###### Define an enumconstant
+###### Define an enum constant
 ```java
 //// AttachmentType.java
 public enum AttachmentType  {
@@ -208,7 +208,7 @@ public enum AttachmentType  {
 }
 ```
 ```yaml
-name: A enum defines enumconstants
+name: A enum defines enum constants
 entity:
     items:
         -   name: AttachmentType
@@ -216,25 +216,26 @@ entity:
             loc: 1:13
             modifiers: public
         -   name: LOCAL
-            type : EnumConstant
+            type : Enum Constant
             loc: 6:5
         -   name: MINIO
-            type: EnumConstant
+            type: Enum Constant
             loc: 11:5
-relation: 
-    items:
-        -   from: Enum:'AttachmentType'
-            to: EnumConstant:'LOCAL'
-            type: Define
-            loc: file0:6:5
-        -   from: Enum:'AttachmentType'
-            to: EnumConstant:'MINIO'
-            type: Define
-            loc: file0:11:5
+#relation: 
+#    items:
+#        -   from: Enum:'AttachmentType'
+#            to: Enum Constant:'LOCAL'
+#            type: Define
+#            loc: file0:6:5
+#        -   from: Enum:'AttachmentType'
+#            to: Enum Constant:'MINIO'
+#            type: Define
+#            loc: file0:11:5
 ```
-###### Define an annotationmember
+###### Define an annotation member
 ```java
 //// DisableOnCondition.java
+
 public @interface DisableOnCondition {
     
     String value() default "Mode.DEMO";
@@ -243,29 +244,29 @@ public @interface DisableOnCondition {
 }
 ```
 ```yaml
-name: An annotation defines annotationmembers
+name: An annotation defines annotation members
 entity:
     items:
         -   name: DisableOnCondition
             type: Annotation
             modifiers: public
-            loc: 1:19
+            loc: 2:19
         -   name: value
-            type: AnnotationMember
-            loc: 3:12
+            type: Annotation Member
+            loc: 4:12
         -   name: mode
-            type: AnnotationMember
-            loc: 5:12
-relation: 
-    items:
-        -   from: Annotation:'DisableOnCondition'
-            to: AnnotationMember:'value'
-            type: Define
-            loc: file0:3:12
-        -   from: Annotation:'DisableOnCondition'
-            to: AnnotationMember:'mode'
-            type: Define
-            loc: file0:5:12
+            type: Annotation Member
+            loc: 6:12
+#relation: 
+#    items:
+#        -   from: Annotation:'DisableOnCondition'
+#            to: Annotation Member:'value'
+#            type: Define
+#            loc: file0:4:12
+#        -   from: Annotation:'DisableOnCondition'
+#            to: Annotation Member:'mode'
+#            type: Define
+#            loc: file0:6:12
 ```
 
 ###### Define a variable (local variable)

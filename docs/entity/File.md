@@ -19,7 +19,7 @@ While you create a type, first you need to create a file.
 ###### Create A File
 
 ```java
-//// Foo.java
+//// hello/Foo.java
 package hello;
 
 public class Foo{
