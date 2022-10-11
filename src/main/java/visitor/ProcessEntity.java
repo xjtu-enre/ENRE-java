@@ -230,7 +230,7 @@ public class ProcessEntity {
 //                }
 //            }
 
-            //superclass
+            //interfaces
             try {
                 List superInterfaces = node.superInterfaceTypes();
                 for (Object temp : superInterfaces){
@@ -310,11 +310,16 @@ public class ProcessEntity {
         enumEntity.setRawType(qualifiedName);
         enumEntity.setBinNum(currentBin);
 
-        //interface, default id is -1
-        if(!node.superInterfaceTypes().isEmpty()){
-            for(Object type: node.superInterfaceTypes()){
-                enumEntity.addInterface(type.toString(), -1);
+        //interfaces
+        try {
+            List superInterfaces = node.superInterfaceTypes();
+            for (Object temp : superInterfaces){
+                if (temp instanceof Type){
+                    enumEntity.addInterface(((Type) temp).resolveBinding().getQualifiedName(), -1);
+                }
             }
+        } catch (NullPointerException e){
+//                e.printStackTrace();
         }
 
         for(Object o : node.modifiers()) {

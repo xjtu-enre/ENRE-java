@@ -27,6 +27,7 @@ public class Foo {
     
     public void counting() {
         foo++;
+        ++foo;
     }
 }
 ```
@@ -52,6 +53,10 @@ relation:
             to: Variable:'foo'
             type: Modify
             loc: file0:5:9
+        -   from: Method:'counting'
+            to: Variable:'foo'
+            type: Modify
+            loc: file0:6:9
 ```
 
 ###### Modify Local Var

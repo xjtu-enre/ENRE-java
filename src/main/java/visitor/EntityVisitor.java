@@ -510,15 +510,13 @@ public class EntityVisitor extends CKVisitor {
 
         //check the static field
         int staticFlag = -1;
-        for(Object o : node.modifiers()){
-            if(o.toString().equals("static") &&  singleCollect.getEntityById(typeId) instanceof ClassEntity){
-                staticFlag = 1;
-            }
-        }
 
         ArrayList<String> modifiers = new ArrayList<>();
         for(Object o : node.modifiers()){
             modifiers.add(o.toString());
+            if(o.toString().equals("static") &&  singleCollect.getEntityById(typeId) instanceof ClassEntity){
+                staticFlag = 1;
+            }
         }
 
         /**
@@ -874,7 +872,7 @@ public class EntityVisitor extends CKVisitor {
                     /**
                      * first set separately, not a parameter
                      */
-                    if(!((MethodEntity)singleCollect.getEntityById(methodId)).getParameters().contains(varId) && varId != -1){
+                    if(!((MethodEntity)singleCollect.getEntityById(methodId)).getParameters().contains(varId)){
                         if (((VariableEntity)singleCollect.getEntityById(varId)).getValue() == null){
                             ((VariableEntity)singleCollect.getEntityById(varId)).setSetBy(methodId);
                             ((VariableEntity)singleCollect.getEntityById(varId)).setValue(node.getRightHandSide().toString());
@@ -907,6 +905,50 @@ public class EntityVisitor extends CKVisitor {
     public void endVisit(Assignment node) {
         isAssignment = false;
         super.endVisit(node);
+    }
+
+    @Override
+    public boolean visit(InfixExpression node) {
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(PrefixExpression node) {
+
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
+
+        if (node.getOperand() instanceof SimpleName && singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity){
+            int methodId = scopeStack.peek();
+            String varName = ((SimpleName) node.getOperand()).getIdentifier();
+            int varId = processVarInMethod(varName ,methodId);
+            if(!((MethodEntity)singleCollect.getEntityById(methodId)).getParameters().contains(varId)){
+                ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "modify", loc);
+            }
+        } else {
+            // not a var
+            return super.visit(node);
+        }
+
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(PostfixExpression node) {
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
+
+        if (node.getOperand() instanceof SimpleName && singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity){
+            int methodId = scopeStack.peek();
+            String varName = ((SimpleName) node.getOperand()).getIdentifier();
+            int varId = processVarInMethod(varName ,methodId);
+            if(!((MethodEntity)singleCollect.getEntityById(methodId)).getParameters().contains(varId)){
+                ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "modify", loc);
+            }
+        } else {
+            // not a var
+            return super.visit(node);
+        }
+
+        return super.visit(node);
     }
 
     boolean isFor = false;
@@ -1072,14 +1114,14 @@ public class EntityVisitor extends CKVisitor {
         Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
 
         if (!scopeStack.isEmpty() && (singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity) && !isQualifiedName && !isParameterDeclaration && !isTypeParameterDeclaration){
-            processVarInMethod(varName, scopeStack.peek());
+            int varId = processVarInMethod(varName, scopeStack.peek());
             int methodId = scopeStack.peek();
-            if(!((MethodEntity)singleCollect.getEntityById(methodId)).getName2Usage().containsKey(varName) &&
-                    ((MethodEntity)singleCollect.getEntityById(methodId)).getName2Id().containsKey(varName)) {
+//            if(!((MethodEntity)singleCollect.getEntityById(methodId)).getName2Usage().containsKey(varName) &&
+//            if(!((MethodEntity)singleCollect.getEntityById(methodId)).getParameters().contains(varId) &&
+            if (((MethodEntity)singleCollect.getEntityById(methodId)).getName2Id().containsKey(varName)) {
                 ((MethodEntity) singleCollect.getEntityById(methodId)).addName2Usage(varName, "use", loc);
             }
         }
-
 
         return super.visit(node);
     }
