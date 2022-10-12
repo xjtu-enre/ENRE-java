@@ -49,7 +49,7 @@ entity:
         -   name: AuthenticationException
             type : Class
             qualified: AuthenticationException
-            loc: file1:1:14
+            loc: file1:2:14
             modifiers: public
             File: AuthenticationException.java
         -   name: getStatus

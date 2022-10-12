@@ -58,7 +58,7 @@ relation:
     items:
         -   from: Annotation:'DisableOnCondition'
             to: Method:'testMail'
-            loc: file0:11:17
+            loc: file0:9:5
             type: Annotate
 ```
 
@@ -98,7 +98,7 @@ relation:
     items:
         -   from: Annotation:'DisableOnCondition'
             to: Method:'testMail'
-            loc: file0:12:17
+            loc: file0:10:5
             type: Annotate
 ```
 
@@ -137,6 +137,6 @@ relation:
     items:
         -   from: Annotation:'DisableOnCondition'
             to: Method:'testMail'
-            loc: file0:11:17
+            loc: file0:9:5
             type: Annotate
 ```

@@ -67,8 +67,9 @@ public class Foo {
     public int counting(int i) {
         int j = i % 2;              // <--- Set
         j += 1;                     // <--- Modify
-        j += 2;                     // <--- Modify
-        j /= 3;                     // <--- Modify
+        j -= 2;                     // <--- Modify
+        j *= 3;                     // <--- Modify
+        j /= 4;                     // <--- Modify
         return j;
     }
 }
@@ -94,5 +95,17 @@ relation:
         -   from: Method:'counting'
             to: Variable:'j'
             type: Modify
-            loc: file0:3:13
+            loc: file0:4:9
+        -   from: Method:'counting'
+            to: Variable:'j'
+            type: Modify
+            loc: file0:5:9
+        -   from: Method:'counting'
+            to: Variable:'j'
+            type: Modify
+            loc: file0:6:9
+        -   from: Method:'counting'
+            to: Variable:'j'
+            type: Modify
+            loc: file0:7:9
 ```
