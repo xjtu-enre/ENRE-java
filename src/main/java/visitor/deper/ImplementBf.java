@@ -56,8 +56,8 @@ public class ImplementBf extends DepBackfill{
 //                    if(interfaceId == -1){
 //                        interfaceId = findTypeInPackage(tmp.getParentId(), interfaceName);
 //                    }
+                    ((EnumEntity) entity).getInterfaces().replace(interfaceName, interfaceId);
                     if(interfaceId != -1){
-                        ((EnumEntity) entity).getInterfaces().replace(interfaceName, interfaceId);
                         saveRelation(entity.getId(), interfaceId, Configure.RELATION_IMPLEMENT, Configure.RELATION_IMPLEMENTED_BY, entity.getLocation());
                     }
                 }
