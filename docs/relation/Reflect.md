@@ -106,11 +106,11 @@ entity:
             loc: file1:6:24
 relation:
     items:
-        -   from: Method:'method'
+        -   from: Method:'main'
             to: Method:'fun'[@loc=file0:29:21]
             type: Reflect
             loc: file1:12:22
-        -   from: Method:'method'
+        -   from: Method:'main'
             to: Method:'fun'[@loc=file0:33:21]
             type: Reflect
             loc: file1:10:29

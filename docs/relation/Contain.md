@@ -185,7 +185,7 @@ entity:
 relation:
     items:
         -   from: File:'Hello.java'
-            to: Interface:'Interface'
+            to: Interface:'Hello'
             type: Contain
             loc: file0:1:18
 ```
