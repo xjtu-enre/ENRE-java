@@ -64,11 +64,11 @@ relation:
             type: Set
             loc: file0:5:13
         -   from: Method:'getNum'
-            to: Variable:'Hello'
+            to: Variable:'hello'
             type: Set
             loc: file0:6:16
         -   from: Method:'getNum'
-            to: Variable:'Hello'
+            to: Variable:'hello'
             type: Set
             loc: file0:7:9
 ```
