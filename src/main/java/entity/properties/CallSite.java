@@ -35,6 +35,14 @@ public class CallSite {
         this.parTypes = parTypes;
     }
 
+    public CallSite(String declaringTypeQualifiedName, String callMethodName, String bindVarName, int bindVarId, Location loc){
+        this.declaringTypeQualifiedName = declaringTypeQualifiedName;
+        this.callMethodName = callMethodName;
+        this.bindVarName = bindVarName;
+        this.bindVar = bindVarId;
+        this.location = loc;
+    }
+
     public String getDeclaringTypeQualifiedName() {
         return declaringTypeQualifiedName;
     }

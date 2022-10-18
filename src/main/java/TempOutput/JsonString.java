@@ -6,6 +6,7 @@ import entity.*;
 import entity.properties.Relation;
 import org.json.JSONObject;
 
+import util.Configure;
 import util.SingleCollect;
 import util.Tuple;
 import visitor.relationInf.RelationInf;
@@ -191,6 +192,11 @@ public class JsonString {
             JSONObject external = new JSONObject();
             external.put("qualifiedName", externalEntity.getQualifiedName());
             external.put("external", true);
+            external.put("name", externalEntity.getName());
+            external.put("id", externalEntity.getId());
+//            if (externalEntity.getType().equals(Configure.EXTERNAL_ENTITY_METHOD)){
+//                external.put("returnType", externalEntity.getReturnType());
+//            }
             subObjVariable.add(external);
         }
 

@@ -99,6 +99,12 @@ public class TemplateWork {
         }
         entityTreeBuilder.run();
 
+        // identify external
+        if (externalPath != null){
+            ProcessThirdPartyMeth thirdPartyMeth = new ProcessThirdPartyMeth(externalPath, "sheet1");
+            thirdPartyMeth.convertExcelData();
+        }
+
         //extract Deps
         IdentifyRelations entityDepAnalyzer = new IdentifyRelations();
         entityDepAnalyzer.run();
@@ -107,22 +113,22 @@ public class TemplateWork {
         System.out.println("\nConsumed time: " + (float) ((endTime - startTime) / 1000.00) + " s,  or " + (float) ((endTime - startTime) / 60000.00) + " min.\n");
 
         //build hierarchical dependencies
-        HiDeper hiDeper = new HiDeper();
-        hiDeper.run();
-
-        HiDepData hiDepData = HiDepData.getInstance();
-
-        Formator formator = new Formator(depTypes);
-        JDepObject jDepObject = formator.getfJsonDataModel();
-        XDepObject xDepObject = formator.getfXmlDataModel();
-
-        Csvgrapher csvgrapher = new Csvgrapher();
-        csvgrapher.buildProcess();
-        ArrayList<String[]> allNodes = csvgrapher.getNodes();
-        ArrayList<String[]> allEdges = csvgrapher.getEdges();
-
-        WriterIntf writer = new WriterIntf();
-        writer.run(jDepObject, xDepObject, allNodes, allEdges);
+//        HiDeper hiDeper = new HiDeper();
+//        hiDeper.run();
+//
+//        HiDepData hiDepData = HiDepData.getInstance();
+//
+//        Formator formator = new Formator(depTypes);
+//        JDepObject jDepObject = formator.getfJsonDataModel();
+//        XDepObject xDepObject = formator.getfXmlDataModel();
+//
+//        Csvgrapher csvgrapher = new Csvgrapher();
+//        csvgrapher.buildProcess();
+//        ArrayList<String[]> allNodes = csvgrapher.getNodes();
+//        ArrayList<String[]> allEdges = csvgrapher.getEdges();
+//
+//        WriterIntf writer = new WriterIntf();
+//        writer.run(jDepObject, xDepObject, allNodes, allEdges);
 
         JsonMap jsonMap = new JsonMap();
         Verification verify = new Verification();

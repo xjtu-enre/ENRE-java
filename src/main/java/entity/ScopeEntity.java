@@ -37,6 +37,9 @@ public class ScopeEntity extends BaseEntity{
         this.call.add(new CallSite(className, methodName, bindVarName, loc, parTypes));
     }
 
+    public void addExternalCall(String className, String methodName, Location loc, String bindVarName, int bindVar){
+        this.call.add(new CallSite(className, methodName, bindVarName, bindVar, loc));
+    }
     public  ArrayList<CallSite> getCall() {
         return this.call;
     }

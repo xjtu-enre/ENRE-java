@@ -45,6 +45,10 @@ public abstract class DepBackfill{
         singleCollect.getEntityById(entityId2).addRelation(relationType2, entityId1, location, refAccessible, invoke);
     }
 
+    protected void saveRelation(int entityId, int externalEntityId, String relationType, Location loc, int bindVar){
+        singleCollect.getEntityById(entityId).addRelation(relationType, externalEntityId, loc, bindVar);
+    }
+
     /**
      * Get the type id according to the file full qualified name
      * @param fileFullName the full qualified name of file

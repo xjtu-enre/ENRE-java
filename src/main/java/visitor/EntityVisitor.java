@@ -712,9 +712,11 @@ public class EntityVisitor extends CKVisitor {
             bindVar = -1;
         }
 
+        String declaringTypeQualifiedName;
+
         if (methodBinding != null) {
             ITypeBinding declaringClass = methodBinding.getDeclaringClass();
-            String declaringTypeQualifiedName = declaringClass.getQualifiedName();
+            declaringTypeQualifiedName = declaringClass.getQualifiedName();
 
             ArrayList<String> parTypes = new ArrayList<>();
             ITypeBinding[] calledMethParTypes = methodBinding.getParameterTypes();
@@ -733,6 +735,15 @@ public class EntityVisitor extends CKVisitor {
 
             //check reflection
             checkReflection(declaringTypeQualifiedName, methodName, bindVar, node.arguments(),loc);
+        } else {
+            if (bindVar != -1){
+                declaringTypeQualifiedName = singleCollect.getEntityById(bindVar).getRawType();
+            } else {
+                declaringTypeQualifiedName = bindVarName;
+            }
+            if(singleCollect.getEntityById(scopeStack.peek()) instanceof ScopeEntity){
+                ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addExternalCall(declaringTypeQualifiedName, methodName, loc, bindVarName, bindVar);
+            }
         }
 
         return super.visit(node);

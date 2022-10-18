@@ -28,6 +28,7 @@ public class SingleCollect {
 
     private HashMap<String,Integer> createdAnt = new HashMap<>();
 
+    private HashMap<String,Integer> thirdPartyAPIs = new HashMap<>();
     private ArrayList<Integer> fileIds = new ArrayList<>();
 
     private HashMap<String, Integer> ckIndices = new HashMap<>();
@@ -50,12 +51,20 @@ public class SingleCollect {
         this.externalEntities.add(entity);
     }
 
+    public HashMap<String, Integer> getThirdPartyAPIs() {
+        return thirdPartyAPIs;
+    }
+
+    public void addThirdPartyAPIs(int externalID, String externalQualifiedName){
+        this.thirdPartyAPIs.put(externalQualifiedName, externalID);
+    }
+
     public static SingleCollect getSingleCollectInstance() {
         return singleCollectInstance;
     }
 
     public int getCurrentIndex(){
-        return this.entities.size();
+        return this.entities.size()+this.externalEntities.size();
     }
 
     public HashMap<String,Integer> getCreatedPackage(){

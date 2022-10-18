@@ -98,7 +98,7 @@ public class IdentifyEntities {
         }
 
         //set the version of java
-        ASTParser parser = ASTParser.newParser(AST.JLS17);
+        ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
 
         Map<String, String> options = JavaCore.getOptions();

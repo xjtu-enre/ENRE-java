@@ -25,19 +25,38 @@ public class CallBf extends DepBackfill{
                         }
                         if(id != -1){
                             saveRelation(entity.getId(), id, Configure.RELATION_CALL, Configure.RELATION_CALLED_BY, className2method.getLocation(), className2method.getBindVar());
+                        }else {
+//                            System.out.println(className2method.getCallMethodName());
+//                            System.out.println(className2method.getDeclaringTypeQualifiedName());
+//                            System.out.println(className2method.getBindVarName());
+//                            System.out.println(className2method.getBindVar());
+                            int externalId = findExternalMethod(className2method.getDeclaringTypeQualifiedName(), className2method.getCallMethodName());
+                            if (externalId != -1){
+                                saveRelation(entity.getId(), externalId, Configure.RELATION_CALL, className2method.getLocation(), className2method.getBindVar());
+                            }
                         }
                     }
                 }
                 //call non-dynamic
                 if(!((ScopeEntity) entity).getCallNondynamic().isEmpty()){
                     int superClassId = -1;
+                    String superClassName = "";
                     int superMethodId;
                     if(singleCollect.getEntityById(entity.getParentId()) instanceof ClassEntity){
                         superClassId = ((ClassEntity) singleCollect.getEntityById(entity.getParentId())).getSuperClassId();
+                        superClassName = ((ClassEntity) singleCollect.getEntityById(entity.getParentId())).getSuperClassName();
                     }
                     if(superClassId != -1){
                         for(Tuple<String, Location> superMethodName :((MethodEntity) entity).getCallNondynamic()){
                             superMethodId = findMethodInSuper(superClassId, superMethodName.getL());
+                            if(superMethodId != -1){
+                                saveRelation(entity.getId(), superMethodId, Configure.RELATION_CALL_NON_DYNAMIC, Configure.RELATION_CALLBY_NON_DYNAMIC, superMethodName.getR());
+                            }
+                        }
+                    } else {
+                        //call extended external class method
+                        for (Tuple<String, Location> superMethodName :((MethodEntity) entity).getCallNondynamic()){
+                            superMethodId = findExternalMethod(superClassName, superMethodName.getL());
                             if(superMethodId != -1){
                                 saveRelation(entity.getId(), superMethodId, Configure.RELATION_CALL_NON_DYNAMIC, Configure.RELATION_CALLBY_NON_DYNAMIC, superMethodName.getR());
                             }
@@ -64,6 +83,9 @@ public class CallBf extends DepBackfill{
         int declaredClassId = -1;
 //        String classQualifiedName = classQualifiedName2method.split("-")[0];
 //        String methodName = classQualifiedName2method.split("-")[1];
+        if (classQualifiedName.contains("<")){
+            classQualifiedName = classQualifiedName.split("<")[0];
+        }
         if(singleCollect.getCreatedType().containsKey(classQualifiedName)){
             declaredClassId = singleCollect.getCreatedType().get(classQualifiedName);
         }
@@ -88,6 +110,17 @@ public class CallBf extends DepBackfill{
             }
         }
         return -1;
+    }
+
+    public int findExternalMethod(String className, String methName){
+        int externalId = -1;
+        String qualifiedName = className + "." + methName;
+        for (String externalName : singleCollect.getThirdPartyAPIs().keySet()){
+            if (externalName.contains(qualifiedName)){
+                externalId = singleCollect.getThirdPartyAPIs().get(externalName);
+            }
+        }
+        return externalId;
     }
 
     public static boolean comparePara(ArrayList<String> methParas, ArrayList<String> calledParas){
