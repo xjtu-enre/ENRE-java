@@ -124,6 +124,10 @@ public class CallBf extends DepBackfill{
     }
 
     public static boolean comparePara(ArrayList<String> methParas, ArrayList<String> calledParas){
+        if (calledParas == null){
+            // external method
+            return false;
+        }
         if (methParas.size() == 0 && calledParas.size() == 0){
             return true;
         }

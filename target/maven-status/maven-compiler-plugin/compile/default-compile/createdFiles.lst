@@ -62,6 +62,7 @@ entity\AnnotationTypeMember.class
 util\Configure.class
 visitor\deper\CastBf.class
 visitor\RelationVisitor.class
+TempOutput\ProcessThirdPartyMeth.class
 TempOutput\JsonFormatTool.class
 TempOutput\DependsString.class
 entity\properties\CallSite.class
