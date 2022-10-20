@@ -1,8 +1,8 @@
 package entity;
 
 import entity.properties.Block;
+import entity.properties.Index;
 import entity.properties.Location;
-import entity.properties.MethodProperties;
 import util.Tuple;
 
 import java.util.ArrayList;
@@ -17,8 +17,6 @@ public class MethodEntity extends ScopeEntity{
     protected String returnExpression = null;
     protected boolean isConstructor = false;
 
-//    protected MethodProperties methodProperties = new MethodProperties();
-
     //record the id of blocks in method
     protected ArrayList<Block> blocks = new ArrayList<>();
 
@@ -30,6 +28,7 @@ public class MethodEntity extends ScopeEntity{
     protected HashMap<String, String> name2Role = new HashMap<>();
     protected HashMap<String, ArrayList<Tuple<String, Location>>> name2Usage = new HashMap<>();
 
+    protected Index indices;
     public MethodEntity(int methodId, String methodName){
         this.id = methodId;
         this.name = methodName;
@@ -111,10 +110,6 @@ public class MethodEntity extends ScopeEntity{
         return isConstructor;
     }
 
-//    public MethodProperties getMethodProperties(){
-//        return this.methodProperties;
-//    }
-
 
     public void addBlock (Block block){
         this.blocks.add(block);
@@ -161,6 +156,13 @@ public class MethodEntity extends ScopeEntity{
         name2Usage.get(name).add(new Tuple<>(usage, loc));
     }
 
+    public void setIndices(Index indices){
+        this.indices = indices;
+    }
+
+    public Index getIndices(){
+        return this.indices;
+    }
 
     @Override
     public String toString() {

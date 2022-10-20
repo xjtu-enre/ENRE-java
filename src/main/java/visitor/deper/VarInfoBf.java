@@ -4,6 +4,7 @@ import entity.BaseEntity;
 import entity.MethodEntity;
 import entity.VariableEntity;
 import entity.properties.Location;
+import org.apache.commons.io.input.NullInputStream;
 import util.Configure;
 import util.Tuple;
 
@@ -29,7 +30,11 @@ public class VarInfoBf extends DepBackfill{
                             saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_USE, Configure.RELATION_USED_BY, usage.getR());
                         }
                         else if(usage.getL().equals("modify")){
-                            saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_MODIFY, Configure.RELATION_MODIFIED_BY, usage.getR());
+                            try{
+                                saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_MODIFY, Configure.RELATION_MODIFIED_BY, usage.getR());
+                            } catch (NullPointerException e){
+                                System.out.println("NULL ID VAR: "+varName);
+                            }
                         }
                     }
                 }

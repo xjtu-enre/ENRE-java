@@ -176,6 +176,22 @@ public class JsonString {
                 if (!processHidden.getResult().isEmpty() && processHidden.checkHidden((MethodEntity)entity, parType)!= null){
                     entityObj.put("hidden", processHidden.checkHidden((MethodEntity)entity, parType));
                 }
+
+                //dependency enhancement
+                if (((MethodEntity) entity).getIndices() != null){
+                    JSONObject enhanceObj = new JSONObject();
+                    enhanceObj.put("isOverride", ((MethodEntity) entity).getIndices().getIsOverride());
+                    enhanceObj.put("isSetter", ((MethodEntity) entity).getIndices().getIsSetter());
+                    enhanceObj.put("isGetter", ((MethodEntity) entity).getIndices().getIsGetter());
+                    enhanceObj.put("isDelegator", ((MethodEntity) entity).getIndices().getIsDelegator());
+                    enhanceObj.put("isRecursive", ((MethodEntity) entity).getIndices().getIsRecursive());
+                    enhanceObj.put("isPublic", ((MethodEntity) entity).getIndices().getIsPublic());
+                    enhanceObj.put("isStatic", ((MethodEntity) entity).getIndices().getIsStatic());
+                    enhanceObj.put("isSynchronized", ((MethodEntity) entity).getIndices().getIsSynchronized());
+                    enhanceObj.put("isConstructor", ((MethodEntity) entity).isConstructor());
+                    enhanceObj.put("isAbstract", ((MethodEntity) entity).getIndices().getMethodIsAbstract());
+                    entityObj.accumulate("enhancement", enhanceObj);
+                }
             }
             //bin path
             if (entity.getBinPath()!= null){

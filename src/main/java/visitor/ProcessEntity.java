@@ -2,17 +2,22 @@ package visitor;
 
 import entity.*;
 import entity.properties.Block;
+import entity.properties.Index;
 import entity.properties.Location;
 import org.eclipse.jdt.core.dom.*;
 import util.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import static org.eclipse.jdt.core.dom.Modifier.*;
+import static org.eclipse.jdt.core.dom.Modifier.isStatic;
 
 public class ProcessEntity {
 
     //hidden flag
     private boolean hidden = false;
+
+    private Index indices = new Index();
 
     SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
 
@@ -506,6 +511,41 @@ public class ProcessEntity {
         }
         methodEntity.setBinNum(currentBin);
 
+        //dependency enhancement
+        IMethodBinding iMethodBinding = node.resolveBinding();
+        if (iMethodBinding != null) {
+//            System.out.println("Error in parsing [funcImpl name] : " + indices.getObject() + ", [location] : " + indices.getLocation().getLine() + "," + indices.getLocation().getRow());
+            indices.setIsOverride(false);
+            indices.setIsSetter(false);
+            indices.setIsGetter(false);
+            indices.setIsDelegator(false);
+            indices.setIsRecursive(false);
+            indices.setIsAssign(false);
+            indices.setIsCallSuper(false);
+
+            judgeMethodIsConstructor(node);
+            judgeMethodIsStatic(node);
+            judgeMethodIsSynchronized(node);
+            judgeMethodIsPublic(node);
+            judgeMethodIsAbstract(node);
+            judgeMethodIsOverride(node, iMethodBinding);
+
+            org.eclipse.jdt.core.dom.Block methodBody = node.getBody();
+            List<SingleVariableDeclaration> parameters = node.parameters();
+            if (methodBody != null) {
+                List<Statement> statements = methodBody.statements();
+                judgeMethodIsGetter(parameters, statements);
+                judgeMethodIsSetter(node, parameters, statements);
+                judgeMethodIsDelegator(node, statements);
+            }
+
+            judgeMethodIsRecursive(node);
+            judgeMethodIsAssign(node);
+            judgeMethodIsCallSuper(node);
+            methodEntity.setIndices(indices);
+        }
+
+
 //        if (getHidden() || singleCollect.getEntityById(parentTypeId).getHidden()){
 //            methodEntity.setHidden(true);
 //        }
@@ -657,5 +697,291 @@ public class ProcessEntity {
         return blockId;
     }
 
+
+    private void judgeMethodIsOverride(MethodDeclaration node, IMethodBinding iMethodBinding) {
+        for (IAnnotationBinding iAnnotationBinding : iMethodBinding.getAnnotations()) {
+            if (iAnnotationBinding.getName().equals("Override")) {
+                indices.setIsOverride(true);
+            }
+        }
+
+        if (!indices.getMethodIsAbstract() & !node.isConstructor() && !indices.getIsOverride() && !(node.getParent() instanceof AnonymousClassDeclaration)) {
+            indices.setIsOverride(overridesMethod(node));
+        }
+    }
+
+    private void judgeMethodIsConstructor(MethodDeclaration node) {
+        indices.setIsConstructor(node.isConstructor());
+    }
+
+    private void judgeMethodIsCallSuper(MethodDeclaration node) {
+        node.accept(new ASTVisitor() {
+            public boolean visit(SuperConstructorInvocation superConstructorInvocation) {
+                indices.setIsCallSuper(true);
+                return true;
+            }
+        });
+
+        node.accept(new ASTVisitor() {
+            public boolean visit(SuperMethodInvocation superMethodInvocation) {
+                indices.setIsCallSuper(true);
+                return true;
+            }
+        });
+
+        node.accept(new ASTVisitor() {
+            public boolean visit(SuperFieldAccess superFieldAccess) {
+                indices.setIsCallSuper(true);
+                return true;
+            }
+        });
+    }
+
+    private void judgeMethodIsAssign(MethodDeclaration node) {
+        node.accept(new ASTVisitor() {
+            public boolean visit(Assignment assignment) {
+                String assignFor = assignment.getLeftHandSide().toString();
+                if (assignFor.contains("this")) {
+                    indices.setIsAssign(true);
+                }
+                return true;
+            }
+        });
+    }
+
+    private void judgeMethodIsRecursive(MethodDeclaration node) {
+        node.accept(new ASTVisitor() {
+            public boolean visit(MethodInvocation methodInvocation) {
+                if (node.resolveBinding().equals(methodInvocation.resolveMethodBinding())) {
+                    indices.setIsRecursive(true);
+                }
+                return true;
+            }
+        });
+    }
+
+    private void judgeMethodIsAbstract(MethodDeclaration node) {
+        indices.setMethodIsAbstract(isAbstract(node.getModifiers()));
+    }
+
+    private void judgeMethodIsPublic(MethodDeclaration node) {
+        indices.setIsPublic(isPublic(node.getModifiers()));
+    }
+
+    private void judgeMethodIsSynchronized(MethodDeclaration node) {
+        indices.setIsSynchronized(isSynchronized(node.getModifiers()));
+    }
+
+    private void judgeMethodIsStatic(MethodDeclaration node) {
+        indices.setIsStatic(isStatic(node.getModifiers()));
+    }
+
+    private void judgeMethodIsGetter(List<SingleVariableDeclaration> parameters, List<Statement> statements) {
+        if (statements.size() == 1 && parameters.size() == 0) {
+            Statement statement = statements.get(0);
+            if (statement instanceof ReturnStatement) {
+                ReturnStatement returnStatement = (ReturnStatement) statement;
+                Expression returnStatementExpression = returnStatement.getExpression();
+                if (returnStatementExpression instanceof SimpleName) {
+//                                indices.setGetterFor(((SimpleName) returnStatementExpression).getIdentifier());
+                    indices.setIsGetter(true);
+                } else if (returnStatementExpression instanceof FieldAccess) {
+//                                FieldAccess fieldAccess = (FieldAccess) returnStatementExpression;
+//                                indices.setGetterFor(fieldAccess.getName().getIdentifier());
+                    indices.setIsGetter(true);
+                }
+            }
+        }
+    }
+
+    private void judgeMethodIsSetter(MethodDeclaration node, List<SingleVariableDeclaration> parameters, List<Statement> statements) {
+        if (statements.size() == 1 && parameters.size() == 1) {
+            if (!node.isConstructor()) { // except Constructor
+                Statement statement = statements.get(0);
+                if (statement instanceof ExpressionStatement) {
+                    ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+                    Expression expressionStatementExpression = expressionStatement.getExpression();
+                    if (expressionStatementExpression instanceof Assignment) {
+                        Assignment assignment = (Assignment) expressionStatementExpression;
+                        Expression rightHandSide = assignment.getRightHandSide();
+                        if (rightHandSide instanceof SimpleName) {
+                            SimpleName rightHandSideSimpleName = (SimpleName) rightHandSide;
+                            if (rightHandSideSimpleName.resolveBinding() != null) {
+                                if (rightHandSideSimpleName.resolveBinding()
+                                        .isEqualTo(parameters.get(0).resolveBinding())) {
+                                    Expression leftHandSide = assignment.getLeftHandSide();
+                                    if (leftHandSide instanceof SimpleName) {
+//                                                    indices.setSetterFor(((SimpleName) leftHandSide).getIdentifier());
+                                        indices.setIsSetter(true);
+                                    } else if (leftHandSide instanceof FieldAccess) {
+//                                                    FieldAccess fieldAccess = (FieldAccess) leftHandSide;
+//                                                    indices.setSetterFor(fieldAccess.getName().getIdentifier());
+                                        indices.setIsSetter(true);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void judgeMethodIsDelegator(MethodDeclaration node, List<Statement> statements) {
+        if (!(node.getParent() instanceof AnonymousClassDeclaration)) {
+            AbstractTypeDeclaration parentClass = (AbstractTypeDeclaration) node.getParent();
+            if (statements.size() == 1) {
+                Statement statement = statements.get(0);
+                MethodInvocation methodInvocation = null;
+                if (statement instanceof ReturnStatement) {
+                    ReturnStatement returnStatement = (ReturnStatement) statement;
+                    if (returnStatement.getExpression() instanceof MethodInvocation) {
+                        methodInvocation = (MethodInvocation) returnStatement.getExpression();
+                    }
+                } else if (statement instanceof ExpressionStatement) {
+                    ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+                    if (expressionStatement.getExpression() instanceof MethodInvocation) {
+                        methodInvocation = (MethodInvocation) expressionStatement.getExpression();
+                    }
+                }
+                if (methodInvocation != null) {
+                    Expression methodInvocationExpression = methodInvocation.getExpression();
+                    if (methodInvocationExpression instanceof MethodInvocation) {
+                        MethodInvocation previousChainedMethodInvocation = (MethodInvocation) methodInvocationExpression;
+                        List<MethodDeclaration> parentClassMethods = new ArrayList<>();
+                        if (parentClass instanceof TypeDeclaration) {
+                            MethodDeclaration[] parentClassMethodArray = ((TypeDeclaration) parentClass).getMethods();
+                            parentClassMethods.addAll(Arrays.asList(parentClassMethodArray));
+                        } else if (parentClass instanceof EnumDeclaration) {
+                            EnumDeclaration enumDeclaration = (EnumDeclaration) parentClass;
+                            List<BodyDeclaration> bodyDeclarations = enumDeclaration.bodyDeclarations();
+                            for (BodyDeclaration bodyDeclaration : bodyDeclarations) {
+                                if (bodyDeclaration instanceof MethodDeclaration) {
+                                    parentClassMethods.add((MethodDeclaration) bodyDeclaration);
+                                }
+                            }
+                        }
+                        boolean isDelegationChain = false;
+                        boolean foundInParentClass = false;
+                        for (MethodDeclaration parentClassMethod : parentClassMethods) {
+                            if (parentClassMethod.resolveBinding().isEqualTo(previousChainedMethodInvocation.resolveMethodBinding())) {
+                                foundInParentClass = true;
+                                SimpleName getterField = judgeMethodIsGetter(parentClassMethod);
+                                if (getterField == null)
+                                    isDelegationChain = true;
+                                break;
+                            }
+                        }
+                        if (!isDelegationChain && foundInParentClass) {
+                            indices.setIsDelegator(true);
+                        }
+                    } else if (methodInvocationExpression instanceof FieldAccess) {
+                        FieldAccess fieldAccess = (FieldAccess) methodInvocationExpression;
+                        IVariableBinding variableBinding = fieldAccess.resolveFieldBinding();
+                        if (variableBinding.getDeclaringClass().isEqualTo(parentClass.resolveBinding()) || parentClass.resolveBinding().isSubTypeCompatible(variableBinding.getDeclaringClass())) {
+                            indices.setIsDelegator(true);
+                        }
+                    } else if (methodInvocationExpression instanceof SimpleName) {
+                        SimpleName simpleName = (SimpleName) methodInvocationExpression;
+                        IBinding binding = simpleName.resolveBinding();
+                        if (binding != null && binding.getKind() == IBinding.VARIABLE) {
+                            IVariableBinding variableBinding = (IVariableBinding) binding;
+                            if (variableBinding.isField() || variableBinding.isParameter()) {
+                                indices.setIsDelegator(true);
+                            }
+                        }
+                    } else if (methodInvocationExpression instanceof ThisExpression) {
+                        indices.setIsDelegator(true);
+                    } else if (methodInvocationExpression == null) {
+                        indices.setIsDelegator(true);
+                    }
+                }
+            }
+        }
+    }
+
+
+    public static SimpleName judgeMethodIsGetter(MethodDeclaration methodDeclaration) {
+        org.eclipse.jdt.core.dom.Block methodBody = methodDeclaration.getBody();
+        List<SingleVariableDeclaration> parameters = methodDeclaration.parameters();
+        if (methodBody != null) {
+            List<Statement> statements = methodBody.statements();
+            if (statements.size() == 1 && parameters.size() == 0) {
+                Statement statement = statements.get(0);
+                if (statement instanceof ReturnStatement) {
+                    ReturnStatement returnStatement = (ReturnStatement) statement;
+                    Expression returnStatementExpression = returnStatement.getExpression();
+                    if (returnStatementExpression instanceof SimpleName) {
+                        return (SimpleName) returnStatementExpression;
+                    } else if (returnStatementExpression instanceof FieldAccess) {
+                        FieldAccess fieldAccess = (FieldAccess) returnStatementExpression;
+                        return fieldAccess.getName();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean overridesMethod(MethodDeclaration methodDeclaration) {
+        try {
+            IMethodBinding methodBinding = methodDeclaration.resolveBinding();
+            ITypeBinding declaringClassTypeBinding = methodBinding.getDeclaringClass();
+            Set<ITypeBinding> typeBindings = new LinkedHashSet<>();
+            ITypeBinding superClassTypeBinding = declaringClassTypeBinding.getSuperclass();
+            if (superClassTypeBinding != null) {
+                if (!superClassTypeBinding.getQualifiedName().equals("java.lang.Object")) {
+                    typeBindings.add(superClassTypeBinding);
+                }
+            }
+            ITypeBinding[] interfaceTypeBindings = declaringClassTypeBinding.getInterfaces();
+            for (ITypeBinding interfaceTypeBinding : interfaceTypeBindings) {
+                if (!interfaceTypeBinding.getQualifiedName().equals("java.io.Serializable")) {
+                    typeBindings.add(interfaceTypeBinding);
+                }
+            }
+            return overridesMethod(methodDeclaration, typeBindings);
+        } catch (NullPointerException nullPointerException) {
+//            System.out.println("error in overridesMethod(MethodDeclaration methodDeclaration) while resolving typeBindings," + "[funcImpl name] : " + indices.getObject() + ", [location] : " + indices.getLocation().getLine() + "," + indices.getLocation().getRow());
+        }
+        return false;
+    }
+
+    private boolean overridesMethod(MethodDeclaration methodDeclaration, Set<ITypeBinding> typeBindings) {
+        try {
+            IMethodBinding methodBinding = methodDeclaration.resolveBinding();
+            Set<ITypeBinding> superTypeBindings = new LinkedHashSet<>();
+            for (ITypeBinding typeBinding : typeBindings) {
+                ITypeBinding superClassTypeBinding = typeBinding.getSuperclass();
+                if (superClassTypeBinding != null)
+                    superTypeBindings.add(superClassTypeBinding);
+                ITypeBinding[] interfaceTypeBindings = typeBinding.getInterfaces();
+                superTypeBindings.addAll(Arrays.asList(interfaceTypeBindings));
+                if (typeBinding.isInterface()) {
+                    IMethodBinding[] interfaceMethodBindings = typeBinding.getDeclaredMethods();
+                    for (IMethodBinding interfaceMethodBinding : interfaceMethodBindings) {
+                        if (methodBinding.overrides(interfaceMethodBinding)
+                                || methodBinding.toString().equals(interfaceMethodBinding.toString()))
+                            return true;
+                    }
+                } else {
+                    IMethodBinding[] superClassMethodBindings = typeBinding.getDeclaredMethods();
+                    for (IMethodBinding superClassMethodBinding : superClassMethodBindings) {
+                        if (methodBinding.overrides(superClassMethodBinding)
+                                || (methodBinding.toString().equals(superClassMethodBinding.toString())
+                                && (superClassMethodBinding.getModifiers() & Modifier.PRIVATE) == 0))
+                            return true;
+                    }
+                }
+            }
+            if (!superTypeBindings.isEmpty()) {
+                return overridesMethod(methodDeclaration, superTypeBindings);
+            } else
+                return false;
+        } catch (NullPointerException nullPointerException) {
+//            System.out.println("error in (MethodDeclaration methodDeclaration, Set<ITypeBinding> typeBindings) while judging" + "[funcImpl name] : " + indices.getObject() + ", [location] : " + indices.getLocation().getLine() + "," + indices.getLocation().getRow());
+        }
+        return false;
+    }
 
 }
