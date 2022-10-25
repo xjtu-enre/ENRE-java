@@ -486,7 +486,7 @@ entity:
         -   name: test
             qualified: Person.test
             type: Variable
-            loc: file0:3:18
+            loc: file0:2:18
         -   name: ReflectDemo
             type: Class
             loc: file1:4:14
@@ -542,7 +542,7 @@ entity:
         -   name: age
             qualified: Person.age
             type: Variable
-            loc: file0:5:17
+            loc: file0:4:17
         -   name: ReflectDemo
             type: Class
             loc: file1:4:14
