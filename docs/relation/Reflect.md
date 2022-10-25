@@ -83,7 +83,7 @@ public class ReflectDemo {
 ```
 
 ```yaml
-name: Obtaining Method
+name: Obtaining Method (object.getMethod())
 entity:
     items:
         -   name: Person
@@ -179,7 +179,7 @@ public class ReflectDemo {
 ```
 
 ```yaml
-name: Obtaining Method
+name: Obtaining Method (object.getDeclaringMethod())
 entity:
     items:
         -   name: Person
@@ -477,7 +477,7 @@ public class ReflectDemo {
 ```
 
 ```yaml
-name: Retrieving Class Objects (Object.getField())
+name: Retrieving Class Fields (Object.getField())
 entity:
     items:
         -   name: Person
@@ -533,7 +533,7 @@ public class ReflectDemo {
 ```
 
 ```yaml
-name: Retrieving Class Objects (Object.getClass())
+name: Retrieving Class Fields (Object.getDeclaredField())
 entity:
     items:
         -   name: Person
