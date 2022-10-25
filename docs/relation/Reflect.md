@@ -20,7 +20,7 @@ invoke a method:
 ```
 ##### Examples
 
-###### Obtaining Method
+###### Obtaining Method (object.getMethod())
 ```java
 //// Person.java
 public class Person {
@@ -74,6 +74,102 @@ public class ReflectDemo {
             Method method = c.getMethod("fun", String.class, int.class);
             method.invoke(o, "tengj", 10);
             method = c.getMethod("fun", null);
+            method.invoke(o);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+```yaml
+name: Obtaining Method
+entity:
+    items:
+        -   name: Person
+            type: Class
+            loc: file0:1:14
+        -   name: fun
+            qualified: Person.fun
+            type: Method
+            loc: file0:29:21
+        -   name: fun
+            qualified: Person.fun
+            type: Method
+            loc: file0:33:21
+        -   name: ReflectDemo
+            type: Class
+            loc: file1:4:14
+        -   name: main
+            qualified: ReflectDemo.main
+            type: Method
+            loc: file1:6:24
+relation:
+    items:
+        -   from: Method:'main'
+            to: Method:'fun'[@loc=file0:29:21]
+            type: Reflect
+            loc: file1:12:22
+        -   from: Method:'main'
+            to: Method:'fun'[@loc=file0:33:21]
+            type: Reflect
+            loc: file1:10:29
+```
+
+###### Obtaining Method (object.getDeclaringMethod())
+```java
+//// Person.java
+public class Person {
+        private String name;
+        private int age;
+        private static String msg="hello world";
+        public String getName() {
+            return name;
+        }
+    
+        public void setName(String name) {
+            this.name = name;
+        }
+    
+        public int getAge() {
+            return age;
+        }
+    
+        public void setAge(int age) {
+            this.age = age;
+        }
+    
+        public Person() {
+        }
+    
+        private Person(String name) {
+            this.name = name;
+            System.out.println(age);
+        }
+    
+        public void fun() {
+            System.out.println("fun "+Person.msg);
+        }
+    
+        public void fun(String name,int age) {
+            System.out.println("我叫"+name+",今年"+age+"岁");
+        }
+    }
+```
+```java
+//// ReflectDemo.java
+import java.lang.reflect.Method;
+import Person;
+
+public class ReflectDemo {
+
+    public static void main(String[] args){
+        try {
+            Person o = new Person();
+            Class c = o.getClass();
+            Method method = c.getMethod("fun", String.class, int.class);
+            method.invoke(o, "tengj", 10);
+            method = c.getDeclaredMethod("fun", null);
             method.invoke(o);
         } catch (Exception e) {
             e.printStackTrace();
@@ -348,4 +444,116 @@ relation:
             to: Class:'Person'
             type: Reflect
             loc: file1:9:23
+```
+
+###### Retrieving Class Fields (Object.getField())
+
+```java
+//// Person.java
+public class Person {
+    public String test;
+    private String name;
+    private int age;
+    private static String msg="hello world";
+    }
+```
+```java
+//// ReflectDemo.java
+import java.lang.reflect.Field;
+import Person;
+
+public class ReflectDemo {
+
+    public static void main(String[] args){
+        try {
+            Person o = new Person();
+            Class c = o.getClass();
+            Field field = c.getField("test");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+```yaml
+name: Retrieving Class Objects (Object.getField())
+entity:
+    items:
+        -   name: Person
+            type: Class
+            loc: file0:1:14
+        -   name: test
+            qualified: Person.test
+            type: Variable
+            loc: file0:3:18
+        -   name: ReflectDemo
+            type: Class
+            loc: file1:4:14
+        -   name: main
+            qualified: ReflectDemo.main
+            type: Method
+            loc: file1:6:24
+relation:
+    items:
+        -   from: Method:'main'
+            to: Variable:'test'
+            type: Reflect
+            loc: file1:10:27
+```
+
+###### Retrieving Class Fields (Object.getDeclaredField())
+
+```java
+//// Person.java
+public class Person {
+    public String test;
+    private String name;
+    private int age;
+    private static String msg="hello world";
+    }
+```
+```java
+//// ReflectDemo.java
+import java.lang.reflect.Field;
+import Person;
+
+public class ReflectDemo {
+
+    public static void main(String[] args){
+        try {
+            Person o = new Person();
+            Class c = o.getClass();
+            Field field = c.getDeclaredField("age");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+```yaml
+name: Retrieving Class Objects (Object.getClass())
+entity:
+    items:
+        -   name: Person
+            type: Class
+            loc: file0:1:14
+        -   name: age
+            qualified: Person.age
+            type: Variable
+            loc: file0:5:17
+        -   name: ReflectDemo
+            type: Class
+            loc: file1:4:14
+        -   name: main
+            qualified: ReflectDemo.main
+            type: Method
+            loc: file1:6:24
+relation:
+    items:
+        -   from: Method:'main'
+            to: Variable:'age'
+            type: Reflect
+            loc: file1:10:27
 ```
