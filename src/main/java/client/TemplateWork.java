@@ -72,6 +72,9 @@ public class TemplateWork {
         //Get the external
         String externalPath = app.getExternal();
 
+        //Slim versin
+        boolean slim = app.isSlim();
+
         config(lang, inputDir, projectName);
         String outputFile = configure.getAnalyzedProjectName()+ "-out";
         if (app.getOutputFile() != null){
@@ -136,7 +139,7 @@ public class TemplateWork {
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-node", Django.nodeWriter());
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-edge", Django.edgeWriter(jsonMap.getFinalRes()));
         //specific-anti-
-        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",outputFile, JsonString.JSONWriteRelation(jsonMap.getFinalRes(), hiddenDir));
+        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",outputFile, JsonString.JSONWriteRelation(jsonMap.getFinalRes(), hiddenDir, slim));
 //        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",configure.getAnalyzedProjectName()+ "-hidden-not-match", ProcessHidden.getProcessHiddeninstance().outputResult());
 
         //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-imports", Verification.JSONWriteRela(verify.getRela()));

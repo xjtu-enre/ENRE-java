@@ -29,6 +29,8 @@ public class EnreCommand {
     public boolean help;
     @Option(names = {"-e","--external"}, description = "The third party APIs which need to identify")
     private String external;
+    @Option(names = {"-s", "--slim"}, description = "The slim output version, which removing the location and external entity info. ")
+    private boolean slim;
 
     public EnreCommand() {
     }
@@ -88,6 +90,8 @@ public class EnreCommand {
     public boolean isHelp() {
         return help;
     }
+
+    public boolean isSlim() {return slim;}
 
     public void setExternal(String external) {
         this.external = external;

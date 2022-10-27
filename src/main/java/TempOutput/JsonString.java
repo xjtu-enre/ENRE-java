@@ -41,7 +41,7 @@ public class JsonString {
         }
     }
 
-    public static String JSONWriteRelation(Map<Integer, ArrayList<Tuple<Integer, Relation>>> relationMap, String hiddenPath) throws Exception {
+    public static String JSONWriteRelation(Map<Integer, ArrayList<Tuple<Integer, Relation>>> relationMap, String hiddenPath, boolean slim) throws Exception {
 
         JSONObject obj=new JSONObject();//创建JSONObject对象
 
@@ -149,13 +149,15 @@ public class JsonString {
                 }
             }
             //location
-            if (!(entity instanceof FileEntity || entity instanceof PackageEntity)){
-                JSONObject locObj = new JSONObject();
-                locObj.put("startLine", entity.getLocation().getStartLine());
-                locObj.put("endLine", entity.getLocation().getEndLine());
-                locObj.put("startColumn", entity.getLocation().getStartColumn());
-                locObj.put("endColumn", entity.getLocation().getEndColumn());
-                entityObj.accumulate("location", locObj);
+            if (!slim){
+                if (!(entity instanceof FileEntity || entity instanceof PackageEntity)){
+                    JSONObject locObj = new JSONObject();
+                    locObj.put("startLine", entity.getLocation().getStartLine());
+                    locObj.put("endLine", entity.getLocation().getEndLine());
+                    locObj.put("startColumn", entity.getLocation().getStartColumn());
+                    locObj.put("endColumn", entity.getLocation().getEndColumn());
+                    entityObj.accumulate("location", locObj);
+                }
             }
             //method parameter Type
             if (entity instanceof MethodEntity){
@@ -178,7 +180,7 @@ public class JsonString {
                 }
 
                 //dependency enhancement
-                if (((MethodEntity) entity).getIndices() != null){
+                if (!slim && ((MethodEntity) entity).getIndices() != null){
                     JSONObject enhanceObj = new JSONObject();
                     enhanceObj.put("isOverride", ((MethodEntity) entity).getIndices().getIsOverride());
                     enhanceObj.put("isSetter", ((MethodEntity) entity).getIndices().getIsSetter());
@@ -204,16 +206,18 @@ public class JsonString {
             subObjVariable.add(entityObj);
         }
 
-        for (ExternalEntity externalEntity : singleCollect.getExternalEntities()) {
-            JSONObject external = new JSONObject();
-            external.put("qualifiedName", externalEntity.getQualifiedName());
-            external.put("external", true);
-            external.put("name", externalEntity.getName());
-            external.put("id", externalEntity.getId());
+        if (!slim){
+            for (ExternalEntity externalEntity : singleCollect.getExternalEntities()) {
+                JSONObject external = new JSONObject();
+                external.put("qualifiedName", externalEntity.getQualifiedName());
+                external.put("external", true);
+                external.put("name", externalEntity.getName());
+                external.put("id", externalEntity.getId());
 //            if (externalEntity.getType().equals(Configure.EXTERNAL_ENTITY_METHOD)){
 //                external.put("returnType", externalEntity.getReturnType());
 //            }
-            subObjVariable.add(external);
+                subObjVariable.add(external);
+            }
         }
 
         obj.put("variables",subObjVariable);
@@ -264,14 +268,15 @@ public class JsonString {
 //                        }
                     }
 //                    else {
+                    if (!slim){
                         JSONObject locObj = new JSONObject();
                         locObj.put("startLine", type.getLocation().getStartLine());
                         locObj.put("endLine", type.getLocation().getEndLine());
                         locObj.put("startColumn", type.getLocation().getStartColumn());
                         locObj.put("endColumn", type.getLocation().getEndColumn());
                         reObj.accumulate("loc", locObj);
+                    }
 //                    }
-
                     subObj.accumulate("values",reObj);
                     obj.accumulate("cells",subObj);
 
