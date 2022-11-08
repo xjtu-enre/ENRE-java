@@ -33,10 +33,10 @@ public abstract class DepBackfill{
         singleCollect.getEntityById(entityId2).addRelation(relationType2, entityId1, location);
     }
 
-    protected void saveRelation(int entityId1, int entityId2, String relationType1, String relationType2, Location location, int bindVar) {
+    protected void saveRelation(int entityId1, int entityId2, String relationType1, String relationType2, Location location, int bindVar, ArrayList<String> arguments) {
 
-        singleCollect.getEntityById(entityId1).addRelation(relationType1, entityId2, location, bindVar);
-        singleCollect.getEntityById(entityId2).addRelation(relationType2, entityId1, location, bindVar);
+        singleCollect.getEntityById(entityId1).addRelation(relationType1, entityId2, location, bindVar, arguments);
+        singleCollect.getEntityById(entityId2).addRelation(relationType2, entityId1, location, bindVar, arguments);
     }
 
     protected void saveRelation(int entityId1, int entityId2, String relationType1, String relationType2, Location location, boolean refAccessible, boolean invoke) {
@@ -45,8 +45,8 @@ public abstract class DepBackfill{
         singleCollect.getEntityById(entityId2).addRelation(relationType2, entityId1, location, refAccessible, invoke);
     }
 
-    protected void saveRelation(int entityId, int externalEntityId, String relationType, Location loc, int bindVar){
-        singleCollect.getEntityById(entityId).addRelation(relationType, externalEntityId, loc, bindVar);
+    protected void saveRelation(int entityId, int externalEntityId, String relationType, Location loc, int bindVar, ArrayList<String> arguments){
+        singleCollect.getEntityById(entityId).addRelation(relationType, externalEntityId, loc, bindVar, arguments);
     }
 
     /**

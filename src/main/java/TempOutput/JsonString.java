@@ -255,6 +255,14 @@ public class JsonString {
                     if (type.getModifyAccessible()){
                         reObj.put("modifyAccessible", true);
                     }
+                    if (!type.getArguemnts().isEmpty()){
+                        String args = "";
+                        for (String arg: type.getArguemnts()){
+                            args = args.concat(arg.replace("\"", "") + " ");
+                        }
+                        args = args.substring(0, args.length()-1);
+                        reObj.put("arguments", args);
+                    }
                     if (type.getInvoke()){
 //                        try{
 //                            JSONObject locObj = new JSONObject();

@@ -103,8 +103,8 @@ public class BaseEntity {
         this.relation.add(new Relation(relation, relationId, relationLoc));
     }
 
-    public void addRelation(String relation, int relationId, Location relationLoc, int bindVar){
-        this.relation.add(new Relation(relation, relationId, relationLoc, bindVar));
+    public void addRelation(String relation, int relationId, Location relationLoc, int bindVar, ArrayList<String> arguments){
+        this.relation.add(new Relation(relation, relationId, relationLoc, bindVar, arguments));
     }
 
     public void addRelation(String relation, int relationId, Location relationLoc, boolean refAccessible, boolean invoke){

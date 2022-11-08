@@ -29,16 +29,16 @@ public class ScopeEntity extends BaseEntity{
         return this.casType;
     }
 
-    public void addCall(String className, String methodName, Location loc, int bindVar, ArrayList<String> parTypes){
-        this.call.add(new CallSite(className, methodName, bindVar, loc, parTypes));
+    public void addCall(String className, String methodName, Location loc, int bindVar, ArrayList<String> parTypes, ArrayList<String> arguments){
+        this.call.add(new CallSite(className, methodName, bindVar, loc, parTypes, arguments));
     }
 
-    public void addCall(String className, String methodName, Location loc, String bindVarName, ArrayList<String> parTypes){
-        this.call.add(new CallSite(className, methodName, bindVarName, loc, parTypes));
+    public void addCall(String className, String methodName, Location loc, String bindVarName, ArrayList<String> parTypes, ArrayList<String> arguments){
+        this.call.add(new CallSite(className, methodName, bindVarName, loc, parTypes, arguments));
     }
 
-    public void addExternalCall(String className, String methodName, Location loc, String bindVarName, int bindVar){
-        this.call.add(new CallSite(className, methodName, bindVarName, bindVar, loc));
+    public void addExternalCall(String className, String methodName, Location loc, String bindVarName, int bindVar, ArrayList<String> arguments){
+        this.call.add(new CallSite(className, methodName, bindVarName, bindVar, loc, arguments));
     }
     public  ArrayList<CallSite> getCall() {
         return this.call;

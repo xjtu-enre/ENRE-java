@@ -1,5 +1,7 @@
 package entity.properties;
 
+import java.util.ArrayList;
+
 public class Relation {
 
     String kind;
@@ -22,6 +24,12 @@ public class Relation {
     boolean modifyAccessible = false;
     boolean invoke = false;
 
+    /**
+     * Record the arguments in the call site
+     * eg. arg in obj.meth(arg)
+     */
+    ArrayList<String> arguemnts = new ArrayList<>();
+
     public Relation(String kind, int toEntity){
         this.kind = kind;
         this.toEntity = toEntity;
@@ -33,11 +41,12 @@ public class Relation {
         this.location = location;
     }
 
-    public Relation(String kind, int toEntity, Location location, int bindVar){
+    public Relation(String kind, int toEntity, Location location, int bindVar, ArrayList<String> arguments){
         this.kind = kind;
         this.toEntity = toEntity;
         this.location = location;
         this.bindVar = bindVar;
+        this.arguemnts = arguments;
     }
 
     public String getKind() {
@@ -86,5 +95,13 @@ public class Relation {
 
     public boolean getInvoke(){
         return this.invoke;
+    }
+
+    public ArrayList<String> getArguemnts() {
+        return arguemnts;
+    }
+
+    public void setArguemnts(ArrayList<String> arguemnts) {
+        this.arguemnts = arguemnts;
     }
 }

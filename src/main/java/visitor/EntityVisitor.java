@@ -301,7 +301,6 @@ public class EntityVisitor extends CKVisitor {
                     break;
             }
         }
-
         //add current entities' annotation
         String annotationName = node.getTypeName().toString();
         Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
@@ -685,6 +684,12 @@ public class EntityVisitor extends CKVisitor {
         //call location
         Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
 
+        //get argument(s) or input parameters
+        ArrayList<String> arguments = new ArrayList<>();
+        for (Object par : node.arguments()){
+            arguments.add(par.toString());
+        }
+
         //the var implement call
         Expression currentExpression = node.getExpression();
         while (currentExpression instanceof MethodInvocation){
@@ -726,9 +731,9 @@ public class EntityVisitor extends CKVisitor {
 
             if(singleCollect.getEntityById(scopeStack.peek()) instanceof ScopeEntity){
                 if (bindVar != -1){
-                    ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, loc, bindVar, parTypes);
+                    ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, loc, bindVar, parTypes, arguments);
                 } else {
-                    ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, loc, bindVarName, parTypes);
+                    ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, loc, bindVarName, parTypes, arguments);
                 }
 
             }
@@ -742,7 +747,7 @@ public class EntityVisitor extends CKVisitor {
                 declaringTypeQualifiedName = bindVarName;
             }
             if(singleCollect.getEntityById(scopeStack.peek()) instanceof ScopeEntity){
-                ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addExternalCall(declaringTypeQualifiedName, methodName, loc, bindVarName, bindVar);
+                ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addExternalCall(declaringTypeQualifiedName, methodName, loc, bindVarName, bindVar, arguments);
             }
         }
 

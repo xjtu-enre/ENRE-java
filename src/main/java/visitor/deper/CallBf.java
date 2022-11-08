@@ -24,7 +24,7 @@ public class CallBf extends DepBackfill{
                             ((MethodEntity) entity).getCall().get(((MethodEntity) entity).getCall().indexOf(className2method)).setBindVar(findBindVar(entity.getId(), className2method.getBindVarName()));
                         }
                         if(id != -1){
-                            saveRelation(entity.getId(), id, Configure.RELATION_CALL, Configure.RELATION_CALLED_BY, className2method.getLocation(), className2method.getBindVar());
+                            saveRelation(entity.getId(), id, Configure.RELATION_CALL, Configure.RELATION_CALLED_BY, className2method.getLocation(), className2method.getBindVar(), className2method.getArguments());
                         }else {
 //                            System.out.println(className2method.getCallMethodName());
 //                            System.out.println(className2method.getDeclaringTypeQualifiedName());
@@ -32,7 +32,7 @@ public class CallBf extends DepBackfill{
 //                            System.out.println(className2method.getBindVar());
                             int externalId = findExternalMethod(className2method.getDeclaringTypeQualifiedName(), className2method.getCallMethodName());
                             if (externalId != -1){
-                                saveRelation(entity.getId(), externalId, Configure.RELATION_CALL, className2method.getLocation(), className2method.getBindVar());
+                                saveRelation(entity.getId(), externalId, Configure.RELATION_CALL, className2method.getLocation(), className2method.getBindVar(), className2method.getArguments());
                             }
                         }
                     }

@@ -10,8 +10,8 @@ public class CallSite {
     private int bindVar = -1;
     private String bindVarName = null;
     private Location location;
-
     private ArrayList<String> parTypes;
+    private ArrayList<String> arguments;
 
 //    public CallSite(String declaringTypeQualifiedName, String callMethodName, Location location) {
 //        this.declaringTypeQualifiedName = declaringTypeQualifiedName;
@@ -19,28 +19,31 @@ public class CallSite {
 //        this.location = location;
 //    }
 
-    public CallSite(String declaringTypeQualifiedName, String callMethodName, int bindVar, Location location, ArrayList<String> parTypes) {
+    public CallSite(String declaringTypeQualifiedName, String callMethodName, int bindVar, Location location, ArrayList<String> parTypes, ArrayList<String> arguments) {
         this.declaringTypeQualifiedName = declaringTypeQualifiedName;
         this.callMethodName = callMethodName;
         this.bindVar = bindVar;
         this.location = location;
         this.parTypes = parTypes;
+        this.arguments = arguments;
     }
 
-    public CallSite(String declaringTypeQualifiedName, String callMethodName, String bindVarName, Location location, ArrayList<String> parTypes) {
+    public CallSite(String declaringTypeQualifiedName, String callMethodName, String bindVarName, Location location, ArrayList<String> parTypes, ArrayList<String> arguments) {
         this.declaringTypeQualifiedName = declaringTypeQualifiedName;
         this.callMethodName = callMethodName;
         this.bindVarName = bindVarName;
         this.location = location;
         this.parTypes = parTypes;
+        this.arguments = arguments;
     }
 
-    public CallSite(String declaringTypeQualifiedName, String callMethodName, String bindVarName, int bindVarId, Location loc){
+    public CallSite(String declaringTypeQualifiedName, String callMethodName, String bindVarName, int bindVarId, Location loc, ArrayList<String> arguments){
         this.declaringTypeQualifiedName = declaringTypeQualifiedName;
         this.callMethodName = callMethodName;
         this.bindVarName = bindVarName;
         this.bindVar = bindVarId;
         this.location = loc;
+        this.arguments = arguments;
     }
 
     public String getDeclaringTypeQualifiedName() {
@@ -87,5 +90,13 @@ public class CallSite {
 
     public ArrayList<String> getParTypes() {
         return parTypes;
+    }
+
+    public void addArgument(String arg){
+        this.arguments.add(arg);
+    }
+
+    public ArrayList<String> getArguments() {
+        return arguments;
     }
 }
