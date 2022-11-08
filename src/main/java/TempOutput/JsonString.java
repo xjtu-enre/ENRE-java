@@ -258,7 +258,7 @@ public class JsonString {
                     if (!type.getArguemnts().isEmpty()){
                         String args = "";
                         for (String arg: type.getArguemnts()){
-                            args = args.concat(arg.replace("\"", "") + " ");
+                            args = args.concat(arg.replace("\"", "").replace(",", " ") + " ");
                         }
                         args = args.substring(0, args.length()-1);
                         reObj.put("arguments", args);
