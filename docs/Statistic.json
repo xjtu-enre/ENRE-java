@@ -30,6 +30,8 @@
   },
   "command": {
     "AOSP": "java E:\\Android\\base base -a E:\\aidl -hd E:\\Android\\hiddenapi-flags.csv",
-    "TEST": "java C:\\Users\\98703\\IdeaProjects\\helloJDT helloJDT -d E:\\temp\\helloJDT -d D:\\test_project\\helloJDT"
+    "TEST": "java C:\\Users\\98703\\IdeaProjects\\helloJDT helloJDT -d E:\\temp\\helloJDT -d D:\\test_project\\helloJDT",
+    "1214": "java C:\\Users\\98703\\IdeaProjects\\helloJDT helloJDT -e .\\third_party_example.xlsx -o 1213 -s",
+    "halo": "java D:\\test_project\\halo-1.4.10 halo-1.4.10"
   }
 }

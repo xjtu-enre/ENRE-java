@@ -4,6 +4,8 @@ import java.util.*;
 
 import entity.*;
 import entity.properties.Relation;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONObject;
 
 import util.Configure;
@@ -320,30 +322,35 @@ public class JsonString {
     public static String processRawType (String rawType){
         if (rawType == null){
             return null;
-        }else {
-            if (rawType.contains("<")){
-                String[] temp = rawType.split("<");
-                rawType = processRawType(temp[0]).concat("-"+processRawType(temp[1]));
-            }
-            if (rawType.contains(">")){
-                rawType = rawType.replace(">", "");
-            }
-            if (rawType.contains("[")){
-                String[] temp = rawType.split("\\[");
-                rawType = processRawType(temp[0]).concat("-"+processRawType(temp[1]));
-            }
-            if (rawType.contains("]")){
-                rawType = rawType.replace("]", "");
-            }
-            if (rawType.contains(",")){
-                String[] temp = rawType.split(",");
-                rawType = processRawType(temp[0]).concat("-"+processRawType(temp[1]));
-            }
-            if (rawType.contains("java")){
-                String[] temp = rawType.split("\\.");
-                rawType = temp[temp.length - 1];
-            }
         }
+//        else {
+//            if (rawType.contains("<")){
+////                String[] temp = rawType.split("<");
+////                rawType = processRawType(temp[0]).concat("-"+processRawType(temp[1]));
+//                rawType = rawType.replaceAll("<", "&gt;");
+//            }
+//            if (rawType.contains(">")){
+//                rawType = rawType.replaceAll(">", "\\>");
+//            }
+//            if (rawType.contains("[")){
+////                String[] temp = rawType.split("\\[");
+////                rawType = processRawType(temp[0]).concat("-"+processRawType(temp[1]));
+//                rawType = rawType.replaceAll("\\[", "\\[");
+//            }
+//            if (rawType.contains("]")){
+//                rawType = rawType.replaceAll("]", "\\]");
+//            }
+//            if (rawType.contains(",")){
+////                String[] temp = rawType.split(",");
+////                rawType = processRawType(temp[0]).concat("-"+processRawType(temp[1]));
+//                rawType = rawType.replaceAll(",", "\\,");
+//            }
+//            if (rawType.contains("java")){
+//                String[] temp = rawType.split("\\.");
+//                rawType = temp[temp.length - 1];
+//            }
+//            rawType = StringEscapeUtils.unescapeJava(rawType);
+//        }
         return rawType;
     }
 

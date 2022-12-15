@@ -75,6 +75,10 @@ public class JsonFormatTool {
                 //（2）打印：当前字符。
                 result.append(key);
 
+                if ((i - 1 > 0) && (key == '[') && (json.charAt(i - 1) != ':')){
+                    continue;
+                }
+
                 //（3）前方括号、前花括号，的后面必须换行。打印：换行。
                 result.append('\n');
 
@@ -89,6 +93,10 @@ public class JsonFormatTool {
             //3、如果当前字符是后方括号、后花括号做如下处理：
             if((key == ']') || (key == '}') )
             {
+                if (((i + 1) < length) && (key == ']') && (json.charAt(i - 1) == '[')){
+                    result.append(key);
+                    continue;
+                }
                 //（1）后方括号、后花括号，的前面必须换行。打印：换行。
                 result.append('\n');
 
@@ -112,6 +120,10 @@ public class JsonFormatTool {
             //4、如果当前字符是逗号。逗号后面换行，并缩进，不改变缩进次数。
             if((key == ','))
             {
+                if (((i + 1) < length) && (json.charAt(i + 1) != '"' && (json.charAt(i + 1) != '{'))){
+                    result.append(key);
+                    continue;
+                }
                 result.append(key);
                 result.append('\n');
                 result.append(indent(number));
