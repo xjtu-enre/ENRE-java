@@ -46,8 +46,8 @@ java -jar <executable> <lang> <dir> <project-name>
 The detailed information of the parameter and option of the command is:
 
 ```text
-Usage: enre_java [-h] [-a=<aidl>] [-hd=<hidden>] [-o=<outputFile>]
-                 [-d=<dir>]... <lang> <src> <projectName>
+Usage: enre_java [-hs] [-a=<aidl>] [-e=<external>] [-hd=<hidden>]
+                 [-o=<outputFile>] [-d=<dir>]... <lang> <src> <projectName>
       <lang>          The lanauge of project files: []
       <src>           The directory to be analyzed
       <projectName>   The analyzed project file name
@@ -56,11 +56,15 @@ Usage: enre_java [-h] [-a=<aidl>] [-hd=<hidden>] [-o=<outputFile>]
                         java files which have the same relative path with the
                         original file
   -d, --dir=<dir>     The additional directories to be analyzed
-  -h, --help          display this help and exit
+  -e, --external=<external>
+                      The third party APIs which need to identify
+  -h, --help          Display this help and exit
       -hd, --hidden=<hidden>
                       The path of hiddenapi-flag.csv
   -o, --output=<outputFile>
                       The output file name, default is projectName-out
+  -s, --slim          The slim output version, which removing the location and
+                        external entity info.
 ```
 
 To increase the memory heap, you can add -Xmx before -jar, like: 
