@@ -135,4 +135,12 @@ entity:
 | -------- | -------------------------- |------------|---------------|
 | isStatic | Indicates a static method. | `boolean`  | false         |
 | Modifier | Accessibility modifier.    | `'public'`\| `'protected'`\|`'private'` | `'public'` |
-
+| isOverride | Indicates a override method. | `boolean`  | null      |
+| isSetter | Indicates a setter method. | `boolean`  | null          |
+| isGetter | Indicates a getter method. | `boolean`  | null          |
+| isDelegator | Indicates a delegator method. | `boolean`  | null    |
+| isRecursive | Indicates a recursive method. | `boolean`  | null    |
+| isAssign | Indicates an assign method. | `boolean`       | null    |
+| isSynchronized | Indicates a synchronized method. | `boolean` | null |
+| isConstructor | Indicates a constructor method. | `boolean` | null |
+| isCallSuper | Indicates a callSuper method. | `boolean` | null |
