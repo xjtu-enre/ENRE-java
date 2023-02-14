@@ -8,7 +8,7 @@
 name: Annotation Member
 ```
 
-#### Syntax: AnnotationMember Definitions
+#### Syntax: Annotation Member Definitions
 
 ```text
 AnnotationTypeMemberDeclaration:
@@ -39,3 +39,10 @@ entity:
             qualified: Foo.baz
             loc: 3:8
 ```
+
+### Properties
+
+| Name     | Description             |    Type     |     Default     |
+|----------|-------------------------|:-----------:|:---------------:|
+| Modifier | Accessibility modifier. | `'public'`\| `'protected'` \| `'private'` | `'public'` |
+

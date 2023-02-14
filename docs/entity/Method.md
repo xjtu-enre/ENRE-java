@@ -128,3 +128,11 @@ entity:
             loc: 3:33:0
             Lambda: true
 ```
+
+### Properties
+
+| Name     | Description                | Type       | Default       |
+| -------- | -------------------------- |------------|---------------|
+| isStatic | Indicates a static method. | `boolean`  | false         |
+| Modifier | Accessibility modifier.    | `'public'`\| `'protected'`\|`'private'` | `'public'` |
+

@@ -120,6 +120,7 @@ entity:
             qualified: Foo.getHello.a
             loc: 3:16
             global: false
+            rawType: String
 ```
 
 ###### Variable Declaration Statement (multiple vars)
@@ -213,6 +214,7 @@ entity:
             qualified: Foo.main.e
             loc: 6:48
             global: false
+            rawType: ArrayIndexOutOfBoundsException
 ```
 
 ###### Single Variable Declaration (enhanced-for statement)
@@ -268,3 +270,12 @@ entity:
             rawType: int
             global: false
 ```
+
+### Properties
+
+| Name     | Description                  |     Type     |     Default     |
+| -------- | ---------------------------- |:------------:|:---------------:|
+| RawType  | Indicates a variable's type. |  `'string'`  |   `undefined`   |
+| Grobal   | Indicates a global field.    | `'boolean'`  |     `false`     |
+| Modifier | Accessibility modifier.      | `'public'`\| `'protected'`\|`'private'` | `'public'`  |
+

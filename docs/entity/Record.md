@@ -54,6 +54,7 @@ entity:
         -   name: User
             qualified: User
             loc: 1:15
+            Modifier: public
 ```
 
 ###### Record declaration In Classes 
@@ -72,4 +73,12 @@ entity:
         -   name: User
             qualified: foo.User
             loc: 2:19
+            Modifier: public
 ```
+
+### Properties
+
+| Name     | Description             |     Type     |     Default      |
+| -------- | ----------------------- |:------------:|:----------------:|
+| Modifier | Accessibility modifier. | `'public'`\|  `'protected'`\|`'private'` | `'public'` |
+
