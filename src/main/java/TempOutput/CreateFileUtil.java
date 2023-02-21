@@ -1,10 +1,9 @@
 package TempOutput;
 
-import entity.BaseEntity;
-import net.sf.json.JSONObject;
-import util.SingleCollect;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,7 +46,11 @@ public class CreateFileUtil {
 //            }
 
             String result = jsonString;
-            write.write(tool.formatJson(result));
+//            write.write(tool.formatJson(result));
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            JsonElement je = JsonParser.parseString(result);
+            String res = gson.toJson(je);
+            write.write(res);
 
 //            JSONObject object = JSONObject.fromObject(result);
 //            System.out.println("---------outputFile------------");
