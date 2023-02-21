@@ -1,5 +1,10 @@
 package TempOutput;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import entity.BaseEntity;
 import net.sf.json.JSONObject;
 import util.SingleCollect;
@@ -47,7 +52,13 @@ public class CreateFileUtil {
 //            }
 
             String result = jsonString;
-            write.write(tool.formatJson(result));
+            // write.write(tool.formatJson(result));
+            // https://stackoverflow.com/questions/4105795/pretty-print-json-in-java
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            JsonElement je = JsonParser.parseString(result);
+            String res = gson.toJson(je);
+            write.write(res);
+
 
 //            JSONObject object = JSONObject.fromObject(result);
 //            System.out.println("---------outputFile------------");
