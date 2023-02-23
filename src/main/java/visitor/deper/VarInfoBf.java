@@ -33,7 +33,7 @@ public class VarInfoBf extends DepBackfill{
                             try{
                                 saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_MODIFY, Configure.RELATION_MODIFIED_BY, usage.getR());
                             } catch (NullPointerException e){
-                                System.out.println("NULL ID VAR: "+varName);
+//                                System.out.println("NULL ID VAR: "+varName);
                             }
                         }
                     }

@@ -132,11 +132,11 @@ public class OverrideBf extends DepBackfill{
             }
             for (OverrideBf.innerMeth superMeth : superMeths.keySet()){
                 if (currentMeth.getName().equals(superMeth.getName())){
-                    if(currentMeth.getReturnType()==null && superMeth.getReturnType()==null){
-                        if(superMeth.comparePara(currentParas)){
+                    if(currentMeth.getReturnType()==null){
+                        if(superMeth.getReturnType()==null && superMeth.comparePara(currentParas)){
                             return superMeths.get(superMeth);
                         }
-                    }else if(currentMeth.getReturnType().equals(superMeth.getReturnType())){
+                    }  else if(currentMeth.getReturnType().equals(superMeth.getReturnType())){
                         if(superMeth.comparePara(currentParas)){
                             return superMeths.get(superMeth);
                         }
@@ -146,6 +146,5 @@ public class OverrideBf extends DepBackfill{
         }
         return -1;
     }
-
 
 }
