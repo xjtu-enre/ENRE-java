@@ -217,7 +217,8 @@ public class ProcessEntity {
             try {
                 Type superType = node.getSuperclassType();
                 if(superType != null){
-                    classEntity.setSuperClassName(superType.resolveBinding().getQualifiedName());
+//                    classEntity.setSuperClassName(superType.resolveBinding().getQualifiedName());
+                    classEntity.setSuperClassName(superType.toString());
                 }
             } catch (NullPointerException e){
 //                e.printStackTrace();
