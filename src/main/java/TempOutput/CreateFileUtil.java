@@ -47,7 +47,7 @@ public class CreateFileUtil {
 
             String result = jsonString;
 //            write.write(tool.formatJson(result));
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
             JsonElement je = JsonParser.parseString(result);
             String res = gson.toJson(je);
             write.write(res);
