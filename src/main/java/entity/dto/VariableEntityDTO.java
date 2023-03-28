@@ -12,6 +12,9 @@ public class VariableEntityDTO extends InternalEntityDTO {
   private String rawType;
   private ICCVariableAttributeDTO iccVariableAttribute;
 
+  public VariableEntityDTO() {
+  }
+
   public VariableEntityDTO(
       int parentId,
       String file,

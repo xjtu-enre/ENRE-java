@@ -7,6 +7,9 @@ public class EnumConstantEntityDTO extends InternalEntityDTO {
   private String File;
   private AdditionalBinDTO additionalBin;
 
+  public EnumConstantEntityDTO() {
+  }
+
   public EnumConstantEntityDTO(int parentId, String file, AdditionalBinDTO additionalBin) {
     super(parentId, "Enum Constant");
     this.File = file;

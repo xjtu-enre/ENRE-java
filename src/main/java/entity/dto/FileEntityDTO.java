@@ -7,6 +7,9 @@ public class FileEntityDTO extends InternalEntityDTO {
   private String File;
   private AdditionalBinDTO additionalBin;
 
+  public FileEntityDTO() {
+  }
+
   public FileEntityDTO(int parentId, String file, AdditionalBinDTO additionalBin) {
     super(parentId, "File");
     this.File = file;

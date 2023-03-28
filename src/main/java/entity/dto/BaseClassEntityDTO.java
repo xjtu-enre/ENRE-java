@@ -11,6 +11,9 @@ public class BaseClassEntityDTO extends InternalEntityDTO {
   private ComponentDTO component;
   private AdditionalBinDTO additionalBin;
 
+  public BaseClassEntityDTO() {
+  }
+
   public BaseClassEntityDTO(
       int parentId,
       String rawType,

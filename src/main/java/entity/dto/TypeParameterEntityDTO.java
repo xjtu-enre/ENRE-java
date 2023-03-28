@@ -9,6 +9,9 @@ public class TypeParameterEntityDTO extends InternalEntityDTO {
   private LocationDTO location;
   private String rawType;
 
+  public TypeParameterEntityDTO() {
+  }
+
   public TypeParameterEntityDTO(
       int parentId,
       String file,

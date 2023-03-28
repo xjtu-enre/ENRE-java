@@ -2,6 +2,9 @@ package entity.dto;
 
 public class PackageEntityDTO extends InternalEntityDTO {
 
+  public PackageEntityDTO() {
+  }
+
   public PackageEntityDTO(int parentId, String category) {
     super(parentId, category);
   }

@@ -6,6 +6,9 @@ public class ClassEntityDTO extends BaseClassEntityDTO {
 
   private List<Integer> innerType;
 
+  public ClassEntityDTO() {
+  }
+
   public ClassEntityDTO(
       int parentId,
       String rawType,

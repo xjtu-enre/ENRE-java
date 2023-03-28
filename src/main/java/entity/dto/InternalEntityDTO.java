@@ -5,6 +5,16 @@ public class InternalEntityDTO extends EntityDTO {
   private int parentId;
   private String category;
 
+  public InternalEntityDTO() {
+  }
+
+  public InternalEntityDTO(EntityDTO ent) {
+    this.setExternal(false);
+    this.setId(ent.getId());
+    this.setName(ent.getName());
+    this.setQualifiedName(ent.getQualifiedName());
+  }
+
   public InternalEntityDTO(int parentId, String category) {
     this.parentId = parentId;
     this.category = category;

@@ -10,6 +10,9 @@ public class AnnotationEntityDTO extends InternalEntityDTO {
   private String modifiers;
   private String rawType;
 
+  public AnnotationEntityDTO() {
+  }
+
   public AnnotationEntityDTO(
       int parentId,
       String file,

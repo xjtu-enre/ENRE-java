@@ -9,6 +9,9 @@ public class AnnotationMemberEntityDTO extends InternalEntityDTO {
   private LocationDTO location;
   private String rawType;
 
+  public AnnotationMemberEntityDTO() {
+  }
+
   public AnnotationMemberEntityDTO(
       int parentId,
       String file,

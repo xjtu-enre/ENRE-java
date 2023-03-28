@@ -10,6 +10,9 @@ public class EnumEntityDTO extends InternalEntityDTO {
   private String modifiers;
   private String rawType;
 
+  public EnumEntityDTO() {
+  }
+
   public EnumEntityDTO(
       int parentId,
       String file,

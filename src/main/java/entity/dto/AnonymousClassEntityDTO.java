@@ -5,6 +5,9 @@ public class AnonymousClassEntityDTO extends BaseClassEntityDTO {
   private int anonymousBindVar;
   private int anonymousRank;
 
+  public AnonymousClassEntityDTO() {
+  }
+
   public AnonymousClassEntityDTO(
       int parentId,
       String rawType,

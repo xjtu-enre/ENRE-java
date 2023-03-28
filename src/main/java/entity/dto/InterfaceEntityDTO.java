@@ -10,6 +10,9 @@ public class InterfaceEntityDTO extends InternalEntityDTO {
   private String modifiers;
   private String rawType;
 
+  public InterfaceEntityDTO() {
+  }
+
   public InterfaceEntityDTO(
       int parentId,
       String file,

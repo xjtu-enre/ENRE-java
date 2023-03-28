@@ -13,6 +13,9 @@ public class MethodEntityDTO extends InternalEntityDTO {
   private String rawType;
   private ICCMethodAttributeDTO iccMethodAttribute;
 
+  public MethodEntityDTO() {
+  }
+
   public MethodEntityDTO(
       int parentId,
       String file,
