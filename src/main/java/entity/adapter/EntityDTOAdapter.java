@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonWriter;
 import entity.dto.*;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
@@ -28,7 +29,7 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     this.iccVariableAttributeDTOAdapter = new ICCVariableAttributeDTOAdapter();
   }
 
-  private void writeLocationDTO(JsonWriter out, LocationDTO obj, String key) throws IOException {
+  protected void writeLocationDTO(JsonWriter out, LocationDTO obj, String key) throws IOException {
     if (obj == null) {
       return;
     }
@@ -36,28 +37,28 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     this.locationDTOAdapter.write(out, obj);
   }
 
-  private void writeFile(JsonWriter out, String file) throws IOException {
+  protected void writeFile(JsonWriter out, String file) throws IOException {
     if (file == null) {
       return;
     }
     out.name("File").value(file);
   }
 
-  private void writeModifiers(JsonWriter out, String modifiers) throws IOException {
+  protected void writeModifiers(JsonWriter out, String modifiers) throws IOException {
     if (modifiers == null) {
       return;
     }
     out.name("modifiers").value(modifiers);
   }
 
-  private void writeRawType(JsonWriter out, String rawType) throws IOException {
+  protected void writeRawType(JsonWriter out, String rawType) throws IOException {
     if (rawType == null) {
       return;
     }
     out.name("rawType").value(rawType);
   }
 
-  private void writeAdditionalBinDTO(JsonWriter out, AdditionalBinDTO obj) throws IOException {
+  protected void writeAdditionalBinDTO(JsonWriter out, AdditionalBinDTO obj) throws IOException {
     if (obj == null) {
       return;
     }
@@ -65,7 +66,7 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     this.additionalBinDTOAdapter.write(out, obj);
   }
 
-  private void writeEnhancementDTO(JsonWriter out, MethodEntityDTO.EnhancementDTO obj) throws IOException {
+  protected void writeEnhancementDTO(JsonWriter out, MethodEntityDTO.EnhancementDTO obj) throws IOException {
     if (obj == null) {
       return;
     }
@@ -73,7 +74,7 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     this.enhancementDTOAdapter.write(out, obj);
   }
 
-  private void writeParameterDTO(JsonWriter out, MethodEntityDTO.ParameterDTO obj) throws IOException {
+  protected void writeParameterDTO(JsonWriter out, MethodEntityDTO.ParameterDTO obj) throws IOException {
     if (obj == null) {
       return;
     }
@@ -81,7 +82,7 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     this.parameterDTOAdapter.write(out, obj);
   }
 
-  private void writeInnerType(JsonWriter out, List<Integer> innerType) throws IOException {
+  protected void writeInnerType(JsonWriter out, List<Integer> innerType) throws IOException {
     if (innerType == null) {
       return;
     }
@@ -93,7 +94,7 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     out.endArray();
   }
 
-  private void writeICCMethodAttributeDTO(JsonWriter out, ICCMethodAttributeDTO obj) throws IOException {
+  protected void writeICCMethodAttributeDTO(JsonWriter out, ICCMethodAttributeDTO obj) throws IOException {
     if (obj == null) {
       return;
     }
@@ -101,19 +102,113 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     this.iccMethodAttributeDTOAdapter.write(out, obj);
   }
 
-  private void writeICCVariableAttributeDTO(JsonWriter out, ICCVariableAttributeDTO obj) throws IOException {
+  protected void writeICCVariableAttributeDTO(JsonWriter out, ICCVariableAttributeDTO obj) throws IOException {
     if (obj == null) {
       return;
     }
     out.name("iccVariableAttribute");
     this.iccVariableAttributeDTOAdapter.write(out, obj);
   }
-  private void writeComponentDTO(JsonWriter out, ComponentDTO obj) throws IOException {
+
+  protected void writeComponentDTO(JsonWriter out, ComponentDTO obj) throws IOException {
     if (obj == null) {
       return;
     }
     out.name("component");
     this.componentDTOAdapter.write(out, obj);
+  }
+
+  protected void write(JsonWriter out, PackageEntityDTO value) {
+    return;
+  }
+
+  protected void write(JsonWriter out, FileEntityDTO value) throws IOException {
+    writeAdditionalBinDTO(out, value.getAdditionalBin());
+  }
+
+  protected void write(JsonWriter out, ClassEntityDTO value) throws IOException {
+    writeRawType(out, value.getRawType());
+    writeLocationDTO(out, value.getLocation(), "location");
+    writeModifiers(out, value.getModifiers());
+    writeFile(out, value.getFile());
+    writeAdditionalBinDTO(out, value.getAdditionalBin());
+    writeInnerType(out, value.getInnerType());
+    writeComponentDTO(out, value.getComponent());
+  }
+
+  protected void write(JsonWriter out, AnonymousClassEntityDTO value) throws IOException {
+    writeRawType(out, value.getRawType());
+    writeLocationDTO(out, value.getLocation(), "location");
+    writeModifiers(out, value.getModifiers());
+    writeFile(out, value.getFile());
+    writeAdditionalBinDTO(out, value.getAdditionalBin());
+    writeComponentDTO(out, value.getComponent());
+    out.name("anonymousBindVar").value(value.getAnonymousBindVar());
+    out.name("anonymousRank").value(value.getAnonymousRank());
+  }
+
+  protected void write(JsonWriter out, EnumEntityDTO value) throws IOException {
+    writeFile(out, value.getFile());
+    writeAdditionalBinDTO(out, value.getAdditionalBin());
+    writeLocationDTO(out, value.getLocation(), "location");
+    writeModifiers(out, value.getModifiers());
+    writeRawType(out, value.getRawType());
+  }
+
+  protected void write(JsonWriter out, EnumConstantEntityDTO value) throws IOException {
+    writeFile(out, value.getFile());
+    writeAdditionalBinDTO(out, value.getAdditionalBin());
+  }
+
+  protected void write(JsonWriter out, AnnotationEntityDTO value) throws IOException {
+    writeFile(out, value.getFile());
+    writeAdditionalBinDTO(out, value.getAdditionalBin());
+    writeLocationDTO(out, value.getLocation(), "location");
+    writeModifiers(out, value.getModifiers());
+    writeRawType(out, value.getRawType());
+  }
+
+  protected void write(JsonWriter out, AnnotationMemberEntityDTO  value) throws IOException {
+    writeFile(out, value.getFile());
+    writeAdditionalBinDTO(out, value.getAdditionalBin());
+    writeLocationDTO(out, value.getLocation(), "location");
+    writeRawType(out, value.getRawType());
+  }
+
+  protected void write(JsonWriter out, InterfaceEntityDTO value) throws IOException {
+    writeFile(out, value.getFile());
+    writeAdditionalBinDTO(out, value.getAdditionalBin());
+    writeLocationDTO(out, value.getLocation(), "location");
+    writeModifiers(out, value.getModifiers());
+    writeRawType(out, value.getRawType());
+  }
+
+  protected void write(JsonWriter out, MethodEntityDTO value) throws IOException {
+    writeFile(out, value.getFile());
+    writeAdditionalBinDTO(out, value.getAdditionalBin());
+    writeEnhancementDTO(out, value.getEnhancement());
+    writeLocationDTO(out, value.getLocation(), "location");
+    writeModifiers(out, value.getModifiers());
+    writeParameterDTO(out, value.getParameter());
+    writeRawType(out, value.getRawType());
+    writeICCMethodAttributeDTO(out, value.getIccMethodAttribute());
+  }
+
+  protected void write(JsonWriter out, TypeParameterEntityDTO  value) throws IOException {
+    writeFile(out, value.getFile());
+    writeAdditionalBinDTO(out, value.getAdditionalBin());
+    writeLocationDTO(out, value.getLocation(), "location");
+    writeRawType(out, value.getRawType());
+  }
+
+  protected void write(JsonWriter out, VariableEntityDTO  value) throws IOException {
+    writeFile(out, value.getFile());
+    writeAdditionalBinDTO(out, value.getAdditionalBin());
+    out.name("global").value(value.getGlobal());
+    writeLocationDTO(out, value.getLocation(), "location");
+    writeModifiers(out, value.getModifiers());
+    writeRawType(out, value.getRawType());
+    writeICCVariableAttributeDTO(out, value.getIccVariableAttribute());
   }
 
   @Override
@@ -128,84 +223,29 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
       out.name("category").value(inter.getCategory());
       out.name("parentId").value(inter.getParentId());
       if (inter instanceof PackageEntityDTO) {
+        write(out, (PackageEntityDTO) inter);
       } else if (inter instanceof FileEntityDTO) {
-        FileEntityDTO entity = (FileEntityDTO) inter;
-        writeAdditionalBinDTO(out, entity.getAdditionalBin());
+        write(out, (FileEntityDTO) inter);
       } else if (inter instanceof ClassEntityDTO) {
-        ClassEntityDTO entity = (ClassEntityDTO) inter;
-        writeRawType(out, entity.getRawType());
-        writeLocationDTO(out, entity.getLocation(), "location");
-        writeModifiers(out, entity.getModifiers());
-        writeFile(out, entity.getFile());
-        writeAdditionalBinDTO(out, entity.getAdditionalBin());
-        writeInnerType(out, entity.getInnerType());
-        writeComponentDTO(out, entity.getComponent());
+        write(out, (ClassEntityDTO) inter);
       } else if (inter instanceof AnonymousClassEntityDTO) {
-        AnonymousClassEntityDTO entity = (AnonymousClassEntityDTO) inter;
-        writeRawType(out, entity.getRawType());
-        writeLocationDTO(out, entity.getLocation(), "location");
-        writeModifiers(out, entity.getModifiers());
-        writeFile(out, entity.getFile());
-        writeAdditionalBinDTO(out, entity.getAdditionalBin());
-        writeComponentDTO(out, entity.getComponent());
-        out.name("anonymousBindVar").value(entity.getAnonymousBindVar());
-        out.name("anonymousRank").value(entity.getAnonymousRank());
+        write(out, (AnonymousClassEntityDTO) inter);
       } else if (inter instanceof EnumEntityDTO) {
-        EnumEntityDTO entity = (EnumEntityDTO) inter;
-        writeFile(out, entity.getFile());
-        writeAdditionalBinDTO(out, entity.getAdditionalBin());
-        writeLocationDTO(out, entity.getLocation(), "location");
-        writeModifiers(out, entity.getModifiers());
-        writeRawType(out, entity.getRawType());
+        write(out, (EnumEntityDTO) inter);
       } else if (inter instanceof EnumConstantEntityDTO) {
-        EnumConstantEntityDTO entity = (EnumConstantEntityDTO) inter;
-        writeFile(out, entity.getFile());
-        writeAdditionalBinDTO(out, entity.getAdditionalBin());
+        write(out, (EnumConstantEntityDTO) inter);
       } else if (inter instanceof AnnotationEntityDTO) {
-        AnnotationEntityDTO entity = (AnnotationEntityDTO) inter;
-        writeFile(out, entity.getFile());
-        writeAdditionalBinDTO(out, entity.getAdditionalBin());
-        writeLocationDTO(out, entity.getLocation(), "location");
-        writeModifiers(out, entity.getModifiers());
-        writeRawType(out, entity.getRawType());
+        write(out, (AnnotationEntityDTO) inter);
       } else if (inter instanceof AnnotationMemberEntityDTO) {
-        AnnotationMemberEntityDTO entity = (AnnotationMemberEntityDTO) inter;
-        writeFile(out, entity.getFile());
-        writeAdditionalBinDTO(out, entity.getAdditionalBin());
-        writeLocationDTO(out, entity.getLocation(), "location");
-        writeRawType(out, entity.getRawType());
+        write(out, (AnnotationMemberEntityDTO) inter);
       } else if (inter instanceof InterfaceEntityDTO) {
-        InterfaceEntityDTO entity = (InterfaceEntityDTO) inter;
-        writeFile(out, entity.getFile());
-        writeAdditionalBinDTO(out, entity.getAdditionalBin());
-        writeLocationDTO(out, entity.getLocation(), "location");
-        writeModifiers(out, entity.getModifiers());
-        writeRawType(out, entity.getRawType());
+        write(out, (InterfaceEntityDTO) inter);
       } else if (inter instanceof MethodEntityDTO) {
-        MethodEntityDTO entity = (MethodEntityDTO) inter;
-        writeFile(out, entity.getFile());
-        writeAdditionalBinDTO(out, entity.getAdditionalBin());
-        writeEnhancementDTO(out, entity.getEnhancement());
-        writeLocationDTO(out, entity.getLocation(), "location");
-        writeModifiers(out, entity.getModifiers());
-        writeParameterDTO(out, entity.getParameter());
-        writeRawType(out, entity.getRawType());
-        writeICCMethodAttributeDTO(out, entity.getIccMethodAttribute());
+         write(out, (MethodEntityDTO) inter);
       } else if (inter instanceof TypeParameterEntityDTO) {
-        TypeParameterEntityDTO entity = (TypeParameterEntityDTO) inter;
-        writeFile(out, entity.getFile());
-        writeAdditionalBinDTO(out, entity.getAdditionalBin());
-        writeLocationDTO(out, entity.getLocation(), "location");
-        writeRawType(out, entity.getRawType());
+        write(out, (TypeParameterEntityDTO) inter);
       } else if (inter instanceof VariableEntityDTO) {
-        VariableEntityDTO entity = (VariableEntityDTO) inter;
-        writeFile(out, entity.getFile());
-        writeAdditionalBinDTO(out, entity.getAdditionalBin());
-        out.name("global").value(entity.getGlobal());
-        writeLocationDTO(out, entity.getLocation(), "location");
-        writeModifiers(out, entity.getModifiers());
-        writeRawType(out, entity.getRawType());
-        writeICCVariableAttributeDTO(out, entity.getIccVariableAttribute());
+        write(out, (VariableEntityDTO) inter);
       }
     }
     out.endObject();

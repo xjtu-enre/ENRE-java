@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
-import entity.adapter.EnreDTOAdapter;
+import entity.adapter.*;
 import entity.dto.EnreDTO;
 
 import java.io.*;
@@ -39,7 +39,12 @@ public class CreateFileUtil {
             file.createNewFile();
 
             GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(EnreDTO.class, new EnreDTOAdapter());
+            builder.registerTypeAdapter(EnreDTO.class, new EnreDTOAdapter(
+                new CellDTOAdapter(),
+                new MapAdapter(),
+                new CategoryDTOAdapter(),
+                new EntityDTOAdapter()
+                ));
             Gson gson = builder.disableHtmlEscaping().setPrettyPrinting().create();
             JsonWriter out = new JsonWriter(new BufferedWriter(new FileWriter(fullPath)));
             out.setIndent("  ");

@@ -19,11 +19,11 @@ public class EnreDTOAdapter extends TypeAdapter<EnreDTO> {
   private final CategoryDTOAdapter categoryDTOAdapter;
   private final EntityDTOAdapter entityDTOAdapter;
 
-  public EnreDTOAdapter() {
-    this.entityDTOAdapter = new EntityDTOAdapter();
-    this.cellDTOAdapter = new CellDTOAdapter();
-    this.mapAdapter = new MapAdapter();
-    this.categoryDTOAdapter = new CategoryDTOAdapter();
+  public EnreDTOAdapter(CellDTOAdapter cellDTOAdapter, MapAdapter mapAdapter, CategoryDTOAdapter categoryDTOAdapter, EntityDTOAdapter entityDTOAdapter) {
+    this.cellDTOAdapter = cellDTOAdapter;
+    this.mapAdapter = mapAdapter;
+    this.categoryDTOAdapter = categoryDTOAdapter;
+    this.entityDTOAdapter = entityDTOAdapter;
   }
 
   @Override
