@@ -55,6 +55,9 @@ public class CallBf extends DepBackfill{
                         }
                     } else {
                         //call extended external class method
+                        if (!(entity instanceof MethodEntity)) {
+                            continue;
+                        }
                         for (Tuple<String, Location> superMethodName :((MethodEntity) entity).getCallNondynamic()){
                             superMethodId = findExternalMethod(superClassName, superMethodName.getL());
                             if(superMethodId != -1){

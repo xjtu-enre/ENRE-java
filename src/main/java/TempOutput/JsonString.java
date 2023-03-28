@@ -1,17 +1,15 @@
 package TempOutput;
 
-import java.util.*;
-
 import entity.*;
+import entity.dto.EnreDTO;
 import entity.properties.Relation;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONObject;
-
-import util.Configure;
+import util.EnreFormatParser;
 import util.SingleCollect;
 import util.Tuple;
 import visitor.relationInf.RelationInf;
+
+import java.util.*;
 
 public class JsonString {
 
@@ -43,7 +41,12 @@ public class JsonString {
         }
     }
 
-    public static String JSONWriteRelation(Map<Integer, ArrayList<Tuple<Integer, Relation>>> relationMap, String hiddenPath, boolean slim) throws Exception {
+    public static EnreDTO jsonWriteRelation(Map<Integer, ArrayList<Tuple<Integer, Relation>>> relationMap, String hiddenPath, boolean slim) throws Exception {
+        JSONObject obj = JSONWriteRelation(relationMap, hiddenPath, slim);
+        return EnreFormatParser.parse(obj);
+    }
+
+    public static JSONObject JSONWriteRelation(Map<Integer, ArrayList<Tuple<Integer, Relation>>> relationMap, String hiddenPath, boolean slim) throws Exception {
 
         JSONObject obj=new JSONObject();//创建JSONObject对象
 
@@ -300,7 +303,7 @@ public class JsonString {
 //        if (hiddenPath != null) {
 //            processHidden.outputResult();
 //        }
-        return obj.toString();
+        return obj;
     }
 
     public static String JSONWriteEntity(List<BaseEntity> entityList) throws Exception {

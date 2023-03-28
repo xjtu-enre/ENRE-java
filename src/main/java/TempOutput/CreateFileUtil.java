@@ -4,14 +4,55 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonWriter;
+import entity.adapter.EnreDTOAdapter;
+import entity.dto.EnreDTO;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class CreateFileUtil {
+
+    public static <T> void writeJson(T obj, String filepath, Class<T> cls) {
+    }
+
+    // CreateFileUtil.createJsonFile(
+    // configure.getAnalyzedProjectName()+ "-enre-out",
+    // outputFile,
+    // JsonString.jsonWriteRelation(jsonMap.getFinalRes(), hiddenDir, slim));
+    public static boolean createJsonFile(String filePath, String fileName, EnreDTO enre) {
+        boolean flag = true;
+
+        // 拼接文件完整路径
+        String fullPath = filePath + File.separator + fileName + ".json";
+
+        // 生成json格式文件
+        try {
+            // 保证创建一个新文件
+            File file = new File(fullPath);
+            if (!file.getParentFile().exists()) { // 如果父目录不存在，创建父目录
+                file.getParentFile().mkdirs();
+            }
+            if (file.exists()) { // 如果已存在,删除旧文件
+                file.delete();
+            }
+            file.createNewFile();
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.registerTypeAdapter(EnreDTO.class, new EnreDTOAdapter());
+            Gson gson = builder.disableHtmlEscaping().setPrettyPrinting().create();
+            JsonWriter out = new JsonWriter(new BufferedWriter(new FileWriter(fullPath)));
+            out.setIndent("  ");
+            gson.toJson(enre, EnreDTO.class, out);
+            out.close();
+        } catch (Exception e) {
+            flag = false;
+            e.printStackTrace();
+        }
+
+        // 返回是否成功的标记
+        return flag;
+    }
     /**
      * 生成.json格式文件
      */
