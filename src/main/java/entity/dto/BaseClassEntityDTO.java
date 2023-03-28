@@ -22,7 +22,7 @@ public class BaseClassEntityDTO extends InternalEntityDTO {
       String file,
       ComponentDTO component,
       AdditionalBinDTO additionalBin) {
-    super(parentId, "class");
+    super(parentId, "Class");
     this.rawType = rawType;
     this.location = location;
     this.modifiers = modifiers;
@@ -42,7 +42,7 @@ public class BaseClassEntityDTO extends InternalEntityDTO {
       String file,
       ComponentDTO component,
       AdditionalBinDTO additionalBin) {
-    super(id, name, qualifiedName, parentId, "class");
+    super(id, name, qualifiedName, parentId, "Class");
     this.rawType = rawType;
     this.location = location;
     this.modifiers = modifiers;
