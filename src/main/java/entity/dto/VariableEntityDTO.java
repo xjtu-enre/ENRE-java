@@ -102,4 +102,12 @@ public class VariableEntityDTO extends InternalEntityDTO {
   public void setRawType(String rawType) {
     this.rawType = rawType;
   }
+
+  public ICCVariableAttributeDTO getIccVariableAttribute() {
+    return iccVariableAttribute;
+  }
+
+  public void setIccVariableAttribute(ICCVariableAttributeDTO iccVariableAttribute) {
+    this.iccVariableAttribute = iccVariableAttribute;
+  }
 }
