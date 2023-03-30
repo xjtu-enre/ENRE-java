@@ -60,7 +60,7 @@ relation:
         -   from: Variable:'hello'
             to: Class:'Hello'
             type: Typed
-            loc: file0:3:15
+            loc: file0:3:9
 ```
 
 ###### Field Declaration
@@ -95,5 +95,5 @@ relation:
         -   from: Variable:'hello'
             to: Class:'Hello'
             type: Typed
-            loc: file0:2:11
+            loc: file0:2:5
 ```

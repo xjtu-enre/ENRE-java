@@ -54,22 +54,19 @@ entity:
             qualified: Foo.getNum.i
             loc: 5:13
 relation:
+    type: Set
     items:
         -   from: Class:'Foo'
             to: Variable:'MSG'
-            type: Set
             loc: file0:2:32
         -   from: Method:'getNum'
             to: Variable:'i'
-            type: Set
             loc: file0:5:13
         -   from: Method:'getNum'
             to: Variable:'hello'
-            type: Set
             loc: file0:6:16
         -   from: Method:'getNum'
             to: Variable:'hello'
-            type: Set
             loc: file0:7:9
 ```
 ###### Class Set Global Var
@@ -110,9 +107,9 @@ entity:
             qualified: Foo.getNum.i
             loc: 5:13
 relation:
+    type: Set
     items:
         -   from: Class:'Foo'
             to: Variable:'MSG'
-            type: Set
             loc: file0:2:32
 ```

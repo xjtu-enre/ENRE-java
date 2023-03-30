@@ -222,10 +222,6 @@ relation:
 
 ```java
 //// Hello.java
-public class Hello {
-    /* ... */
-}
-
 public record User(int x, String y) { }
 ```
 
@@ -237,18 +233,11 @@ entity:
             type : File
             qualified: Hello.java
             loc: file0
-        -   name: Hello
-            type : Class
-            loc: 1:14
         -   name: User
             type : record
             loc: 5:15
 relation:
     items:
-        -   from: File:'Hello.java'
-            to: Class:'Hello'
-            type: Contain
-            loc: file0:1:14
         -   from: File:'Hello.java'
             to: Record:'User'
             type: Contain

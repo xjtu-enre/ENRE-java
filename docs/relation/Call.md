@@ -60,7 +60,7 @@ relation:
         -   from: method:'bar'
             to: method:'foo'
             type: Call
-            loc: file0:10:9
+            loc: file0:10:14
 ```
 
 ###### Method call (not through ".")
