@@ -48,5 +48,5 @@ relation:
         -   from: Method:'foo'
             to: Class:'Bar'
             type: Cast
-            loc: file0:3:9
+            loc: file0:3:21
 ```

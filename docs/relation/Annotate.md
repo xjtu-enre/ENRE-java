@@ -27,9 +27,6 @@ SingleMemberAnnotation:
 
 ```java
 //// MailController.java
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
 @interface DisableOnCondition {
     int value() default 0;
 }
@@ -48,27 +45,25 @@ entity:
     items:
         -   name: testMail
             qualified: MailController.testMail
-            loc: 10:17
+            loc: 7:17
             type: Method
             modifiers: public
         -   name: DisableOnCondition
-            loc: 4:12
+            loc: 1:12
             type: Annotation
 relation:
+    type: Annotate
+    extra: false
     items:
         -   from: Annotation:'DisableOnCondition'
             to: Method:'testMail'
-            loc: file0:9:5
-            type: Annotate
+            loc: file0:6:6
 ```
 
 ###### Normal annotation
 
 ```java
 //// MailController.java
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
 @interface DisableOnCondition {
     int value() default 0;
     String comment() default "";
@@ -88,17 +83,17 @@ entity:
     items:
         -   name: testMail
             qualified: MailController.testMail
-            loc: 11:17
+            loc: 8:17
             type: Method
             modifiers: public
         -   name: DisableOnCondition
-            loc: 4:12
+            loc: 1:12
             type: Annotation
 relation: 
     items:
         -   from: Annotation:'DisableOnCondition'
             to: Method:'testMail'
-            loc: file0:10:5
+            loc: file0:7:6
             type: Annotate
 ```
 
@@ -106,9 +101,6 @@ relation:
 
 ```java
 //// MailController.java
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
 @interface DisableOnCondition {
     int value() default 0;
 }
@@ -127,16 +119,16 @@ entity:
     items:
         -   name: testMail
             qualified: MailController.testMail
-            loc: 10:17
+            loc: 7:17
             type: Method
             modifiers: public
         -   name: DisableOnCondition
-            loc: 4:12
+            loc: 1:12
             type: Annotation
 relation:
     items:
         -   from: Annotation:'DisableOnCondition'
             to: Method:'testMail'
-            loc: file0:9:5
+            loc: file0:6:6
             type: Annotate
 ```

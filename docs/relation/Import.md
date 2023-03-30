@@ -135,7 +135,7 @@ entity:
             loc: file0:2:32
         -   name: Bar
             type : Class
-            loc: file1:4:7
+            loc: file1:3:7
             rawType: Bar
             qualified: Bar
 relation:
@@ -186,7 +186,7 @@ entity:
             type : File
             qualified: helloJDT.HelloJDT.java
             loc: file1
-        -   name: helloJDT.pkg
+        -   name: pkg
             type : Package
             qualified: helloJDT.pkg
             loc: file0:1:9

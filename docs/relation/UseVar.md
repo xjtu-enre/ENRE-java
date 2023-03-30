@@ -58,15 +58,18 @@ entity:
             type: Variable
             loc: 3:13
 relation:
+    type: UseVar
+    extra: false
     items:
         -   from: Method:'getter'
-            to: Variable:'i'
-            type: UseVar
-            loc: file0:5:13
+            to: Variable:'num'
+            loc: file0:4:13
         -   from: Method:'getter'
             to: Variable:'num'
-            type: UseVar
-            loc: file0:4:13
+            loc: file0:5:21
+        -   from: Method:'getter'
+            to: Variable:'i'
+            loc: file0:5:17
 ```
 
 ###### Method Uses Field (By This)
@@ -105,15 +108,21 @@ entity:
             type: Variable
             loc: 2:9
 relation:
+    type: UseVar
+    extra: false
     items:
-        -   from: Method:'getter'
-            to: Variable:'i'
-            type: UseVar
-            loc: file0:5:13
         -   from: Method:'getter'
             to: Variable:'num'
             type: UseVar
             loc: file0:4:13
+        -   from: Method:'getter'
+            to: Variable:'i'
+            type: UseVar
+            loc: file0:5:27
+        -   from: Method:'getter'
+            to: Variable:'num'
+            type: UseVar
+            loc: file0:5:31
 ```
 
 ###### Method Uses Field
@@ -152,6 +161,8 @@ entity:
             type: Variable
             loc: 2:9
 relation:
+    type: UseVar
+    extra: false
     items:
         -   from: Method:'getter'
             to: Variable:'num'
@@ -160,7 +171,11 @@ relation:
         -   from: Method:'getter'
             to: Variable:'i'
             type: UseVar
-            loc: file0:4:13
+            loc: file0:5:17
+        -   from: Method:'getter'
+            to: Variable:'num'
+            type: UseVar
+            loc: file0:5:21
 ```
 
 ###### Method Uses Parameter

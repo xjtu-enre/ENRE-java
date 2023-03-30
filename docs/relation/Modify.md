@@ -48,15 +48,15 @@ entity:
             qualified: Foo.counting
             loc: 4:17
 relation:
+    type: Modify
+    extra: false
     items:
         -   from: Method:'counting'
             to: Variable:'foo'
-            type: Modify
             loc: file0:5:9
         -   from: Method:'counting'
             to: Variable:'foo'
-            type: Modify
-            loc: file0:6:9
+            loc: file0:6:11
 ```
 
 ###### Modify Local Var
@@ -91,21 +91,19 @@ entity:
             qualified: Foo.counting
             loc: 2:16
 relation:
+    type: Modify
+    extra: false
     items:
         -   from: Method:'counting'
             to: Variable:'j'
-            type: Modify
             loc: file0:4:9
         -   from: Method:'counting'
             to: Variable:'j'
-            type: Modify
             loc: file0:5:9
         -   from: Method:'counting'
             to: Variable:'j'
-            type: Modify
             loc: file0:6:9
         -   from: Method:'counting'
             to: Variable:'j'
-            type: Modify
             loc: file0:7:9
 ```
