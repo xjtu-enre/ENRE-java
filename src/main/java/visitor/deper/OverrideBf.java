@@ -12,7 +12,11 @@ public class OverrideBf extends DepBackfill{
         for(BaseEntity entity : singleCollect.getEntities()){
             if(entity instanceof ClassEntity){
                 if(((ClassEntity) entity).getSuperClassId() != -1){
-                    HashMap<innerMeth, Integer> superMeths = getInnerMeth((ClassEntity) singleCollect.getEntityById(((ClassEntity) entity).getSuperClassId()));
+                    BaseEntity superEntity = singleCollect.getEntityById(((ClassEntity) entity).getSuperClassId());
+                    if (!(superEntity instanceof ClassEntity)) {
+                        continue;
+                    }
+                    HashMap<innerMeth, Integer> superMeths = getInnerMeth((ClassEntity) superEntity);
                     for(int childId: entity.getChildrenIds()){
                         int overrideMeth = checkOverride(childId, superMeths);
                         if (overrideMeth != -1){
@@ -24,7 +28,11 @@ public class OverrideBf extends DepBackfill{
             if (entity instanceof InterfaceEntity){
                 if (!((InterfaceEntity) entity).getExtendsIds().isEmpty()){
                     for (int superInterfaceId : ((InterfaceEntity) entity).getExtendsIds()){
-                        HashMap<innerMeth, Integer> superMeths = getInnerMeth((InterfaceEntity) singleCollect.getEntityById(superInterfaceId));
+                        BaseEntity superEntity = singleCollect.getEntityById(superInterfaceId);
+                        if (!(superEntity instanceof InterfaceEntity)) {
+                            continue;
+                        }
+                        HashMap<innerMeth, Integer> superMeths = getInnerMeth((InterfaceEntity) superEntity);
                         for(int childId: entity.getChildrenIds()){
                             int overrideMeth = checkOverride(childId, superMeths);
                             if (overrideMeth != -1){
