@@ -12,16 +12,16 @@ public class EnhancementDTOAdapter extends TypeAdapter<MethodEntityDTO.Enhanceme
   @Override
   public void write(JsonWriter out, MethodEntityDTO.EnhancementDTO value) throws IOException {
     out.beginObject();
-    out.name("synchronized").value(value.getSynchronized());
-    out.name("static").value(value.getStatic());
-    out.name("getter").value(value.getGetter());
-    out.name("setter").value(value.getSetter());
-    out.name("public").value(value.getPublic());
-    out.name("delegator").value(value.getDelegator());
-    out.name("constructor").value(value.getConstructor());
-    out.name("override").value(value.getOverride());
-    out.name("abstract").value(value.getAbstract());
-    out.name("recursive").value(value.getRecursive());
+    out.name("isSynchronized").value(value.getSynchronized());
+    out.name("isStatic").value(value.getStatic());
+    out.name("isGetter").value(value.getGetter());
+    out.name("isSetter").value(value.getSetter());
+    out.name("isPublic").value(value.getPublic());
+    out.name("isDelegator").value(value.getDelegator());
+    out.name("isConstructor").value(value.getConstructor());
+    out.name("isOverride").value(value.getOverride());
+    out.name("isAbstract").value(value.getAbstract());
+    out.name("isRecursive").value(value.getRecursive());
     out.endObject();
   }
 
