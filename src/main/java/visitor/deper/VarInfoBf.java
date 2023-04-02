@@ -35,6 +35,8 @@ public class VarInfoBf extends DepBackfill{
                             } catch (NullPointerException e){
 //                                System.out.println("NULL ID VAR: "+varName);
                             }
+                        } else if (usage.getL().equals("set")) {
+                            saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_SET, Configure.RELATION_SETED_BY, usage.getR());
                         }
                     }
                 }
