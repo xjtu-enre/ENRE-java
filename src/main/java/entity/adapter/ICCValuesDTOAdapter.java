@@ -1,6 +1,5 @@
 package entity.adapter;
 
-import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import entity.dto.ValuesDTO;
@@ -8,12 +7,10 @@ import entity.dto.ValuesDTO;
 import java.io.IOException;
 import java.util.Map;
 
-public class ValuesDTOAdapter extends TypeAdapter<ValuesDTO> {
+public class ICCValuesDTOAdapter extends ValuesDTOAdapter {
 
-  protected final LocationDTOAdapter locationDTOAdapter;
-
-  public ValuesDTOAdapter(LocationDTOAdapter locationDTOAdapter) {
-    this.locationDTOAdapter = locationDTOAdapter;
+  public ICCValuesDTOAdapter(LocationDTOAdapter locationDTOAdapter) {
+    super(locationDTOAdapter);
   }
 
   @Override

@@ -39,12 +39,22 @@ public class CreateFileUtil {
             file.createNewFile();
 
             GsonBuilder builder = new GsonBuilder();
+            LocationDTOAdapter locationDTOAdapter = new LocationDTOAdapter();
+            ValuesDTOAdapter valuesDTOAdapter = new ValuesDTOAdapter(locationDTOAdapter);
+            EnhancementDTOAdapter enhancementDTOAdapter = new EnhancementDTOAdapter();
+            ParameterDTOAdapter parameterDTOAdapter = new ParameterDTOAdapter();
+            AdditionalBinDTOAdapter additionalBinDTOAdapter = new AdditionalBinDTOAdapter();
+            ComponentDTOAdapter componentDTOAdapter = new ComponentDTOAdapter();
+            ICCMethodAttributeDTOAdapter iccMethodAttributeDTOAdapter = new ICCMethodAttributeDTOAdapter();
+            ICCVariableAttributeDTOAdapter iccVariableAttributeDTOAdapter = new ICCVariableAttributeDTOAdapter();
             builder.registerTypeAdapter(EnreDTO.class, new EnreDTOAdapter(
-                new CellDTOAdapter(),
+                new CellDTOAdapter(valuesDTOAdapter),
                 new MapAdapter(),
                 new CategoryDTOAdapter(),
-                new EntityDTOAdapter()
-                ));
+                new EntityDTOAdapter(locationDTOAdapter, enhancementDTOAdapter, parameterDTOAdapter,
+                    additionalBinDTOAdapter, componentDTOAdapter, iccMethodAttributeDTOAdapter,
+                    iccVariableAttributeDTOAdapter))
+            );
             Gson gson = builder.disableHtmlEscaping().setPrettyPrinting().create();
             JsonWriter out = new JsonWriter(new BufferedWriter(new FileWriter(fullPath)));
             out.setIndent("  ");

@@ -9,10 +9,10 @@ import java.io.IOException;
 
 public class CellDTOAdapter extends TypeAdapter<CellDTO> {
 
-  private final ValuesDTOAdapter valuesDTOAdapter;
+  protected final ValuesDTOAdapter valuesDTOAdapter;
 
-  public CellDTOAdapter() {
-    this.valuesDTOAdapter = new ValuesDTOAdapter();
+  public CellDTOAdapter(ValuesDTOAdapter valuesDTOAdapter) {
+    this.valuesDTOAdapter = valuesDTOAdapter;
   }
 
   @Override

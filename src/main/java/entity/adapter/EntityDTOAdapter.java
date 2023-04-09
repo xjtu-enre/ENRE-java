@@ -6,27 +6,32 @@ import com.google.gson.stream.JsonWriter;
 import entity.dto.*;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
 
-  private final LocationDTOAdapter locationDTOAdapter;
-  private final EnhancementDTOAdapter enhancementDTOAdapter;
-  private final ParameterDTOAdapter parameterDTOAdapter;
-  private final AdditionalBinDTOAdapter additionalBinDTOAdapter;
-  private final ComponentDTOAdapter componentDTOAdapter;
-  private final ICCMethodAttributeDTOAdapter iccMethodAttributeDTOAdapter;
-  private final ICCVariableAttributeDTOAdapter iccVariableAttributeDTOAdapter;
+  protected final LocationDTOAdapter locationDTOAdapter;
+  protected final EnhancementDTOAdapter enhancementDTOAdapter;
+  protected final ParameterDTOAdapter parameterDTOAdapter;
+  protected final AdditionalBinDTOAdapter additionalBinDTOAdapter;
+  protected final ComponentDTOAdapter componentDTOAdapter;
+  protected final ICCMethodAttributeDTOAdapter iccMethodAttributeDTOAdapter;
+  protected final ICCVariableAttributeDTOAdapter iccVariableAttributeDTOAdapter;
 
-  public EntityDTOAdapter() {
-    this.locationDTOAdapter = new LocationDTOAdapter();
-    this.enhancementDTOAdapter = new EnhancementDTOAdapter();
-    this.parameterDTOAdapter = new ParameterDTOAdapter();
-    this.additionalBinDTOAdapter = new AdditionalBinDTOAdapter();
-    this.componentDTOAdapter = new ComponentDTOAdapter();
-    this.iccMethodAttributeDTOAdapter = new ICCMethodAttributeDTOAdapter();
-    this.iccVariableAttributeDTOAdapter = new ICCVariableAttributeDTOAdapter();
+  public EntityDTOAdapter(LocationDTOAdapter locationDTOAdapter,
+                          EnhancementDTOAdapter enhancementDTOAdapter,
+                          ParameterDTOAdapter parameterDTOAdapter,
+                          AdditionalBinDTOAdapter additionalBinDTOAdapter,
+                          ComponentDTOAdapter componentDTOAdapter,
+                          ICCMethodAttributeDTOAdapter iccMethodAttributeDTOAdapter,
+                          ICCVariableAttributeDTOAdapter iccVariableAttributeDTOAdapter) {
+    this.locationDTOAdapter = locationDTOAdapter;
+    this.enhancementDTOAdapter = enhancementDTOAdapter;
+    this.parameterDTOAdapter = parameterDTOAdapter;
+    this.additionalBinDTOAdapter = additionalBinDTOAdapter;
+    this.componentDTOAdapter = componentDTOAdapter;
+    this.iccMethodAttributeDTOAdapter = iccMethodAttributeDTOAdapter;
+    this.iccVariableAttributeDTOAdapter = iccVariableAttributeDTOAdapter;
   }
 
   protected void writeLocationDTO(JsonWriter out, LocationDTO obj, String key) throws IOException {
