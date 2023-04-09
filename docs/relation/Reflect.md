@@ -87,6 +87,7 @@ name: Obtaining Method (object.getMethod())
 entity:
     items:
         -   name: Person
+            qualified: Person
             type: Class
             loc: file0:1:14
         -   name: fun

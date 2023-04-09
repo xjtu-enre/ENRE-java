@@ -889,14 +889,14 @@ public class EntityVisitor extends CKVisitor {
                      * first set separately, not a parameter
                      */
                     if(!((MethodEntity)singleCollect.getEntityById(methodId)).getParameters().contains(varId)){
-                        if (((VariableEntity)singleCollect.getEntityById(varId)).getValue() == null){
-                            ((VariableEntity)singleCollect.getEntityById(varId)).setSetBy(methodId);
-                            ((VariableEntity)singleCollect.getEntityById(varId)).setValue(node.getRightHandSide().toString());
-                            ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "set", loc);
-                        }
-                        else {
-                            ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "modify", loc);
-                        }
+//                        if (((VariableEntity)singleCollect.getEntityById(varId)).getValue() == null){
+                        ((VariableEntity)singleCollect.getEntityById(varId)).setSetBy(methodId);
+                        ((VariableEntity)singleCollect.getEntityById(varId)).setValue(node.getRightHandSide().toString());
+                        ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "set", loc);
+//                        }
+//                        else {
+//                            ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "modify", loc);
+//                        }
                     }
                 }
             }
@@ -1134,7 +1134,12 @@ public class EntityVisitor extends CKVisitor {
             int methodId = scopeStack.peek();
 //            if(!((MethodEntity)singleCollect.getEntityById(methodId)).getName2Usage().containsKey(varName) &&
 //            if(!((MethodEntity)singleCollect.getEntityById(methodId)).getParameters().contains(varId) &&
-            if (((MethodEntity)singleCollect.getEntityById(methodId)).getName2Id().containsKey(varName)) {
+            if (((MethodEntity)singleCollect.getEntityById(methodId)).getName2Usage().containsKey(varName)) {
+                for (Tuple<String, Location> usage : ((MethodEntity) singleCollect.getEntityById(methodId)).getName2Usage().get(varName)){
+                    if (usage.getR().getStartLine() == loc.getStartLine() && usage.getR().getStartColumn() == loc.getStartColumn()){
+                        return super.visit(node);
+                    }
+                }
                 ((MethodEntity) singleCollect.getEntityById(methodId)).addName2Usage(varName, "use", loc);
             }
         }
