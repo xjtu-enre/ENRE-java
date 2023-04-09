@@ -24,12 +24,6 @@ public class ValuesDTOAdapter extends TypeAdapter<ValuesDTO> {
     for (Map.Entry<String, Integer> entry : value.getRelations().entrySet()) {
       out.name(entry.getKey()).value(entry.getValue());
     }
-    if (value.getIccMechanism() != null) {
-      out.name("iccMechanism").value(value.getIccMechanism());
-    }
-    if (value.getIccCategory() != null) {
-      out.name("iccCategory").value(value.getIccCategory());
-    }
     if (value.getInvoke() != null) {
       out.name("invoke").value(value.getInvoke());
     }
@@ -66,12 +60,6 @@ public class ValuesDTOAdapter extends TypeAdapter<ValuesDTO> {
           break;
         case "arguments":
           res.setArguments(in.nextString());
-          break;
-        case "iccMechanism":
-          res.setIccMechanism(in.nextString());
-          break;
-        case "iccCategory":
-          res.setIccCategory(in.nextString());
           break;
         default:
           res.addRelation(key, in.nextInt());

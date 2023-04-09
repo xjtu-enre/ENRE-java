@@ -7,8 +7,6 @@ public class ValuesDTO {
 
   private LocationDTO loc;
   private final Map<String, Integer> relations = new HashMap<>();
-  private String iccMechanism;
-  private String iccCategory;
   private String arguments = null;
   private Integer bindVar = null;
   private Boolean modifyAccessible = null;
@@ -18,19 +16,6 @@ public class ValuesDTO {
 
   public ValuesDTO(LocationDTO loc) {
     this.loc = loc;
-  }
-
-  public ValuesDTO(LocationDTO loc, String iccMechanism, String iccCategory) {
-    this.loc = loc;
-    this.iccMechanism = iccMechanism;
-    this.iccCategory = iccCategory;
-  }
-
-  public ValuesDTO(LocationDTO loc, String iccMechanism, String iccCategory, String arguments) {
-    this.loc = loc;
-    this.iccMechanism = iccMechanism;
-    this.iccCategory = iccCategory;
-    this.arguments = arguments;
   }
 
   public Boolean getInvoke() {
@@ -80,21 +65,5 @@ public class ValuesDTO {
 
   public void setLoc(LocationDTO loc) {
     this.loc = loc;
-  }
-
-  public String getIccMechanism() {
-    return iccMechanism;
-  }
-
-  public void setIccMechanism(String iccMechanism) {
-    this.iccMechanism = iccMechanism;
-  }
-
-  public String getIccCategory() {
-    return iccCategory;
-  }
-
-  public void setIccCategory(String iccCategory) {
-    this.iccCategory = iccCategory;
   }
 }

@@ -9,6 +9,7 @@ public class EnumEntityDTO extends InternalEntityDTO {
   private LocationDTO location;
   private String modifiers;
   private String rawType;
+  private String hidden;
 
   public EnumEntityDTO() {
   }
@@ -19,7 +20,8 @@ public class EnumEntityDTO extends InternalEntityDTO {
       AdditionalBinDTO additionalBin,
       LocationDTO location,
       String modifiers,
-      String rawType) {
+      String rawType,
+      String hidden) {
     super(parentId, "Enum");
     this.File = file;
     this.additionalBin = additionalBin;
@@ -37,13 +39,15 @@ public class EnumEntityDTO extends InternalEntityDTO {
       AdditionalBinDTO additionalBin,
       LocationDTO location,
       String modifiers,
-      String rawType) {
+      String rawType,
+      String hidden) {
     super(id, name, qualifiedName, parentId, "Enum");
     this.File = file;
     this.additionalBin = additionalBin;
     this.location = location;
     this.modifiers = modifiers;
     this.rawType = rawType;
+    this.hidden = hidden;
   }
 
   @JSONPropertyName("File")
@@ -53,6 +57,14 @@ public class EnumEntityDTO extends InternalEntityDTO {
 
   public void setFile(String file) {
     this.File = file;
+  }
+
+  public String getHidden() {
+    return hidden;
+  }
+
+  public void setHidden(String hidden) {
+    this.hidden = hidden;
   }
 
   public AdditionalBinDTO getAdditionalBin() {

@@ -11,7 +11,7 @@ public class MethodEntityDTO extends InternalEntityDTO {
   private String modifiers;
   private ParameterDTO parameter;
   private String rawType;
-  private ICCMethodAttributeDTO iccMethodAttribute;
+  private String hidden;
 
   public MethodEntityDTO() {
   }
@@ -24,7 +24,8 @@ public class MethodEntityDTO extends InternalEntityDTO {
       LocationDTO location,
       String modifiers,
       ParameterDTO parameter,
-      String rawType) {
+      String rawType,
+      String hidden) {
     super(parentId, "Method");
     this.File = file;
     this.additionalBin = additionalBin;
@@ -33,6 +34,7 @@ public class MethodEntityDTO extends InternalEntityDTO {
     this.modifiers = modifiers;
     this.parameter = parameter;
     this.rawType = rawType;
+    this.hidden = hidden;
   }
 
   public MethodEntityDTO(
@@ -47,7 +49,7 @@ public class MethodEntityDTO extends InternalEntityDTO {
       String modifiers,
       ParameterDTO parameter,
       String rawType,
-      ICCMethodAttributeDTO iccMethodAttribute) {
+      String hidden) {
     super(id, name, qualifiedName, parentId, "Method");
     this.File = file;
     this.additionalBin = additionalBin;
@@ -56,7 +58,7 @@ public class MethodEntityDTO extends InternalEntityDTO {
     this.modifiers = modifiers;
     this.parameter = parameter;
     this.rawType = rawType;
-    this.iccMethodAttribute = iccMethodAttribute;
+    this.hidden = hidden;
   }
 
   @JSONPropertyName("File")
@@ -114,6 +116,14 @@ public class MethodEntityDTO extends InternalEntityDTO {
 
   public void setRawType(String rawType) {
     this.rawType = rawType;
+  }
+
+  public String getHidden() {
+    return hidden;
+  }
+
+  public void setHidden(String hidden) {
+    this.hidden = hidden;
   }
 
   public static class EnhancementDTO {
@@ -262,13 +272,5 @@ public class MethodEntityDTO extends InternalEntityDTO {
     public void setNames(String names) {
       this.names = names;
     }
-  }
-
-  public ICCMethodAttributeDTO getIccMethodAttribute() {
-    return iccMethodAttribute;
-  }
-
-  public void setIccMethodAttribute(ICCMethodAttributeDTO iccMethodAttribute) {
-    this.iccMethodAttribute = iccMethodAttribute;
   }
 }

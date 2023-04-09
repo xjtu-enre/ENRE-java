@@ -10,7 +10,7 @@ public class VariableEntityDTO extends InternalEntityDTO {
   private LocationDTO location;
   private String modifiers;
   private String rawType;
-  private ICCVariableAttributeDTO iccVariableAttribute;
+  private String hidden;
 
   public VariableEntityDTO() {
   }
@@ -22,7 +22,8 @@ public class VariableEntityDTO extends InternalEntityDTO {
       Boolean global,
       LocationDTO location,
       String modifiers,
-      String rawType) {
+      String rawType,
+      String hidden) {
     super(parentId, "Variable");
     this.File = file;
     this.additionalBin = additionalBin;
@@ -30,6 +31,7 @@ public class VariableEntityDTO extends InternalEntityDTO {
     this.location = location;
     this.modifiers = modifiers;
     this.rawType = rawType;
+    this.hidden = hidden;
   }
 
   public VariableEntityDTO(
@@ -43,7 +45,7 @@ public class VariableEntityDTO extends InternalEntityDTO {
       LocationDTO location,
       String modifiers,
       String rawType,
-      ICCVariableAttributeDTO iccVariableAttribute) {
+      String hidden) {
     super(id, name, qualifiedName, parentId, "Variable");
     this.File = file;
     this.additionalBin = additionalBin;
@@ -51,7 +53,7 @@ public class VariableEntityDTO extends InternalEntityDTO {
     this.location = location;
     this.modifiers = modifiers;
     this.rawType = rawType;
-    this.iccVariableAttribute = iccVariableAttribute;
+    this.hidden = hidden;
   }
 
   @JSONPropertyName("File")
@@ -103,11 +105,11 @@ public class VariableEntityDTO extends InternalEntityDTO {
     this.rawType = rawType;
   }
 
-  public ICCVariableAttributeDTO getIccVariableAttribute() {
-    return iccVariableAttribute;
+  public String getHidden() {
+    return hidden;
   }
 
-  public void setIccVariableAttribute(ICCVariableAttributeDTO iccVariableAttribute) {
-    this.iccVariableAttribute = iccVariableAttribute;
+  public void setHidden(String hidden) {
+    this.hidden = hidden;
   }
 }

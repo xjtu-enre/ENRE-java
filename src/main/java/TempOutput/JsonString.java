@@ -1,10 +1,10 @@
 package TempOutput;
 
 import entity.*;
-import entity.dto.EnreDTO;
+import entity.dto.*;
+import entity.properties.Index;
 import entity.properties.Relation;
 import org.json.JSONObject;
-import util.EnreFormatParser;
 import util.SingleCollect;
 import util.Tuple;
 import visitor.relationInf.RelationInf;
@@ -13,232 +13,183 @@ import java.util.*;
 
 public class JsonString {
 
-    public static HashMap<String, Integer> turnStrMap(String status){
-        HashMap<String, Integer> nameTonum = new HashMap<>();
-        String[] cells = status.split("\n");
-        for(String cell : cells){
-            String[] nameAnum = cell.split(": ");
-            nameTonum.put(nameAnum[0], Integer.valueOf(nameAnum[1]));
-        }
-        return nameTonum;
+  private static final SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
+
+  public static HashMap<String, Integer> turnStrMap(String status) {
+    HashMap<String, Integer> nameTonum = new HashMap<>();
+    String[] cells = status.split("\n");
+    for (String cell : cells) {
+      String[] nameAnum = cell.split(": ");
+      nameTonum.put(nameAnum[0], Integer.valueOf(nameAnum[1]));
     }
+    return nameTonum;
+  }
 
-    /**
-     * get current entity's file id
-     * @param id
-     * @return
-     */
-    public static int getCurrentFileId(int id){
-        SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
-        if(singleCollect.getEntityById(id) instanceof FileEntity){
-            return id;
-        }
-        else if (singleCollect.getEntityById(singleCollect.getEntityById(id).getParentId()) instanceof FileEntity){
-            return singleCollect.getEntityById(id).getParentId();
-        }
-        else {
-            return getCurrentFileId(singleCollect.getEntityById(id).getParentId());
-        }
+  /**
+   * get current entity's file id
+   *
+   * @param id
+   * @return
+   */
+  public static int getCurrentFileId(int id) {
+    if (singleCollect.getEntityById(id) instanceof FileEntity) {
+      return id;
+    } else if (singleCollect.getEntityById(singleCollect.getEntityById(id).getParentId()) instanceof FileEntity) {
+      return singleCollect.getEntityById(id).getParentId();
+    } else {
+      return getCurrentFileId(singleCollect.getEntityById(id).getParentId());
     }
+  }
 
-    public static EnreDTO jsonWriteRelation(Map<Integer, ArrayList<Tuple<Integer, Relation>>> relationMap, String hiddenPath, boolean slim) throws Exception {
-        JSONObject obj = JSONWriteRelation(relationMap, hiddenPath, slim);
-        return EnreFormatParser.parse(obj);
+  private static AdditionalBinDTO getAdditionalBinDTO(BaseEntity entity) {
+    Tuple<String, Integer> binPath = entity.getBinPath();
+    AdditionalBinDTO res = new AdditionalBinDTO();
+    if (binPath != null) {
+      res.setBinNum(binPath.getR());
+      res.setBinPath(binPath.getL());
     }
+    return res;
+  }
 
-    public static JSONObject JSONWriteRelation(Map<Integer, ArrayList<Tuple<Integer, Relation>>> relationMap, String hiddenPath, boolean slim) throws Exception {
+  private static String getFile(BaseEntity entity) {
+    if (entity instanceof PackageEntity) {
+      return null;
+    }
+    return ((FileEntity) singleCollect.getEntityById(getCurrentFileId(entity.getId()))).getFullPath();
+  }
 
-        JSONObject obj=new JSONObject();//创建JSONObject对象
+  private static MethodEntityDTO.EnhancementDTO getEnhancementDTO(BaseEntity entity) {
+    if (!(entity instanceof MethodEntity)) {
+      return null;
+    }
+    MethodEntity methodEntity = (MethodEntity) entity;
+    Index indices = methodEntity.getIndices();
+    if (indices == null) {
+      return null;
+    }
+    return new MethodEntityDTO.EnhancementDTO(
+        indices.getIsGetter(),
+        indices.getIsRecursive(),
+        indices.getIsStatic(),
+        indices.getIsConstructor(),
+        indices.getIsOverride(),
+        indices.getIsSetter(),
+        indices.getIsPublic(),
+        indices.getIsDelegator(),
+        indices.getIsSynchronized(),
+        indices.getMethodIsAbstract()
+    );
+  }
 
-        SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
-        ProcessHidden processHidden = ProcessHidden.getProcessHiddeninstance();
-        if (hiddenPath != null){
-            processHidden.convertCSV2DB(hiddenPath);
-//            processHidden.outputConvertInfo("base-enre-out/hidden_convert.csv");
-        }
+  private static LocationDTO getLocationDTO(Relation relation) {
+    return new LocationDTO(
+        relation.getLocation().getStartLine(),
+        relation.getLocation().getEndLine(),
+        relation.getLocation().getStartColumn(),
+        relation.getLocation().getEndColumn()
+    );
+  }
 
-        obj.put("schemaVersion","1");
-        Iterator<BaseEntity> iterator = singleCollect.getEntities().iterator();
+  private static LocationDTO getLocationDTO(BaseEntity entity) {
+    if (entity instanceof PackageEntity || entity instanceof FileEntity) {
+      return null;
+    }
+    return new LocationDTO(
+        entity.getLocation().getStartLine(),
+        entity.getLocation().getEndLine(),
+        entity.getLocation().getStartColumn(),
+        entity.getLocation().getEndColumn()
+    );
+  }
 
-        List<JSONObject> subCategories = new ArrayList<>();
-        for (String i : List.of("Package", "File", "Class", "Interface", "Annotation", "Enum", "Method", "Variable", "EnumConstant", "AnnotationTypeMember")){
-            JSONObject cate = new JSONObject();
-            cate.put("name", i);
-            subCategories.add(cate);
-        }
-        obj.put("categories", subCategories);
+  private static Boolean getGlobal(BaseEntity entity) {
+    if (!(entity instanceof VariableEntity)) {
+      return null;
+    }
+    VariableEntity variableEntity = (VariableEntity) entity;
+    return variableEntity.getGlobal();
+  }
 
-        RelationInf relationInf = new RelationInf();
-        JSONObject subEntities = new JSONObject();
-        for(String entity : turnStrMap(relationInf.entityStatis()).keySet()){
-            subEntities.put(entity, turnStrMap(relationInf.entityStatis()).get(entity));
-        }
-        obj.put("entityNum", subEntities);
+  private static String getHidden(ProcessHidden processHidden, BaseEntity entity, String parType) {
+    if (entity instanceof VariableEntity) {
+      if (!processHidden.getResult().isEmpty() && ((VariableEntity) entity).getGlobal() && processHidden.checkHidden((VariableEntity) entity) != null) {
+        return processHidden.checkHidden((VariableEntity) entity);
+      }
+    } else if (entity instanceof TypeEntity) {
+      if (!processHidden.getResult().isEmpty() && processHidden.checkHidden((TypeEntity) entity) != null) {
+        return processHidden.checkHidden((TypeEntity) entity);
+      }
+    } else if (entity instanceof MethodEntity && parType != null) {
+      if (!processHidden.getResult().isEmpty() && processHidden.checkHidden((MethodEntity) entity, parType) != null) {
+        return processHidden.checkHidden((MethodEntity) entity, parType);
+      }
+    }
+    return null;
+  }
 
-        JSONObject subRelations = new JSONObject();
-        for(String relation : turnStrMap(relationInf.dependencyStatis()).keySet()){
-            subRelations.put(relation, turnStrMap(relationInf.dependencyStatis()).get(relation));
-        }
-        obj.put("relationNum", subRelations);
+  private static MethodEntityDTO.ParameterDTO getParameterDTO(BaseEntity entity) {
+    if (!(entity instanceof MethodEntity)) {
+      return null;
+    }
+    MethodEntity methodEntity = (MethodEntity) entity;
+    StringBuilder types = new StringBuilder();
+    StringBuilder names = new StringBuilder();
+    ArrayList<Integer> params = methodEntity.getParameters();
+    for (int i = 0; i < params.size(); i++) {
+      int parId = params.get(i);
+      types.append(processRawType(singleCollect.getEntityById(parId).getRawType()));
+      names.append(singleCollect.getEntityById(parId).getName());
+      if (i != params.size() - 1) {
+        types.append(" ");
+        names.append(" ");
+      }
+    }
+    return new MethodEntityDTO.ParameterDTO(types.toString(), names.toString());
+  }
 
-//        JSONObject subCKIndices = new JSONObject();
-//        for (String index : singleCollect.getCkIndices().keySet()){
-//            subCKIndices.put(index, singleCollect.getCk(index));
-//        }
-//        obj.put("CKIndices", subCKIndices);
+  private static String getModifiers(BaseEntity entity) {
+    StringBuilder res = new StringBuilder();
+    ArrayList<String> modifiers = entity.getModifiers();
+    for (int i = 0; i < modifiers.size(); i++) {
+      String mod = modifiers.get(i);
+      if (!mod.contains("@")) {
+        res.append(mod);
+      }
+      if (i != modifiers.size() - 1) {
+        res.append(" ");
+      }
+    }
+    return res.toString();
+  }
 
-        List<JSONObject> subObjVariable=new ArrayList<JSONObject>();
+  private static String getRawType(BaseEntity entity) {
+    if (entity.getRawType() == null) {
+      return null;
+    }
+    return processRawType(entity.getRawType());
+  }
 
-        while(iterator.hasNext()) {
-            BaseEntity entity = iterator.next();
-            JSONObject entityObj = new JSONObject();
-            entityObj.put("id", entity.getId());
-            entityObj.put("category", singleCollect.getEntityType(entity.getId()));
-            entityObj.put("name", entity.getName());
-            entityObj.put("qualifiedName", entity.getQualifiedName());
-            entityObj.put("parentId", entity.getParentId());
-            entityObj.put("external", false);
-            if (entity.getRawType() != null){
-                String raw = entity.getRawType();
-                entityObj.put("rawType", processRawType(raw));
-            }
-            //AOSP HIDDEN API
-//            JSONObject hiddenObj = new JSONObject();
-//            hiddenObj.put("hidden", entity.getHidden());
-//            hiddenObj.put("maxTargetSdk", entity.getMaxTargetSdk());
-//            entityObj.accumulate("aosp_hidden", hiddenObj);
-            //Modifiers
-            if (!entity.getModifiers().isEmpty()){
-                String m = "";
-                for (String modifier : entity.getModifiers()){
-                    if (!modifier.contains("@")){
-                        m = m.concat(modifier + " ");
-                    }
-                }
-                if (m.endsWith(" ")){
-                    m = m.substring(0, m.length()-1);
-                }
-//                try {
-//                    entityObj.put("modifiers", m.substring(0, m.length()-1));
-//                }catch (StringIndexOutOfBoundsException e){
-                entityObj.put("modifiers", m);
-//                }
+  private static List<Integer> getInnerType(BaseEntity entity) {
+    if (!(entity instanceof TypeEntity)) {
+      return null;
+    }
+    TypeEntity typeEntity = (TypeEntity) entity;
+    return typeEntity.getInnerType();
+  }
 
-            }
-            //entity File
-            String entityFile;
-            if (entity instanceof PackageEntity){
-                entityFile = null;
-            } else {
-                entityFile = ((FileEntity) singleCollect.getEntityById(getCurrentFileId(entity.getId()))).getFullPath();
-            }
-            entityObj.put("File", entityFile);
-            //variable kind
-            if(entity instanceof VariableEntity){
-                entityObj.put("global", ((VariableEntity) entity).getGlobal());
-                if (!processHidden.getResult().isEmpty() && ((VariableEntity) entity).getGlobal() && processHidden.checkHidden((VariableEntity) entity)!= null){
-                    entityObj.put("hidden", processHidden.checkHidden((VariableEntity) entity));
-                }
-            }
-            //inner Type
-            if(entity instanceof TypeEntity){
-                if (!processHidden.getResult().isEmpty() && processHidden.checkHidden((TypeEntity)entity) != null){
-                    entityObj.put("hidden", processHidden.checkHidden((TypeEntity)entity));
-                }
-                if (!((TypeEntity) entity).getInnerType().isEmpty()){
-                    entityObj.put("innerType", ((TypeEntity) entity).getInnerType());
-                }
-                if (entity instanceof ClassEntity && ((ClassEntity) entity).getAnonymousRank() != 0){
-                    entityObj.put("anonymousRank", ((ClassEntity) entity).getAnonymousRank());
-                    entityObj.put("anonymousBindVar", ((ClassEntity) entity).getAnonymousBindVar());
-                }
-            }
-            //location
-            if (!slim){
-                if (!(entity instanceof FileEntity || entity instanceof PackageEntity)){
-                    JSONObject locObj = new JSONObject();
-                    locObj.put("startLine", entity.getLocation().getStartLine());
-                    locObj.put("endLine", entity.getLocation().getEndLine());
-                    locObj.put("startColumn", entity.getLocation().getStartColumn());
-                    locObj.put("endColumn", entity.getLocation().getEndColumn());
-                    entityObj.accumulate("location", locObj);
-                }
-            }
-            //method parameter Type
-            if (entity instanceof MethodEntity){
-                String parType = "";
-                String parName = "";
-                if (! ((MethodEntity) entity).getParameters().isEmpty()){
-                    for (int parId : ((MethodEntity) entity).getParameters()){
-                        parType = parType.concat(processRawType(singleCollect.getEntityById(parId).getRawType()) + " ");
-                        parName = parName.concat(singleCollect.getEntityById(parId).getName() + " ");
-                    }
-                    parType = parType.substring(0, parType.length()-1);
-                    parName = parName.substring(0, parName.length()-1);
-                }
-                JSONObject parObj = new JSONObject();
-                parObj.put("names", parName);
-                parObj.put("types", parType);
-                entityObj.accumulate("parameter", parObj);
-                if (!processHidden.getResult().isEmpty() && processHidden.checkHidden((MethodEntity)entity, parType)!= null){
-                    entityObj.put("hidden", processHidden.checkHidden((MethodEntity)entity, parType));
-                }
+  private static ExternalEntityDTO parseExternalEntityDTO(ExternalEntity entity) {
+    return new ExternalEntityDTO(
+        entity.getId(),
+        entity.getName(),
+        entity.getQualifiedName()
+    );
+  }
 
-                //dependency enhancement
-                if (!slim && ((MethodEntity) entity).getIndices() != null){
-                    JSONObject enhanceObj = new JSONObject();
-                    enhanceObj.put("isOverride", ((MethodEntity) entity).getIndices().getIsOverride());
-                    enhanceObj.put("isSetter", ((MethodEntity) entity).getIndices().getIsSetter());
-                    enhanceObj.put("isGetter", ((MethodEntity) entity).getIndices().getIsGetter());
-                    enhanceObj.put("isDelegator", ((MethodEntity) entity).getIndices().getIsDelegator());
-                    enhanceObj.put("isRecursive", ((MethodEntity) entity).getIndices().getIsRecursive());
-                    enhanceObj.put("isPublic", ((MethodEntity) entity).getIndices().getIsPublic());
-                    enhanceObj.put("isStatic", ((MethodEntity) entity).getIndices().getIsStatic());
-                    enhanceObj.put("isSynchronized", ((MethodEntity) entity).getIndices().getIsSynchronized());
-                    enhanceObj.put("isConstructor", ((MethodEntity) entity).isConstructor());
-                    enhanceObj.put("isAbstract", ((MethodEntity) entity).getIndices().getMethodIsAbstract());
-                    entityObj.accumulate("enhancement", enhanceObj);
-                }
-            }
-            //bin path
-            if (entity.getBinPath()!= null){
-                JSONObject binObj = new JSONObject();
-                binObj.put("binPath", entity.getBinPath().getL());
-                binObj.put("binNum", entity.getBinPath().getR());
-                entityObj.accumulate("additionalBin", binObj);
-            }
-
-            subObjVariable.add(entityObj);
-        }
-
-        if (!slim){
-            for (ExternalEntity externalEntity : singleCollect.getExternalEntities()) {
-                JSONObject external = new JSONObject();
-                external.put("qualifiedName", externalEntity.getQualifiedName());
-                external.put("external", true);
-                external.put("name", externalEntity.getName());
-                external.put("id", externalEntity.getId());
-//            if (externalEntity.getType().equals(Configure.EXTERNAL_ENTITY_METHOD)){
-//                external.put("returnType", externalEntity.getReturnType());
-//            }
-                subObjVariable.add(external);
-            }
-        }
-
-        obj.put("variables",subObjVariable);
-
-
-        for(int fromEntity:relationMap.keySet()) {
-            for(Tuple<Integer,Relation> toEntityObj:relationMap.get(fromEntity)) {
-                    int toEntity=toEntityObj.getL();
-
-//                for(Relation type : relationMap.get(fromEntity).get(toEntity)) {
-                    Relation type = toEntityObj.getR();
-                    if(type.getKind().contains("by")){
-                        continue;
-                    }
-                    JSONObject subObj=new JSONObject();//创建对象数组里的子对象
-
+  private static CellDTO parseCellDTO(int fromEntity, int toEntity, Relation relation, boolean slim) {
+    CellDTO cellDTO = new CellDTO();
+    if (relation.getKind().contains("by")) {
+      return null;
+    }
 //                    JSONObject srcObj = new JSONObject();
 //                    srcObj.put("id", fromEntity);
 //                    srcObj.put("type", singleCollect.getEntityType(fromEntity));
@@ -246,29 +197,30 @@ public class JsonString {
 //                    srcObj.put("qualified name", singleCollect.getEntityById(fromEntity).getQualifiedName());
 //                    srcObj.put("parentId", singleCollect.getEntityById(fromEntity).getParentId());
 //                    srcObj.put("childrenIds", singleCollect.getEntityById(fromEntity).getChildrenIds());
-
-                    subObj.put("src",fromEntity);
-                    subObj.put("dest",toEntity);
+    cellDTO.setSrc(fromEntity);
+    cellDTO.setDest(toEntity);
 //                    subObj.accumulate("src", srcObj);
 //   l                 subObj.accumulate("dest", destObj);
-
-                    JSONObject reObj=new JSONObject();//创建对象数组里的子对象
-                    reObj.put(type.getKind(), 1);
-                    if (type.getBindVar() != -1){
-                        reObj.put("bindVar", type.getBindVar());
-                    }
-                    if (type.getModifyAccessible()){
-                        reObj.put("modifyAccessible", true);
-                    }
-                    if (!type.getArguemnts().isEmpty()){
-                        String args = "";
-                        for (String arg: type.getArguemnts()){
-                            args = args.concat(arg.replace("\"", "").replace(",", " ") + " ");
-                        }
-                        args = args.substring(0, args.length()-1);
-                        reObj.put("arguments", args);
-                    }
-                    if (type.getInvoke()){
+    ValuesDTO valuesDTO = new ValuesDTO();
+    valuesDTO.getRelations().put(relation.getKind(), 1);
+    if (relation.getBindVar() != -1) {
+      valuesDTO.setBindVar(relation.getBindVar());
+    }
+    if (relation.getModifyAccessible()) {
+      valuesDTO.setModifyAccessible(true);
+    }
+    if (!relation.getArguemnts().isEmpty()) {
+      ArrayList<String> arguments = relation.getArguemnts();
+      StringBuilder args = new StringBuilder();
+      for (int i = 0; i < arguments .size(); i++) {
+        args.append(arguments.get(i).replace("\"", "").replace(",", " "));
+        if (i != arguments.size() - 1) {
+          args.append(" ");
+        }
+      }
+      valuesDTO.setArguments(args.toString());
+    }
+    if (relation.getInvoke()) {
 //                        try{
 //                            JSONObject locObj = new JSONObject();
 //                            locObj.put("startLine", type.getLocation().getStartLine());
@@ -277,55 +229,200 @@ public class JsonString {
 //                            locObj.put("endColumn", type.getLocation().getEndColumn());
 //                            reObj.accumulate("invoke", locObj);
 //                        } catch (NullPointerException e){
-                            reObj.put("invoke", true);
+      valuesDTO.setInvoke(true);
 //                        }
-                    }
+    }
 //                    else {
-                    if (!slim){
-                        JSONObject locObj = new JSONObject();
-                        locObj.put("startLine", type.getLocation().getStartLine());
-                        locObj.put("endLine", type.getLocation().getEndLine());
-                        locObj.put("startColumn", type.getLocation().getStartColumn());
-                        locObj.put("endColumn", type.getLocation().getEndColumn());
-                        reObj.accumulate("loc", locObj);
-                    }
+    if (!slim) {
+      valuesDTO.setLoc(getLocationDTO(relation));
+    }
 //                    }
-                    subObj.accumulate("values",reObj);
-                    obj.accumulate("cells",subObj);
+    cellDTO.setValues(valuesDTO);
 
 //                }
+    return cellDTO;
+  }
 
-            }
+  private static EntityDTO parseEntityDTO(ProcessHidden processHidden, BaseEntity entity, boolean slim) {
+    int id = entity.getId();
+    String name = entity.getName();
+    String qualifiedName = entity.getQualifiedName();
+    int parentId = entity.getParentId();
+    String file = getFile(entity);
+    AdditionalBinDTO additionalBinDTO = getAdditionalBinDTO(entity);
+    MethodEntityDTO.EnhancementDTO enhancementDTO = getEnhancementDTO(entity);
+    MethodEntityDTO.ParameterDTO parameterDTO = getParameterDTO(entity);
+    LocationDTO locationDTO = getLocationDTO(entity);
+    String modifiers = getModifiers(entity);
+    String rawType = getRawType(entity);
+    Boolean isGlobal = getGlobal(entity);
+    String hidden = null;
+    if (parameterDTO != null) {
+      hidden = getHidden(processHidden, entity, parameterDTO.getTypes());
+    }
+    List<Integer> innerType = getInnerType(entity);
+    if (slim) {
+      locationDTO = null;
+      enhancementDTO = null;
+    }
+    if (entity instanceof PackageEntity) {
+      return new PackageEntityDTO(
+          id, name, qualifiedName, parentId
+      );
+    } else if (entity instanceof FileEntity) {
+      return new FileEntityDTO(
+          id, name, qualifiedName, parentId, file, additionalBinDTO
+      );
+    } else if (entity instanceof MethodEntity) {
+      return new MethodEntityDTO(
+          id, name, qualifiedName, parentId, file,
+          additionalBinDTO, enhancementDTO, locationDTO, modifiers, parameterDTO, rawType, hidden
+      );
+    } else if (entity instanceof ClassEntity) {
+      ClassEntity classEntity = (ClassEntity) entity;
+      if (classEntity.getAnonymousRank() == 0) {
+        return new ClassEntityDTO(
+            id, name, qualifiedName, parentId, rawType, locationDTO, modifiers, file,
+            additionalBinDTO, innerType, hidden
+        );
+      } else {
+        return new AnonymousClassEntityDTO(
+            id, name, qualifiedName, parentId, rawType,
+            locationDTO, modifiers, file, additionalBinDTO, classEntity.getAnonymousBindVar(),
+            classEntity.getAnonymousRank(), hidden);
+      }
+    } else if (entity instanceof EnumEntity) {
+      return new EnumEntityDTO(
+          id, name, qualifiedName, parentId, file, additionalBinDTO, locationDTO,
+          modifiers, rawType, hidden
+      );
+    } else if (entity instanceof EnumConstantEntity) {
+      return new EnumConstantEntityDTO(
+          id, name, qualifiedName, parentId, file, additionalBinDTO
+      );
+    } else if (entity instanceof AnnotationEntity) {
+      return new AnnotationEntityDTO(
+          id, name, qualifiedName, parentId, file, additionalBinDTO,
+          locationDTO, modifiers, rawType
+      );
+    } else if (entity instanceof AnnotationTypeMember) {
+      return new AnnotationMemberEntityDTO(
+          id, name, qualifiedName, parentId, file, additionalBinDTO, locationDTO, rawType
+      );
+    } else if (entity instanceof InterfaceEntity) {
+      return new InterfaceEntityDTO(
+          id, name, qualifiedName, parentId, file, additionalBinDTO, locationDTO,
+          modifiers, rawType, hidden
+      );
+    } else if (entity instanceof TypeParameterEntity) {
+      return new TypeParameterEntityDTO(
+          id, name, qualifiedName, parentId, file, additionalBinDTO, locationDTO, rawType
+      );
+    } else if (entity instanceof VariableEntity) {
+      return new VariableEntityDTO(
+          id, name, qualifiedName, parentId, file, additionalBinDTO, isGlobal, locationDTO,
+          modifiers, rawType, hidden
+          );
+    } else {
+      throw new RuntimeException("unimplemented entity type: " + entity.getClass().getName());
+    }
+  }
+
+  public static EnreDTO JSONWriteRelation(Map<Integer, ArrayList<Tuple<Integer, Relation>>> relationMap, String hiddenPath, boolean slim) throws Exception {
+
+    EnreDTO res = new EnreDTO();
+
+    ProcessHidden processHidden = ProcessHidden.getProcessHiddeninstance();
+    if (hiddenPath != null) {
+      processHidden.convertCSV2DB(hiddenPath);
+//            processHidden.outputConvertInfo("base-enre-out/hidden_convert.csv");
+    }
+
+    res.setSchemaVersion("1");
+    Iterator<BaseEntity> iterator = singleCollect.getEntities().iterator();
+
+    List<CategoryDTO> categories = new ArrayList<>();
+    for (String i : List.of("Package", "File", "Class", "Interface", "Annotation", "Enum", "Method", "Variable", "EnumConstant", "AnnotationTypeMember")) {
+      categories.add(new CategoryDTO(i));
+    }
+    res.setCategories(categories);
+
+    RelationInf relationInf = new RelationInf();
+    Map<String, Integer> entityNum = new HashMap<>();
+    for (String entity : turnStrMap(relationInf.entityStatis()).keySet()) {
+      entityNum.put(entity, turnStrMap(relationInf.entityStatis()).get(entity));
+    }
+    res.setEntityNum(entityNum);
+
+    Map<String, Integer> relationNum = new HashMap<>();
+    for (String relation : turnStrMap(relationInf.dependencyStatis()).keySet()) {
+      relationNum.put(relation, turnStrMap(relationInf.dependencyStatis()).get(relation));
+    }
+    res.setRelationNum(relationNum);
+
+//        JSONObject subCKIndices = new JSONObject();
+//        for (String index : singleCollect.getCkIndices().keySet()){
+//            subCKIndices.put(index, singleCollect.getCk(index));
+//        }
+//        obj.put("CKIndices", subCKIndices);
+
+    List<EntityDTO> variables = new ArrayList<>();
+
+    while (iterator.hasNext()) {
+      BaseEntity entity = iterator.next();
+      variables.add(parseEntityDTO(processHidden, entity, slim));
+    }
+
+    if (!slim) {
+      for (ExternalEntity externalEntity : singleCollect.getExternalEntities()) {
+        variables.add(parseExternalEntityDTO(externalEntity));
+      }
+    }
+
+    res.setVariables(variables);
+
+    List<CellDTO> cells = new ArrayList<>();
+    for (int fromEntity : relationMap.keySet()) {
+      for (Tuple<Integer, Relation> toEntityObj : relationMap.get(fromEntity)) {
+        int toEntity = toEntityObj.getL();
+//                for(Relation type : relationMap.get(fromEntity).get(toEntity)) {
+        Relation type = toEntityObj.getR();
+        CellDTO celLDTO = parseCellDTO(fromEntity, toEntity, type, slim);
+        if (celLDTO != null) {
+          cells.add(celLDTO);
         }
-        /**
-         * Output not match hidden
-         */
+      }
+    }
+    res.setCells(cells);
+    /**
+     * Output not match hidden
+     */
 //        if (hiddenPath != null) {
 //            processHidden.outputResult();
 //        }
-        return obj;
+    return res;
+  }
+
+  public static String JSONWriteEntity(List<BaseEntity> entityList) throws Exception {
+
+
+    JSONObject obj = new JSONObject();// 创建JSONObject对象
+
+    obj.put("schemaVersion", "1");
+
+    List<String> subObjVariable = new ArrayList<String>();// 创建对象数组里的子对象
+    for (BaseEntity en : entityList) {
+      subObjVariable.add(en.toString());
     }
+    obj.put("variables", subObjVariable);
 
-    public static String JSONWriteEntity(List<BaseEntity> entityList) throws Exception {
+    return obj.toString();
+  }
 
-
-        JSONObject obj=new JSONObject();//创建JSONObject对象
-
-        obj.put("schemaVersion","1");
-
-        List<String> subObjVariable=new ArrayList<String>();//创建对象数组里的子对象
-        for(BaseEntity en:entityList) {
-            subObjVariable.add(en.toString());
-        }
-        obj.put("variables",subObjVariable);
-
-        return obj.toString();
+  public static String processRawType(String rawType) {
+    if (rawType == null) {
+      return null;
     }
-
-    public static String processRawType (String rawType){
-        if (rawType == null){
-            return null;
-        }
 //        else {
 //            if (rawType.contains("<")){
 ////                String[] temp = rawType.split("<");
@@ -354,7 +451,7 @@ public class JsonString {
 //            }
 //            rawType = StringEscapeUtils.unescapeJava(rawType);
 //        }
-        return rawType;
-    }
+    return rawType;
+  }
 
 }

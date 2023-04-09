@@ -9,6 +9,7 @@ public class InterfaceEntityDTO extends InternalEntityDTO {
   private LocationDTO location;
   private String modifiers;
   private String rawType;
+  private String hidden;
 
   public InterfaceEntityDTO() {
   }
@@ -19,13 +20,15 @@ public class InterfaceEntityDTO extends InternalEntityDTO {
       AdditionalBinDTO additionalBin,
       LocationDTO location,
       String modifiers,
-      String rawType) {
+      String rawType,
+      String hidden) {
     super(parentId, "Interface");
     this.File = file;
     this.additionalBin = additionalBin;
     this.location = location;
     this.modifiers = modifiers;
     this.rawType = rawType;
+    this.hidden = hidden;
   }
 
   public InterfaceEntityDTO(
@@ -37,13 +40,15 @@ public class InterfaceEntityDTO extends InternalEntityDTO {
       AdditionalBinDTO additionalBin,
       LocationDTO location,
       String modifiers,
-      String rawType) {
+      String rawType,
+      String hidden) {
     super(id, name, qualifiedName, parentId, "Interface");
     this.File = file;
     this.additionalBin = additionalBin;
     this.location = location;
     this.modifiers = modifiers;
     this.rawType = rawType;
+    this.hidden = hidden;
   }
 
   @JSONPropertyName("File")
@@ -53,6 +58,14 @@ public class InterfaceEntityDTO extends InternalEntityDTO {
 
   public void setFile(String file) {
     this.File = file;
+  }
+
+  public String getHidden() {
+    return hidden;
+  }
+
+  public void setHidden(String hidden) {
+    this.hidden = hidden;
   }
 
   public AdditionalBinDTO getAdditionalBin() {

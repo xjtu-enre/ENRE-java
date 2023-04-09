@@ -8,8 +8,8 @@ public class BaseClassEntityDTO extends InternalEntityDTO {
   private LocationDTO location;
   private String modifiers;
   private String File;
-  private ComponentDTO component;
   private AdditionalBinDTO additionalBin;
+  private String hidden;
 
   public BaseClassEntityDTO() {
   }
@@ -20,15 +20,15 @@ public class BaseClassEntityDTO extends InternalEntityDTO {
       LocationDTO location,
       String modifiers,
       String file,
-      ComponentDTO component,
-      AdditionalBinDTO additionalBin) {
+      AdditionalBinDTO additionalBin,
+      String hidden) {
     super(parentId, "Class");
     this.rawType = rawType;
     this.location = location;
     this.modifiers = modifiers;
     this.File = file;
-    this.component = component;
     this.additionalBin = additionalBin;
+    this.hidden = hidden;
   }
 
   public BaseClassEntityDTO(
@@ -40,15 +40,15 @@ public class BaseClassEntityDTO extends InternalEntityDTO {
       LocationDTO location,
       String modifiers,
       String file,
-      ComponentDTO component,
-      AdditionalBinDTO additionalBin) {
+      AdditionalBinDTO additionalBin,
+      String hidden) {
     super(id, name, qualifiedName, parentId, "Class");
     this.rawType = rawType;
     this.location = location;
     this.modifiers = modifiers;
     this.File = file;
-    this.component = component;
     this.additionalBin = additionalBin;
+    this.hidden = hidden;
   }
 
   public BaseClassEntityDTO(
@@ -125,11 +125,11 @@ public class BaseClassEntityDTO extends InternalEntityDTO {
     this.additionalBin = additionalBin;
   }
 
-  public ComponentDTO getComponent() {
-    return component;
+  public String getHidden() {
+    return hidden;
   }
 
-  public void setComponent(ComponentDTO component) {
-    this.component = component;
+  public void setHidden(String hidden) {
+    this.hidden = hidden;
   }
 }

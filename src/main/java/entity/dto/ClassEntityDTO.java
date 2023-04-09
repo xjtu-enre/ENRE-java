@@ -15,10 +15,10 @@ public class ClassEntityDTO extends BaseClassEntityDTO {
       LocationDTO location,
       String modifiers,
       String file,
-      ComponentDTO component,
       AdditionalBinDTO additionalBin,
-      List<Integer> innerType) {
-    super(parentId, rawType, location, modifiers, file, component, additionalBin);
+      List<Integer> innerType,
+      String hidden) {
+    super(parentId, rawType, location, modifiers, file, additionalBin, hidden);
     this.innerType = innerType;
   }
 
@@ -31,9 +31,9 @@ public class ClassEntityDTO extends BaseClassEntityDTO {
       LocationDTO location,
       String modifiers,
       String file,
-      ComponentDTO component,
       AdditionalBinDTO additionalBin,
-      List<Integer> innerType) {
+      List<Integer> innerType,
+      String hidden) {
     super(
         id,
         name,
@@ -43,8 +43,8 @@ public class ClassEntityDTO extends BaseClassEntityDTO {
         location,
         modifiers,
         file,
-        component,
-        additionalBin);
+        additionalBin,
+        hidden);
     this.innerType = innerType;
   }
 

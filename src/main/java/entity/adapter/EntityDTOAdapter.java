@@ -14,24 +14,15 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
   protected final EnhancementDTOAdapter enhancementDTOAdapter;
   protected final ParameterDTOAdapter parameterDTOAdapter;
   protected final AdditionalBinDTOAdapter additionalBinDTOAdapter;
-  protected final ComponentDTOAdapter componentDTOAdapter;
-  protected final ICCMethodAttributeDTOAdapter iccMethodAttributeDTOAdapter;
-  protected final ICCVariableAttributeDTOAdapter iccVariableAttributeDTOAdapter;
 
   public EntityDTOAdapter(LocationDTOAdapter locationDTOAdapter,
                           EnhancementDTOAdapter enhancementDTOAdapter,
                           ParameterDTOAdapter parameterDTOAdapter,
-                          AdditionalBinDTOAdapter additionalBinDTOAdapter,
-                          ComponentDTOAdapter componentDTOAdapter,
-                          ICCMethodAttributeDTOAdapter iccMethodAttributeDTOAdapter,
-                          ICCVariableAttributeDTOAdapter iccVariableAttributeDTOAdapter) {
+                          AdditionalBinDTOAdapter additionalBinDTOAdapter) {
     this.locationDTOAdapter = locationDTOAdapter;
     this.enhancementDTOAdapter = enhancementDTOAdapter;
     this.parameterDTOAdapter = parameterDTOAdapter;
     this.additionalBinDTOAdapter = additionalBinDTOAdapter;
-    this.componentDTOAdapter = componentDTOAdapter;
-    this.iccMethodAttributeDTOAdapter = iccMethodAttributeDTOAdapter;
-    this.iccVariableAttributeDTOAdapter = iccVariableAttributeDTOAdapter;
   }
 
   protected void writeLocationDTO(JsonWriter out, LocationDTO obj, String key) throws IOException {
@@ -99,30 +90,6 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     out.endArray();
   }
 
-  protected void writeICCMethodAttributeDTO(JsonWriter out, ICCMethodAttributeDTO obj) throws IOException {
-    if (obj == null) {
-      return;
-    }
-    out.name("iccMethodAttribute");
-    this.iccMethodAttributeDTOAdapter.write(out, obj);
-  }
-
-  protected void writeICCVariableAttributeDTO(JsonWriter out, ICCVariableAttributeDTO obj) throws IOException {
-    if (obj == null) {
-      return;
-    }
-    out.name("iccVariableAttribute");
-    this.iccVariableAttributeDTOAdapter.write(out, obj);
-  }
-
-  protected void writeComponentDTO(JsonWriter out, ComponentDTO obj) throws IOException {
-    if (obj == null) {
-      return;
-    }
-    out.name("component");
-    this.componentDTOAdapter.write(out, obj);
-  }
-
   protected void write(JsonWriter out, PackageEntityDTO value) {
     return;
   }
@@ -138,7 +105,6 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     writeFile(out, value.getFile());
     writeAdditionalBinDTO(out, value.getAdditionalBin());
     writeInnerType(out, value.getInnerType());
-    writeComponentDTO(out, value.getComponent());
   }
 
   protected void write(JsonWriter out, AnonymousClassEntityDTO value) throws IOException {
@@ -147,7 +113,6 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     writeModifiers(out, value.getModifiers());
     writeFile(out, value.getFile());
     writeAdditionalBinDTO(out, value.getAdditionalBin());
-    writeComponentDTO(out, value.getComponent());
     out.name("anonymousBindVar").value(value.getAnonymousBindVar());
     out.name("anonymousRank").value(value.getAnonymousRank());
   }
@@ -196,7 +161,6 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     writeModifiers(out, value.getModifiers());
     writeParameterDTO(out, value.getParameter());
     writeRawType(out, value.getRawType());
-    writeICCMethodAttributeDTO(out, value.getIccMethodAttribute());
   }
 
   protected void write(JsonWriter out, TypeParameterEntityDTO  value) throws IOException {
@@ -213,7 +177,6 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     writeLocationDTO(out, value.getLocation(), "location");
     writeModifiers(out, value.getModifiers());
     writeRawType(out, value.getRawType());
-    writeICCVariableAttributeDTO(out, value.getIccVariableAttribute());
   }
 
   @Override

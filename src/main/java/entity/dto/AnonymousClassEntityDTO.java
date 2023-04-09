@@ -14,11 +14,11 @@ public class AnonymousClassEntityDTO extends BaseClassEntityDTO {
       LocationDTO location,
       String modifiers,
       String file,
-      ComponentDTO component,
       AdditionalBinDTO additionalBin,
       int anonymousBindVar,
-      int anonymousRank) {
-    super(parentId, rawType, location, modifiers, file, component, additionalBin);
+      int anonymousRank,
+      String hidden) {
+    super(parentId, rawType, location, modifiers, file, additionalBin, hidden);
     this.anonymousBindVar = anonymousBindVar;
     this.anonymousRank = anonymousRank;
   }
@@ -32,10 +32,10 @@ public class AnonymousClassEntityDTO extends BaseClassEntityDTO {
       LocationDTO location,
       String modifiers,
       String file,
-      ComponentDTO component,
       AdditionalBinDTO additionalBin,
       int anonymousBindVar,
-      int anonymousRank) {
+      int anonymousRank,
+      String hidden) {
     super(
         id,
         name,
@@ -45,8 +45,8 @@ public class AnonymousClassEntityDTO extends BaseClassEntityDTO {
         location,
         modifiers,
         file,
-        component,
-        additionalBin);
+        additionalBin,
+        hidden);
     this.anonymousBindVar = anonymousBindVar;
     this.anonymousRank = anonymousRank;
   }
