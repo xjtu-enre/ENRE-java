@@ -12,16 +12,16 @@ public class EnhancementDTOAdapter extends TypeAdapter<MethodEntityDTO.Enhanceme
   @Override
   public void write(JsonWriter out, MethodEntityDTO.EnhancementDTO value) throws IOException {
     out.beginObject();
-    out.name("synchronized").value(value.getSynchronized());
-    out.name("static").value(value.getStatic());
-    out.name("getter").value(value.getGetter());
-    out.name("setter").value(value.getSetter());
-    out.name("public").value(value.getPublic());
-    out.name("delegator").value(value.getDelegator());
-    out.name("constructor").value(value.getConstructor());
-    out.name("override").value(value.getOverride());
-    out.name("abstract").value(value.getAbstract());
-    out.name("recursive").value(value.getRecursive());
+    out.name("isSynchronized").value(value.getSynchronized());
+    out.name("isStatic").value(value.getStatic());
+    out.name("isGetter").value(value.getGetter());
+    out.name("isSetter").value(value.getSetter());
+    out.name("isPublic").value(value.getPublic());
+    out.name("isDelegator").value(value.getDelegator());
+    out.name("isConstructor").value(value.getConstructor());
+    out.name("isOverride").value(value.getOverride());
+    out.name("isAbstract").value(value.getAbstract());
+    out.name("isRecursive").value(value.getRecursive());
     out.endObject();
   }
 
@@ -31,34 +31,34 @@ public class EnhancementDTOAdapter extends TypeAdapter<MethodEntityDTO.Enhanceme
     in.beginObject();
     while (in.hasNext()) {
       switch (in.nextName()) {
-        case "synchronized":
+        case "isSynchronized":
           res.setSynchronized(in.nextBoolean());
           break;
-        case "static":
+        case "isStatic":
           res.setStatic(in.nextBoolean());
           break;
-        case "getter":
+        case "isGetter":
           res.setGetter(in.nextBoolean());
           break;
-        case "setter":
+        case "isSetter":
           res.setSetter(in.nextBoolean());
           break;
-        case "public":
+        case "isPublic":
           res.setPublic(in.nextBoolean());
           break;
-        case "delegator":
+        case "isDelegator":
           res.setDelegator(in.nextBoolean());
           break;
-        case "constructor":
+        case "isConstructor":
           res.setConstructor(in.nextBoolean());
           break;
-        case "override":
+        case "isOverride":
           res.setOverride(in.nextBoolean());
           break;
-        case "abstract":
+        case "isAbstract":
           res.setAbstract(in.nextBoolean());
           break;
-        case "recursive":
+        case "isRecursive":
           res.setRecursive(in.nextBoolean());
           break;
       }
