@@ -26,17 +26,24 @@ public class VarInfoBf extends DepBackfill{
             if(entity instanceof MethodEntity){
                 for(String varName : ((MethodEntity) entity).getName2Usage().keySet()){
                     for(Tuple<String, Location> usage : ((MethodEntity) entity).getName2Usage().get(varName)){
-                        if(usage.getL().equals("use")){
-                            saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_USE, Configure.RELATION_USED_BY, usage.getR());
-                        }
-                        else if(usage.getL().equals("modify")){
-                            try{
-                                saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_MODIFY, Configure.RELATION_MODIFIED_BY, usage.getR());
-                            } catch (NullPointerException e){
+                        switch (usage.getL()) {
+                            case "use":
+                                try {
+                                    saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_USE, Configure.RELATION_USED_BY, usage.getR());
+                                } catch (NullPointerException e) {
 //                                System.out.println("NULL ID VAR: "+varName);
-                            }
-                        } else if (usage.getL().equals("set")) {
-                            saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_SET, Configure.RELATION_SETED_BY, usage.getR());
+                                }
+                                break;
+                            case "modify":
+                                try {
+                                    saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_MODIFY, Configure.RELATION_MODIFIED_BY, usage.getR());
+                                } catch (NullPointerException e) {
+//                                System.out.println("NULL ID VAR: "+varName);
+                                }
+                                break;
+                            case "set":
+                                saveRelation(entity.getId(), ((MethodEntity) entity).getName2Id().get(varName), Configure.RELATION_SET, Configure.RELATION_SETED_BY, usage.getR());
+                                break;
                         }
                     }
                 }
