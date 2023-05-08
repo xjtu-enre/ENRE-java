@@ -900,16 +900,16 @@ public class EntityVisitor extends CKVisitor {
                     }
                 }
             }
-//            if(node.getRightHandSide() instanceof SimpleName){
-//                varName = node.getRightHandSide().toString();
-//                processVarInMethod(varName ,methodId);
-//                /**
-//                 * use, read only
-//                 */
-//                if(((MethodEntity)singleCollect.getEntityById(methodId)).getName2Id().containsKey(varName)) {
-//                    ((MethodEntity) singleCollect.getEntityById(methodId)).addName2Usage(varName, "use");
-//                }
-//            }
+            if(node.getRightHandSide() instanceof SimpleName){
+                varName = node.getRightHandSide().toString();
+                processVarInMethod(varName ,methodId);
+                /**
+                 * use, read only
+                 */
+                if(((MethodEntity)singleCollect.getEntityById(methodId)).getName2Id().containsKey(varName)) {
+                    ((MethodEntity) singleCollect.getEntityById(methodId)).addName2Usage(varName, "use", loc);
+                }
+            }
         }
 
         //ck
