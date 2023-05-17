@@ -9,6 +9,7 @@ import entity.adapter.*;
 import entity.dto.EnreDTO;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class CreateFileUtil {
@@ -46,7 +47,7 @@ public class CreateFileUtil {
                 new EntityDTOAdapter()
                 ));
             Gson gson = builder.disableHtmlEscaping().setPrettyPrinting().create();
-            JsonWriter out = new JsonWriter(new BufferedWriter(new FileWriter(fullPath)));
+            JsonWriter out = new JsonWriter(new BufferedWriter(new FileWriter(fullPath, Charset.forName("UTF-32"))));
             out.setIndent("  ");
             gson.toJson(enre, EnreDTO.class, out);
             out.close();
