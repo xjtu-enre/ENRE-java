@@ -217,8 +217,9 @@ public class ProcessEntity {
             try {
                 Type superType = node.getSuperclassType();
                 if(superType != null){
-//                    classEntity.setSuperClassName(superType.resolveBinding().getQualifiedName());
-                    classEntity.setSuperClassName(superType.toString());
+                    classEntity.setSuperClassName(superType.resolveBinding().getQualifiedName());
+//                    ANTI-PROGRAMMING(CERT)
+//                    classEntity.setSuperClassName(superType.toString());
                 }
             } catch (NullPointerException e){
 //                e.printStackTrace();
@@ -428,7 +429,7 @@ public class ProcessEntity {
         //add parent's children Id
         singleCollect.getEntityById(parentId).addChildId(annotationId);
 
-        singleCollect.addCreatedAnt(annotationId, qualifiedName);
+        singleCollect.addCreatedAnt(annotationId, annotationName);
 
         return annotationId;
     }
