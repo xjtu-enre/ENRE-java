@@ -148,6 +148,8 @@ public class IdentifyEntities {
         for(CompilationUnitPair pair : pairs){
 
             try{
+//                honor
+//                if (pair.source.contains("tests")) continue;
                 System.out.println(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name));
 //                if("src/main/java/helloJDT/LauncherAccessibilityDelegate.java".equals(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name))){
 //                    pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
