@@ -6,6 +6,8 @@ import visitor.EntityVisitor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -37,7 +39,7 @@ public class SingleCollect {
     //entities' id = index
     private ArrayList<BaseEntity> entities = new ArrayList<BaseEntity>();
 
-    private ArrayList<ExternalEntity> externalEntities = new ArrayList<>();
+    private Set<ExternalEntity> externalEntities = new HashSet<>();
 
     //packages' qualified name and id that already be created
     private HashMap<String,Integer> createdPackage = new HashMap<String,Integer>();
@@ -62,7 +64,7 @@ public class SingleCollect {
         this.entities.add(entity);
     }
 
-    public ArrayList<ExternalEntity> getExternalEntities() {
+    public Set<ExternalEntity> getExternalEntities() {
         return this.externalEntities;
     }
 

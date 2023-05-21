@@ -429,6 +429,10 @@ public class ProcessEntity {
         //add parent's children Id
         singleCollect.getEntityById(parentId).addChildId(annotationId);
 
+        ITypeBinding binding = node.resolveBinding();
+        if (binding != null) {
+            annotationName = binding.getQualifiedName();
+        }
         singleCollect.addCreatedAnt(annotationId, annotationName);
 
         return annotationId;
