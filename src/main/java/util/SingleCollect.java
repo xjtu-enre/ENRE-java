@@ -1,9 +1,14 @@
 package util;
 
 import entity.*;
+import visitor.EntityVisitor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  *This class is aimed to collect all entities in a java project.
@@ -14,6 +19,20 @@ import java.util.HashMap;
  */
 
 public class SingleCollect {
+
+    public static final Logger logger = Logger.getLogger(SingleCollect.class.getName());
+    private static final FileHandler handler;
+
+    static {
+        try {
+            handler = new FileHandler("enre.log");
+            logger.addHandler(handler);
+            SimpleFormatter formatter = new SimpleFormatter();
+            handler.setFormatter(formatter);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     //entities' id = index
     private ArrayList<BaseEntity> entities = new ArrayList<BaseEntity>();
