@@ -27,7 +27,7 @@ public class EnreCommand {
     private String outputFile;
     @Option(names = {"-h","--help"}, usageHelp = true, description = "Display this help and exit")
     public boolean help;
-    @Option(names = {"-k", "--sdkPath"},  description = "The sdk source code directory paths if target project is an android app, if you want the sdk library class to be analyzed as well.")
+    @Option(names = {"-k", "--sdkPath"},  description = "The external sdk source code directory paths if you want the external sdk library classes to be analyzed as well.")
     private String[] sdkSourcePaths = new String[]{};
     @Option(names = {"-e","--external"}, description = "The third party APIs which need to identify")
     private String external;
