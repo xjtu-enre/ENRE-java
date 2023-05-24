@@ -51,6 +51,13 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     out.name("modifiers").value(modifiers);
   }
 
+  protected void writeHidden(JsonWriter out, String hidden) throws IOException {
+    if (hidden == null) {
+      return;
+    }
+    out.name("hidden").value(hidden);
+  }
+
   protected void writeRawType(JsonWriter out, String rawType) throws IOException {
     if (rawType == null) {
       return;
@@ -208,6 +215,7 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     writeLocationDTO(out, value.getLocation(), "location");
     writeModifiers(out, value.getModifiers());
     writeRawType(out, value.getRawType());
+    writeHidden(out, value.getHidden());
     writeICCVariableAttributeDTO(out, value.getIccVariableAttribute());
   }
 
