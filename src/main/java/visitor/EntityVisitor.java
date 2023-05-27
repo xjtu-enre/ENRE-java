@@ -180,66 +180,10 @@ public class EntityVisitor extends CKVisitor {
 
     @Override
     public boolean visit(ClassInstanceCreation node) {
-        IMethodBinding constructorBinding = node.resolveConstructorBinding();
-        if (constructorBinding == null) {
-            return super.visit(node);
-        }
-        String methodName = constructorBinding.getName();
-        Location location = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
-        ArrayList<String> arguments = new ArrayList<>();
-        for (Object par : node.arguments()) {
-            arguments.add(par.toString());
-        }
-        Expression currentExpression = node.getExpression();
-        while (currentExpression instanceof MethodInvocation) {
-            currentExpression = ((MethodInvocation) currentExpression).getExpression();
-        }
-        while (currentExpression instanceof QualifiedName) {
-            currentExpression = ((QualifiedName) currentExpression).getQualifier();
-        }
-        int bindVar;
-        String bindVarName = "";
-        if (currentExpression instanceof SimpleName) {
-            bindVarName = currentExpression.toString();
-            bindVar = processVarInMethod(currentExpression.toString(), scopeStack.peek());
-        } else if (currentExpression instanceof FieldAccess) {
-            bindVarName = ((FieldAccess) currentExpression).getName().getIdentifier();
-            bindVar = processVarInMethod(((FieldAccess) currentExpression).getName().getIdentifier(), scopeStack.peek());
-        } else if (currentExpression instanceof ArrayAccess) {
-            bindVarName = ((ArrayAccess) currentExpression).getArray().toString();
-            bindVar = processVarInMethod(((ArrayAccess) currentExpression).getArray().toString(), scopeStack.peek());
-        } else {
-            if (currentExpression != null) {
-                bindVarName = currentExpression.toString();
-            }
-            bindVar = -1;
-        }
-        String declaringTypeQualifiedName;
-        if (constructorBinding != null) {
-            ITypeBinding declaringClass = constructorBinding.getDeclaringClass();
-            declaringTypeQualifiedName = declaringClass.getQualifiedName();
-            ArrayList<String> parTypes = new ArrayList<>();
-            ITypeBinding[] calledMethParTypes = constructorBinding.getParameterTypes();
-            for (ITypeBinding parType : calledMethParTypes) {
-                parTypes.add(parType.getQualifiedName());
-            }
-            if (singleCollect.getEntityById(scopeStack.peek()) instanceof ScopeEntity) {
-                if (bindVar != -1) {
-                    ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, location, bindVar, parTypes, arguments);
-                } else {
-                    ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addCall(declaringTypeQualifiedName, methodName, location, bindVarName, parTypes, arguments);
-                }
-            }
-            checkReflection(declaringTypeQualifiedName, methodName, bindVar, node.arguments(), location);
-        } else {
-            if (bindVar != -1) {
-                declaringTypeQualifiedName = singleCollect.getEntityById(bindVar).getRawType();
-            } else {
-                declaringTypeQualifiedName = bindVarName;
-            }
-            if (singleCollect.getEntityById(scopeStack.peek()) instanceof ScopeEntity) {
-                ((ScopeEntity) singleCollect.getEntityById(scopeStack.peek())).addExternalCall(declaringTypeQualifiedName, methodName, location, bindVarName, bindVar, arguments);
-            }
+        try {
+            currentInstanceRawType = node.getType().resolveBinding().getQualifiedName();
+        }catch (NullPointerException e) {
+            currentInstanceRawType = node.getType().toString();
         }
         return super.visit(node);
     }

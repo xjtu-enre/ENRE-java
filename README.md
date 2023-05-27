@@ -65,7 +65,6 @@ Usage: enre_java [-hs] [-a=<aidl>] [-e=<external>] [-hd=<hidden>]
                       The output file name, default is projectName-out
   -s, --slim          The slim output version, which removing the location and
                         external entity info.
-  -k, --sdkPath       The external sdk source code directory paths if you want the external sdk library classes to be analyzed as well.
 ```
 
 To increase the memory heap, you can add -Xmx before -jar, like: 

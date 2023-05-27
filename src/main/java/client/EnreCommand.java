@@ -27,8 +27,6 @@ public class EnreCommand {
     private String outputFile;
     @Option(names = {"-h","--help"}, usageHelp = true, description = "Display this help and exit")
     public boolean help;
-    @Option(names = {"-k", "--sdkPath"},  description = "The external sdk source code directory paths if you want the external sdk library classes to be analyzed as well.")
-    private String[] sdkSourcePaths = new String[]{};
     @Option(names = {"-e","--external"}, description = "The third party APIs which need to identify")
     private String external;
     @Option(names = {"-s", "--slim"}, description = "The slim output version, which removing the location and external entity info. ")
@@ -75,14 +73,6 @@ public class EnreCommand {
 
     public void setHidden(String hidden) {
         this.hidden = hidden;
-    }
-
-    public String[] getSdkSourcePaths() {
-        return sdkSourcePaths;
-    }
-
-    public void setSdkSourcePaths(String[] sdkSourcePaths) {
-        this.sdkSourcePaths = sdkSourcePaths;
     }
 
     public String getHidden() {

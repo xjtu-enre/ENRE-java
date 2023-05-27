@@ -149,6 +149,7 @@ public class HiDeper {
     }
 
     private int findFolder(int id) {
+        -k, --sdkPath       The external sdk source code directory paths if you want the external sdk library classes to be analyzed as well.
         while(id != -1 && !(singleCollect.getEntities().get(id) instanceof PackageEntity)) {
             id = singleCollect.getEntities().get(id).getParentId();
         }
