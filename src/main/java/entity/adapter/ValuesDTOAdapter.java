@@ -19,8 +19,10 @@ public class ValuesDTOAdapter extends TypeAdapter<ValuesDTO> {
   @Override
   public void write(JsonWriter out, ValuesDTO value) throws IOException {
     out.beginObject();
-    out.name("loc");
-    this.locationDTOAdapter.write(out, value.getLoc());
+    if (value.getLoc() != null) {
+      out.name("loc");
+      this.locationDTOAdapter.write(out, value.getLoc());
+    }
     for (Map.Entry<String, Integer> entry : value.getRelations().entrySet()) {
       out.name(entry.getKey()).value(entry.getValue());
     }

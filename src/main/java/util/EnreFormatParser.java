@@ -211,6 +211,7 @@ public class EnreFormatParser {
       Integer anonymousRank = (Integer) get(variableObj, "anonymousRank");
       String modifiers = (String) get(variableObj, "modifiers");
       Boolean global = (Boolean) get(variableObj, "global");
+      String hidden = (String) get(variableObj, "hidden");
       AdditionalBinDTO additionalBinDTO = parseAdditionalBinDTO(variableObj);
       LocationDTO locationDTO = parseLocationDTO(variableObj, "location");
       ICCMethodAttributeDTO iccMethodAttributeDTO = parseICCMethodAttributeDTO(variableObj);
@@ -346,6 +347,7 @@ public class EnreFormatParser {
                   locationDTO,
                   modifiers,
                   rawType,
+                  hidden,
                   iccVariableAttributeDTO);
           break;
         default:
