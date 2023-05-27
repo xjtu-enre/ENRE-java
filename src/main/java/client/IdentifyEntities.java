@@ -23,7 +23,6 @@ public class IdentifyEntities {
     private String project_name;
     private ArrayList<String> additional_path = new ArrayList<>();
     private String aidl_path = null;
-    private String[] sdkSourcePaths;
 
     public IdentifyEntities(String project_path, String project_name){
         this.project_path = PathUtil.unifyPath(project_path);
@@ -53,14 +52,6 @@ public class IdentifyEntities {
         }
     }
 
-    public String[] getSdkSourcePaths() {
-        return sdkSourcePaths;
-    }
-
-    public void setSdkSourcePaths(String[] sdkSourcePaths) {
-        this.sdkSourcePaths = sdkSourcePaths;
-    }
-
     public String getProject_path() {
         return PathUtil.unifyPath(this.project_path);
     }
@@ -88,13 +79,6 @@ public class IdentifyEntities {
 
 
         HashMap<Tuple<String, Integer>, ArrayList<String>> checkBin = new HashMap<>();
-        HashMap<Tuple<String, Integer>, ArrayList<String>> sdkCheckBin = new HashMap<>();
-        if (this.sdkSourcePaths != null) {
-            for (String sdkSourcePath : this.sdkSourcePaths) {
-                FileUtil sdkFile = new FileUtil(sdkSourcePath);
-                sdkCheckBin.put(new Tuple<>(sdkSourcePath, 1), sdkFile.getFileNameList());
-            }
-        }
 //        ArrayList<String> whole_file_list = current.getFileNameList();
         checkBin.put(new Tuple<>(current.getProjectPath()+current.getCurrentProjectName(), 1), current.getFileNameList());
 
@@ -132,9 +116,6 @@ public class IdentifyEntities {
 
         parser.setUnitName(current.getCurrentProjectName());
         ArrayList<String> whole_file_list = new ArrayList<>();
-        for (Tuple<String, Integer> binPath: sdkCheckBin.keySet()){
-            whole_file_list.addAll(sdkCheckBin.get(binPath));
-        }
         for (Tuple<String, Integer> binPath: checkBin.keySet()){
             whole_file_list.addAll(checkBin.get(binPath));
         }
@@ -149,13 +130,7 @@ public class IdentifyEntities {
             FileASTRequestor requester = new FileASTRequestor() {
                 @Override
                 public void acceptAST(String source, CompilationUnit ast) {
-                    String relativeFilePath;
-                    if (source.contains(project_name)) {
-                        relativeFilePath = PathUtil.getPathInProject(PathUtil.unifyPath(source), project_name);
-                    } else {
-                        relativeFilePath = PathUtil.unifyPath(source);
-                    }
-                    pairs.add(new CompilationUnitPair(relativeFilePath, ast));
+                    pairs.add(new CompilationUnitPair(source, ast));
                 }
             };
             parser.createASTs(whole_file_list.toArray(new String[0]), null, new String[0], requester, null);
@@ -188,7 +163,7 @@ public class IdentifyEntities {
                         break;
                     }
                 }
-                pair.ast.accept(new EntityVisitor(pair.source, pair.ast, fileBin));
+                pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast, fileBin));
 //                System.out.println(fileBinNum);
             }
             catch (EmptyStackException e){

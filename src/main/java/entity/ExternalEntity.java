@@ -88,17 +88,4 @@ public class ExternalEntity{
     public void setReturnType(String returnType) {
         this.returnType = returnType;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ExternalEntity that = (ExternalEntity) o;
-        return Objects.equals(qualifiedName, that.qualifiedName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(qualifiedName);
-    }
 }
