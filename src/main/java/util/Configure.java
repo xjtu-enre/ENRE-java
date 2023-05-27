@@ -204,6 +204,7 @@ public class Configure {
     public static final String OS_DOT_NAME = "os.name";
 
     private String inputSrcPath;
+    private String[] sdkSourcePaths;
     private String analyzedProjectName = "helloJDT";
     private String lang = "java";
     private String curr_pro_suffix = ".java";
@@ -223,6 +224,14 @@ public class Configure {
         outputCsvNodeFile = analyzedProjectName + "_node.csv";
         outputCsvEdgeFile = analyzedProjectName + "_edge.csv";
         attributeName = analyzedProjectName + "-sdsm";
+    }
+
+    public String[] getSdkSourcePaths() {
+        return sdkSourcePaths;
+    }
+
+    public void setSdkSourcePaths(String[] sdkSourcePaths) {
+        this.sdkSourcePaths = sdkSourcePaths;
     }
 
     public String getInputSrcPath() {
