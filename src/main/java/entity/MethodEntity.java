@@ -16,6 +16,7 @@ public class MethodEntity extends ScopeEntity{
     protected String returnType = null;
     protected String returnExpression = null;
     protected boolean isConstructor = false;
+    protected boolean isGenerics = false;
 
     //record the id of blocks in method
     protected ArrayList<Block> blocks = new ArrayList<>();
@@ -110,6 +111,13 @@ public class MethodEntity extends ScopeEntity{
         return isConstructor;
     }
 
+    public void setGenerics(boolean isGenerics){
+        this.isGenerics = isGenerics;
+    }
+
+    public boolean isGenerics() {
+        return isGenerics;
+    }
 
     public void addBlock (Block block){
         this.blocks.add(block);

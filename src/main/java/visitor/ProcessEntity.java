@@ -545,6 +545,11 @@ public class ProcessEntity {
             judgeMethodIsAssign(node);
             judgeMethodIsCallSuper(node);
             methodEntity.setIndices(indices);
+
+            //Generics
+            if (iMethodBinding.getTypeParameters().length != 0){
+                methodEntity.setGenerics(true);
+            }
         }
 
 

@@ -3,6 +3,7 @@ package visitor.deper;
 import entity.*;
 import entity.properties.CallSite;
 import entity.properties.Location;
+import org.jetbrains.annotations.Nullable;
 import util.Configure;
 import util.Tuple;
 
@@ -19,6 +20,10 @@ public class CallBf extends DepBackfill{
                 //call
                 if(!((ScopeEntity) entity).getCall().isEmpty()){
                     for(CallSite className2method : ((ScopeEntity) entity).getCall()){
+//                        System.out.println(className2method.getCallMethodName());
+//                        System.out.println(className2method.getDeclaringTypeQualifiedName());
+//                        System.out.println(className2method.getParTypes());
+//                        System.out.println(className2method.getBindVar());
                         int id = findMethodByType(className2method.getDeclaringTypeQualifiedName(), className2method.getCallMethodName(), className2method.getParTypes());
                         if (className2method.getBindVar() == -1 && !className2method.getBindVarName().equals("") && entity instanceof MethodEntity){
                             ((MethodEntity) entity).getCall().get(((MethodEntity) entity).getCall().indexOf(className2method)).setBindVar(findBindVar(entity.getId(), className2method.getBindVarName()));
@@ -26,10 +31,6 @@ public class CallBf extends DepBackfill{
                         if(id != -1){
                             saveRelation(entity.getId(), id, Configure.RELATION_CALL, Configure.RELATION_CALLED_BY, className2method.getLocation(), className2method.getBindVar(), className2method.getArguments());
                         }else {
-//                            System.out.println(className2method.getCallMethodName());
-//                            System.out.println(className2method.getDeclaringTypeQualifiedName());
-//                            System.out.println(className2method.getBindVarName());
-//                            System.out.println(className2method.getBindVar());
                             int externalId = findExternalMethod(className2method.getDeclaringTypeQualifiedName(), className2method.getCallMethodName());
                             if (externalId != -1){
                                 saveRelation(entity.getId(), externalId, Configure.RELATION_CALL, className2method.getLocation(), className2method.getBindVar(), className2method.getArguments());
@@ -93,16 +94,31 @@ public class CallBf extends DepBackfill{
             declaredClassId = singleCollect.getCreatedType().get(classQualifiedName);
         }
         if(declaredClassId != -1){
-            for(int id : singleCollect.getEntityById(declaredClassId).getChildrenIds()){
-                if (singleCollect.getEntityById(id) instanceof MethodEntity){
-                    if(singleCollect.getEntityById(id).getName().equals(methodName)
-                            && comparePara(((MethodEntity) singleCollect.getEntityById(id)).getParameterTypes(), paraTypes)){
-                        return id;
-                    }
+            Integer id = iterateMethod(methodName, paraTypes, declaredClassId);
+            if (id != null) return id;
+            if(singleCollect.getEntityById(declaredClassId) instanceof ClassEntity){
+                int superClassId = ((ClassEntity) singleCollect.getEntityById(declaredClassId)).getSuperClassId();
+                if (superClassId != -1){
+                    id = iterateMethod(methodName, paraTypes, superClassId);
+                    if (id != null) return id;
                 }
             }
         }
         return -1;
+    }
+
+    @Nullable
+    private Integer iterateMethod(String methodName, ArrayList<String> paraTypes, int superClassId) {
+        for(int id : singleCollect.getEntityById(superClassId).getChildrenIds()){
+            if (singleCollect.getEntityById(id) instanceof MethodEntity){
+                if(singleCollect.getEntityById(id).getName().equals(methodName)
+                        && (((MethodEntity) singleCollect.getEntityById(id)).isGenerics()
+                        ||comparePara(((MethodEntity) singleCollect.getEntityById(id)).getParameterTypes(), paraTypes)) ){
+                    return id;
+                }
+            }
+        }
+        return null;
     }
 
     public int findBindVar(int currentMethodId, String bindVarName){
