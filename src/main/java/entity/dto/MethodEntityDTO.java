@@ -11,6 +11,8 @@ public class MethodEntityDTO extends InternalEntityDTO {
   private String modifiers;
   private ParameterDTO parameter;
   private String rawType;
+
+  private String hidden;
   private ICCMethodAttributeDTO iccMethodAttribute;
 
   public MethodEntityDTO() {
@@ -57,6 +59,40 @@ public class MethodEntityDTO extends InternalEntityDTO {
     this.parameter = parameter;
     this.rawType = rawType;
     this.iccMethodAttribute = iccMethodAttribute;
+  }
+
+  public MethodEntityDTO(
+          int id,
+          String name,
+          String qualifiedName,
+          int parentId,
+          String file,
+          AdditionalBinDTO additionalBin,
+          EnhancementDTO enhancement,
+          LocationDTO location,
+          String modifiers,
+          ParameterDTO parameter,
+          String rawType,
+          String hidden,
+          ICCMethodAttributeDTO iccMethodAttribute) {
+    super(id, name, qualifiedName, parentId, "Method");
+    this.File = file;
+    this.additionalBin = additionalBin;
+    this.enhancement = enhancement;
+    this.location = location;
+    this.modifiers = modifiers;
+    this.parameter = parameter;
+    this.rawType = rawType;
+    this.hidden = hidden;
+    this.iccMethodAttribute = iccMethodAttribute;
+  }
+
+  public String getHidden() {
+    return hidden;
+  }
+
+  public void setHidden(String hidden) {
+    this.hidden = hidden;
   }
 
   @JSONPropertyName("File")

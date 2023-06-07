@@ -321,6 +321,7 @@ public class EnreFormatParser {
                   modifiers,
                   parameterDTO,
                   rawType,
+                  hidden,
                   iccMethodAttributeDTO);
           break;
         case "Module":

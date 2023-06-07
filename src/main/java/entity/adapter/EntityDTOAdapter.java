@@ -198,6 +198,7 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     writeModifiers(out, value.getModifiers());
     writeParameterDTO(out, value.getParameter());
     writeRawType(out, value.getRawType());
+    writeHidden(out, value.getHidden());
     writeICCMethodAttributeDTO(out, value.getIccMethodAttribute());
   }
 
