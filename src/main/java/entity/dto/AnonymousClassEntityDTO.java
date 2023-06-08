@@ -24,6 +24,36 @@ public class AnonymousClassEntityDTO extends BaseClassEntityDTO {
   }
 
   public AnonymousClassEntityDTO(
+          int id,
+          String name,
+          String qualifiedName,
+          int parentId,
+          String rawType,
+          LocationDTO location,
+          String modifiers,
+          String file,
+          String hidden,
+          ComponentDTO component,
+          AdditionalBinDTO additionalBin,
+          int anonymousBindVar,
+          int anonymousRank) {
+    super(
+            id,
+            name,
+            qualifiedName,
+            parentId,
+            rawType,
+            location,
+            modifiers,
+            file,
+            hidden,
+            component,
+            additionalBin);
+    this.anonymousBindVar = anonymousBindVar;
+    this.anonymousRank = anonymousRank;
+  }
+
+  public AnonymousClassEntityDTO(
       int id,
       String name,
       String qualifiedName,

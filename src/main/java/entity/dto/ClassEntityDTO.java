@@ -23,6 +23,61 @@ public class ClassEntityDTO extends BaseClassEntityDTO {
   }
 
   public ClassEntityDTO(
+          int id,
+          String name,
+          String qualifiedName,
+          int parentId,
+          String rawType,
+          LocationDTO location,
+          String modifiers,
+          String file,
+          ComponentDTO component,
+          AdditionalBinDTO additionalBin,
+          String hidden,
+          List<Integer> innerType) {
+    super(
+            id,
+            name,
+            qualifiedName,
+            parentId,
+            rawType,
+            location,
+            modifiers,
+            file,
+            hidden,
+            component,
+            additionalBin);
+    this.innerType = innerType;
+  }
+  public ClassEntityDTO(
+          int id,
+          String name,
+          String qualifiedName,
+          int parentId,
+          String rawType,
+          LocationDTO location,
+          String modifiers,
+          String file,
+          String hidden,
+          ComponentDTO component,
+          AdditionalBinDTO additionalBin,
+          List<Integer> innerType) {
+    super(
+            id,
+            name,
+            qualifiedName,
+            parentId,
+            rawType,
+            location,
+            modifiers,
+            file,
+            hidden,
+            component,
+            additionalBin);
+    this.innerType = innerType;
+  }
+
+  public ClassEntityDTO(
       int id,
       String name,
       String qualifiedName,

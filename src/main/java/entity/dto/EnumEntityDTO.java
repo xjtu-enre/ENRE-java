@@ -9,6 +9,7 @@ public class EnumEntityDTO extends InternalEntityDTO {
   private LocationDTO location;
   private String modifiers;
   private String rawType;
+  private String hidden;
 
   public EnumEntityDTO() {
   }
@@ -25,6 +26,27 @@ public class EnumEntityDTO extends InternalEntityDTO {
     this.additionalBin = additionalBin;
     this.location = location;
     this.modifiers = modifiers;
+    this.rawType = rawType;
+  }
+
+
+  public EnumEntityDTO(
+          int id,
+          String name,
+          String qualifiedName,
+          int parentId,
+          String file,
+          AdditionalBinDTO additionalBin,
+          LocationDTO location,
+          String modifiers,
+          String hidden,
+          String rawType) {
+    super(id, name, qualifiedName, parentId, "Enum");
+    this.File = file;
+    this.additionalBin = additionalBin;
+    this.location = location;
+    this.modifiers = modifiers;
+    this.hidden = hidden;
     this.rawType = rawType;
   }
 
@@ -85,5 +107,13 @@ public class EnumEntityDTO extends InternalEntityDTO {
 
   public void setRawType(String rawType) {
     this.rawType = rawType;
+  }
+
+  public String getHidden() {
+    return hidden;
+  }
+
+  public void setHidden(String hidden) {
+    this.hidden = hidden;
   }
 }

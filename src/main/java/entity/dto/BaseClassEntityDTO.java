@@ -9,6 +9,7 @@ public class BaseClassEntityDTO extends InternalEntityDTO {
   private String modifiers;
   private String File;
   private ComponentDTO component;
+  private String hidden;
   private AdditionalBinDTO additionalBin;
 
   public BaseClassEntityDTO() {
@@ -52,6 +53,30 @@ public class BaseClassEntityDTO extends InternalEntityDTO {
   }
 
   public BaseClassEntityDTO(
+          int id,
+          String name,
+          String qualifiedName,
+          int parentId,
+          String rawType,
+          LocationDTO location,
+          String modifiers,
+          String file,
+          String hidden,
+          ComponentDTO component,
+          AdditionalBinDTO additionalBin) {
+    super(id, name, qualifiedName, parentId, "Class");
+    this.rawType = rawType;
+    this.location = location;
+    this.modifiers = modifiers;
+    this.File = file;
+    this.hidden = hidden;
+    this.component = component;
+    this.additionalBin = additionalBin;
+  }
+
+
+
+  public BaseClassEntityDTO(
       int parentId,
       String rawType,
       LocationDTO location,
@@ -63,6 +88,26 @@ public class BaseClassEntityDTO extends InternalEntityDTO {
     this.location = location;
     this.modifiers = modifiers;
     this.File = file;
+    this.additionalBin = additionalBin;
+  }
+
+  public BaseClassEntityDTO(
+          int id,
+          String name,
+          String qualifiedName,
+          int parentId,
+          String rawType,
+          LocationDTO location,
+          String modifiers,
+          String file,
+          String hidden,
+          AdditionalBinDTO additionalBin) {
+    super(id, name, qualifiedName, parentId, "Class");
+    this.rawType = rawType;
+    this.location = location;
+    this.modifiers = modifiers;
+    this.File = file;
+    this.hidden = hidden;
     this.additionalBin = additionalBin;
   }
 
@@ -131,5 +176,13 @@ public class BaseClassEntityDTO extends InternalEntityDTO {
 
   public void setComponent(ComponentDTO component) {
     this.component = component;
+  }
+
+  public String getHidden() {
+    return hidden;
+  }
+
+  public void setHidden(String hidden) {
+    this.hidden = hidden;
   }
 }
