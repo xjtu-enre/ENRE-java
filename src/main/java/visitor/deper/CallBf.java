@@ -98,9 +98,10 @@ public class CallBf extends DepBackfill{
             if (id != null) return id;
             if(singleCollect.getEntityById(declaredClassId) instanceof ClassEntity){
                 int superClassId = ((ClassEntity) singleCollect.getEntityById(declaredClassId)).getSuperClassId();
-                if (superClassId != -1){
+                while (superClassId != -1){
                     id = iterateMethod(methodName, paraTypes, superClassId);
                     if (id != null) return id;
+                    superClassId = ((ClassEntity) singleCollect.getEntityById(superClassId)).getSuperClassId();
                 }
             }
         }
