@@ -239,6 +239,7 @@ public class EnreFormatParser {
                     locationDTO,
                     modifiers,
                     file,
+                    hidden,
                     componentDTO,
                     additionalBinDTO,
                     innerType);
@@ -253,6 +254,7 @@ public class EnreFormatParser {
                     locationDTO,
                     modifiers,
                     file,
+                    hidden,
                     componentDTO,
                     additionalBinDTO,
                     anonymousBindVar,
@@ -270,11 +272,12 @@ public class EnreFormatParser {
                   additionalBinDTO,
                   locationDTO,
                   modifiers,
+                  hidden,
                   rawType);
           break;
         case "Enum Constant":
           res =
-              new EnumConstantEntityDTO(id, name, qualifiedName, parentId, file, additionalBinDTO);
+              new EnumConstantEntityDTO(id, name, qualifiedName, parentId, file, hidden, additionalBinDTO);
           break;
         case "Annotation":
           res =
@@ -287,6 +290,7 @@ public class EnreFormatParser {
                   additionalBinDTO,
                   locationDTO,
                   modifiers,
+                  hidden,
                   rawType);
           break;
         case "Annotation Member":
@@ -305,6 +309,7 @@ public class EnreFormatParser {
                   additionalBinDTO,
                   locationDTO,
                   modifiers,
+                  hidden,
                   rawType);
           break;
         case "Method":

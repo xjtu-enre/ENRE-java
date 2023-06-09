@@ -9,6 +9,7 @@ public class AnnotationEntityDTO extends InternalEntityDTO {
   private LocationDTO location;
   private String modifiers;
   private String rawType;
+  private String hidden;
 
   public AnnotationEntityDTO() {
   }
@@ -26,6 +27,26 @@ public class AnnotationEntityDTO extends InternalEntityDTO {
     this.location = location;
     this.modifiers = modifiers;
     this.rawType = rawType;
+  }
+
+  public AnnotationEntityDTO(
+          int id,
+          String name,
+          String qualifiedName,
+          int parentId,
+          String file,
+          AdditionalBinDTO additionalBin,
+          LocationDTO location,
+          String modifiers,
+          String hidden,
+          String rawType) {
+    super(id, name, qualifiedName, parentId, "Annotation");
+    this.File = file;
+    this.additionalBin = additionalBin;
+    this.location = location;
+    this.modifiers = modifiers;
+    this.rawType = rawType;
+    this.hidden = hidden;
   }
 
   public AnnotationEntityDTO(
@@ -85,5 +106,13 @@ public class AnnotationEntityDTO extends InternalEntityDTO {
 
   public void setRawType(String rawType) {
     this.rawType = rawType;
+  }
+
+  public String getHidden() {
+    return hidden;
+  }
+
+  public void setHidden(String hidden) {
+    this.hidden = hidden;
   }
 }

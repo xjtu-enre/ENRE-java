@@ -5,6 +5,7 @@ import org.json.JSONPropertyName;
 public class EnumConstantEntityDTO extends InternalEntityDTO {
 
   private String File;
+  private String hidden;
   private AdditionalBinDTO additionalBin;
 
   public EnumConstantEntityDTO() {
@@ -13,6 +14,20 @@ public class EnumConstantEntityDTO extends InternalEntityDTO {
   public EnumConstantEntityDTO(int parentId, String file, AdditionalBinDTO additionalBin) {
     super(parentId, "Enum Constant");
     this.File = file;
+    this.additionalBin = additionalBin;
+  }
+
+  public EnumConstantEntityDTO(
+          int id,
+          String name,
+          String qualifiedName,
+          int parentId,
+          String file,
+          String hidden,
+          AdditionalBinDTO additionalBin) {
+    super(id, name, qualifiedName, parentId, "Enum Constant");
+    this.File = file;
+    this.hidden = hidden;
     this.additionalBin = additionalBin;
   }
 
@@ -43,5 +58,13 @@ public class EnumConstantEntityDTO extends InternalEntityDTO {
 
   public void setAdditionalBin(AdditionalBinDTO additionalBin) {
     this.additionalBin = additionalBin;
+  }
+
+  public String getHidden() {
+    return hidden;
+  }
+
+  public void setHidden(String hidden) {
+    this.hidden = hidden;
   }
 }

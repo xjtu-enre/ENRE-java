@@ -140,6 +140,7 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     writeFile(out, value.getFile());
     writeAdditionalBinDTO(out, value.getAdditionalBin());
     writeInnerType(out, value.getInnerType());
+    writeHidden(out, value.getHidden());
     writeComponentDTO(out, value.getComponent());
   }
 
@@ -150,6 +151,7 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     writeFile(out, value.getFile());
     writeAdditionalBinDTO(out, value.getAdditionalBin());
     writeComponentDTO(out, value.getComponent());
+    writeHidden(out, value.getHidden());
     out.name("anonymousBindVar").value(value.getAnonymousBindVar());
     out.name("anonymousRank").value(value.getAnonymousRank());
   }
@@ -160,11 +162,13 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     writeLocationDTO(out, value.getLocation(), "location");
     writeModifiers(out, value.getModifiers());
     writeRawType(out, value.getRawType());
+    writeHidden(out, value.getHidden());
   }
 
   protected void write(JsonWriter out, EnumConstantEntityDTO value) throws IOException {
     writeFile(out, value.getFile());
     writeAdditionalBinDTO(out, value.getAdditionalBin());
+    writeHidden(out, value.getHidden());
   }
 
   protected void write(JsonWriter out, AnnotationEntityDTO value) throws IOException {
@@ -173,6 +177,7 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     writeLocationDTO(out, value.getLocation(), "location");
     writeModifiers(out, value.getModifiers());
     writeRawType(out, value.getRawType());
+    writeHidden(out, value.getHidden());
   }
 
   protected void write(JsonWriter out, AnnotationMemberEntityDTO  value) throws IOException {
@@ -187,6 +192,7 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     writeAdditionalBinDTO(out, value.getAdditionalBin());
     writeLocationDTO(out, value.getLocation(), "location");
     writeModifiers(out, value.getModifiers());
+    writeHidden(out, value.getHidden());
     writeRawType(out, value.getRawType());
   }
 
