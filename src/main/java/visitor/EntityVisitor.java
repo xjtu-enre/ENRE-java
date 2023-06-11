@@ -1368,7 +1368,7 @@ public class EntityVisitor extends CKVisitor {
         //global var
         if(varId == -1){
             int tmpId = entityId;
-            while (singleCollect.getEntityById(tmpId).getParentId() != -1){
+            while (singleCollect.getEntityById(tmpId).getParentId() != -1 && varId == -1){
                 tmpId = singleCollect.getEntityById(tmpId).getParentId();
                 if (singleCollect.getEntityById(tmpId) instanceof TypeEntity){
                     varId = searchVarInType(tmpId, name);
@@ -1376,7 +1376,6 @@ public class EntityVisitor extends CKVisitor {
             }
             role = "global";
         }
-
         if(varId == -1){
             //Static
 //            System.out.println(name);

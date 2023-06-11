@@ -33,6 +33,9 @@ public class VarInfoBf extends DepBackfill{
                                     saveRelation(entity.getId(), varId, Configure.RELATION_USE, Configure.RELATION_USED_BY, usage.getR());
                                 } catch (NullPointerException e) {
 //                                System.out.println("NULL ID VAR: "+varName);
+                                } catch (IndexOutOfBoundsException e){
+//                                    System.out.println(entity.getQualifiedName());
+//                                    System.out.println(usage.getR().getStartLine());
                                 }
                                 break;
                             case "modify":
@@ -40,6 +43,9 @@ public class VarInfoBf extends DepBackfill{
                                     saveRelation(entity.getId(), varId, Configure.RELATION_MODIFY, Configure.RELATION_MODIFIED_BY, usage.getR());
                                 } catch (NullPointerException e) {
 //                                System.out.println("NULL ID VAR: "+varName);
+                                } catch (IndexOutOfBoundsException e){
+//                                    System.out.println(entity.getQualifiedName());
+//                                    System.out.println(usage.getR().getStartLine());
                                 }
                                 break;
                             case "set":

@@ -47,7 +47,8 @@ public class MethodEntity extends ScopeEntity{
 //                    return var.getId();
 //                }
 //            }
-            if(var.getName().equals(varName) && isCurrentVarCover(var.getBlockId(), localBlockId)){
+//            if(var.getName().equals(varName) && isCurrentVarCover(var.getBlockId(), localBlockId)){
+            if(var.getName().equals(varName)){
                 return var.getId();
             }
         }

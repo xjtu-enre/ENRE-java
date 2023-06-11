@@ -1,6 +1,6 @@
 package entity;
 
-public class AnnotationTypeMember extends BaseEntity{
+public class AnnotationTypeMember extends ScopeEntity{
 
     private String type;
     private String default_value = null;
