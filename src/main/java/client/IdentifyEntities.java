@@ -149,7 +149,7 @@ public class IdentifyEntities {
 
             try{
 //                honor
-                if (pair.source.contains("tests")) continue;
+                if (pair.source.contains("tests/")) continue;
                 System.out.println(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name));
 
 //                if("src/main/java/helloJDT/LauncherAccessibilityDelegate.java".equals(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name))){

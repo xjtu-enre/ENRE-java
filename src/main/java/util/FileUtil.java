@@ -115,6 +115,8 @@ public class FileUtil {
     }
 
     public String searchAidl(String aidl){
+        String[] aidlName = aidl.split("/");
+        aidl = aidlName[aidlName.length-1];
         for(String aidlJava: this.aidlList){
             if(aidlJava.contains(aidl.replace("aidl", "java"))){
                 return aidlJava;

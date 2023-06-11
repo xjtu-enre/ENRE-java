@@ -2,6 +2,7 @@ package entity;
 
 import entity.properties.CallSite;
 import entity.properties.Location;
+import entity.properties.QualifiedNameSite;
 import util.Tuple;
 
 import java.util.ArrayList;
@@ -20,6 +21,16 @@ public class ScopeEntity extends BaseEntity{
 
     protected HashMap<String, Integer> name2Id = new HashMap<>();
     protected HashMap<String, String> name2Role = new HashMap<>();
+
+    protected ArrayList<QualifiedNameSite> qualifiedNameSite = new ArrayList<>();
+
+    public void addQualifiedNameSite(Location loc, String createdType, String varName){
+        this.qualifiedNameSite.add(new QualifiedNameSite(loc, createdType, varName));
+    }
+
+    public ArrayList<QualifiedNameSite> getQualifiedNameSite(){
+        return this.qualifiedNameSite;
+    }
 
     public void addCastype (String castype, Location loc){
         this.casType.add(new Tuple<>(castype, loc));

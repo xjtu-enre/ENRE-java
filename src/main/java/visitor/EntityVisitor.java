@@ -2,12 +2,14 @@ package visitor;
 
 import entity.*;
 import entity.properties.Location;
+import entity.properties.QualifiedNameSite;
 import entity.properties.ReflectSite;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.TypeParameter;
 import util.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -33,7 +35,9 @@ public class EntityVisitor extends CKVisitor {
     //anonymous class number
     private int anonymousCount = 0;
 
+    private HashMap<String, String> importedType = new HashMap<>();
 
+    private HashMap<String, String> importedStatic = new HashMap<>();
     public EntityVisitor (String fileFullPath, CompilationUnit compilationUnit, Tuple<String, Integer> currentBin){
         this.fileFullPath = fileFullPath;
         this.cu = compilationUnit;
@@ -51,7 +55,7 @@ public class EntityVisitor extends CKVisitor {
     /**
      * Visit a module entity
      * The information of module declaration could only be acquired from the module-info.java file.
-     * And all the dependencies related to this module are all provided in it, it only have required modules and exported
+     * And all the dependencies related to this module are all provided in it, it only has required modules and exported
      * packages, which are its children.
      * @param node ASTNode
      * @return true
@@ -82,7 +86,7 @@ public class EntityVisitor extends CKVisitor {
 
         //check whether it has been created
         if(singleCollect.getCreatedPackage().containsKey(current_pkg_full_name)){
-            //if it already been created
+            //if it already is created
             packageId = singleCollect.getCreatedPackage().get(current_pkg_full_name);
         } else {
             //if it has not been created
@@ -103,6 +107,7 @@ public class EntityVisitor extends CKVisitor {
         return super.visit(node);
     }
 
+    boolean isImport;
     /**
      *
      * @param node
@@ -112,12 +117,14 @@ public class EntityVisitor extends CKVisitor {
     public boolean visit(ImportDeclaration node){
         //before process the import declaration, first created file entity
         //current file
+        isImport = true;
         int fileId = createAFile();
 
         Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
 
         if(node.isStatic()){
             ((FileEntity) singleCollect.getEntityById(fileId)).addImportStatic(node.getName().getFullyQualifiedName(), loc);
+            importedStatic.put(PathUtil.getLastStrByDot(node.getName().toString()), node.getName().getFullyQualifiedName());
         }
         else if(node.isOnDemand()){
             //add package
@@ -125,11 +132,17 @@ public class EntityVisitor extends CKVisitor {
         } else {
             //add file
             ((FileEntity) singleCollect.getEntityById(fileId)).addImportClass(node.getName().getFullyQualifiedName(), loc);
+            importedType.put(PathUtil.getLastStrByDot(node.getName().toString()), node.getName().getFullyQualifiedName());
         }
 
         return super.visit(node);
     }
 
+    @Override
+    public void endVisit(ImportDeclaration node) {
+        isImport = false;
+        super.endVisit(node);
+    }
 
     /**
      * Visit a class or interface entity
@@ -276,7 +289,7 @@ public class EntityVisitor extends CKVisitor {
 
 
     /**
-     * Visit a Enum Declaration node and create an enum entity
+     * Visit an Enum Declaration node and create an enum entity
      * @param node
      * @return
      */
@@ -938,35 +951,57 @@ public class EntityVisitor extends CKVisitor {
         if(singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity){
             int methodId = scopeStack.peek();
             String varName;
+            int leftId = -1;
             if(node.getLeftHandSide() instanceof SimpleName){
                 varName = node.getLeftHandSide().toString();
-                int varId = processVarInMethod(varName ,methodId);
-                if(varId != -1){
-                    currentLeftSideVar = varId;
-                    /**
-                     * first set separately, not a parameter
-                     */
-                    if(!((MethodEntity)singleCollect.getEntityById(methodId)).getParameters().contains(varId)){
+                leftId = processVarInMethod(varName ,methodId);
+            }else if(node.getLeftHandSide() instanceof FieldAccess){
+                varName = ((FieldAccess)node.getLeftHandSide()).getName().getIdentifier();
+                int typeId = singleCollect.getEntityById(methodId).getParentId();
+                leftId = searchVarInType(typeId, varName);
+            }
+            if(leftId != -1){
+                currentLeftSideVar = leftId;
+//                    if(!((MethodEntity)singleCollect.getEntityById(methodId)).getParameters().contains(varId)){
 //                        if (((VariableEntity)singleCollect.getEntityById(varId)).getValue() == null){
-                        ((VariableEntity)singleCollect.getEntityById(varId)).setSetBy(methodId);
-                        ((VariableEntity)singleCollect.getEntityById(varId)).setValue(node.getRightHandSide().toString());
-                        ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "set", loc);
-//                        }
-//                        else {
-//                            ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "modify", loc);
-//                        }
+                ((VariableEntity)singleCollect.getEntityById(leftId)).setSetBy(methodId);
+                ((VariableEntity)singleCollect.getEntityById(leftId)).setValue(node.getRightHandSide().toString());
+                ((MethodEntity)singleCollect.getEntityById(methodId)).addId2Usage(leftId, "set", loc);
+            }
+            int rightId = -1;
+            if(node.getRightHandSide() instanceof SimpleName){
+                varName = node.getRightHandSide().toString();
+                rightId = processVarInMethod(varName ,methodId);
+            } else if (node.getRightHandSide() instanceof FieldAccess){
+                varName = ((FieldAccess)node.getRightHandSide()).getName().getIdentifier();
+                int typeId = singleCollect.getEntityById(methodId).getParentId();
+                rightId = searchVarInType(typeId, varName);
+            } else if (node.getRightHandSide() instanceof QualifiedName) {
+                QualifiedName qualifiedName = (QualifiedName) node.getRightHandSide();
+                if (qualifiedName.getQualifier() instanceof SimpleName){
+                    String qualifier = ((SimpleName) qualifiedName.getQualifier()).getIdentifier();
+                    String name = qualifiedName.getName().getIdentifier();
+                    // Imported Class
+                    String createdType = null;
+                    if (importedType.containsKey(qualifier)){
+                        createdType = importedType.get(qualifier);
+                    }
+                    // var in method
+                    if (singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity){
+                        int var = processVarInMethod(qualifier, scopeStack.peek());
+                        if (var != -1) createdType = singleCollect.getEntityById(var).getRawType();
+                    }
+                    // static var
+                    if (importedStatic.containsKey(name)){
+                        createdType = importedStatic.get(name);
+                    }
+                    if (createdType != null){
+                        ((ScopeEntity)singleCollect.getEntityById(scopeStack.peek())).addQualifiedNameSite(loc, createdType, name);
                     }
                 }
             }
-            if(node.getRightHandSide() instanceof SimpleName){
-                varName = node.getRightHandSide().toString();
-                processVarInMethod(varName ,methodId);
-                /**
-                 * use, read only
-                 */
-                if(((MethodEntity)singleCollect.getEntityById(methodId)).getName2Id().containsKey(varName)) {
-                    ((MethodEntity) singleCollect.getEntityById(methodId)).addName2Usage(varName, "use", loc);
-                }
+            if(rightId != -1) {
+                ((MethodEntity) singleCollect.getEntityById(methodId)).addId2Usage(rightId, "use", loc);
             }
         }
 
@@ -996,7 +1031,7 @@ public class EntityVisitor extends CKVisitor {
             String varName = ((SimpleName) node.getOperand()).getIdentifier();
             int varId = processVarInMethod(varName ,methodId);
             if(!((MethodEntity)singleCollect.getEntityById(methodId)).getParameters().contains(varId)){
-                ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "modify", loc);
+                ((MethodEntity)singleCollect.getEntityById(methodId)).addId2Usage(varId, "modify", loc);
             }
         } else {
             // not a var
@@ -1015,7 +1050,7 @@ public class EntityVisitor extends CKVisitor {
             String varName = ((SimpleName) node.getOperand()).getIdentifier();
             int varId = processVarInMethod(varName ,methodId);
             if(!((MethodEntity)singleCollect.getEntityById(methodId)).getParameters().contains(varId)){
-                ((MethodEntity)singleCollect.getEntityById(methodId)).addName2Usage(varName, "modify", loc);
+                ((MethodEntity)singleCollect.getEntityById(methodId)).addId2Usage(varId, "modify", loc);
             }
         } else {
             // not a var
@@ -1161,6 +1196,15 @@ public class EntityVisitor extends CKVisitor {
     @Override
     public boolean visit(FieldAccess node) {
         isFieldAccess = true;
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
+        String fieldName = node.getName().getIdentifier();
+        int method = scopeStack.peek();
+        int typeId = -1;
+        if ((singleCollect.getEntityById(method) instanceof MethodEntity)){
+            typeId = singleCollect.getEntityById(method).getParentId();
+            int fieldId = searchVarInType(typeId, fieldName);
+            if (fieldId != -1)((MethodEntity) singleCollect.getEntityById(method)).addId2Usage(fieldId, "use", loc);
+        }
         return super.visit(node);
     }
 
@@ -1173,6 +1217,31 @@ public class EntityVisitor extends CKVisitor {
     @Override
     public boolean visit(QualifiedName node) {
         isQualifiedName = true;
+        Location loc = ProcessEntity.supplement_location(cu, node.getStartPosition(), node.getLength());
+        if (!isImport && node.getQualifier() instanceof SimpleName){
+//            System.out.println(((SimpleName) node.getQualifier()).getIdentifier());
+//            System.out.println(node.getName());
+            String qualifier = ((SimpleName) node.getQualifier()).getIdentifier();
+            String name = node.getName().getIdentifier();
+            // Imported Class
+            String createdType = null;
+            if (importedType.containsKey(qualifier)){
+                 createdType = importedType.get(qualifier);
+            }
+            // var in method
+            if (singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity){
+                int var = processVarInMethod(qualifier, scopeStack.peek());
+                if (var != -1) createdType = singleCollect.getEntityById(var).getRawType();
+            }
+            // static var
+            if (importedStatic.containsKey(name)){
+                createdType = importedStatic.get(name);
+            }
+            if (createdType != null){
+                ((ScopeEntity)singleCollect.getEntityById(scopeStack.peek())).addQualifiedNameSite(loc, createdType, name);
+            }
+        }
+
         return super.visit(node);
     }
 
@@ -1190,15 +1259,13 @@ public class EntityVisitor extends CKVisitor {
         if (!scopeStack.isEmpty() && (singleCollect.getEntityById(scopeStack.peek()) instanceof MethodEntity) && !isQualifiedName && !isParameterDeclaration && !isTypeParameterDeclaration){
             int varId = processVarInMethod(varName, scopeStack.peek());
             int methodId = scopeStack.peek();
-//            if(!((MethodEntity)singleCollect.getEntityById(methodId)).getName2Usage().containsKey(varName) &&
-//            if(!((MethodEntity)singleCollect.getEntityById(methodId)).getParameters().contains(varId) &&
-            if (((MethodEntity)singleCollect.getEntityById(methodId)).getName2Usage().containsKey(varName)) {
-                for (Tuple<String, Location> usage : ((MethodEntity) singleCollect.getEntityById(methodId)).getName2Usage().get(varName)){
+            if (((MethodEntity)singleCollect.getEntityById(methodId)).getId2Usage().containsKey(varId)) {
+                for (Tuple<String, Location> usage : ((MethodEntity) singleCollect.getEntityById(methodId)).getId2Usage().get(varId)){
                     if (usage.getR().getStartLine() == loc.getStartLine() && usage.getR().getStartColumn() == loc.getStartColumn()){
                         return super.visit(node);
                     }
                 }
-                ((MethodEntity) singleCollect.getEntityById(methodId)).addName2Usage(varName, "use", loc);
+                ((MethodEntity) singleCollect.getEntityById(methodId)).addId2Usage(varId, "use", loc);
             }
         }
 
@@ -1300,10 +1367,12 @@ public class EntityVisitor extends CKVisitor {
         }
         //global var
         if(varId == -1){
-            if (singleCollect.getEntityById(entityId) instanceof TypeEntity){
-                varId = searchVarInType(entityId, name);
-            }else {
-                varId = searchVarInType(singleCollect.getEntityById(scopeStack.peek()).getParentId(), name);
+            int tmpId = entityId;
+            while (singleCollect.getEntityById(tmpId).getParentId() != -1){
+                tmpId = singleCollect.getEntityById(tmpId).getParentId();
+                if (singleCollect.getEntityById(tmpId) instanceof TypeEntity){
+                    varId = searchVarInType(tmpId, name);
+                }
             }
             role = "global";
         }
@@ -1317,6 +1386,8 @@ public class EntityVisitor extends CKVisitor {
         }
         return varId;
     }
+
+
 
 //    public int getMaxTargetSdk(String maxTargetSdk){
 //        switch (maxTargetSdk){
