@@ -396,7 +396,6 @@ public class EnreFormatParser {
     EnreDTO enre = new EnreDTO();
     enre.setSchemaVersion((String) obj.get("schemaVersion"));
     if (obj.has("cells")) {
-      System.out.println("cells type: " + obj.get("cells").getClass().getName());
       for (Object cell : (JSONArray) obj.get("cells")) {
         enre.getCells().add(parseCellDTO((JSONObject) cell));
       }
