@@ -395,19 +395,28 @@ public class EnreFormatParser {
   public static EnreDTO parse(JSONObject obj) {
     EnreDTO enre = new EnreDTO();
     enre.setSchemaVersion((String) obj.get("schemaVersion"));
-    for (Object cell : (JSONArray) obj.get("cells")) {
-      enre.getCells().add(parseCellDTO((JSONObject) cell));
+    if (obj.has("cells")) {
+      System.out.println("cells type: " + obj.get("cells").getClass().getName());
+      for (Object cell : (JSONArray) obj.get("cells")) {
+        enre.getCells().add(parseCellDTO((JSONObject) cell));
+      }
     }
     int maxIndex = 0;
-    for (Object variable : (JSONArray) obj.get("variables")) {
-      EntityDTO entity = parseEntityDTO((JSONObject) variable);
-      if (entity.getId() > maxIndex) {
-        maxIndex = entity.getId();
+    if (obj.has("variables")) {
+      for (Object variable : (JSONArray) obj.get("variables")) {
+        EntityDTO entity = parseEntityDTO((JSONObject) variable);
+        if (entity.getId() > maxIndex) {
+          maxIndex = entity.getId();
+        }
+        enre.getVariables().add(entity);
       }
-      enre.getVariables().add(entity);
     }
-    enre.setEntityNum(parseMap(obj, "entityNum"));
-    enre.setRelationNum(parseMap(obj, "relationNum"));
+    if (obj.has("entityNum")) {
+      enre.setEntityNum(parseMap(obj, "entityNum"));
+    }
+    if (obj.has("relationNum")) {
+      enre.setRelationNum(parseMap(obj, "relationNum"));
+    }
     enre.setCategories(parseCategories(obj));
     return enre;
   }
