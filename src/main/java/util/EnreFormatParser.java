@@ -425,7 +425,7 @@ public class EnreFormatParser {
           enre.getVariables().add(entity);
         }
       } else {
-        throw new RuntimeException("unknown object type for cells: " + variableObj.getClass().getName());
+        throw new RuntimeException("unknown object type for variables: " + variableObj.getClass().getName());
       }
     }
     if (obj.has("entityNum")) {
