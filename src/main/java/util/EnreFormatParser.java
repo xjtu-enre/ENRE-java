@@ -396,18 +396,36 @@ public class EnreFormatParser {
     EnreDTO enre = new EnreDTO();
     enre.setSchemaVersion((String) obj.get("schemaVersion"));
     if (obj.has("cells")) {
-      for (Object cell : (JSONArray) obj.get("cells")) {
-        enre.getCells().add(parseCellDTO((JSONObject) cell));
+      Object cellsObj = obj.get("cells");
+      if (cellsObj instanceof JSONObject) {
+        enre.getCells().add(parseCellDTO((JSONObject) cellsObj));
+      } else if (cellsObj instanceof JSONArray) {
+        for (Object cell : (JSONArray) obj.get("cells")) {
+          enre.getCells().add(parseCellDTO((JSONObject) cell));
+        }
+      } else {
+        throw new RuntimeException("unknown object type for cells: " + cellsObj.getClass().getName());
       }
     }
     int maxIndex = 0;
     if (obj.has("variables")) {
-      for (Object variable : (JSONArray) obj.get("variables")) {
-        EntityDTO entity = parseEntityDTO((JSONObject) variable);
+      Object variableObj = obj.get("variables");
+      if (variableObj instanceof JSONObject) {
+        EntityDTO entity = parseEntityDTO((JSONObject) variableObj);
         if (entity.getId() > maxIndex) {
           maxIndex = entity.getId();
         }
         enre.getVariables().add(entity);
+      } else if (variableObj instanceof JSONArray) {
+        for (Object variable : (JSONArray) obj.get("variables")) {
+          EntityDTO entity = parseEntityDTO((JSONObject) variable);
+          if (entity.getId() > maxIndex) {
+            maxIndex = entity.getId();
+          }
+          enre.getVariables().add(entity);
+        }
+      } else {
+        throw new RuntimeException("unknown object type for cells: " + variableObj.getClass().getName());
       }
     }
     if (obj.has("entityNum")) {
