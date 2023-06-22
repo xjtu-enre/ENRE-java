@@ -9,7 +9,7 @@
 
 The whole testing framework is built based on ENRE-ts, so we need to clone the ENRE-ts repo and modify some of its files.
 
-Since ENRE-ts's testing framework does not provide multi-language support on its own, we have to modify its files handly. So if ENRE-ts's code updated, we need to sync its updates by ourselves.
+Since ENRE-ts's testing framework does not provide multi-language support on its own, we have to modify its files manually. So if ENRE-ts's code updated, we need to sync its updates by ourselves.
 
 Here are the steps required to generate test source code files:
 
