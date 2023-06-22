@@ -66,8 +66,10 @@ entity:
 
 ```java
 //// Foo.java
-public <T> T show(T t){
-    return t;
+public class Foo() {
+    public <T> T show(T t){
+        return t;
+    }
 }
 ```
 
@@ -77,7 +79,7 @@ entity:
     type: Method
     items:
         -   name: show
-            loc: 1:14
+            loc: 2:14
 ```
 
 #### Syntax: LambdaMethod Definitions

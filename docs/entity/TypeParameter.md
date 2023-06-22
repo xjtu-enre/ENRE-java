@@ -29,7 +29,7 @@ public abstract class Foo<K, V>{
 ```yaml
 name: Generic Class Declaration 
 entity:
-    type: TypeParameter
+    type: Type Parameter
     items:
         -   name: K
             qualified: Foo.K
@@ -50,7 +50,7 @@ public interface Foo<T> {
 ```yaml
 name: Generic Interface Declaration 
 entity:
-    type: TypeParameter
+    type: Type Parameter
     items:
         -   name: T
             qualified: Foo.T
