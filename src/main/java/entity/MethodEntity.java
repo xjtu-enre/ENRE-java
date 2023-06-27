@@ -17,6 +17,15 @@ public class MethodEntity extends ScopeEntity{
     protected String returnExpression = null;
     protected boolean isConstructor = false;
     protected boolean isGenerics = false;
+    protected boolean isLambda = false;
+
+    public boolean isLambda() {
+        return isLambda;
+    }
+
+    public void setLambda(boolean lambda) {
+        isLambda = lambda;
+    }
 
     //record the id of blocks in method
     protected ArrayList<Block> blocks = new ArrayList<>();

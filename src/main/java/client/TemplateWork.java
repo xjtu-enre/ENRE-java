@@ -1,7 +1,9 @@
 package client;
 
 import TempOutput.*;
+import entity.properties.Relation;
 import picocli.CommandLine;
+import util.Tuple;
 import visitor.relationInf.RelationInf;
 import formator.Formator;
 import formator.fjson.JDepObject;
@@ -14,6 +16,7 @@ import util.Configure;
 import writer.WriterIntf;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class TemplateWork {
@@ -56,6 +59,54 @@ public class TemplateWork {
             System.exit(0);
         }
 
+    }
+
+    public Map<Integer, ArrayList<Tuple<Integer, Relation>>> execute(EnreCommand app) {
+        config("java", app.getSrc(), app.getProjectName());
+        IdentifyEntities entityTreeBuilder;
+        if (app.getAidl() != null) {
+            if (app.getDir().length != 0) {
+                entityTreeBuilder = new IdentifyEntities(
+                        app.getSrc(),
+                        app.getProjectName(),
+                        app.getAidl(),
+                        app.getDir());
+            } else {
+                entityTreeBuilder = new IdentifyEntities(
+                        app.getSrc(),
+                        app.getProjectName(),
+                        app.getAidl()
+                );
+            }
+        } else {
+            if (app.getDir().length != 0) {
+                entityTreeBuilder = new IdentifyEntities(
+                        app.getSrc(),
+                        app.getProjectName(),
+                        app.getDir()
+                );
+            } else {
+                entityTreeBuilder = new IdentifyEntities(
+                        app.getSrc(),
+                        app.getProjectName()
+                );
+            }
+        }
+        entityTreeBuilder.run();
+        // identify external
+        if (app.getExternal() != null) {
+            ProcessThirdPartyMeth thirdPartyMeth = new ProcessThirdPartyMeth(app.getExternal(), "sheet1");
+            thirdPartyMeth.convertExcelData();
+        }
+        //extract Deps
+        IdentifyRelations entityDepAnalyzer = new IdentifyRelations();
+        entityDepAnalyzer.run();
+
+        JsonMap jsonMap = new JsonMap();
+        Verification verify = new Verification();
+        DependsString depends = new DependsString();
+        summary();
+        return jsonMap.getFinalRes();
     }
 
     public void executeCommand(EnreCommand app) throws Exception {
