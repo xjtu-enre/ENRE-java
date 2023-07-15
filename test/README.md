@@ -57,6 +57,7 @@ node --experimental-specifier-resolution=node packages/enre-test-generator/lib/c
 6. rsync generated files to ENRE-JAVA repo:
 
 ```sh
+mkdir -p "${ENRE_JAVA_REPO}/src/test/java/client/"
 rsync ${ENRE_TS_REPO}/tests/suites/*.java "${ENRE_JAVA_REPO}/src/test/java/client/"
 rsync -a ${ENRE_TS_REPO}/tests/cases "${ENRE_JAVA_REPO}/src/test/resources/"
 ```
@@ -80,6 +81,8 @@ If you want to build jar package without executing tests:
 ```sh
 mvn clean package assembly:single -DskipTests
 ```
+
+[jsonexport](./jsonexport.ts) is used to extract groundtruth from YAML code block to json files.
 
 ## Issues
 
