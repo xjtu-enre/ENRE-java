@@ -148,7 +148,7 @@ public class IdentifyEntities {
         for(CompilationUnitPair pair : pairs){
 
             try{
-//                honor
+//              honor
                 if (pair.source.contains("tests/")) continue;
                 System.out.println(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name));
 //                System.out.println(PathUtil.unifyPath(pair.source));

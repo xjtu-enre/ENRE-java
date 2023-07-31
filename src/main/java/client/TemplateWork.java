@@ -5,15 +5,8 @@ import entity.properties.Relation;
 import picocli.CommandLine;
 import util.Tuple;
 import visitor.relationInf.RelationInf;
-import formator.Formator;
-import formator.fjson.JDepObject;
-import formator.fxml.XDepObject;
-import formator.spreadsheet.Csvgrapher;
-import hianalyzer.HiDepData;
-import hianalyzer.HiDeper;
 
 import util.Configure;
-import writer.WriterIntf;
 
 import java.util.ArrayList;
 import java.util.Map;
