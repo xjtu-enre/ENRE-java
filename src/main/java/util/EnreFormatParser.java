@@ -277,7 +277,7 @@ public class EnreFormatParser {
           break;
         case "Enum Constant":
           res =
-              new EnumConstantEntityDTO(id, name, qualifiedName, parentId, file, hidden, additionalBinDTO);
+              new EnumConstantEntityDTO(id, name, qualifiedName, parentId, file, hidden, additionalBinDTO, locationDTO);
           break;
         case "Annotation":
           res =
