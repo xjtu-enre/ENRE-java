@@ -1,13 +1,15 @@
 @echo off
 
+SET ENRE_REPO=../
+SET TEST_REPO=%CD%\..\enre-java-test
 git "submodule" "init"
 git "submodule" "update"
-pushd "enre-java-test" && git "pull" "origin" "main" && git "checkout" "main" && popd
-IF "-d" "%CD%\enre-java-test" (
-  [ "-d" "%CD%\enre-java-test\docs" "]" && DEL /S "%CD%\enre-java-test\docs"
-  [ "-d" "%CD%\enre-java-test\tests" "]" && DEL /S "%CD%\enre-java-test\tests"
-  COPY  "%CD%\docs" "enre-java-test\docs"
-  [ NOT "-d" "%CD%\src\test\java\client" "]" && mkdir "-vp" "%CD%\src\test\java\client"
-  [ NOT "-d" "%CD%\src\test\resources" "]" && mkdir "-vp" "%CD%\src\test\resources"
-  pushd "enre-java-test" && npm "install" && node "--experimental-specifier-resolution=node" "src\index.js" && popd && COPY  "./enre-java-test/tests/suites/*.java" "./src/test/java/client/" && COPY  "%CD%\enre-java-test\tests\cases" "./src/test/resources/"
+pushd "%TEST_REPO%" && git "checkout" "main" && popd
+IF "-d" "./%TEST_REPO%" (
+  [ "-d" "./%TEST_REPO%/docs" "]" && DEL /S "./%TEST_REPO%/docs"
+  [ "-d" "./%TEST_REPO%/tests" "]" && DEL /S "./%TEST_REPO%/tests"
+  COPY  "%ENRE_REPO%\docs" "%TEST_REPO%\docs"
+  [ "!" "-d" "%ENRE_REPO%/src/test/java/client" "]" && mkdir "-vp" "%ENRE_REPO%/src/test/java/client"
+  [ "!" "-d" "%ENRE_REPO%/src/test/resources" "]" && mkdir "-vp" "%ENRE_REPO%/src/test/resources"
+  pushd "%TEST_REPO%" && npm "install" && node "--experimental-specifier-resolution=node" "%TEST_REPO%/src/index.js" && popd && COPY  "%TEST_REPO%/tests/suites/*.java" "%ENRE_REPO%/src/test/java/client/" && COPY  "%TEST_REPO%/tests/cases" "%ENRE_REPO%/src/test/resources/"
 )
