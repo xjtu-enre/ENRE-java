@@ -126,7 +126,7 @@ name: LambdaMethod Declaration
 entity:
     type: Method
     items:
-        -   name: <Anonymous as="Method">
+        -   name: <Anon Method>
             loc: 3:33:0
             Lambda: true
 ```
