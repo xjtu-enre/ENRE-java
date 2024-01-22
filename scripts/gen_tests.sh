@@ -7,6 +7,7 @@ git submodule init
 git submodule update
 
 pushd $TEST_REPO && \
+  git pull origin main && \
   git checkout main && \
   popd
 
