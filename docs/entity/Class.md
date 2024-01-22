@@ -101,11 +101,11 @@ name: Anonymous Class Declaration
 entity:
     type: Class
     items:
-        -   name: <Anonymous as="Class">
-            qualified: Foo.doThings.<Anonymous as="Class">
+        -   name: <Anon Class>
+            qualified: Foo.doThings.<Anon Class>
             loc: 13:13
-        -   name: <Anonymous as="Class">
-            qualified: Foo.doThings.<Anonymous as="Class">
+        -   name: <Anon Class>
+            qualified: Foo.doThings.<Anon Class>
             loc: 19:13
 
 ```
