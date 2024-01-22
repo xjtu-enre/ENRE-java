@@ -102,3 +102,38 @@ $java -jar enre_java.jar java ...\frameworks\base base -a <aidl-path>
 # in windows platform
 $java -jar enre_java.jar java ...\frameworks\base base -d ...\base
 ```
+
+## Testing
+
+### Prerequests
+
+* Node.js 16~18
+
+### Steps
+
+ENRE-java is integrated with [ENRE-test](https://github.com/xjtu-enre/enre-test). All you need to do for performing unit test is running the following script:
+
+```sh
+./scripts/gen_tests.sh
+```
+
+or (In case you're using Windows platform):
+
+```cmd
+scripts\gen_tests.bat
+```
+
+Test cases and `JUnit` java files will be generated under directory `src/test/resources` and `src/test/java/client`.
+
+you can execute all `JUnit` test cases by executing the following command in the project directory:
+
+```sh
+mvn clean test
+```
+
+or execute specific test case by passing class name:
+
+```sh
+mvn clean test -DTest=AClassDefinesAFieldTest
+```
+
