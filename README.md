@@ -138,3 +138,9 @@ or execute specific test case by passing class name:
 mvn clean test -DTest=AClassDefinesAFieldTest
 ```
 
+If you want to build the package without executing any test case:
+
+```sh
+mvn clean package assembly:single -DskipTests
+```
+
