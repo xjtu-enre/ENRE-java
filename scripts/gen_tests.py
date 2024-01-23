@@ -37,7 +37,8 @@ def preprocess():
 
 def build():
   os.chdir(TEST_REPO)
-  subprocess.run(f"npm install; node --experimental-specifier-resolution=node {os.path.join('src', 'index.js')}", shell=True)
+  subprocess.run(["npm", "install"])
+  subprocess.run(["node", "--experimental-specifier-resolution", "node", os.path.join("src", "index.js")])
   os.chdir(ENRE_REPO)
   for file in os.listdir(test_paths["suites"]):
     if not file.endswith(".java"):
