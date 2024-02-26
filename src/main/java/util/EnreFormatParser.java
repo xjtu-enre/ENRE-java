@@ -214,6 +214,7 @@ public class EnreFormatParser {
       String hidden = (String) get(variableObj, "hidden");
       AdditionalBinDTO additionalBinDTO = parseAdditionalBinDTO(variableObj);
       LocationDTO locationDTO = parseLocationDTO(variableObj, "location");
+      LocationDTO blockLocDTO = parseLocationDTO(variableObj, "blockLoc");
       ICCMethodAttributeDTO iccMethodAttributeDTO = parseICCMethodAttributeDTO(variableObj);
       ICCVariableAttributeDTO iccVariableAttributeDTO = parseICCVariableAttributeDTO(variableObj);
       ComponentDTO componentDTO = parseComponentDTO(variableObj);
@@ -327,7 +328,8 @@ public class EnreFormatParser {
                   parameterDTO,
                   rawType,
                   hidden,
-                  iccMethodAttributeDTO);
+                  iccMethodAttributeDTO,
+                  blockLocDTO);
           break;
         case "Module":
           res = null;

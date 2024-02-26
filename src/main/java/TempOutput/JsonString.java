@@ -199,6 +199,14 @@ public class JsonString {
                     enhanceObj.put("isAbstract", ((MethodEntity) entity).getIndices().getMethodIsAbstract());
                     entityObj.accumulate("enhancement", enhanceObj);
                 }
+
+                // method block loc
+                JSONObject methodBlock = new JSONObject();
+                methodBlock.put("startLine", entity.getLocation().getStartLine());
+                methodBlock.put("endLine", entity.getLocation().getEndLine());
+                methodBlock.put("startColumn", entity.getLocation().getStartColumn());
+                methodBlock.put("endColumn", entity.getLocation().getEndColumn());
+                entityObj.accumulate("blockLoc", methodBlock);
             }
             //bin path
             if (entity.getBinPath()!= null){

@@ -492,12 +492,12 @@ public class ProcessEntity {
         String methodName = node.getName().getIdentifier();
         String methodQualifiedName = singleCollect.getEntityById(parentTypeId).getQualifiedName() + "." + methodName;
 
-
         MethodEntity methodEntity = new MethodEntity(methodId,methodName);
         methodEntity.setQualifiedName(methodQualifiedName);
         methodEntity.setParentId(parentTypeId);
         methodEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
         //methodEntity.setCodeSnippet(node.toString());
+        methodEntity.setBlockLoc(supplement_location(cu, node.getBody().getStartPosition(), node.getBody().getLength()));
 
         if(node.isConstructor()){
             methodEntity.setConstructor(true);
