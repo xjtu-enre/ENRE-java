@@ -286,8 +286,7 @@ public class DependsString {
             int src = -1;
             try{
                 src = singleCollect.getFileIndex(getCurrentFileId(fromEntity));
-            }
-            catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e){
                 continue;
             }
             for (Tuple<Integer,Relation> toEntityObj : relationMap.get(fromEntity)) {

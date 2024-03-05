@@ -222,7 +222,7 @@ public class ProcessEntity {
 //                    classEntity.setSuperClassName(superType.toString());
                 }
             } catch (NullPointerException e){
-//                e.printStackTrace();
+                e.printStackTrace();
             }
 
             //interface, default id is -1
@@ -246,7 +246,7 @@ public class ProcessEntity {
                      }
                 }
             } catch (NullPointerException e){
-//                e.printStackTrace();
+                e.printStackTrace();
             }
 
             for(Object o : node.modifiers()) {
@@ -309,7 +309,6 @@ public class ProcessEntity {
             } else {
                 qualifiedName = singleCollect.getEntityById(parentId).getQualifiedName()+"."+enumName;
             }
-
         }
 
         EnumEntity enumEntity = new EnumEntity(enumId, enumName, qualifiedName, parentId);
@@ -318,7 +317,7 @@ public class ProcessEntity {
         enumEntity.setBinNum(currentBin);
 
         //interfaces
-        try {
+        try{
             List superInterfaces = node.superInterfaceTypes();
             for (Object temp : superInterfaces){
                 if (temp instanceof Type){
@@ -326,7 +325,7 @@ public class ProcessEntity {
                 }
             }
         } catch (NullPointerException e){
-//                e.printStackTrace();
+                e.printStackTrace();
         }
 
         for(Object o : node.modifiers()) {
@@ -497,7 +496,9 @@ public class ProcessEntity {
         methodEntity.setParentId(parentTypeId);
         methodEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
         //methodEntity.setCodeSnippet(node.toString());
-        methodEntity.setBlockLoc(supplement_location(cu, node.getBody().getStartPosition(), node.getBody().getLength()));
+        if (node.getBody() != null){
+            methodEntity.setBlockLoc(supplement_location(cu, node.getBody().getStartPosition(), node.getBody().getLength()));
+        }
 
         if(node.isConstructor()){
             methodEntity.setConstructor(true);
@@ -949,7 +950,7 @@ public class ProcessEntity {
             }
             return overridesMethod(methodDeclaration, typeBindings);
         } catch (NullPointerException nullPointerException) {
-//            System.out.println("error in overridesMethod(MethodDeclaration methodDeclaration) while resolving typeBindings," + "[funcImpl name] : " + indices.getObject() + ", [location] : " + indices.getLocation().getLine() + "," + indices.getLocation().getRow());
+            System.out.println("error in overridesMethod(MethodDeclaration methodDeclaration) while resolving typeBindings," + "[funcImpl name] : " + methodDeclaration.getName());
         }
         return false;
     }
@@ -986,7 +987,7 @@ public class ProcessEntity {
             } else
                 return false;
         } catch (NullPointerException nullPointerException) {
-//            System.out.println("error in (MethodDeclaration methodDeclaration, Set<ITypeBinding> typeBindings) while judging" + "[funcImpl name] : " + indices.getObject() + ", [location] : " + indices.getLocation().getLine() + "," + indices.getLocation().getRow());
+            System.out.println("error in (MethodDeclaration methodDeclaration, Set<ITypeBinding> typeBindings) while judging" + "[funcImpl name] : " + methodDeclaration.getName());
         }
         return false;
     }

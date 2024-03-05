@@ -208,6 +208,7 @@ public class EntityDTOAdapter extends TypeAdapter<EntityDTO> {
     writeRawType(out, value.getRawType());
     writeHidden(out, value.getHidden());
     writeICCMethodAttributeDTO(out, value.getIccMethodAttribute());
+    writeLocationDTO(out, value.getLocation(), "blockLoc");
   }
 
   protected void write(JsonWriter out, TypeParameterEntityDTO  value) throws IOException {

@@ -8,7 +8,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FileASTRequestor;
 import util.*;
 import visitor.EntityVisitor;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -68,7 +70,7 @@ public class IdentifyEntities {
         return additional_path;
     }
 
-    public void run(){
+    public void run() throws IOException {
 
         FileUtil current;
         if(this.getAidl_path() != null){
@@ -137,7 +139,7 @@ public class IdentifyEntities {
         }
         catch (NullPointerException e){
             for(String filePath: whole_file_list){
-                parser.setSource(filePath.toCharArray());
+                parser.setSource(FileUtils.readFileToString(new File(filePath), "UTF-8").toCharArray());
                 pairs.add(new CompilationUnitPair(filePath, (CompilationUnit)parser.createAST(null)));
             }
         }
@@ -153,9 +155,6 @@ public class IdentifyEntities {
                 System.out.println(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name));
 //                System.out.println(PathUtil.unifyPath(pair.source));
 
-//                if("src/main/java/helloJDT/LauncherAccessibilityDelegate.java".equals(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name))){
-//                    pair.ast.accept(new EntityVisitor(PathUtil.getPathInProject(PathUtil.unifyPath(pair.source),this.project_name), pair.ast));
-//                }
                 Tuple<String, Integer> fileBin = null;
                 for (Tuple<String, Integer> currentBinPath: checkBin.keySet()){
                     if (checkBin.get(currentBinPath).contains(PathUtil.unifyPath(pair.source))){
@@ -174,6 +173,10 @@ public class IdentifyEntities {
             catch (NullPointerException e){
                 e.printStackTrace();
                 System.out.println("Null Pointer: "+ pair.source);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                System.out.println("Exception: "+ e.getMessage() + ":" + pair.source);
             }
         }
 
