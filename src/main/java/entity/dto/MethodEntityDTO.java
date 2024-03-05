@@ -15,6 +15,8 @@ public class MethodEntityDTO extends InternalEntityDTO {
   private String hidden;
   private ICCMethodAttributeDTO iccMethodAttribute;
 
+  private LocationDTO blockLoc;
+
   public MethodEntityDTO() {
   }
 
@@ -26,7 +28,8 @@ public class MethodEntityDTO extends InternalEntityDTO {
       LocationDTO location,
       String modifiers,
       ParameterDTO parameter,
-      String rawType) {
+      String rawType,
+      LocationDTO blockLoc) {
     super(parentId, "Method");
     this.File = file;
     this.additionalBin = additionalBin;
@@ -35,6 +38,7 @@ public class MethodEntityDTO extends InternalEntityDTO {
     this.modifiers = modifiers;
     this.parameter = parameter;
     this.rawType = rawType;
+    this.blockLoc = blockLoc;
   }
 
   public MethodEntityDTO(
@@ -49,7 +53,8 @@ public class MethodEntityDTO extends InternalEntityDTO {
       String modifiers,
       ParameterDTO parameter,
       String rawType,
-      ICCMethodAttributeDTO iccMethodAttribute) {
+      ICCMethodAttributeDTO iccMethodAttribute,
+      LocationDTO blockLoc) {
     super(id, name, qualifiedName, parentId, "Method");
     this.File = file;
     this.additionalBin = additionalBin;
@@ -59,6 +64,7 @@ public class MethodEntityDTO extends InternalEntityDTO {
     this.parameter = parameter;
     this.rawType = rawType;
     this.iccMethodAttribute = iccMethodAttribute;
+    this.blockLoc = blockLoc;
   }
 
   public MethodEntityDTO(
@@ -74,7 +80,8 @@ public class MethodEntityDTO extends InternalEntityDTO {
           ParameterDTO parameter,
           String rawType,
           String hidden,
-          ICCMethodAttributeDTO iccMethodAttribute) {
+          ICCMethodAttributeDTO iccMethodAttribute,
+          LocationDTO blockLoc) {
     super(id, name, qualifiedName, parentId, "Method");
     this.File = file;
     this.additionalBin = additionalBin;
@@ -85,6 +92,7 @@ public class MethodEntityDTO extends InternalEntityDTO {
     this.rawType = rawType;
     this.hidden = hidden;
     this.iccMethodAttribute = iccMethodAttribute;
+    this.blockLoc = blockLoc;
   }
 
   public String getHidden() {
@@ -150,6 +158,12 @@ public class MethodEntityDTO extends InternalEntityDTO {
 
   public void setRawType(String rawType) {
     this.rawType = rawType;
+  }
+
+  public LocationDTO getBlockLoc(){return blockLoc; }
+
+  public void setBlockLoc(LocationDTO blockLoc) {
+    this.blockLoc = blockLoc;
   }
 
   public static class EnhancementDTO {

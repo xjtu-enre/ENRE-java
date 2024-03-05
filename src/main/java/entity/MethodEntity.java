@@ -30,6 +30,8 @@ public class MethodEntity extends ScopeEntity{
     //record the id of blocks in method
     protected ArrayList<Block> blocks = new ArrayList<>();
 
+    Location blockLoc = new Location();
+
     //record the initial local var name
     protected ArrayList<VariableEntity> localVars = new ArrayList<>();
 
@@ -152,6 +154,14 @@ public class MethodEntity extends ScopeEntity{
 //            this.name2Id.put(name, id);
 //        }
 //    }
+
+    public Location getBlockLoc(){
+        return this.blockLoc;
+    }
+
+    public void setBlockLoc(Location loc){
+        this.blockLoc = loc;
+    }
 
     public HashMap<String, String> getName2Role(){ return this.name2Role; }
 
