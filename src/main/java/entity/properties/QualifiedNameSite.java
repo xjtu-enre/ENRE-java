@@ -16,4 +16,15 @@ public class QualifiedNameSite {
         this.varName = varName;
     }
 
+    public String getCreatedTypeQualifiedName(){
+        return createdTypeQualifiedName;
+    }
+
+    public String getVarName(){
+        return varName;
+    }
+
+    public Location getLocation(){
+        return location;
+    }
 }

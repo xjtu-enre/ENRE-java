@@ -37,7 +37,7 @@ def preprocess():
 
 def build():
   os.chdir(TEST_REPO)
-  subprocess.run(["npm", "install"])
+  subprocess.run([r"D:\nvm\v22.11.0\npm.cmd", "install"])
   subprocess.run(["node", "--experimental-specifier-resolution", "node", os.path.join("src", "index.js")])
   os.chdir(ENRE_REPO)
   for file in os.listdir(test_paths["suites"]):

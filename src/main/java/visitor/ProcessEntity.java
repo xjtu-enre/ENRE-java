@@ -17,7 +17,7 @@ public class ProcessEntity {
     //hidden flag
     private boolean hidden = false;
 
-    private Index indices = new Index();
+//    private Index indices = new Index();
 
     SingleCollect singleCollect = SingleCollect.getSingleCollectInstance();
 
@@ -485,39 +485,39 @@ public class ProcessEntity {
      * @param cu compilation unit
      * @return method id
      */
-    public int processMethod(MethodDeclaration node,int parentTypeId, CompilationUnit cu, Tuple<String, Integer> currentBin){
+    public int processMethod(MethodDeclaration node, int parentTypeId, CompilationUnit cu, Tuple<String, Integer> currentBin) {
 
         int methodId = singleCollect.getCurrentIndex();
         String methodName = node.getName().getIdentifier();
         String methodQualifiedName = singleCollect.getEntityById(parentTypeId).getQualifiedName() + "." + methodName;
 
-        MethodEntity methodEntity = new MethodEntity(methodId,methodName);
+        MethodEntity methodEntity = new MethodEntity(methodId, methodName);
         methodEntity.setQualifiedName(methodQualifiedName);
         methodEntity.setParentId(parentTypeId);
         methodEntity.setLocation(supplement_location(cu, node.getStartPosition(), node.getLength()));
-        //methodEntity.setCodeSnippet(node.toString());
-        if (node.getBody() != null){
+
+        if (node.getBody() != null) {
             methodEntity.setBlockLoc(supplement_location(cu, node.getBody().getStartPosition(), node.getBody().getLength()));
         }
 
-        if(node.isConstructor()){
+        if (node.isConstructor()) {
             methodEntity.setConstructor(true);
             methodEntity.setRawType(methodQualifiedName);
-        }else{
-            if(node.getReturnType2() != null){
-                try {
-                    methodEntity.setRawType(node.getReturnType2().resolveBinding().getQualifiedName());
-                }catch (NullPointerException e){
-                    methodEntity.setReturnType(node.getReturnType2().toString());
-                }
+        } else if (node.getReturnType2() != null) {
+            try {
+                methodEntity.setRawType(node.getReturnType2().resolveBinding().getQualifiedName());
+            } catch (NullPointerException e) {
+                methodEntity.setReturnType(node.getReturnType2().toString());
             }
         }
+
         methodEntity.setBinNum(currentBin);
 
-        //dependency enhancement
+        Index indices = new Index();
+
+        // 依赖增强
         IMethodBinding iMethodBinding = node.resolveBinding();
         if (iMethodBinding != null) {
-//            System.out.println("Error in parsing [funcImpl name] : " + indices.getObject() + ", [location] : " + indices.getLocation().getLine() + "," + indices.getLocation().getRow());
             indices.setIsOverride(false);
             indices.setIsSetter(false);
             indices.setIsGetter(false);
@@ -526,49 +526,51 @@ public class ProcessEntity {
             indices.setIsAssign(false);
             indices.setIsCallSuper(false);
 
-            judgeMethodIsConstructor(node);
-            judgeMethodIsStatic(node);
-            judgeMethodIsSynchronized(node);
-            judgeMethodIsPublic(node);
-            judgeMethodIsAbstract(node);
-            judgeMethodIsOverride(node, iMethodBinding);
+            // 判断方法特征
+            judgeMethodIsConstructor(node, indices);
+            judgeMethodIsStatic(node, indices);
+            judgeMethodIsSynchronized(node, indices);
+            judgeMethodIsPublic(node, indices);
+            judgeMethodIsAbstract(node, indices);
+            judgeMethodIsOverride(node, iMethodBinding, indices);
 
+            // 判断方法内部特征
             org.eclipse.jdt.core.dom.Block methodBody = node.getBody();
             List<SingleVariableDeclaration> parameters = node.parameters();
             if (methodBody != null) {
                 List<Statement> statements = methodBody.statements();
-                judgeMethodIsGetter(parameters, statements);
-                judgeMethodIsSetter(node, parameters, statements);
-                judgeMethodIsDelegator(node, statements);
+                judgeMethodIsGetter(parameters, statements, indices);
+                judgeMethodIsSetter(node, parameters, statements, indices);
+                judgeMethodIsDelegator(node, statements, indices);
             }
 
-            judgeMethodIsRecursive(node);
-            judgeMethodIsAssign(node);
-            judgeMethodIsCallSuper(node);
+            judgeMethodIsRecursive(node, indices);
+            judgeMethodIsAssign(node, indices);
+            judgeMethodIsCallSuper(node, indices);
+
+            // 将 indices 设置到方法实体中
             methodEntity.setIndices(indices);
 
-            //Generics
-            if (iMethodBinding.getTypeParameters().length != 0){
+            // 泛型方法判断
+            if (iMethodBinding.getTypeParameters().length != 0) {
                 methodEntity.setGenerics(true);
             }
         }
 
-
-//        if (getHidden() || singleCollect.getEntityById(parentTypeId).getHidden()){
-//            methodEntity.setHidden(true);
-//        }
+        // 将方法实体添加到收集器
         singleCollect.addEntity(methodEntity);
 
-        //add type's children id
+        // 将方法 id 添加到父类的子节点列表
         singleCollect.getEntityById(parentTypeId).addChildId(methodId);
 
-
-        //supplement static method
-        for(Object o : node.modifiers()){
+        // 处理 static 修饰符
+        for (Object o : node.modifiers()) {
             methodEntity.addModifier(o.toString());
-            if(o.toString().equals("static") ){
-                if(singleCollect.getEntityById(parentTypeId) instanceof ClassEntity)
-                    ((ClassEntity) singleCollect.getEntityById(parentTypeId)).addStaticMap(methodQualifiedName, methodId);
+            if ("static".equals(o.toString())) {
+                if (singleCollect.getEntityById(parentTypeId) instanceof ClassEntity) {
+                    ((ClassEntity) singleCollect.getEntityById(parentTypeId))
+                            .addStaticMap(methodQualifiedName, methodId);
+                }
             }
         }
 
@@ -706,7 +708,7 @@ public class ProcessEntity {
     }
 
 
-    private void judgeMethodIsOverride(MethodDeclaration node, IMethodBinding iMethodBinding) {
+    private void judgeMethodIsOverride(MethodDeclaration node, IMethodBinding iMethodBinding, Index indices) {
         for (IAnnotationBinding iAnnotationBinding : iMethodBinding.getAnnotations()) {
             if (iAnnotationBinding.getName().equals("Override")) {
                 indices.setIsOverride(true);
@@ -718,11 +720,11 @@ public class ProcessEntity {
         }
     }
 
-    private void judgeMethodIsConstructor(MethodDeclaration node) {
+    private void judgeMethodIsConstructor(MethodDeclaration node, Index indices) {
         indices.setIsConstructor(node.isConstructor());
     }
 
-    private void judgeMethodIsCallSuper(MethodDeclaration node) {
+    private void judgeMethodIsCallSuper(MethodDeclaration node, Index indices) {
         node.accept(new ASTVisitor() {
             public boolean visit(SuperConstructorInvocation superConstructorInvocation) {
                 indices.setIsCallSuper(true);
@@ -745,7 +747,7 @@ public class ProcessEntity {
         });
     }
 
-    private void judgeMethodIsAssign(MethodDeclaration node) {
+    private void judgeMethodIsAssign(MethodDeclaration node, Index indices) {
         node.accept(new ASTVisitor() {
             public boolean visit(Assignment assignment) {
                 String assignFor = assignment.getLeftHandSide().toString();
@@ -757,7 +759,7 @@ public class ProcessEntity {
         });
     }
 
-    private void judgeMethodIsRecursive(MethodDeclaration node) {
+    private void judgeMethodIsRecursive(MethodDeclaration node, Index indices) {
         node.accept(new ASTVisitor() {
             public boolean visit(MethodInvocation methodInvocation) {
                 if (node.resolveBinding().equals(methodInvocation.resolveMethodBinding())) {
@@ -768,23 +770,23 @@ public class ProcessEntity {
         });
     }
 
-    private void judgeMethodIsAbstract(MethodDeclaration node) {
+    private void judgeMethodIsAbstract(MethodDeclaration node, Index indices) {
         indices.setMethodIsAbstract(isAbstract(node.getModifiers()));
     }
 
-    private void judgeMethodIsPublic(MethodDeclaration node) {
+    private void judgeMethodIsPublic(MethodDeclaration node, Index indices) {
         indices.setIsPublic(isPublic(node.getModifiers()));
     }
 
-    private void judgeMethodIsSynchronized(MethodDeclaration node) {
+    private void judgeMethodIsSynchronized(MethodDeclaration node, Index indices) {
         indices.setIsSynchronized(isSynchronized(node.getModifiers()));
     }
 
-    private void judgeMethodIsStatic(MethodDeclaration node) {
+    private void judgeMethodIsStatic(MethodDeclaration node, Index indices) {
         indices.setIsStatic(isStatic(node.getModifiers()));
     }
 
-    private void judgeMethodIsGetter(List<SingleVariableDeclaration> parameters, List<Statement> statements) {
+    private void judgeMethodIsGetter(List<SingleVariableDeclaration> parameters, List<Statement> statements, Index indices) {
         if (statements.size() == 1 && parameters.size() == 0) {
             Statement statement = statements.get(0);
             if (statement instanceof ReturnStatement) {
@@ -802,7 +804,7 @@ public class ProcessEntity {
         }
     }
 
-    private void judgeMethodIsSetter(MethodDeclaration node, List<SingleVariableDeclaration> parameters, List<Statement> statements) {
+    private void judgeMethodIsSetter(MethodDeclaration node, List<SingleVariableDeclaration> parameters, List<Statement> statements, Index indices) {
         if (statements.size() == 1 && parameters.size() == 1) {
             if (!node.isConstructor()) { // except Constructor
                 Statement statement = statements.get(0);
@@ -835,7 +837,7 @@ public class ProcessEntity {
         }
     }
 
-    private void judgeMethodIsDelegator(MethodDeclaration node, List<Statement> statements) {
+    private void judgeMethodIsDelegator(MethodDeclaration node, List<Statement> statements, Index indices) {
         if (!(node.getParent() instanceof AnonymousClassDeclaration)) {
             AbstractTypeDeclaration parentClass = (AbstractTypeDeclaration) node.getParent();
             if (statements.size() == 1) {

@@ -24,6 +24,9 @@ public class RelationInf extends RelationInterface {
         int methodCount = 0;
         int varCount = 0;
         int typeParCount = 0;
+        int EnumConstantCount = 0;
+        int ModuleCount = 0;
+        int RecordCount = 0;
 
         for(BaseEntity entity : singleCollect.getEntities()) {
             if(entity instanceof PackageEntity) {
@@ -56,6 +59,15 @@ public class RelationInf extends RelationInterface {
             else if(entity instanceof TypeParameterEntity){
                 typeParCount ++;
             }
+            else if(entity instanceof EnumConstantEntity){
+                EnumConstantCount ++;
+            }
+            else if(entity instanceof ModuleEntity){
+                ModuleCount ++;
+            }
+            else if(entity instanceof RecordEntity){
+                RecordCount ++;
+            }
 
         }
         String str = Configure.NULL_STRING;
@@ -69,6 +81,9 @@ public class RelationInf extends RelationInterface {
         str += ("Method: " + methodCount + "\n");
         str += ("Variable: " + varCount + "\n");
         str += ("TypeParameter: " + typeParCount + "\n");
+        str += ("EnumConstant: " + EnumConstantCount + "\n");
+        str += ("Module: " + ModuleCount + "\n");
+        str += ("Record: " + RecordCount + "\n");
         return str;
     }
 
@@ -90,6 +105,7 @@ public class RelationInf extends RelationInterface {
         depMap.put(Configure.RELATION_REFLECT, 0);
         depMap.put(Configure.RELATION_TYPED, 0);
         depMap.put(Configure.RELATION_DEFINE, 0);
+        depMap.put(Configure.RELATION_CONTAIN, 0);
         for (BaseEntity entity :singleCollect.getEntities()) {
             for (Relation re : entity.getRelation()) {
                 if(re.getKind().equals(Configure.RELATION_IMPORT) ||
@@ -106,7 +122,8 @@ public class RelationInf extends RelationInterface {
                         re.getKind().equals(Configure.RELATION_OVERRIDE) ||
                         re.getKind().equals(Configure.RELATION_REFLECT) ||
                         re.getKind().equals(Configure.RELATION_TYPED) ||
-                        re.getKind().equals(Configure.RELATION_DEFINE)
+                        re.getKind().equals(Configure.RELATION_DEFINE) ||
+                        re.getKind().equals(Configure.RELATION_CONTAIN)
                 ) {
                     int old = depMap.get(re.getKind());
                     depMap.put(re.getKind(), old + 1);
