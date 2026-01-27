@@ -1,6 +1,8 @@
 package client;
 
 import TempOutput.*;
+import aidl.AidlPreprocessor;
+import aidl.ProjectContext;
 import entity.properties.Relation;
 import picocli.CommandLine;
 import util.Tuple;
@@ -129,70 +131,72 @@ public class TemplateWork {
 
         long startTime = System.currentTimeMillis();
 
+        new AidlPreprocessor().process(new ProjectContext(app));
+
         //identify Entities
-        IdentifyEntities entityTreeBuilder;
-        if(aidlDir != null){
-            if (additionDir.length != 0){
-                entityTreeBuilder = new IdentifyEntities(inputDir, projectName, aidlDir, additionDir);
-            } else {
-                entityTreeBuilder = new IdentifyEntities(inputDir, projectName, aidlDir);
-            }
-        }else {
-            if (additionDir.length != 0){
-                entityTreeBuilder = new IdentifyEntities(inputDir, projectName, additionDir);
-            } else {
-                entityTreeBuilder = new IdentifyEntities(inputDir, projectName);
-            }
-        }
-        entityTreeBuilder.run();
-
-        // identify external
-        if (externalPath != null){
-            ProcessThirdPartyMeth thirdPartyMeth = new ProcessThirdPartyMeth(externalPath, "sheet1");
-            thirdPartyMeth.convertExcelData();
-        }
-
-        //extract Deps
-        IdentifyRelations entityDepAnalyzer = new IdentifyRelations();
-        entityDepAnalyzer.run();
-
-        long endTime = System.currentTimeMillis();
-        System.out.println("\nConsumed time: " + (float) ((endTime - startTime) / 1000.00) + " s,  or " + (float) ((endTime - startTime) / 60000.00) + " min.\n");
-
-        //build hierarchical dependencies
-//        HiDeper hiDeper = new HiDeper();
-//        hiDeper.run();
+//        IdentifyEntities entityTreeBuilder;
+//        if(aidlDir != null){
+//            if (additionDir.length != 0){
+//                entityTreeBuilder = new IdentifyEntities(inputDir, projectName, aidlDir, additionDir);
+//            } else {
+//                entityTreeBuilder = new IdentifyEntities(inputDir, projectName, aidlDir);
+//            }
+//        }else {
+//            if (additionDir.length != 0){
+//                entityTreeBuilder = new IdentifyEntities(inputDir, projectName, additionDir);
+//            } else {
+//                entityTreeBuilder = new IdentifyEntities(inputDir, projectName);
+//            }
+//        }
+//        entityTreeBuilder.run();
 //
-//        HiDepData hiDepData = HiDepData.getInstance();
+//        // identify external
+//        if (externalPath != null){
+//            ProcessThirdPartyMeth thirdPartyMeth = new ProcessThirdPartyMeth(externalPath, "sheet1");
+//            thirdPartyMeth.convertExcelData();
+//        }
 //
-//        Formator formator = new Formator(depTypes);
-//        JDepObject jDepObject = formator.getfJsonDataModel();
-//        XDepObject xDepObject = formator.getfXmlDataModel();
+//        //extract Deps
+//        IdentifyRelations entityDepAnalyzer = new IdentifyRelations();
+//        entityDepAnalyzer.run();
 //
-//        Csvgrapher csvgrapher = new Csvgrapher();
-//        csvgrapher.buildProcess();
-//        ArrayList<String[]> allNodes = csvgrapher.getNodes();
-//        ArrayList<String[]> allEdges = csvgrapher.getEdges();
+//        long endTime = System.currentTimeMillis();
+//        System.out.println("\nConsumed time: " + (float) ((endTime - startTime) / 1000.00) + " s,  or " + (float) ((endTime - startTime) / 60000.00) + " min.\n");
 //
-//        WriterIntf writer = new WriterIntf();
-//        writer.run(jDepObject, xDepObject, allNodes, allEdges);
-
-        JsonMap jsonMap = new JsonMap();
-        Verification verify = new Verification();
-        DependsString depends = new DependsString();
-        //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-node", Django.nodeWriter());
-        //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-edge", Django.edgeWriter(jsonMap.getFinalRes()));
-        //specific-anti-
-        // CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",outputFile, JsonString.JSONWriteRelation(jsonMap.getFinalRes(), hiddenDir, slim));
-        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName() + "-enre-out", outputFile, JsonString.jsonWriteRelation(jsonMap.getFinalRes(), hiddenDir, slim));
-//        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",configure.getAnalyzedProjectName()+ "-hidden-not-match", ProcessHidden.getProcessHiddeninstance().outputResult());
-
-        //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-imports", Verification.JSONWriteRela(verify.getRela()));
-//        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",configure.getAnalyzedProjectName()+ "-generic-anti-out",
-//                JSON.toJSONString(depends.getDependsString(projectName, inputDir, lang)));
-
-        //output the summary of the acquired results.
-        summary();
+//        //build hierarchical dependencies
+////        HiDeper hiDeper = new HiDeper();
+////        hiDeper.run();
+////
+////        HiDepData hiDepData = HiDepData.getInstance();
+////
+////        Formator formator = new Formator(depTypes);
+////        JDepObject jDepObject = formator.getfJsonDataModel();
+////        XDepObject xDepObject = formator.getfXmlDataModel();
+////
+////        Csvgrapher csvgrapher = new Csvgrapher();
+////        csvgrapher.buildProcess();
+////        ArrayList<String[]> allNodes = csvgrapher.getNodes();
+////        ArrayList<String[]> allEdges = csvgrapher.getEdges();
+////
+////        WriterIntf writer = new WriterIntf();
+////        writer.run(jDepObject, xDepObject, allNodes, allEdges);
+//
+//        JsonMap jsonMap = new JsonMap();
+//        Verification verify = new Verification();
+//        DependsString depends = new DependsString();
+//        //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-node", Django.nodeWriter());
+//        //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-edge", Django.edgeWriter(jsonMap.getFinalRes()));
+//        //specific-anti-
+//        // CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",outputFile, JsonString.JSONWriteRelation(jsonMap.getFinalRes(), hiddenDir, slim));
+//        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName() + "-enre-out", outputFile, JsonString.jsonWriteRelation(jsonMap.getFinalRes(), hiddenDir, slim));
+////        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",configure.getAnalyzedProjectName()+ "-hidden-not-match", ProcessHidden.getProcessHiddeninstance().outputResult());
+//
+//        //CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-Diango-out",configure.getAnalyzedProjectName()+ "-imports", Verification.JSONWriteRela(verify.getRela()));
+////        CreateFileUtil.createJsonFile(configure.getAnalyzedProjectName()+ "-enre-out",configure.getAnalyzedProjectName()+ "-generic-anti-out",
+////                JSON.toJSONString(depends.getDependsString(projectName, inputDir, lang)));
+//
+//        //output the summary of the acquired results.
+//        summary();
     }
 
     /**
