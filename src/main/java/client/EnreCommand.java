@@ -18,9 +18,15 @@ public class EnreCommand {
     private String projectName;
     @Option(names = {"-d", "--dir"},  description = "The additional directories to be analyzed")
     private String[] dir = new String[] {};
-    @Option(names = {"-a", "--aidl"},  description = "If the analyzed project is an Android project which contains .aidl files, " +
-            "please provide the corresponding .java files which have the same relative path with the original file ")
-    private String aidl;
+//    @Option(names = {"-a", "--aidl"},  description = "If the analyzed project is an Android project which contains .aidl files, " +
+//            "please provide the corresponding .java files which have the same relative path with the original file ")
+//    private String aidl;
+    // 改为有-a\--aidl，则启用AIDL预处理，且默认扫描src和dir中所有目录下的.aidl文件，编译后生成的.java文件会放在原目录下
+    @Option(
+            names = {"-a", "--aidl"},
+            description = "Enable AIDL preprocessing"
+    )
+    private boolean aidl;
     @Option(names = {"-hd", "--hidden"},  description = "The path of hiddenapi-flag.csv")
     private String hidden;
     @Option(names = {"-o", "--output"},  description = "The output file name, default is projectName-out")
@@ -63,11 +69,14 @@ public class EnreCommand {
         return dir;
     }
 
-    public void setAidl(String aidl) {
-        this.aidl = aidl;
-    }
-
-    public String getAidl() {
+//    public void setAidl(String aidl) {
+//        this.aidl = aidl;
+//    }
+//
+//    public String getAidl() {
+//        return aidl;
+//    }
+    public boolean isAidl() {
         return aidl;
     }
 

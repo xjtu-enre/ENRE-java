@@ -34,7 +34,7 @@ public class AidlDiscoverer {
                     "Failed to discover AIDL files under: " + sourceRoot, e);
         }
 
-        System.out.println("AidlJavaChecker: " + result);
+        System.out.println("AidlDiscoverer: " + result.size());
         return result;
     }
 }
